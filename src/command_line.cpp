@@ -54,7 +54,9 @@ bool command_handler::process_commands(const options::basic_parsed_options<letr>
 		for(auto&option : _desc.options()) {
 			const bstring option_name = option->long_name();
 			string option_value = TXT("Unspecified");
-			if(_vm.count(option_name))extract_option_value(option_name, option_value);
+			if(_vm.count(option_name)) {
+				extract_option_value(option_name, option_value);
+			}
 			options << TXT("\n  - ") << BYTE_2_STR(option_name) << TXT(": ") << option_value;
 		}
 		LOG(severity_level::info) << options.str();
