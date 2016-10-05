@@ -10,7 +10,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 int invoke_main(const std::vector<string>&args, main_func f) {
-	std::vector<const letr*const>argv;
+	std::vector<const letr*>argv;
 	argv.push_back(TXT("this_should_be_the_invoked_command"));
 	for(const string&arg : args)argv.push_back(arg.c_str());
 
