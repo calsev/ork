@@ -24,6 +24,7 @@
     <ClInclude Include="ork\html.hpp" />
     <ClInclude Include="ork\orientation.hpp" />
     <ClInclude Include="ork\ork.hpp" />
+    <ClInclude Include="ork\parse.hpp" />
     <ClInclude Include="ork\tagger.hpp" />
   </ItemGroup>
   <ItemGroup>
