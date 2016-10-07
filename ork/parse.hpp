@@ -27,14 +27,15 @@ namespace parse {
 
 struct identifier : qi::grammar<string::const_iterator, string, ascii::space_type> {
 public:
-	typedef std::string::const_iterator iter;
+	typedef string::const_iterator iter;
 public:
 	identifier() : identifier::base_type(start) {
-		start %= qi::lexeme[(qi::alpha | qi::char_(TXT('_'))) >> *(qi::alnum | qi::char_(TXT('_')))]
-		;
+		start %=
+			qi::lexeme[(qi::alpha | qi::char_(TXT('_'))) >> *(qi::alnum | qi::char_(TXT('_')))]
+			;
 	}
 public:
-	qi::rule<string::const_iterator, ork::string, ascii::space_type> start;
+	qi::rule<iter, string, ascii::space_type> start;
 };
 
 
