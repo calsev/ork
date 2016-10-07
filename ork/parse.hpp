@@ -4,6 +4,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include"boost/spirit/home/support/common_terminals.hpp"
+#include"boost/spirit/include/qi.hpp"
 #include"ork/ork.hpp"
 
 
@@ -25,7 +26,7 @@ typedef spirit::char_encoding::standard charset;
 namespace parse {
 
 
-struct identifier : qi::grammar<string::const_iterator, string, ascii::space_type> {
+struct identifier : qi::grammar<string::const_iterator, string(), ascii::space_type> {
 public:
 	typedef string::const_iterator iter;
 public:
@@ -35,7 +36,7 @@ public:
 			;
 	}
 public:
-	qi::rule<iter, string, ascii::space_type> start;
+	qi::rule<iter, string(), ascii::space_type> start;
 };
 
 
