@@ -25,15 +25,16 @@ typedef spirit::char_encoding::standard charset;
 namespace parse {
 
 
-template<typename iter>
-struct identifier : qi::grammar<iter, ork::string, ascii::space_type> {
+struct identifier : qi::grammar<string::const_iterator, string, ascii::space_type> {
+public:
+	typedef std::string::const_iterator iter;
 public:
 	identifier() : identifier::base_type(start) {
-		start %= qi::lexeme[(qi::alpha | qi::char_(TXT('_'))) >> +(qi::alnum | qi::char_(TXT('_')))]
+		start %= qi::lexeme[(qi::alpha | qi::char_(TXT('_'))) >> *(qi::alnum | qi::char_(TXT('_')))]
 		;
 	}
 public:
-	qi::rule<iter, ork::string, ascii::space_type> start;
+	qi::rule<string::const_iterator, ork::string, ascii::space_type> start;
 };
 
 
