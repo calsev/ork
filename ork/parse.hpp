@@ -27,11 +27,12 @@ namespace parse {
 
 template<typename iter>
 struct identifier : qi::grammar<iter, ork::string, ascii::space_type> {
+public:
 	identifier() : identifier::base_type(start) {
-		start %= qi::lexeme[(qi::alpha | qi::char_(TXT("_"))) + (qi::alnum | qi::char_(TXT("_")))];
+		start %= qi::lexeme[(qi::alpha | qi::char_(TXT('_'))) >> +(qi::alnum | qi::char_(TXT('_')))]
 		;
 	}
-
+public:
 	qi::rule<iter, ork::string, ascii::space_type> start;
 };
 
