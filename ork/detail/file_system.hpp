@@ -37,15 +37,15 @@ bool ensure_directory(file::path file_or_directory);
 bool ensure_file(const file::path&file);
 
 
-#define FILE_OPEN_ERR(MSG,FILE_NAME)STMT(\
+#define ORK_FILE_OPEN_ERR(MSG,FILE_NAME)STMT(\
 	ORK_THROW(MSG << TXT("\n -- Path: \"") << FILE_NAME << TXT("\""))\
 )
 
-#define FILE_READ(FILE_NAME)\
+#define ORK_FILE_READ(FILE_NAME)\
 	ork::if_stream fin(FILE_NAME);\
-	if(!fin)FILE_OPEN_ERR(TXT("Could not open input file!"), FILE_NAME)
-#define FILE_WRITE(FILE_NAME)\
+	if(!fin)ORK_FILE_OPEN_ERR(TXT("Could not open input file!"), FILE_NAME)
+#define ORK_FILE_WRITE(FILE_NAME)\
 	ork::of_stream fout(FILE_NAME);\
-	if(!fout)FILE_OPEN_ERR(TXT("Could not open output file!"), FILE_NAME)
+	if(!fout)ORK_FILE_OPEN_ERR(TXT("Could not open output file!"), FILE_NAME)
 
 }//namespace ork

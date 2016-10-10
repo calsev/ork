@@ -181,7 +181,7 @@ bool ensure_file(const file::path&file) {
 From file_utils.hpp
 */
 bool top_subdirectory(const file::path&dir, file::path&p) {
-	if(!test_directory(dir))FILE_OPEN_ERR(TXT("Error searching directory!"), dir);
+	if(!test_directory(dir))ORK_FILE_OPEN_ERR(TXT("Error searching directory!"), dir);
 
 	//Create a list of the paths in the directory, and then sort it
 	std::vector<file::path>paths;

@@ -12,9 +12,9 @@ namespace options = boost::program_options;
 
 
 #ifdef UNICODE
-#define OVAL wvalue
+#define ORK_OVAL wvalue
 #else
-#define OVAL value
+#define ORK_OVAL value
 #endif
 
 namespace ork {
