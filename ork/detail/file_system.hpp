@@ -38,7 +38,7 @@ bool ensure_file(const file::path&file);
 
 
 #define FILE_OPEN_ERR(MSG,FILE_NAME)STMT(\
-	THROW_MSG(MSG << TXT("\n -- Path: \"") << FILE_NAME << TXT("\""))\
+	ORK_THROW(MSG << TXT("\n -- Path: \"") << FILE_NAME << TXT("\""))\
 )
 
 #define FILE_READ(FILE_NAME)\

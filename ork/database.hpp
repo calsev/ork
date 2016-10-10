@@ -16,7 +16,7 @@ std::vector<char> string2uuid(const bstring&val);
 #define SQ_ALWAYS_MSG(CODE, MSG) STMT(\
 	const int sqlite_status(CODE);\
 	if(sqlite_status != SQLITE_OK){\
-		THROW_MSG(\
+		ORK_THROW(\
 			MSG << TXT(":") << sqlite_status\
 		);\
 	}\

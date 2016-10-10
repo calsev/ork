@@ -41,7 +41,7 @@ bool string2bool(string val) {
 	if(val == TXT("f"))return false;
 	if(val == TXT("false"))return false;
 	if(val == TXT("0"))return false;
-	THROW_MSG(TXT("Invalid bool value"));
+	ORK_THROW(TXT("Invalid bool value"));
 }
 
 
@@ -254,10 +254,10 @@ typedef boost::log::formatting_ostream formatting_ostream;
 
 
 boost::shared_ptr<o_stream>open_log(const file::path&file_name) {
-	if(!ensure_directory(file_name))THROW_MSG(TXT("Could not create directory : ") << file_name)
+	if(!ensure_directory(file_name))ORK_THROW(TXT("Could not create directory : ") << file_name)
 		of_stream* p_stream = new of_stream();
 	p_stream->open(file_name);//std::ios::app | std::ios::ate
-	if(p_stream->fail())THROW_MSG(TXT("Error opening log : ") << file_name)
+	if(p_stream->fail())ORK_THROW(TXT("Error opening log : ") << file_name)
 		//p_stream->rdbuf()->pubsetbuf(0, 0);//Less performance, more likely to catch error messages
 		return boost::shared_ptr<o_stream>(p_stream);
 }

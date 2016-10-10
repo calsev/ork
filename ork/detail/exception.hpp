@@ -42,17 +42,17 @@ bo_stream &operator << (bo_stream& stream, const backtrace& trace);
 /*
 Exceptions do not support unicode!
 */
-#define THROW_EXCEP(MSG)\
+#define ORK_EXCEP(MSG)\
 	throw ork::exception(STR_2_BYTE(MSG))
 
 //Endlines are needed to flush the buffer before backtrace, for some reason
-#define THROW_MSG(MSG) STMT(\
+#define ORK_THROW(MSG) STMT(\
 	LOG(ork::severity_level::fatal)<< MSG << std::endl << std::endl << ork::generate_backtrace().str() << TXT('\n');\
 	ork::g_log.flush_all();\
 	ork::string_stream throw_msg;\
 	throw_msg << TXT("[FATAL]: ") << LOC_BLOCK << MSG;/*Generate more or less the header from logging*/\
 	throw_msg << std::endl << std::endl << ork::generate_backtrace().str() << TXT('\n');\
-	THROW_EXCEP(throw_msg.str());\
+	ORK_EXCEP(throw_msg.str());\
 )
 
 }//namespace ork

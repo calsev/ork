@@ -50,9 +50,9 @@ void tagger::set_debug_root(const string&as_is_path, const string&to_be_path) {
 
 
 setup_hierarchy::setup_hierarchy(const string&setup_root, const string&as_is_path, const string&to_be_path) :_setup_directory(), _cached(false), _score(0), _setups() {
-	if(!ensure_directory(setup_root))THROW_MSG(TXT("Setup root could not be created: ") << setup_root);
-	//if(!test_file(as_is_path))THROW_MSG(TXT("As-is file could not be found: ") << as_is_path);
-	//if(!test_file(to_be_path))THROW_MSG(TXT("To-Be file could not be found: ") << to_be_path);
+	if(!ensure_directory(setup_root))ORK_THROW(TXT("Setup root could not be created: ") << setup_root);
+	//if(!test_file(as_is_path))ORK_THROW(TXT("As-is file could not be found: ") << as_is_path);
+	//if(!test_file(to_be_path))ORK_THROW(TXT("To-Be file could not be found: ") << to_be_path);
 
 	const string as_is_name(file::path(as_is_path).stem().GEN_STR());
 	const string to_be_name(file::path(to_be_path).stem().GEN_STR());
@@ -66,7 +66,7 @@ setup_hierarchy::setup_hierarchy(const string&setup_root, const string&as_is_pat
 
 file::path setup_hierarchy::get_subdirectory() {
 	file::path setup_dir;
-	if(!top_subdirectory(get_path(), setup_dir))THROW_MSG(TXT("Setup directory not found for root: ") << get_path());
+	if(!top_subdirectory(get_path(), setup_dir))ORK_THROW(TXT("Setup directory not found for root: ") << get_path());
 	_cached = false;//Dirty, in case the client fetches more than one setup
 	return setup_dir /= TXT("/");
 }
@@ -87,7 +87,7 @@ struct setup_match {
 file::path setup_hierarchy::get_subdirectory(const string&exact_setups) {
 	setup_match match(exact_setups);
 	iterate_directory<setup_match, flat_search, sorted>::run(get_path(), match);
-	if(match.setup_dir.empty())THROW_MSG(TXT("Setup permutation not found: ") << exact_setups);
+	if(match.setup_dir.empty())ORK_THROW(TXT("Setup permutation not found: ") << exact_setups);
 	_cached = false;//Dirty, in case the client fetches more than one setup
 	return match.setup_dir;
 }
@@ -115,11 +115,11 @@ const std::vector<orientation>&setup_hierarchy::do_get_setups(const string&setup
 			_setups.push_back(string2orientation(setup));
 			strm >> setup;
 		}
-		if(_setups.empty())THROW_MSG(TXT("Setup directory not formatted correctly: ") << get_path() << TXT("/") << setup_dir);
+		if(_setups.empty())ORK_THROW(TXT("Setup directory not formatted correctly: ") << get_path() << TXT("/") << setup_dir);
 
 		_cached = true;
 	}
-	if(_setups.empty())THROW_MSG(TXT("Setups not found for directory: ") << setup_dir);
+	if(_setups.empty())ORK_THROW(TXT("Setups not found for directory: ") << setup_dir);
 	return _setups;
 }
 

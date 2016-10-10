@@ -29,7 +29,7 @@ orientation operator-(orientation or ) {
 	case orientation::neg_z:
 		return orientation::pos_z;
 	}
-	THROW_MSG(TXT("Unreachable"));
+	ORK_THROW(TXT("Unreachable"));
 }
 
 //These must be in the same order as the enum
@@ -60,7 +60,7 @@ i_stream&operator >> (i_stream&strm, orientation& or ) {
 const letr*orientation2string(orientation or ) {
 	const size_t index = static_cast<size_t>(or );
 	if(index < sizeof(oriention_strings) / sizeof(*oriention_strings)) return oriention_strings[index];
-	else THROW_MSG(TXT("Attempt to convert invalid orientation"));
+	else ORK_THROW(TXT("Attempt to convert invalid orientation"));
 }
 
 
@@ -74,7 +74,7 @@ orientation string2orientation(const string&val) {
 			return static_cast<orientation>(i);
 		}
 	}
-	THROW_MSG(TXT("Attempt to convert invalid orientation: ") << val);
+	ORK_THROW(TXT("Attempt to convert invalid orientation: ") << val);
 }
 
 
@@ -112,7 +112,7 @@ double to_wcs(const double val, const orientation o) {
 	case orientation::neg_z:
 		return -val;
 	}
-	THROW_MSG(TXT("Unreachable"));
+	ORK_THROW(TXT("Unreachable"));
 }
 
 
@@ -131,7 +131,7 @@ orientation to_positive(const orientation o) {
 	case orientation::neg_z:
 		return orientation::pos_z;
 	}
-	THROW_MSG(TXT("Unreachable"));
+	ORK_THROW(TXT("Unreachable"));
 }
 
 bool is_positive(const orientation o) {
@@ -145,7 +145,7 @@ bool is_positive(const orientation o) {
 	case orientation::neg_z:
 		return false;
 	}
-	THROW_MSG(TXT("Unreachable"));
+	ORK_THROW(TXT("Unreachable"));
 }
 
 
