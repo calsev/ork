@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK_STR library.
+This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include"boost/algorithm/string.hpp"

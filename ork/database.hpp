@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK_STR library.
+This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -13,7 +13,7 @@ namespace ork {
 bstring uuid2string(const char*const value);
 std::vector<char> string2uuid(const bstring&val);
 
-#define SQ_ALWAYS_MSG(CODE, MSG) ORK_STMT(\
+#define ORK_SQ_ALWAYS(CODE, MSG) ORK_STMT(\
 	const int sqlite_status(CODE);\
 	if(sqlite_status != SQLITE_OK){\
 		ORK_THROW(\
