@@ -14,30 +14,30 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-#define WARN_(MSG) ORK_CAT3(ORK_FLOC, ORK(": Warning: "), ORK(MSG))
+#define ORK_WARN_(MSG) ORK_CAT3(ORK_FLOC, ORK(": Warning: "), ORK(MSG))
 #if defined _MSC_VER
-#define VSWARNING(MSG) message(WARN_(MSG))
+#define ORK_VSWARNING(MSG) message(ORK_WARN_(MSG))
 #else
-#define VSWARNING(MSG) 
+#define ORK_VSWARNING(MSG) 
 #endif
 
 
 //Make the code execute as one statement; used because it could be more exotic(per-platform) in the future.
-#define STMT(CODE) {CODE} //do{CODE}while(false);
+#define ORK_STMT(CODE) {CODE} //do{CODE}while(false);
 
 #if defined _MSC_VER
-#define INLINE __forceinline
+#define ORK_INLINE __forceinline
 #elif defined __GNUC__
-#define INLINE __attribute__((always_inline)) inline
+#define ORK_INLINE __attribute__((always_inline)) inline
 #else
 #error "Compiler not supported"
 #endif
 
 
 #if defined __GNUC__ || _MSC_VER > 1800
-#define NO_EXCEPT noexcept
+#define ORK_NO_EXCEPT noexcept
 #else
-#define NO_EXCEPT//throw()
+#define ORK_NO_EXCEPT//throw()
 #endif
 
 
@@ -67,40 +67,40 @@ less error prone,and consistently optimized.
 #define LOOPVL(SERIES)LOOPV(SERIES,l)
 
 
-#define _EMPTY /*Empty*/
+#define ORK_EMPTY_ /*Empty*/
 
 
 /*
 Copy and move semantics
 */
 
-#define _COPY(TYPE)\
+#define ORK_COPY_(TYPE)\
 	TYPE(const TYPE&)=default;\
 	TYPE&operator=(const TYPE&)=default;
 
 #if defined __GNUC__ || _MSC_VER > 1700//VS 2013 or later
-	#define _NO_COPY(TYPE)\
+	#define ORK_NO_COPY_(TYPE)\
 			TYPE(const TYPE&)=delete;\
 			TYPE&operator=(const TYPE&)=delete;
-	#define _NO_MOVE(TYPE)\
+	#define ORK_NO_MOVE_(TYPE)\
 			TYPE(TYPE&&)=delete;\
 			TYPE&operator=(TYPE&&)=delete;
-	#define _MOVE(TYPE)\
+	#define ORK_MOVE_(TYPE)\
 		TYPE(TYPE&&)=default;\
 		TYPE&operator=(TYPE&&)=default;
 #else
-	#define _NO_COPY(TYPE)\
+	#define ORK_NO_COPY_(TYPE)\
 			private:\
 				TYPE(const TYPE&);\
 				TYPE&operator=(const TYPE&);
-	#define _NO_MOVE(TYPE) _EMPTY
-	#define _MOVE(TYPE) _EMPTY
+	#define ORK_NO_MOVE_(TYPE) ORK_EMPTY_
+	#define ORK_MOVE_(TYPE) ORK_EMPTY_
 #endif
 
-#define NON_COPYABLE(TYPE) _NO_COPY(TYPE) _NO_MOVE(TYPE)
+#define ORK_NON_COPYABLE(TYPE) ORK_NO_COPY_(TYPE) ORK_NO_MOVE_(TYPE)
 #if defined __GNUC__ || _MSC_VER > 1700//VS 2013 or later
-#define MOVE_ONLY(TYPE) _NO_COPY(TYPE) _MOVE(TYPE)
-#define MOVEABLE(TYPE) _COPY(TYPE) _MOVE(TYPE)
+#define ORK_MOVE_ONLY(TYPE) ORK_NO_COPY_(TYPE) ORK_MOVE_(TYPE)
+#define ORK_MOVEABLE(TYPE) ORK_COPY_(TYPE) ORK_MOVE_(TYPE)
 #endif
 
 
@@ -110,38 +110,38 @@ code in both the constructor and assignment operator.
 These macros also support VS 2012.
 */
 //Construction
-#define _CMOVE(M) M(std::move(rhs.M))
-#define _CMOVE_1(M1)										_CMOVE(M1)
-#define _CMOVE_2(M1,M2)				_CMOVE_1(M1),			_CMOVE(M2)
-#define _CMOVE_3(M1,M2,M3)			_CMOVE_2(M1,M2),		_CMOVE(M3)
-#define _CMOVE_4(M1,M2,M3,M4)		_CMOVE_3(M1,M2,M3),		_CMOVE(M4)
-#define _CMOVE_5(M1,M2,M3,M4,M5)	_CMOVE_4(M1,M2,M3,M4),	_CMOVE(M5)
+#define ORK_CMOVE_(M) M(std::move(rhs.M))
+#define ORK_CMOVE_1_(M1)				ORK_CMOVE_(M1)
+#define ORK_CMOVE_2_(M1,M2)				ORK_CMOVE_1_(M1),			ORK_CMOVE_(M2)
+#define ORK_CMOVE_3_(M1,M2,M3)			ORK_CMOVE_2_(M1,M2),		ORK_CMOVE_(M3)
+#define ORK_CMOVE_4_(M1,M2,M3,M4)		ORK_CMOVE_3_(M1,M2,M3),		ORK_CMOVE_(M4)
+#define ORK_CMOVE_5_(M1,M2,M3,M4,M5)	ORK_CMOVE_4_(M1,M2,M3,M4),	ORK_CMOVE_(M5)
 
 //Assignment
-#define _AMOVE(M) M=std::move(rhs.M);
-#define _AMOVE_1(M1)										_AMOVE(M1)
-#define _AMOVE_2(M1,M2)				_AMOVE_1(M1)			_AMOVE(M2)
-#define _AMOVE_3(M1,M2,M3)			_AMOVE_2(M1,M2)			_AMOVE(M3)
-#define _AMOVE_4(M1,M2,M3,M4)		_AMOVE_3(M1,M2,M3)		_AMOVE(M4)
-#define _AMOVE_5(M1,M2,M3,M4,M5)	_AMOVE_4(M1,M2,M3,M4)	_AMOVE(M5)
+#define ORK_AMOVE_(M) M=std::move(rhs.M);
+#define ORK_AMOVE_1_(M1)				ORK_AMOVE_(M1)
+#define ORK_AMOVE_2_(M1,M2)				ORK_AMOVE_1_(M1)			ORK_AMOVE_(M2)
+#define ORK_AMOVE_3_(M1,M2,M3)			ORK_AMOVE_2_(M1,M2)			ORK_AMOVE_(M3)
+#define ORK_AMOVE_4_(M1,M2,M3,M4)		ORK_AMOVE_3_(M1,M2,M3)		ORK_AMOVE_(M4)
+#define ORK_AMOVE_5_(M1,M2,M3,M4,M5)	ORK_AMOVE_4_(M1,M2,M3,M4)	ORK_AMOVE_(M5)
 
 
 /*
 This constructor somewhat surreptitiously inserts noexcept
 but a throwing move constructor is pointless anyway
 */
-#define _MOVE_CONSTRUCT(TYPE,CODE)\
+#define ORK_MOVE_CONSTRUCT_(TYPE,CODE)\
 public:\
-	TYPE(TYPE&&rhs)NO_EXCEPT:CODE{
+	TYPE(TYPE&&rhs)ORK_NO_EXCEPT:CODE{
 /*Constructor body here*/
-#define _MOVE_ASSIGN(TYPE,CODE)\
+#define ORK_MOVE_ASSIGN_(TYPE,CODE)\
 	}\
 public:\
-	TYPE&operator=(TYPE&&rhs)NO_EXCEPT{\
+	TYPE&operator=(TYPE&&rhs)ORK_NO_EXCEPT{\
 		if(this!=&rhs){\
 			CODE
 /*Assignment body here*/
-#define _MOVE_END\
+#define ORK_MOVE_END_\
 		}\
 		return *this;\
 	}
@@ -152,35 +152,35 @@ These macros wrap up functionality.
 The first inserts the same code in the constuctor and assigment operator.
 The second inserts no code.
 */
-#define _MOVE_CON1(TYPE,M1)				_MOVE_CONSTRUCT(TYPE,_CMOVE_1(M1))
-#define _MOVE_CON2(TYPE,M1,M2)			_MOVE_CONSTRUCT(TYPE,_CMOVE_2(M1,M2))
-#define _MOVE_CON3(TYPE,M1,M2,M3)		_MOVE_CONSTRUCT(TYPE,_CMOVE_3(M1,M2,M3))
-#define _MOVE_CON4(TYPE,M1,M2,M3,M4)	_MOVE_CONSTRUCT(TYPE,_CMOVE_4(M1,M2,M3,M4))
-#define _MOVE_CON5(TYPE,M1,M2,M3,M4,M5)	_MOVE_CONSTRUCT(TYPE,_CMOVE_5(M1,M2,M3,M4,M5))
+#define ORK_MOVE_CON1_(TYPE,M1)				ORK_MOVE_CONSTRUCT_(TYPE,ORK_CMOVE_1_(M1))
+#define ORK_MOVE_CON2_(TYPE,M1,M2)			ORK_MOVE_CONSTRUCT_(TYPE,ORK_CMOVE_2_(M1,M2))
+#define ORK_MOVE_CON3_(TYPE,M1,M2,M3)		ORK_MOVE_CONSTRUCT_(TYPE,ORK_CMOVE_3_(M1,M2,M3))
+#define ORK_MOVE_CON4_(TYPE,M1,M2,M3,M4)	ORK_MOVE_CONSTRUCT_(TYPE,ORK_CMOVE_4_(M1,M2,M3,M4))
+#define ORK_MOVE_CON5_(TYPE,M1,M2,M3,M4,M5)	ORK_MOVE_CONSTRUCT_(TYPE,ORK_CMOVE_5_(M1,M2,M3,M4,M5))
 
-#define _MOVE_OP1(TYPE,M1)				_MOVE_ASSIGN(TYPE,_AMOVE_1(M1))
-#define _MOVE_OP2(TYPE,M1,M2)			_MOVE_ASSIGN(TYPE,_AMOVE_2(M1,M2))
-#define _MOVE_OP3(TYPE,M1,M2,M3)		_MOVE_ASSIGN(TYPE,_AMOVE_3(M1,M2,M3))
-#define _MOVE_OP4(TYPE,M1,M2,M3,M4)		_MOVE_ASSIGN(TYPE,_AMOVE_4(M1,M2,M3,M4))
-#define _MOVE_OP5(TYPE,M1,M2,M3,M4,M5)	_MOVE_ASSIGN(TYPE,_AMOVE_5(M1,M2,M3,M4,M5))
+#define ORK_MOVE_OP1_(TYPE,M1)				ORK_MOVE_ASSIGN_(TYPE,ORK_AMOVE_1_(M1))
+#define ORK_MOVE_OP2_(TYPE,M1,M2)			ORK_MOVE_ASSIGN_(TYPE,ORK_AMOVE_2_(M1,M2))
+#define ORK_MOVE_OP3_(TYPE,M1,M2,M3)		ORK_MOVE_ASSIGN_(TYPE,ORK_AMOVE_3_(M1,M2,M3))
+#define ORK_MOVE_OP4_(TYPE,M1,M2,M3,M4)		ORK_MOVE_ASSIGN_(TYPE,ORK_AMOVE_4_(M1,M2,M3,M4))
+#define ORK_MOVE_OP5_(TYPE,M1,M2,M3,M4,M5)	ORK_MOVE_ASSIGN_(TYPE,ORK_AMOVE_5_(M1,M2,M3,M4,M5))
 
-#define _MOVE_1(TYPE,M1,CODE)				_MOVE_CON1(TYPE,M1)				CODE _MOVE_OP1(TYPE,M1)				CODE _MOVE_END
-#define _MOVE_2(TYPE,M1,M2,CODE)			_MOVE_CON2(TYPE,M1,M2)			CODE _MOVE_OP2(TYPE,M1,M2)			CODE _MOVE_END
-#define _MOVE_3(TYPE,M1,M2,M3,CODE)			_MOVE_CON3(TYPE,M1,M2,M3)		CODE _MOVE_OP3(TYPE,M1,M2,M3)		CODE _MOVE_END
-#define _MOVE_4(TYPE,M1,M2,M3,M4,CODE)		_MOVE_CON4(TYPE,M1,M2,M3,M4)	CODE _MOVE_OP4(TYPE,M1,M2,M3,M4)	CODE _MOVE_END
-#define _MOVE_5(TYPE,M1,M2,M3,M4,M5,CODE)	_MOVE_CON5(TYPE,M1,M2,M3,M4,M5)	CODE _MOVE_OP5(TYPE,M1,M2,M3,M4,M5)	CODE _MOVE_END
+#define ORK_MOVE_1_(TYPE,M1,CODE)				ORK_MOVE_CON1_(TYPE,M1)				CODE ORK_MOVE_OP1_(TYPE,M1)				CODE ORK_MOVE_END_
+#define ORK_MOVE_2_(TYPE,M1,M2,CODE)			ORK_MOVE_CON2_(TYPE,M1,M2)			CODE ORK_MOVE_OP2_(TYPE,M1,M2)			CODE ORK_MOVE_END_
+#define ORK_MOVE_3_(TYPE,M1,M2,M3,CODE)			ORK_MOVE_CON3_(TYPE,M1,M2,M3)		CODE ORK_MOVE_OP3_(TYPE,M1,M2,M3)		CODE ORK_MOVE_END_
+#define ORK_MOVE_4_(TYPE,M1,M2,M3,M4,CODE)		ORK_MOVE_CON4_(TYPE,M1,M2,M3,M4)	CODE ORK_MOVE_OP4_(TYPE,M1,M2,M3,M4)	CODE ORK_MOVE_END_
+#define ORK_MOVE_5_(TYPE,M1,M2,M3,M4,M5,CODE)	ORK_MOVE_CON5_(TYPE,M1,M2,M3,M4,M5)	CODE ORK_MOVE_OP5_(TYPE,M1,M2,M3,M4,M5)	CODE ORK_MOVE_END_
 
 
-#define MOVEABLE_1(TYPE,M1)				_COPY(TYPE) _MOVE_1(TYPE,M1,_EMPTY)
-#define MOVEABLE_2(TYPE,M1,M2)			_COPY(TYPE) _MOVE_2(TYPE,M1,M2,_EMPTY)
-#define MOVEABLE_3(TYPE,M1,M2,M3)		_COPY(TYPE) _MOVE_3(TYPE,M1,M2,M3,_EMPTY)
-#define MOVEABLE_4(TYPE,M1,M2,M3,M4)	_COPY(TYPE) _MOVE_4(TYPE,M1,M2,M3,M4,_EMPTY)
-#define MOVEABLE_5(TYPE,M1,M2,M3,M4,M5)	_COPY(TYPE) _MOVE_5(TYPE,M1,M2,M3,M4,M5,_EMPTY)
+#define ORK_MOVEABLE_1(TYPE,M1)				ORK_COPY_(TYPE) ORK_MOVE_1_(TYPE,M1,ORK_EMPTY_)
+#define ORK_MOVEABLE_2(TYPE,M1,M2)			ORK_COPY_(TYPE) ORK_MOVE_2_(TYPE,M1,M2,ORK_EMPTY_)
+#define ORK_MOVEABLE_3(TYPE,M1,M2,M3)		ORK_COPY_(TYPE) ORK_MOVE_3_(TYPE,M1,M2,M3,ORK_EMPTY_)
+#define ORK_MOVEABLE_4(TYPE,M1,M2,M3,M4)	ORK_COPY_(TYPE) ORK_MOVE_4_(TYPE,M1,M2,M3,M4,ORK_EMPTY_)
+#define ORK_MOVEABLE_5(TYPE,M1,M2,M3,M4,M5)	ORK_COPY_(TYPE) ORK_MOVE_5_(TYPE,M1,M2,M3,M4,M5,ORK_EMPTY_)
 
-#define MOVE_ONLY_1(TYPE,M1)				_NO_COPY(TYPE) _MOVE_1(TYPE,M1,_EMPTY)
-#define MOVE_ONLY_2(TYPE,M1,M2)				_NO_COPY(TYPE) _MOVE_2(TYPE,M1,M2,_EMPTY)
-#define MOVE_ONLY_3(TYPE,M1,M2,M3)			_NO_COPY(TYPE) _MOVE_3(TYPE,M1,M2,M3,_EMPTY)
-#define MOVE_ONLY_4(TYPE,M1,M2,M3,M4)		_NO_COPY(TYPE) _MOVE_4(TYPE,M1,M2,M3,M4,_EMPTY)
-#define MOVE_ONLY_5(TYPE,M1,M2,M3,M4,M5)	_NO_COPY(TYPE) _MOVE_5(TYPE,M1,M2,M3,M4,M5,_EMPTY)
+#define ORK_MOVE_ONLY_1(TYPE,M1)				ORK_NO_COPY_(TYPE) ORK_MOVE_1_(TYPE,M1,ORK_EMPTY_)
+#define ORK_MOVE_ONLY_2(TYPE,M1,M2)				ORK_NO_COPY_(TYPE) ORK_MOVE_2_(TYPE,M1,M2,ORK_EMPTY_)
+#define ORK_MOVE_ONLY_3(TYPE,M1,M2,M3)			ORK_NO_COPY_(TYPE) ORK_MOVE_3_(TYPE,M1,M2,M3,ORK_EMPTY_)
+#define ORK_MOVE_ONLY_4(TYPE,M1,M2,M3,M4)		ORK_NO_COPY_(TYPE) ORK_MOVE_4_(TYPE,M1,M2,M3,M4,ORK_EMPTY_)
+#define ORK_MOVE_ONLY_5(TYPE,M1,M2,M3,M4,M5)	ORK_NO_COPY_(TYPE) ORK_MOVE_5_(TYPE,M1,M2,M3,M4,M5,ORK_EMPTY_)
 
 }//namespace ork

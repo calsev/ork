@@ -37,7 +37,7 @@ bool ensure_directory(file::path file_or_directory);
 bool ensure_file(const file::path&file);
 
 
-#define ORK_FILE_OPEN_ERR(MSG,FILE_NAME)STMT(\
+#define ORK_FILE_OPEN_ERR(MSG,FILE_NAME)ORK_STMT(\
 	ORK_THROW(MSG << ORK("\n -- Path: \"") << FILE_NAME << ORK("\""))\
 )
 

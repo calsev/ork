@@ -46,7 +46,7 @@ Exceptions do not support unicode!
 	throw ork::exception(ORK_STR_2_BYTE(MSG))
 
 //Endlines are needed to flush the buffer before backtrace, for some reason
-#define ORK_THROW(MSG) STMT(\
+#define ORK_THROW(MSG) ORK_STMT(\
 	ORK_LOG(ork::severity_level::fatal)<< MSG << std::endl << std::endl << ork::generate_backtrace().str() << ORK('\n');\
 	ork::g_log.flush_all();\
 	ork::string_stream throw_msg;\

@@ -290,7 +290,7 @@ public:
 	std::vector<ptr_type>elements;
 public:
 	div(const bstring&div_style) :exportable(div_style) {}
-	MOVE_ONLY_1(div, elements);
+	ORK_MOVE_ONLY_1(div, elements);
 public:
 	virtual std::ostream& export_html(std::ostream&out)const override;
 };
@@ -301,7 +301,7 @@ public:
 	std::vector<div>divs;
 public:
 	body() {}
-	MOVE_ONLY_1(body, divs);
+	ORK_MOVE_ONLY_1(body, divs);
 public:
 	virtual std::ostream& export_html(std::ostream&out)const override;
 };
@@ -314,7 +314,7 @@ public:
 public:
 	document() {}
 	document(const header&head_, html::body&&body_) :head(head_), body(std::move(body_)) {}
-	MOVE_ONLY_2(document, head, body);
+	ORK_MOVE_ONLY_2(document, head, body);
 public:
 	virtual std::ostream& export_html(std::ostream&out)const override;
 };

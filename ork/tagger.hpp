@@ -25,7 +25,7 @@ protected:
 public:
 	tagger(const string&tag) :_count(0), _number_folder(true), _tag(tag) {}
 	tagger(const string&tag, bool numbered_folders) :_count(0), _number_folder(numbered_folders), _tag(tag) {}
-	NON_COPYABLE(tagger)
+	ORK_NON_COPYABLE(tagger)
 public:
 	static void set_debug_root(const string&directory);
 	static void set_debug_root(const string&as_is_path, const string&to_be_path);
