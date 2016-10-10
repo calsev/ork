@@ -61,17 +61,17 @@ public:
 
 //The logger must be terminated before main exits, so not a global!
 extern logger g_log;
-#define GLOBAL_LOG(LOG_DIRECTORY) ork::logger ork::g_log(LOG_DIRECTORY);
+#define ORK_GLOBAL_LOG(LOG_DIRECTORY) ork::logger ork::g_log(LOG_DIRECTORY);
 
 
-#define LOG_(LOG,SV) BOOST_LOG_SEV(LOG,SV)\
+#define ORK_LOG_(LOG,SV) BOOST_LOG_SEV(LOG,SV)\
 	<< boost::log::add_value(BTXT("Line"), LINE)\
 	<< boost::log::add_value(BTXT("File"), FILEN)\
 	<< boost::log::add_value(BTXT("Function"), FUNC)
-#define LOG(SV) LOG_(ork::g_log.log(),SV)
-#define LOUT BOOST_LOG(ork::g_log.lout())
+#define ORK_LOG(SV) ORK_LOG_(ork::g_log.log(),SV)
+#define ORK_LOUT BOOST_LOG(ork::g_log.lout())
 
 
-#define LOC_BLOCK TXT("\n -- ") << FLOC << TXT(":\n -- ") << FUNC  << TXT("\n")
+#define ORK_LOC_BLOCK TXT("\n -- ") << FLOC << TXT(":\n -- ") << FUNC  << TXT("\n")
 
 }//namespace ork

@@ -61,7 +61,7 @@ bool angles_advance_clockwise(const double start_angle, double mid_angle, double
 	Increasing angles go counterclockwise, so we can now be sure that if mid is smaller, then start-mid-end is counterclockwise.
 	If, however, end is smaller, then start-end-mid is counterclockwise, thus start-mid-end is clockwise.
 	*/
-	LOG(severity_level::trace) << TXT("start_angle=") << start_angle << TXT(", mid_angle=") << mid_angle << TXT(", end_angle=") << end_angle;
+	ORK_LOG(severity_level::trace) << TXT("start_angle=") << start_angle << TXT(", mid_angle=") << mid_angle << TXT(", end_angle=") << end_angle;
 	return end_angle <= mid_angle;
 }
 

@@ -18,7 +18,7 @@ int invoke_main(const std::vector<string>&args, main_func f) {
 	for(const letr*const arg : argv) {
 		cmd << arg << TXT(" ");
 	}
-	LOG(severity_level::info) << TXT("\n -- Command Line: ") << cmd.str();
+	ORK_LOG(severity_level::info) << TXT("\n -- Command Line: ") << cmd.str();
 
 	return f(static_cast<int>(argv.size()), argv.data());
 }
@@ -44,7 +44,7 @@ bool command_handler::process_commands(const options::basic_parsed_options<letr>
 	try {
 		options::store(ops, _vm);
 		if(_vm.count(BTXT("help"))) {//Check here to ignore any missing options
-			LOG(severity_level::info) << TXT('\n') << _desc_str << TXT('\n');
+			ORK_LOG(severity_level::info) << TXT('\n') << _desc_str << TXT('\n');
 			return false;
 		}
 		options::notify(_vm);//Exceptions for missing required options raised here
@@ -59,11 +59,11 @@ bool command_handler::process_commands(const options::basic_parsed_options<letr>
 			}
 			options << TXT("\n  - ") << BYTE_2_STR(option_name) << TXT(": ") << option_value;
 		}
-		LOG(severity_level::info) << options.str();
+		ORK_LOG(severity_level::info) << options.str();
 	}
 	catch(options::error &e) {
-		LOG(severity_level::error) << TXT("\nProblem storing command line options:\n  - ") << BYTE_2_STR(e.what());
-		LOG(severity_level::error) << TXT('\n') << _desc_str << TXT('\n');
+		ORK_LOG(severity_level::error) << TXT("\nProblem storing command line options:\n  - ") << BYTE_2_STR(e.what());
+		ORK_LOG(severity_level::error) << TXT('\n') << _desc_str << TXT('\n');
 		return false;
 	}
 
@@ -72,8 +72,8 @@ bool command_handler::process_commands(const options::basic_parsed_options<letr>
 
 #define COMMAND_CATCH \
 	catch(options::error &e) {\
-		LOG(severity_level::error) << TXT("\nProblem parsing command line options:\n  - ") << BYTE_2_STR(e.what());\
-		LOG(severity_level::error) << TXT('\n') << _desc_str << TXT('\n');\
+		ORK_LOG(severity_level::error) << TXT("\nProblem parsing command line options:\n  - ") << BYTE_2_STR(e.what());\
+		ORK_LOG(severity_level::error) << TXT('\n') << _desc_str << TXT('\n');\
 		return false;\
 	}
 
