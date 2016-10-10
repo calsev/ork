@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #define _USE_MATH_DEFINES//M_PI
@@ -52,7 +52,7 @@ rotation_direction operator-(const rotation_direction dir) {
 	case rotation_direction::counter_clockwise:
 		return rotation_direction::clockwise;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 
@@ -93,7 +93,7 @@ const glm::dmat3x3&lcs_mat(const orientation axis) {
 	case orientation::neg_z:
 		return to_top;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 
@@ -129,7 +129,7 @@ const glm::dmat3x3&wcs_mat(const orientation axis) {
 	case orientation::neg_z:
 		return from_top;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 
@@ -181,7 +181,7 @@ const view&get_view(const orientation axis) {
 	case orientation::neg_z:
 		return vtop;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 }//namespace MC
@@ -202,7 +202,7 @@ glm::dvec3 point_on_plane(const glm::dvec3&vec, const orientation axis) {
 		return glm::dvec3(vec.x, vec.y, 0.);
 		break;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 glm::dvec3 point_on_plane(const glm::dvec3&vec, const GLM::dunit3&normal) {
 	const double dot = glm::dot(vec, normal.get());
@@ -215,7 +215,7 @@ bool points_advance_clockwise(const glm::dvec2&begin, const glm::dvec2&end, cons
 	const glm::dvec2 dir_begin(begin - center);
 	const glm::dvec2 dir_end(end - center);
 	if(GLM::equal(glm::length2(dir_begin), 0.) || GLM::equal(glm::length2(dir_end), 0.)) {
-		ORK_THROW(TXT("Cannot compute the angle between a center and itself"));
+		ORK_THROW(ORK("Cannot compute the angle between a center and itself"));
 	}
 
 	const double rad = glm::orientedAngle(glm::normalize(dir_begin), glm::normalize(dir_end));
@@ -225,7 +225,7 @@ bool points_advance_clockwise(const glm::dvec3&begin, const glm::dvec3&end, cons
 	const glm::dvec3 start_dir(glm::normalize(begin - center));
 	const glm::dvec3 end_dir(glm::normalize(end - center));
 	if(GLM::equal(glm::length2(start_dir), 0.) || GLM::equal(glm::length2(end_dir), 0.)) {
-		ORK_THROW(TXT("Cannot compute the angle between a center and itself"));
+		ORK_THROW(ORK("Cannot compute the angle between a center and itself"));
 	}
 	const glm::dvec3 cross(glm::cross(start_dir, end_dir));
 	return glm::dot(cross, normal.get()) < 0.;
@@ -247,7 +247,7 @@ double point_on_axis(const glm::dvec3&pos, orientation axis) {
 	case orientation::neg_z:
 		return -pos.z;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 double point_on_axis(const glm::dvec3&pos, const GLM::dunit3&axis) {
 	return glm::dot(pos, axis.get());//This function serves little more than to not have to remember the dot operator
@@ -298,7 +298,7 @@ double bounding_box::range_on_axis(const orientation axis)const {
 	case orientation::neg_z:
 		return _max_pt.z - _min_pt.z;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 
@@ -356,7 +356,7 @@ double bounding_box::limit_on_axis(const orientation axis)const {
 	case orientation::neg_z:
 		return -_min_pt.z;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 
@@ -458,7 +458,7 @@ bounding_box operator|(const bounding_box&lhs, const bounding_box&rhs) {
 
 string bounding_box2string(const bounding_box&box) {
 	string_stream strm;
-	strm << TXT("[(") << box.min_pt().x << TXT(", ") << box.min_pt().y << TXT(", ") << box.min_pt().z << TXT("), (") << box.max_pt().x << TXT(", ") << box.max_pt().y << TXT(", ") << box.max_pt().z << TXT(")]");
+	strm << ORK("[(") << box.min_pt().x << ORK(", ") << box.min_pt().y << ORK(", ") << box.min_pt().z << ORK("), (") << box.max_pt().x << ORK(", ") << box.max_pt().y << ORK(", ") << box.max_pt().z << ORK(")]");
 	return strm.str();
 }
 

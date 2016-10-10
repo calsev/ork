@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<string>
@@ -29,17 +29,17 @@ orientation operator-(orientation or ) {
 	case orientation::neg_z:
 		return orientation::pos_z;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 //These must be in the same order as the enum
 static const letr* oriention_strings[] = {
-	TXT("+X"),
-	TXT("-X"),
-	TXT("+Y"),
-	TXT("-Y"),
-	TXT("+Z"),
-	TXT("-Z")
+	ORK("+X"),
+	ORK("-X"),
+	ORK("+Y"),
+	ORK("-Y"),
+	ORK("+Z"),
+	ORK("-Z")
 };
 
 
@@ -60,7 +60,7 @@ i_stream&operator >> (i_stream&strm, orientation& or ) {
 const letr*orientation2string(orientation or ) {
 	const size_t index = static_cast<size_t>(or );
 	if(index < sizeof(oriention_strings) / sizeof(*oriention_strings)) return oriention_strings[index];
-	else ORK_THROW(TXT("Attempt to convert invalid orientation"));
+	else ORK_THROW(ORK("Attempt to convert invalid orientation"));
 }
 
 
@@ -74,7 +74,7 @@ orientation string2orientation(const string&val) {
 			return static_cast<orientation>(i);
 		}
 	}
-	ORK_THROW(TXT("Attempt to convert invalid orientation: ") << val);
+	ORK_THROW(ORK("Attempt to convert invalid orientation: ") << val);
 }
 
 
@@ -82,7 +82,7 @@ std::vector<string>parse_orientation_strings(const string&line) {
 	std::vector<string>retval;
 	//Build the orientations
 	typedef boost::tokenizer<boost::char_separator<letr> > tokenizer;
-	boost::char_separator<letr> delim(TXT(" \t"));//Whitespace can be space or tab
+	boost::char_separator<letr> delim(ORK(" \t"));//Whitespace can be space or tab
 	tokenizer tokens(line, delim);
 	for(const string&str : tokens) {
 		retval.push_back(str);
@@ -112,7 +112,7 @@ double to_wcs(const double val, const orientation o) {
 	case orientation::neg_z:
 		return -val;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 
@@ -131,7 +131,7 @@ orientation to_positive(const orientation o) {
 	case orientation::neg_z:
 		return orientation::pos_z;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 bool is_positive(const orientation o) {
@@ -145,7 +145,7 @@ bool is_positive(const orientation o) {
 	case orientation::neg_z:
 		return false;
 	}
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 

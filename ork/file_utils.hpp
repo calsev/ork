@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -84,7 +84,7 @@ struct iterate_directory {
 	}
 	static void run(const file::path&dir, functor&f) {
 		typedef typename detail::search_typer<search_type>::type iter_t;
-		if(!test_directory(dir))ORK_FILE_OPEN_ERR(TXT("Error searching directory!"), dir);
+		if(!test_directory(dir))ORK_FILE_OPEN_ERR(ORK("Error searching directory!"), dir);
 		detail::directory_executer<functor, iter_t, sort_type>::run(dir, f);
 	}
 };
@@ -124,7 +124,7 @@ protected:
 	file::path _p;
 public:
 	directory_range(const file::path&p) : _p(p) {
-		if(!file::is_directory(p))ORK_THROW(TXT("Non-directory used to initialize directory_range: ") << p.GEN_STR());
+		if(!file::is_directory(p))ORK_THROW(ORK("Non-directory used to initialize directory_range: ") << p.ORK_GEN_STR());
 	}
 
 	iterator begin() { return iterator(_p); }

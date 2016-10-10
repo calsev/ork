@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -14,7 +14,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-#define WARN_(MSG) CAT3(FLOC, TXT(": Warning: "), TXT(MSG))
+#define WARN_(MSG) ORK_CAT3(ORK_FLOC, ORK(": Warning: "), ORK(MSG))
 #if defined _MSC_VER
 #define VSWARNING(MSG) message(WARN_(MSG))
 #else

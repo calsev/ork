@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #define _USE_MATH_DEFINES//M_PI
@@ -42,12 +42,12 @@ glm::dvec3 rotate(const glm::dvec3&vec, const dunit3&normal, const dunit3&new_no
 		if(GLM::axial(normal, pos_z)) {
 			return glm::rotate(vec, M_PI, pos_y.get());
 		}
-		ORK_THROW(TXT("Only handling orthogonal vectors for now"));
+		ORK_THROW(ORK("Only handling orthogonal vectors for now"));
 	}
 
 	const glm::dvec3 right = glm::normalize(glm::cross(normal.get(), new_normal.get()));
 	const glm::dvec3 left = glm::normalize(glm::cross(new_normal.get(), normal.get()));
-	if(!equal(right, -left))ORK_THROW(TXT("Orthogonal vector calculation was not stable"));
+	if(!equal(right, -left))ORK_THROW(ORK("Orthogonal vector calculation was not stable"));
 
 	const double angle = glm::orientedAngle(normal.get(), new_normal.get(), right);//range [0, PI]
 	const glm::dvec3 retval = glm::rotate(vec, angle, right);
@@ -58,7 +58,7 @@ glm::dvec3 rotate(const glm::dvec3&vec, const dunit3&normal, const dunit3&new_no
 	//const glm::dmat4x4 look_at = glm::lookAt(glm::dvec3(0., 0., 0.), new_normal, normal);
 
 	//This is a temporary check to make sure we understand these functions
-	if(!equal(retval, oriented))ORK_THROW(TXT("Rotation and orientation were not equivalent"));
+	if(!equal(retval, oriented))ORK_THROW(ORK("Rotation and orientation were not equivalent"));
 
 	return retval;
 }
@@ -66,10 +66,10 @@ glm::dvec3 rotate(const glm::dvec3&vec, const dunit3&normal, const dunit3&new_no
 glm::dvec3 proj_on_plane(const glm::dvec3&vec, const GLM::dunit3&normal) {
 	const glm::dvec3 right = glm::normalize(cross(vec, normal.get()));
 	const glm::dvec3 left = glm::normalize(cross(normal.get(), vec));
-	if(!equal(right, -left))ORK_THROW(TXT("Orthogonal vector calculation was not stable"));
+	if(!equal(right, -left))ORK_THROW(ORK("Orthogonal vector calculation was not stable"));
 	const glm::dvec3 l_forward = glm::normalize(cross(normal.get(), left));
 	const glm::dvec3 r_forward = glm::normalize(cross(right, normal.get()));
-	if(!equal(l_forward, r_forward))ORK_THROW(TXT("Forward vector calculation was not stable"));
+	if(!equal(l_forward, r_forward))ORK_THROW(ORK("Forward vector calculation was not stable"));
 	return glm::dot(vec, l_forward) * l_forward;
 }
 
@@ -89,7 +89,7 @@ const dunit3&orientation2direction(orientation axis) {
 		return neg_z;
 	};
 
-	ORK_THROW(TXT("Unreachable"));
+	ORK_THROW(ORK("Unreachable"));
 }
 
 }//namespace glm
@@ -107,11 +107,11 @@ string to_string(const glm::dvec3&vec) {
 namespace glm {
 
 ork::o_stream&operator<<(ork::o_stream&stream, const glm::dvec2&vec) {
-	stream << TXT("(") << vec.x << TXT(", ") << vec.y << TXT(")");
+	stream << ORK("(") << vec.x << ORK(", ") << vec.y << ORK(")");
 	return stream;
 }
 ork::o_stream&operator<<(ork::o_stream&stream, const glm::dvec3&vec) {
-	stream << TXT("(") << vec.x << TXT(", ") << vec.y << TXT(", ") << vec.z << TXT(")");
+	stream << ORK("(") << vec.x << ORK(", ") << vec.y << ORK(", ") << vec.z << ORK(")");
 	return stream;
 }
 

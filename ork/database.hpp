@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -17,7 +17,7 @@ std::vector<char> string2uuid(const bstring&val);
 	const int sqlite_status(CODE);\
 	if(sqlite_status != SQLITE_OK){\
 		ORK_THROW(\
-			MSG << TXT(":") << sqlite_status\
+			MSG << ORK(":") << sqlite_status\
 		);\
 	}\
 )

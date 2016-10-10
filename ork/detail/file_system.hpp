@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -38,14 +38,14 @@ bool ensure_file(const file::path&file);
 
 
 #define ORK_FILE_OPEN_ERR(MSG,FILE_NAME)STMT(\
-	ORK_THROW(MSG << TXT("\n -- Path: \"") << FILE_NAME << TXT("\""))\
+	ORK_THROW(MSG << ORK("\n -- Path: \"") << FILE_NAME << ORK("\""))\
 )
 
 #define ORK_FILE_READ(FILE_NAME)\
 	ork::if_stream fin(FILE_NAME);\
-	if(!fin)ORK_FILE_OPEN_ERR(TXT("Could not open input file!"), FILE_NAME)
+	if(!fin)ORK_FILE_OPEN_ERR(ORK("Could not open input file!"), FILE_NAME)
 #define ORK_FILE_WRITE(FILE_NAME)\
 	ork::of_stream fout(FILE_NAME);\
-	if(!fout)ORK_FILE_OPEN_ERR(TXT("Could not open output file!"), FILE_NAME)
+	if(!fout)ORK_FILE_OPEN_ERR(ORK("Could not open output file!"), FILE_NAME)
 
 }//namespace ork

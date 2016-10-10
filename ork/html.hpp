@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -29,7 +29,7 @@ namespace html {
 //Base class for html stuff
 struct exportable {
 public:
-	bstring style = BTXT("");
+	bstring style = BORK("");
 	bool col_span = false;//Used only if this is inside a table
 public:
 	virtual ~exportable() {}
@@ -55,7 +55,7 @@ public:
 
 struct string : public exportable {
 public:
-	bstring text = BTXT("");
+	bstring text = BORK("");
 public:
 	string() {}
 	string(const bstring&style, const bstring&text_) :exportable(style), text(text_) {}
@@ -99,8 +99,8 @@ public:
 
 struct image : public exportable {
 public:
-	bstring source = BTXT("");
-	bstring alt_text = BTXT("");
+	bstring source = BORK("");
+	bstring alt_text = BORK("");
 	unsigned width = 0;
 	unsigned height = 0;
 public:
@@ -120,12 +120,12 @@ public:
 	static const unsigned underline = 0x1 << 4;
 	static const unsigned italic = 0x1 << 5;
 public:
-	bstring name = BTXT("");
+	bstring name = BORK("");
 	int size_pct = 100;
 	int width = 0;
 	unsigned flags = 0;
-	bstring color = BTXT("000000");
-	bstring background = BTXT("");
+	bstring color = BORK("000000");
+	bstring background = BORK("");
 	padding pad;
 public:
 	style(const bstring&name_, const int size_pct_, const int width_, const unsigned flags_);
@@ -138,7 +138,7 @@ public:
 
 struct image_style : public exportable {
 public:
-	bstring name = BTXT("");
+	bstring name = BORK("");
 	align alignment = align::left;
 	padding pad;
 public:
@@ -150,10 +150,10 @@ public:
 
 struct div_style : public exportable {
 public:
-	bstring name = BTXT("");
+	bstring name = BORK("");
 	unsigned width_px = 0;
 	align alignment = align::left;
-	bstring back_color = BTXT("");
+	bstring back_color = BORK("");
 public:
 	div_style(const bstring&name_, const unsigned width_px_, const align a, const bstring&color);
 public:
@@ -163,11 +163,11 @@ public:
 
 struct table_style : public exportable {
 public:
-	bstring name = BTXT("");
+	bstring name = BORK("");
 	unsigned border_width = 0;
 	border borders;
 	bool only_bottom = false;
-	bstring color = BTXT("000000");
+	bstring color = BORK("000000");
 	unsigned width_pct = 0;
 	unsigned height_px = 0;
 	unsigned padding_px = 0;
@@ -188,10 +188,10 @@ public:
 
 struct line_style : public exportable {
 public:
-	bstring name = BTXT("");
+	bstring name = BORK("");
 	unsigned width_pct = 0;
 	align alignment = align::left;
-	bstring color = BTXT("000000");
+	bstring color = BORK("000000");
 	unsigned top_pad = 0;
 	unsigned bottom_pad = 0;
 	unsigned height_px = 0;
@@ -218,10 +218,10 @@ public:
 
 struct header : public exportable {
 public:
-	bstring author = BTXT("");
-	bstring description = BTXT("");
-	bstring encoding = BTXT("UTF-8");
-	bstring title = BTXT("");
+	bstring author = BORK("");
+	bstring description = BORK("");
+	bstring encoding = BORK("UTF-8");
+	bstring title = BORK("");
 	style_set styles;
 public:
 public:
@@ -263,7 +263,7 @@ public:
 	unsigned padding = 0;
 	unsigned spacing = 0;
 protected:
-	bstring _table_style = BTXT("");
+	bstring _table_style = BORK("");
 	size_t _num_column;
 	std::vector<row_type>_rows;
 public:

@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -65,13 +65,13 @@ extern logger g_log;
 
 
 #define ORK_LOG_(LOG,SV) BOOST_LOG_SEV(LOG,SV)\
-	<< boost::log::add_value(BTXT("Line"), LINE)\
-	<< boost::log::add_value(BTXT("File"), FILEN)\
-	<< boost::log::add_value(BTXT("Function"), FUNC)
+	<< boost::log::add_value(BORK("Line"), ORK_LINE)\
+	<< boost::log::add_value(BORK("File"), ORK_FILEN)\
+	<< boost::log::add_value(BORK("Function"), ORK_FUNC)
 #define ORK_LOG(SV) ORK_LOG_(ork::g_log.log(),SV)
 #define ORK_LOUT BOOST_LOG(ork::g_log.lout())
 
 
-#define ORK_LOC_BLOCK TXT("\n -- ") << FLOC << TXT(":\n -- ") << FUNC  << TXT("\n")
+#define ORK_LOC_BLOCK ORK("\n -- ") << ORK_FLOC << ORK(":\n -- ") << ORK_FUNC  << ORK("\n")
 
 }//namespace ork

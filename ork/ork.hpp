@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #ifndef ORK_ORK_HPP
@@ -23,9 +23,9 @@ namespace ork {
 #define ORK_MINOR 1
 #define ORK_REV 0
 
-#define ORK_VER CAT(ORK_MINOR, ORK_REV)//1.0 is 100
-#define ORK_VER_STR_ STR(CAT5(ORK_MAJOR, ., ORK_MINOR, ., ORK_REV))
-#define ORK_VER_STR_W WIDEN(ORK_VER_STR_)
+#define ORK_VER ORK_CAT(ORK_MINOR, ORK_REV)//1.0 is 100
+#define ORK_VER_STR_ ORK_STR(ORK_CAT5(ORK_MAJOR, ., ORK_MINOR, ., ORK_REV))
+#define ORK_VER_STR_W ORK_WIDEN(ORK_VER_STR_)
 #define ORK_VER_STR_B ORK_VER_STR_
 #ifdef UNICODE
 #define ORK_VER_STR ORK_VER_STR_W

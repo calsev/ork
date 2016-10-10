@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -43,15 +43,15 @@ bo_stream &operator << (bo_stream& stream, const backtrace& trace);
 Exceptions do not support unicode!
 */
 #define ORK_EXCEP(MSG)\
-	throw ork::exception(STR_2_BYTE(MSG))
+	throw ork::exception(ORK_STR_2_BYTE(MSG))
 
 //Endlines are needed to flush the buffer before backtrace, for some reason
 #define ORK_THROW(MSG) STMT(\
-	ORK_LOG(ork::severity_level::fatal)<< MSG << std::endl << std::endl << ork::generate_backtrace().str() << TXT('\n');\
+	ORK_LOG(ork::severity_level::fatal)<< MSG << std::endl << std::endl << ork::generate_backtrace().str() << ORK('\n');\
 	ork::g_log.flush_all();\
 	ork::string_stream throw_msg;\
-	throw_msg << TXT("[FATAL]: ") << ORK_LOC_BLOCK << MSG;/*Generate more or less the header from logging*/\
-	throw_msg << std::endl << std::endl << ork::generate_backtrace().str() << TXT('\n');\
+	throw_msg << ORK("[FATAL]: ") << ORK_LOC_BLOCK << MSG;/*Generate more or less the header from logging*/\
+	throw_msg << std::endl << std::endl << ork::generate_backtrace().str() << ORK('\n');\
 	ORK_EXCEP(throw_msg.str());\
 )
 

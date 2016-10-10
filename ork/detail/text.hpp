@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -46,19 +46,19 @@ class fstream;
 namespace ork {
 
 
-#define STR_(X) #X
-#define STR(X) STR_(X)
+#define ORK_STR_(X) #X
+#define ORK_STR(X) ORK_STR_(X)
 
 
-#define CAT_(X,Y) X##Y
-#define CAT(X,Y) CAT_(X,Y)
-#define CAT3(X,Y,Z) CAT(X,CAT(Y,Z))
-#define CAT4(W,X,Y,Z) CAT(W,CAT3(X,Y,Z))
-#define CAT5(V,W,X,Y,Z) CAT(V,CAT4(W,X,Y,Z))
+#define ORK_CAT_(X,Y) X##Y
+#define ORK_CAT(X,Y) ORK_CAT_(X,Y)
+#define ORK_CAT3(X,Y,Z) ORK_CAT(X,ORK_CAT(Y,Z))
+#define ORK_CAT4(W,X,Y,Z) ORK_CAT(W,ORK_CAT3(X,Y,Z))
+#define ORK_CAT5(V,W,X,Y,Z) ORK_CAT(V,ORK_CAT4(W,X,Y,Z))
 
 
-#define WIDEN_(X) L##X
-#define WIDEN(X) WIDEN_(X)
+#define ORK_WIDEN_(X) L##X
+#define ORK_WIDEN(X) ORK_WIDEN_(X)
 
 
 #if UNICODE
@@ -69,11 +69,11 @@ typedef std::wostream o_stream;
 typedef std::wistream i_stream;
 typedef std::wostringstream o_string_stream;
 typedef std::wistringstream i_string_stream;
-#define TXT(X) WIDEN(X)
-#define CIN std::wcin
-#define COUT std::wcout
-#define CERR std::wcerr
-#define CLOG std::wclog
+#define ORK(X) ORK_WIDEN(X)//The shortest prefixed macro
+#define ORK_CIN std::wcin
+#define ORK_COUT std::wcout
+#define ORK_CERR std::wcerr
+#define ORK_CLOG std::wclog
 #else
 typedef std::string string;
 typedef std::stringstream string_stream;
@@ -82,11 +82,11 @@ typedef std::ostream o_stream;
 typedef std::istream i_stream;
 typedef std::ostringstream o_string_stream;
 typedef std::istringstream i_string_stream;
-#define TXT(X) X
-#define CIN std::cin
-#define COUT std::cout
-#define CERR std::cerr
-#define CLOG std::clog
+#define ORK(X) X//The shortest prefixed macro
+#define ORK_CIN std::cin
+#define ORK_COUT std::cout
+#define ORK_CERR std::cerr
+#define ORK_CLOG std::clog
 #endif
 typedef std::string bstring;//Byte string, so that searches can identify unhandled unicode
 typedef std::stringstream b_string_stream;
@@ -94,49 +94,49 @@ typedef std::ostream bo_stream;
 typedef std::istream bi_stream;
 typedef std::ostringstream bo_string_stream;
 typedef std::istringstream bi_string_stream;
-#define BTXT(X) X//Byte Text, so that searches can identify unhandled unicode
+#define BORK(X) X//Byte Text, so that searches can identify unhandled unicode
 
 
-#define FILEN TXT(__FILE__)
-#define LINE TXT(STR(__LINE__))
+#define ORK_FILEN ORK(__FILE__)
+#define ORK_LINE ORK(ORK_STR(__LINE__))
 #if 1
 	#ifdef _MSC_VER
 		#ifdef __FUNCTION__
-			#define FUNC __FUNCTION__
+			#define ORK_FUNC __FUNCTION__
 		#else
-			#define FUNC TXT("(unknown_function)")
+			#define ORK_FUNC ORK("(unknown_function)")
 		#endif
 	#else
 		#ifdef BOOST_CURRENT_FUNCTION
-			#define FUNC BOOST_CURRENT_FUNCTION
+			#define ORK_FUNC BOOST_CURRENT_FUNCTION
 		#else
-			#define FUNC TXT("(unknown_function)")
+			#define ORK_FUNC ORK("(unknown_function)")
 		#endif
 	#endif
 #else
 	#if defined _MSC_VER
-		#define FUNC __FUNCSIG__
+		#define ORK_FUNC __FUNCSIG__
 	#elif defined __GNUC__
-		#define FUNC __PRETTY_FUNCTION__
+		#define ORK_FUNC __PRETTY_FUNCTION__
 	#else
 		#error "Compiler not supported"
 	#endif
 #endif
-#define FLOC CAT4(FILEN, TXT("("), LINE, TXT(")"))
+#define ORK_FLOC ORK_CAT4(ORK_FILEN, ORK("("), ORK_LINE, ORK(")"))
 
 
 #if UNICODE
 typedef boost::filesystem::wofstream of_stream;
 typedef boost::filesystem::wifstream if_stream;
 typedef boost::filesystem::wfstream f_stream;
-#define GEN_STR generic_wstring
-#define STRING wstring
+#define ORK_GEN_STR generic_wstring
+#define ORK_STRING wstring
 #else
 typedef boost::filesystem::ofstream of_stream;
 typedef boost::filesystem::ifstream if_stream;
 typedef boost::filesystem::fstream f_stream;
-#define GEN_STR generic_string
-#define STRING string
+#define ORK_GEN_STR generic_string
+#define ORK_STRING string
 #endif
 
 
@@ -180,11 +180,11 @@ string_converter_type&g_string_converter();
 #endif
 
 #if UNICODE
-#define STR_2_BYTE(STRING) ork::g_string_converter().to_bytes(STRING)
-#define BYTE_2_STR(STRING) ork::g_string_converter().from_bytes(STRING)
+#define ORK_STR_2_BYTE(ORK_STRING) ork::g_string_converter().to_bytes(ORK_STRING)
+#define ORK_BYTE_2_STR(ORK_STRING) ork::g_string_converter().from_bytes(ORK_STRING)
 #else
-#define STR_2_BYTE(STRING) STRING
-#define BYTE_2_STR(STRING) STRING
+#define ORK_STR_2_BYTE(ORK_STRING) ORK_STRING
+#define ORK_BYTE_2_STR(ORK_STRING) ORK_STRING
 #endif
 
 }//namespace ork

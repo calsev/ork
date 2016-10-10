@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include"boost/algorithm/string.hpp"
@@ -31,17 +31,17 @@ It is getting a bit silly, and we might want to instead just have projects targe
 */
 
 string to_string(const bool val) {
-	return val ? TXT("true") : TXT("false");
+	return val ? ORK("true") : ORK("false");
 }
 bool string2bool(string val) {
 	boost::to_lower(val);
-	if(val == TXT("t"))return true;
-	if(val == TXT("true"))return true;
-	if(val == TXT("1"))return true;
-	if(val == TXT("f"))return false;
-	if(val == TXT("false"))return false;
-	if(val == TXT("0"))return false;
-	ORK_THROW(TXT("Invalid bool value"));
+	if(val == ORK("t"))return true;
+	if(val == ORK("true"))return true;
+	if(val == ORK("1"))return true;
+	if(val == ORK("f"))return false;
+	if(val == ORK("false"))return false;
+	if(val == ORK("0"))return false;
+	ORK_THROW(ORK("Invalid bool value"));
 }
 
 
@@ -125,12 +125,12 @@ backtrace generate_backtrace(const unsigned skip_frames) {
 bstring backtrace::str() const {
 	b_string_stream stream;
 
-	stream << BTXT("backtrace:\n");
+	stream << BORK("backtrace:\n");
 
 	unsigned index = 0;
 	std::deque<stack_frame>::const_iterator frame;
 	for(const stack_frame&frame : frames) {
-		stream << index++ << BTXT(": ") << frame.function << BTXT(" (") << frame.filename << BTXT(":") << frame.line << BTXT(")\n");
+		stream << index++ << BORK(": ") << frame.function << BORK(" (") << frame.filename << BORK(":") << frame.line << BORK(")\n");
 	}
 
 	return stream.str();
@@ -181,7 +181,7 @@ bool ensure_file(const file::path&file) {
 From file_utils.hpp
 */
 bool top_subdirectory(const file::path&dir, file::path&p) {
-	if(!test_directory(dir))ORK_FILE_OPEN_ERR(TXT("Error searching directory!"), dir);
+	if(!test_directory(dir))ORK_FILE_OPEN_ERR(ORK("Error searching directory!"), dir);
 
 	//Create a list of the paths in the directory, and then sort it
 	std::vector<file::path>paths;
@@ -206,8 +206,8 @@ From log.hpp
 
 o_stream&operator<<(o_stream&strm, log_channel chan) {
 	static const letr* strings[] = {
-		TXT("Debug/Trace")
-		, TXT("Output/Data")
+		ORK("Debug/Trace")
+		, ORK("Output/Data")
 	};
 
 	const size_t index = static_cast<size_t>(chan);
@@ -221,12 +221,12 @@ o_stream&operator<<(o_stream&strm, log_channel chan) {
 o_stream&operator<<(o_stream&strm, severity_level sev) {
 	static const letr* strings[] = {
 		//These are fixed width, maybe this should be done in formatting instead
-		TXT("TRACE")
-		, TXT("DEBUG")
-		, TXT("INFO ")
-		, TXT("WARN ")
-		, TXT("ERROR")
-		, TXT("FATAL")
+		ORK("TRACE")
+		, ORK("DEBUG")
+		, ORK("INFO ")
+		, ORK("WARN ")
+		, ORK("ERROR")
+		, ORK("FATAL")
 	};
 
 	const size_t index = static_cast<size_t>(sev);
@@ -237,8 +237,8 @@ o_stream&operator<<(o_stream&strm, severity_level sev) {
 }
 
 
-BOOST_LOG_ATTRIBUTE_KEYWORD(severity, BTXT("Severity"), severity_level)
-BOOST_LOG_ATTRIBUTE_KEYWORD(channel, BTXT("Channel"), log_channel)
+BOOST_LOG_ATTRIBUTE_KEYWORD(severity, BORK("Severity"), severity_level)
+BOOST_LOG_ATTRIBUTE_KEYWORD(channel, BORK("Channel"), log_channel)
 
 
 namespace sources = boost::log::sources;
@@ -254,10 +254,10 @@ typedef boost::log::formatting_ostream formatting_ostream;
 
 
 boost::shared_ptr<o_stream>open_log(const file::path&file_name) {
-	if(!ensure_directory(file_name))ORK_THROW(TXT("Could not create directory : ") << file_name)
+	if(!ensure_directory(file_name))ORK_THROW(ORK("Could not create directory : ") << file_name)
 		of_stream* p_stream = new of_stream();
 	p_stream->open(file_name);//std::ios::app | std::ios::ate
-	if(p_stream->fail())ORK_THROW(TXT("Error opening log : ") << file_name)
+	if(p_stream->fail())ORK_THROW(ORK("Error opening log : ") << file_name)
 		//p_stream->rdbuf()->pubsetbuf(0, 0);//Less performance, more likely to catch error messages
 		return boost::shared_ptr<o_stream>(p_stream);
 }
@@ -265,19 +265,19 @@ boost::shared_ptr<o_stream>open_log(const file::path&file_name) {
 
 void trace_formatter(const boost::log::record_view& rec, formatting_ostream& strm) {
 	//Extract the Line attribute value that is added by the macro and put it into the stream
-	const boost::log::value_ref<string> fullname = boost::log::extract<string>(BTXT("File"), rec);
+	const boost::log::value_ref<string> fullname = boost::log::extract<string>(BORK("File"), rec);
 	const file::path fullpath(file::path(fullname.get()));
-	string file(fullpath.filename().GEN_STR());
-	file.resize(28, TXT(' '));
-	string line(boost::log::extract<string>(BTXT("Line"), rec).get());
-	line.resize(4, TXT(' '));
-	string function(boost::log::extract<string>(BTXT("Function"), rec).get());
-	function.resize(40, TXT(' '));
+	string file(fullpath.filename().ORK_GEN_STR());
+	file.resize(28, ORK(' '));
+	string line(boost::log::extract<string>(BORK("Line"), rec).get());
+	line.resize(4, ORK(' '));
+	string function(boost::log::extract<string>(BORK("Function"), rec).get());
+	function.resize(40, ORK(' '));
 
 	//Simplified syntax is possible if attribute keywords are used.
-	strm << TXT("[") << rec[severity] << TXT("]:");
+	strm << ORK("[") << rec[severity] << ORK("]:");
 	//Finally, put the record message to the stream
-	strm << file << TXT("(") << line << TXT("):") << function << TXT("-- ") << rec[expr::message];
+	strm << file << ORK("(") << line << ORK("):") << function << ORK("-- ") << rec[expr::message];
 }
 
 
@@ -312,8 +312,8 @@ public:
 		TODO: Some error handling for the files
 		*/
 		boost::shared_ptr<backend_type>trace_backend = boost::make_shared<backend_type>();
-		trace_backend->add_stream(boost::shared_ptr<o_stream>(&CLOG, boost::null_deleter()));
-		trace_backend->add_stream(open_log(directory / TXT("trace.log")));
+		trace_backend->add_stream(boost::shared_ptr<o_stream>(&ORK_CLOG, boost::null_deleter()));
+		trace_backend->add_stream(open_log(directory / ORK("trace.log")));
 		trace_backend->auto_flush(true);//Enable auto-flushing because we are using this for errors
 		//Wrap it into a mutithreaded frontend
 		//boost::shared_ptr<sink_type> trace_sink(new sink_type(trace_backend));
@@ -329,8 +329,8 @@ public:
 
 
 		boost::shared_ptr<backend_type>output_backend = boost::make_shared<backend_type>();
-		output_backend->add_stream(boost::shared_ptr<o_stream>(&COUT, boost::null_deleter()));
-		output_backend->add_stream(open_log(directory / TXT("output.log")));
+		output_backend->add_stream(boost::shared_ptr<o_stream>(&ORK_COUT, boost::null_deleter()));
+		output_backend->add_stream(open_log(directory / ORK("output.log")));
 		//Wrap it into a mutithreaded frontend
 		//boost::shared_ptr<sink_type> output_sink(new sink_type(output_backend));
 		p_output_sink.reset(new sink_type(output_backend));

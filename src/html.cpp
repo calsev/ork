@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<string>
@@ -17,7 +17,7 @@ std::ostream& pair::export_html(std::ostream&out)const {
 }
 
 bstring pair::export_html(const bstring&key, const bstring&val) {
-	return key + BTXT(" = \"") + val + BTXT("\"");
+	return key + BORK(" = \"") + val + BORK("\"");
 }
 
 
@@ -28,29 +28,29 @@ std::ostream& string::export_html(std::ostream&out)const {
 
 
 std::ostream& heading::export_html(std::ostream&out)const {
-	out << BTXT("<h") << level << BTXT(" ") << pair::export_html(BTXT("class"), style) << BTXT(">") << text << BTXT("</h") << level << BTXT(">\n");
+	out << BORK("<h") << level << BORK(" ") << pair::export_html(BORK("class"), style) << BORK(">") << text << BORK("</h") << level << BORK(">\n");
 	return out;
 }
 
 
 std::ostream& page_break::export_html(std::ostream&out)const {
-	out << BTXT("<p style=\"page-break-after: always;\"><!--pagebreak--></p>\n\n");
+	out << BORK("<p style=\"page-break-after: always;\"><!--pagebreak--></p>\n\n");
 	return out;
 }
 
 
 std::ostream& image::export_html(std::ostream&out)const {
-	out << BTXT("<img class=\"") << style << BTXT("\" src=\"") << source << BTXT("\" ");
-	if(!alt_text.empty())out << pair::export_html(BTXT("alt"), alt_text) << BTXT(" ");
-	if(width>0)out << BTXT("width=\"") << width << BTXT("px\" ");
-	if(height>0)out << BTXT("height=\"") << height << BTXT("px\" ");
+	out << BORK("<img class=\"") << style << BORK("\" src=\"") << source << BORK("\" ");
+	if(!alt_text.empty())out << pair::export_html(BORK("alt"), alt_text) << BORK(" ");
+	if(width>0)out << BORK("width=\"") << width << BORK("px\" ");
+	if(height>0)out << BORK("height=\"") << height << BORK("px\" ");
 	//TODO: Handle border
 	//TODO: Handle float
 	/*
 	style="float:left;width:42px;height:42px;
 	*/
-	out << pair::export_html(BTXT("style"), BTXT("border-style:none"));
-	out << BTXT(">\n");
+	out << pair::export_html(BORK("style"), BORK("border-style:none"));
+	out << BORK(">\n");
 	return out;
 }
 /*
@@ -61,7 +61,7 @@ std::ostream& image::export_html(std::ostream&out)const {
 
 bstring padding::export_html()const {
 	b_string_stream out;
-	out << BTXT("padding: ") << top << BTXT("px ") << right << BTXT("px ") << bottom << BTXT("px ") << left << BTXT("px;");
+	out << BORK("padding: ") << top << BORK("px ") << right << BORK("px ") << bottom << BORK("px ") << left << BORK("px;");
 	return out.str();
 }
 
@@ -73,54 +73,54 @@ bool style::decorated()const {
 	return (flags & (overline | thruline | underline)) != 0;
 }
 std::ostream& style::export_html(std::ostream&out)const {
-	out << name << BTXT(" { ");
-	out << BTXT("font: ");
-	out << size_pct << BTXT("% ");
-	out << (flags&serif ? BTXT("serif") : BTXT("sans-serif")) << BTXT("; ");
-	out << BTXT("margin: 0; ");
-	if(flags&bold)out << BTXT("font-weight: bold; ");
-	if(width > 0)out << BTXT("width: ") << width << BTXT("px; ");
-	if(flags&italic)out << BTXT("font-style: italic; ");
+	out << name << BORK(" { ");
+	out << BORK("font: ");
+	out << size_pct << BORK("% ");
+	out << (flags&serif ? BORK("serif") : BORK("sans-serif")) << BORK("; ");
+	out << BORK("margin: 0; ");
+	if(flags&bold)out << BORK("font-weight: bold; ");
+	if(width > 0)out << BORK("width: ") << width << BORK("px; ");
+	if(flags&italic)out << BORK("font-style: italic; ");
 	if(decorated()) {
-		out << BTXT("text-decoration:");
+		out << BORK("text-decoration:");
 		bool comma = false;
 		if(flags&overline) {
-			out << BTXT(" overline");
+			out << BORK(" overline");
 			comma = true;
 		}
 		if(flags&thruline) {
-			out << (comma ? BTXT(", ") : BTXT("")) << BTXT(" thruline");
+			out << (comma ? BORK(", ") : BORK("")) << BORK(" thruline");
 			comma = true;
 		}
 		if(flags&underline) {
-			out << (comma ? BTXT(", ") : BTXT("")) << BTXT(" underline");
+			out << (comma ? BORK(", ") : BORK("")) << BORK(" underline");
 			comma = true;
 		}
-		out << BTXT("; ");
+		out << BORK("; ");
 	}
-	out << BTXT("color: #") << color << BTXT("; ");
+	out << BORK("color: #") << color << BORK("; ");
 	if(!background.empty()) {
-		out << BTXT("background: #") + background + BTXT(" !important; ");
+		out << BORK("background: #") + background + BORK(" !important; ");
 	}
 	out << pad.export_html();
-	out << BTXT(" }\n");
+	out << BORK(" }\n");
 	return out;
 }
 
 
 std::ostream& image_style::export_html(std::ostream&out)const {
-	out << BTXT("img.") << name << BTXT(" { margin: 0 auto; ");
+	out << BORK("img.") << name << BORK(" { margin: 0 auto; ");
 	if(alignment == align::left) {
-		out << BTXT("float: left; ");
+		out << BORK("float: left; ");
 	}
 	else if(alignment == align::right) {
-		out << BTXT("float: right; ");
+		out << BORK("float: right; ");
 	}
 	else {
-		out << BTXT("clear: both; ");
+		out << BORK("clear: both; ");
 	}
 	out << pad.export_html();
-	out << BTXT(" }\n");
+	out << BORK(" }\n");
 	return out;
 }
 
@@ -128,23 +128,23 @@ std::ostream& image_style::export_html(std::ostream&out)const {
 div_style::div_style(const bstring&name_, const unsigned width_px_, const align a, const bstring&color)
 	:name(name_), width_px(width_px_), alignment(a), back_color(color) {}
 std::ostream& div_style::export_html(std::ostream&out)const {
-	out << BTXT("div.") << name << BTXT(" { margin: 0 auto; ");
+	out << BORK("div.") << name << BORK(" { margin: 0 auto; ");
 	if(width_px > 0) {
-		out << BTXT("width: ") << width_px << BTXT("px; ");
+		out << BORK("width: ") << width_px << BORK("px; ");
 	}
 	if(alignment == align::left) {
-		out << BTXT("float: left; ");
+		out << BORK("float: left; ");
 	}
 	else if(alignment == align::right) {
-		out << BTXT("float: right; ");
+		out << BORK("float: right; ");
 	}
 	else {
-		out << BTXT("clear: both; ");
+		out << BORK("clear: both; ");
 	}
 	if(!back_color.empty()) {
-		out << BTXT("background-color: #") << back_color << BTXT("; ");
+		out << BORK("background-color: #") << back_color << BORK("; ");
 	}
-	out << BTXT("}\n");
+	out << BORK("}\n");
 	return out;
 }
 
@@ -167,27 +167,27 @@ table_style::table_style(
 	, padding_px(padding_px_)
 {}
 std::ostream& table_style::export_html(std::ostream&out)const {
-	out << BTXT("table.") << name << BTXT(" { ");
+	out << BORK("table.") << name << BORK(" { ");
 	if(border_width > 0 && borders != border::none) {
 		if(borders == border::both || borders == border::outside) {
-			out << BTXT("border: ") << border_width << BTXT("px solid #") << color << BTXT("; ");
+			out << BORK("border: ") << border_width << BORK("px solid #") << color << BORK("; ");
 		}
 		else {//borders == border::inside;
 			//We must mask the outside borders
-			out << BTXT("border: ") << border_width << BTXT("px solid border-style: hidden; ");
+			out << BORK("border: ") << border_width << BORK("px solid border-style: hidden; ");
 		}
 	}
-	out << BTXT("border-collapse: collapse; ");//We have not been able to come up with a scenario where we want '90s-style tables
+	out << BORK("border-collapse: collapse; ");//We have not been able to come up with a scenario where we want '90s-style tables
 	if(width_pct > 0) {
-		out << BTXT("width: ") << width_pct << BTXT("%; ");
+		out << BORK("width: ") << width_pct << BORK("%; ");
 	}
 	if(height_px > 0) {
-		out << BTXT("height: ") << height_px << BTXT("px; ");
+		out << BORK("height: ") << height_px << BORK("px; ");
 	}
 	if(padding_px > 0) {
-		out << BTXT("padding: ") << padding_px << BTXT("px; ");
+		out << BORK("padding: ") << padding_px << BORK("px; ");
 	}
-	out << BTXT("}\n");
+	out << BORK("}\n");
 
 	/*
 	Done with the table proper, now for headers, rows, elements
@@ -195,16 +195,16 @@ std::ostream& table_style::export_html(std::ostream&out)const {
 	if(border_width > 0 && borders != border::none && borders != border::outside) {
 	#if 0
 	#elif 0
-		out << BTXT("\ttable.") << name << BTXT(" th, td { ");
-		out << BTXT("border: ") << border_width << BTXT("px solid #") << color << BTXT("; ");
-		out << BTXT("}\n");
+		out << BORK("\ttable.") << name << BORK(" th, td { ");
+		out << BORK("border: ") << border_width << BORK("px solid #") << color << BORK("; ");
+		out << BORK("}\n");
 	#else
-		out << BTXT("\ttable.") << name << BTXT(" tr+tr { ");
-		out << BTXT("border-top: ") << border_width << BTXT("px solid #") << color << BTXT("; ");
-		out << BTXT("}\n");
-		out << BTXT("\ttable.") << name << BTXT(" th+th, td+td { ");
-		out << BTXT("border-left: ") << border_width << BTXT("px solid #") << color << BTXT("; ");
-		out << BTXT("}\n");
+		out << BORK("\ttable.") << name << BORK(" tr+tr { ");
+		out << BORK("border-top: ") << border_width << BORK("px solid #") << color << BORK("; ");
+		out << BORK("}\n");
+		out << BORK("\ttable.") << name << BORK(" th+th, td+td { ");
+		out << BORK("border-left: ") << border_width << BORK("px solid #") << color << BORK("; ");
+		out << BORK("}\n");
 	#endif
 	}
 	return out;
@@ -214,40 +214,40 @@ std::ostream& table_style::export_html(std::ostream&out)const {
 line_style::line_style(const bstring&name_, const unsigned width, const align a, const bstring&color_, const unsigned top_px, const unsigned bottom_px, const unsigned height_px_)
 	: name(name_), width_pct(width), alignment(a), color(color_), top_pad(top_px), bottom_pad(bottom_px), height_px(height_px_) {}
 std::ostream& line_style::export_html(std::ostream&out)const {
-	out << BTXT("hr.") << name << BTXT(" { display: block; clear: both; border: 0 none; margin: 0; ");
+	out << BORK("hr.") << name << BORK(" { display: block; clear: both; border: 0 none; margin: 0; ");
 	if(width_pct > 0) {
-		out << BTXT("width: ") << width_pct << BTXT("%; ");
+		out << BORK("width: ") << width_pct << BORK("%; ");
 	}
 	if(top_pad > 0) {
-		out << BTXT("pad-top: ") << top_pad << BTXT("px; ");
-		out << BTXT("margin-top: ") << top_pad << BTXT("px; ");
+		out << BORK("pad-top: ") << top_pad << BORK("px; ");
+		out << BORK("margin-top: ") << top_pad << BORK("px; ");
 	}
 	if(bottom_pad > 0) {
-		out << BTXT("pad-bottom: ") << bottom_pad << BTXT("px; ");
-		out << BTXT("margin-bottom: ") << bottom_pad << BTXT("px; ");
+		out << BORK("pad-bottom: ") << bottom_pad << BORK("px; ");
+		out << BORK("margin-bottom: ") << bottom_pad << BORK("px; ");
 	}
-	out << BTXT("height: 0px; ");
+	out << BORK("height: 0px; ");
 	if(height_px > 0) {
-		//out << BTXT("height: ") << height_px << BTXT("px; ");//The hr itself will not print
-		out << BTXT("border-bottom: solid ") << height_px << BTXT("px; ");
+		//out << BORK("height: ") << height_px << BORK("px; ");//The hr itself will not print
+		out << BORK("border-bottom: solid ") << height_px << BORK("px; ");
 	}
 	if(alignment == align::left) {
-		out << BTXT("margin-left: 0; ");
-		out << BTXT("margin-right: auto; ");
+		out << BORK("margin-left: 0; ");
+		out << BORK("margin-right: auto; ");
 	}
 	else if(alignment == align::right) {
-		out << BTXT("margin-left: auto; ");
-		out << BTXT("margin-right: 0; ");
+		out << BORK("margin-left: auto; ");
+		out << BORK("margin-right: 0; ");
 	}
 	else {
-		out << BTXT("margin-left: auto; ");
-		out << BTXT("margin-right: auto; ");
+		out << BORK("margin-left: auto; ");
+		out << BORK("margin-right: auto; ");
 	}
-	out << BTXT("color: #") << color << BTXT("; ");
-	out << BTXT("border-color: #") << color << BTXT("; ");
-	out << BTXT("background-color: #") << color << BTXT("; ");
-	out << BTXT("noshade: noshade; ");
-	out << BTXT("}\n");
+	out << BORK("color: #") << color << BORK("; ");
+	out << BORK("border-color: #") << color << BORK("; ");
+	out << BORK("background-color: #") << color << BORK("; ");
+	out << BORK("noshade: noshade; ");
+	out << BORK("}\n");
 	return out;
 }
 /*
@@ -266,68 +266,68 @@ border-style: inset;
 
 
 std::ostream& style_set::export_html(std::ostream&out)const {
-	out << BTXT("<style>\n");
+	out << BORK("<style>\n");
 	LOOPVI(styles) {
-		out << BTXT("\t");
+		out << BORK("\t");
 		styles[i].export_html(out);
 	}
 	LOOPVI(image_styles) {
-		out << BTXT("\t");
+		out << BORK("\t");
 		image_styles[i].export_html(out);
 	}
 	LOOPVI(div_styles) {
-		out << BTXT("\t");
+		out << BORK("\t");
 		div_styles[i].export_html(out);
 	}
 	LOOPVI(table_styles) {
-		out << BTXT("\t");
+		out << BORK("\t");
 		table_styles[i].export_html(out);
 	}
 	LOOPVI(line_styles) {
-		out << BTXT("\t");
+		out << BORK("\t");
 		line_styles[i].export_html(out);
 	}
-	out << BTXT("\t@media print{\n");
+	out << BORK("\t@media print{\n");
 	LOOPVI(styles) {
 		if(!styles[i].background.empty()) {
-			out << BTXT("\t\t") << styles[i].name << BTXT(" { background: #") << styles[i].color << BTXT(" !important; ");
-			//out << BTXT("-webkit-print-color-adjust: exact; ");//Hack for Chrome/Firefox that makes the color black
-			out << BTXT("}\n");
+			out << BORK("\t\t") << styles[i].name << BORK(" { background: #") << styles[i].color << BORK(" !important; ");
+			//out << BORK("-webkit-print-color-adjust: exact; ");//Hack for Chrome/Firefox that makes the color black
+			out << BORK("}\n");
 		}
 	}
 	LOOPVI(line_styles) {
-		out << BTXT("\t\thr.") << line_styles[i].name << BTXT(" { display: block; }\n");
+		out << BORK("\t\thr.") << line_styles[i].name << BORK(" { display: block; }\n");
 	}
-	out << BTXT("\t}\n");
-	out << BTXT("</style>\n");
+	out << BORK("\t}\n");
+	out << BORK("</style>\n");
 	return out;
 }
 
 
 void meta(const bstring&key, const bstring&val, std::ostream&out) {
-	out << BTXT("<meta ") << pair::export_html(key, val) << BTXT(">\n");
+	out << BORK("<meta ") << pair::export_html(key, val) << BORK(">\n");
 }
 std::ostream& header::export_html(std::ostream&out)const {
-	out << BTXT("<head>\n");
-	meta(BTXT("charset"), encoding, out);
-	if(!author.empty())meta(BTXT("author"), author, out);
-	if(!description.empty())meta(BTXT("description"), description, out);
+	out << BORK("<head>\n");
+	meta(BORK("charset"), encoding, out);
+	if(!author.empty())meta(BORK("author"), author, out);
+	if(!description.empty())meta(BORK("description"), description, out);
 	styles.export_html(out);
-	if(!title.empty())out << BTXT("<title>") << title << BTXT("</title>\n");
-	out << BTXT("</head>\n");
+	if(!title.empty())out << BORK("<title>") << title << BORK("</title>\n");
+	out << BORK("</head>\n");
 	return out;
 }
 
 
 std::ostream& line::export_html(std::ostream&out)const {
-	out << BTXT("<hr class=\"") << style << BTXT("\">\n");
+	out << BORK("<hr class=\"") << style << BORK("\">\n");
 	return out;
 }
 
 
 std::ostream& label::export_html(std::ostream&out)const {
 #if 0
-	out << BTXT("<pre>") << text << BTXT("</pre>");
+	out << BORK("<pre>") << text << BORK("</pre>");
 #else
 	out << text;
 #endif
@@ -337,16 +337,16 @@ std::ostream& label::export_html(std::ostream&out)const {
 
 void table_element::export_html(const exportable*element, const size_t remain_col, std::ostream&out) {
 	if(element != nullptr) {
-		out << BTXT("<td");
-		if(element->col_span)out << pair::export_html(BTXT(" colspan"), boost::lexical_cast<bstring>(remain_col));
-		if(!element->style.empty())out << pair::export_html(BTXT(" class"), element->style);
-		out << BTXT(">");
+		out << BORK("<td");
+		if(element->col_span)out << pair::export_html(BORK(" colspan"), boost::lexical_cast<bstring>(remain_col));
+		if(!element->style.empty())out << pair::export_html(BORK(" class"), element->style);
+		out << BORK(">");
 		element->export_html(out);
 	}
 	else {
-		out << BTXT("<td>");
+		out << BORK("<td>");
 	}
-	out << BTXT("</td>");
+	out << BORK("</td>");
 }
 
 
@@ -371,55 +371,55 @@ const table::row_type&table::back()const {
 	return _rows.back();
 }
 std::ostream& table::export_html(std::ostream&out)const {
-	out << BTXT("<table");
+	out << BORK("<table");
 	if(!_table_style.empty()) {
-		out << BTXT(" class=\"") << _table_style << BTXT("\"");
+		out << BORK(" class=\"") << _table_style << BORK("\"");
 	}
 	else {
-		if(padding > 0)out << BTXT(" cellpadding=\"") << padding << BTXT("\"");
-		if(spacing > 0)out << BTXT(" cellspacing=\"") << spacing << BTXT("\"");
+		if(padding > 0)out << BORK(" cellpadding=\"") << padding << BORK("\"");
+		if(spacing > 0)out << BORK(" cellspacing=\"") << spacing << BORK("\"");
 	}
-	out << BTXT(">\n");
+	out << BORK(">\n");
 	for(const table::row_type&row : _rows) {
-		out << BTXT("<tr>");
+		out << BORK("<tr>");
 		LOOPVI(row) {
 			const ptr_type&element = row[i];
 			table_element::export_html(element.get(), _num_column - i, out);
 			if(element && element->col_span)break;
 		}
-		out << BTXT("</tr>\n");
+		out << BORK("</tr>\n");
 	}
-	out << BTXT("</table>\n");
+	out << BORK("</table>\n");
 	return out;
 }
 
 
 std::ostream& div::export_html(std::ostream&out)const {
-	out << BTXT("<div class=\"") << style << BTXT("\">\n");
+	out << BORK("<div class=\"") << style << BORK("\">\n");
 	for(const ptr_type&element : elements) {
 		if(element)element->export_html(out);
 	}
-	out << BTXT("</div>\n");
+	out << BORK("</div>\n");
 	return out;
 }
 
 
 std::ostream& body::export_html(std::ostream&out)const {
-	out << BTXT("<body>\n");
+	out << BORK("<body>\n");
 	for(const div&d : divs) {
 		d.export_html(out);
 	}
-	out << BTXT("</body>\n");
+	out << BORK("</body>\n");
 	return out;
 }
 
 
 std::ostream& document::export_html(std::ostream&out)const {
-	out << BTXT("<!DOCTYPE html>\n");//Support HTML 5
-	out << BTXT("<html>\n");
+	out << BORK("<!DOCTYPE html>\n");//Support HTML 5
+	out << BORK("<html>\n");
 	head.export_html(out);
 	body.export_html(out);
-	out << BTXT("</html>\n");
+	out << BORK("</html>\n");
 	return out;
 }
 

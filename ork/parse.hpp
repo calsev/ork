@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
@@ -32,7 +32,7 @@ public:
 public:
 	identifier() : identifier::base_type(start) {
 		start %=
-			qi::lexeme[(qi::alpha | qi::char_(TXT('_'))) >> *(qi::alnum | qi::char_(TXT('_')))]
+			qi::lexeme[(qi::alpha | qi::char_(ORK('_'))) >> *(qi::alnum | qi::char_(ORK('_')))]
 			;
 	}
 public:

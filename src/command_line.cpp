@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<string>
@@ -11,59 +11,59 @@ namespace ork {
 
 int invoke_main(const std::vector<string>&args, main_func f) {
 	std::vector<const letr*>argv;
-	argv.push_back(TXT("this_should_be_the_invoked_command"));
+	argv.push_back(ORK("this_should_be_the_invoked_command"));
 	for(const string&arg : args)argv.push_back(arg.c_str());
 
 	string_stream cmd;
 	for(const letr*const arg : argv) {
-		cmd << arg << TXT(" ");
+		cmd << arg << ORK(" ");
 	}
-	ORK_LOG(severity_level::info) << TXT("\n -- Command Line: ") << cmd.str();
+	ORK_LOG(severity_level::info) << ORK("\n -- Command Line: ") << cmd.str();
 
 	return f(static_cast<int>(argv.size()), argv.data());
 }
 
 command_handler::command_handler()
 	: _desc_str()//Initialized by call_add_options
-	, _desc(BTXT("Standard Options"))
+	, _desc(BORK("Standard Options"))
 	, _vm() {}
 
 
 void command_handler::call_add_options() {
 	_desc.add_options()
-		(BTXT("help,h"), BTXT("Produce help message"));//Short option aliases do not work until notify, so we can't use them for help
+		(BORK("help,h"), BORK("Produce help message"));//Short option aliases do not work until notify, so we can't use them for help
 	add_options(_desc);
 
 	b_string_stream desc_byte;
 	desc_byte << _desc;//string operation only defined for std::ostream
-	_desc_str = BYTE_2_STR(desc_byte.str());
+	_desc_str = ORK_BYTE_2_STR(desc_byte.str());
 }
 
 
 bool command_handler::process_commands(const options::basic_parsed_options<letr>&ops) {
 	try {
 		options::store(ops, _vm);
-		if(_vm.count(BTXT("help"))) {//Check here to ignore any missing options
-			ORK_LOG(severity_level::info) << TXT('\n') << _desc_str << TXT('\n');
+		if(_vm.count(BORK("help"))) {//Check here to ignore any missing options
+			ORK_LOG(severity_level::info) << ORK('\n') << _desc_str << ORK('\n');
 			return false;
 		}
 		options::notify(_vm);//Exceptions for missing required options raised here
 
 		string_stream options;
-		options << TXT("\n -- Command Line Options:");
+		options << ORK("\n -- Command Line Options:");
 		for(auto&option : _desc.options()) {
 			const bstring option_name = option->long_name();
-			string option_value = TXT("Unspecified");
+			string option_value = ORK("Unspecified");
 			if(_vm.count(option_name)) {
 				extract_option_value(option_name, option_value);
 			}
-			options << TXT("\n  - ") << BYTE_2_STR(option_name) << TXT(": ") << option_value;
+			options << ORK("\n  - ") << ORK_BYTE_2_STR(option_name) << ORK(": ") << option_value;
 		}
 		ORK_LOG(severity_level::info) << options.str();
 	}
 	catch(options::error &e) {
-		ORK_LOG(severity_level::error) << TXT("\nProblem storing command line options:\n  - ") << BYTE_2_STR(e.what());
-		ORK_LOG(severity_level::error) << TXT('\n') << _desc_str << TXT('\n');
+		ORK_LOG(severity_level::error) << ORK("\nProblem storing command line options:\n  - ") << ORK_BYTE_2_STR(e.what());
+		ORK_LOG(severity_level::error) << ORK('\n') << _desc_str << ORK('\n');
 		return false;
 	}
 
@@ -72,8 +72,8 @@ bool command_handler::process_commands(const options::basic_parsed_options<letr>
 
 #define COMMAND_CATCH \
 	catch(options::error &e) {\
-		ORK_LOG(severity_level::error) << TXT("\nProblem parsing command line options:\n  - ") << BYTE_2_STR(e.what());\
-		ORK_LOG(severity_level::error) << TXT('\n') << _desc_str << TXT('\n');\
+		ORK_LOG(severity_level::error) << ORK("\nProblem parsing command line options:\n  - ") << ORK_BYTE_2_STR(e.what());\
+		ORK_LOG(severity_level::error) << ORK('\n') << _desc_str << ORK('\n');\
 		return false;\
 	}
 

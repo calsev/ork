@@ -1,5 +1,5 @@
 /*
-This file is part of the ORK library.
+This file is part of the ORK_STR library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<string>
@@ -13,21 +13,21 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-file::path tagger::_debug_root(TXT("./debug"));
+file::path tagger::_debug_root(ORK("./debug"));
 std::mutex tagger::_mutex;
 
 string tagger::operator()() {
 	string_stream stream;
 	file::path p(_debug_root);
 	if(_number_folder) {
-		stream << _tag << _count++ << TXT("/");
+		stream << _tag << _count++ << ORK("/");
 		p /= stream.str();
-		return p.GEN_STR();
+		return p.ORK_GEN_STR();
 	}
 	else {
-		stream << _tag << TXT("/");
+		stream << _tag << ORK("/");
 		p /= stream.str();
-		return p.GEN_STR() + boost::lexical_cast<string>(_count++);
+		return p.ORK_GEN_STR() + boost::lexical_cast<string>(_count++);
 	}
 }
 
@@ -41,34 +41,34 @@ void tagger::set_debug_root(const string&directory) {
 }
 
 void tagger::set_debug_root(const string&as_is_path, const string&to_be_path) {
-	file::path directory(TXT("./debug/"));
+	file::path directory(ORK("./debug/"));
 	directory /= file::path(as_is_path).stem();
 	directory /= file::path(to_be_path).stem();
 	std::lock_guard<std::mutex> lock(_mutex);
-	_debug_root = directory.GEN_STR() + TXT("/");;
+	_debug_root = directory.ORK_GEN_STR() + ORK("/");;
 }
 
 
 setup_hierarchy::setup_hierarchy(const string&setup_root, const string&as_is_path, const string&to_be_path) :_setup_directory(), _cached(false), _score(0), _setups() {
-	if(!ensure_directory(setup_root))ORK_THROW(TXT("Setup root could not be created: ") << setup_root);
-	//if(!test_file(as_is_path))ORK_THROW(TXT("As-is file could not be found: ") << as_is_path);
-	//if(!test_file(to_be_path))ORK_THROW(TXT("To-Be file could not be found: ") << to_be_path);
+	if(!ensure_directory(setup_root))ORK_THROW(ORK("Setup root could not be created: ") << setup_root);
+	//if(!test_file(as_is_path))ORK_THROW(ORK("As-is file could not be found: ") << as_is_path);
+	//if(!test_file(to_be_path))ORK_THROW(ORK("To-Be file could not be found: ") << to_be_path);
 
-	const string as_is_name(file::path(as_is_path).stem().GEN_STR());
-	const string to_be_name(file::path(to_be_path).stem().GEN_STR());
+	const string as_is_name(file::path(as_is_path).stem().ORK_GEN_STR());
+	const string to_be_name(file::path(to_be_path).stem().ORK_GEN_STR());
 
 	file::path setup_path(setup_root);
-	setup_path /= as_is_name + TXT("/");
-	setup_path /= to_be_name + TXT("/");
-	_setup_directory = setup_path.GEN_STR();
+	setup_path /= as_is_name + ORK("/");
+	setup_path /= to_be_name + ORK("/");
+	_setup_directory = setup_path.ORK_GEN_STR();
 }
 
 
 file::path setup_hierarchy::get_subdirectory() {
 	file::path setup_dir;
-	if(!top_subdirectory(get_path(), setup_dir))ORK_THROW(TXT("Setup directory not found for root: ") << get_path());
+	if(!top_subdirectory(get_path(), setup_dir))ORK_THROW(ORK("Setup directory not found for root: ") << get_path());
 	_cached = false;//Dirty, in case the client fetches more than one setup
-	return setup_dir /= TXT("/");
+	return setup_dir /= ORK("/");
 }
 
 
@@ -79,7 +79,7 @@ struct setup_match {
 	void operator()(const file::path&p) {
 		if(!setup_dir.empty())return;//Already found (this could be a superstring, so find might work)
 		if(!file::is_directory(p))return;//Just in case
-		const string dir_name(p.stem().GEN_STR());
+		const string dir_name(p.stem().ORK_GEN_STR());
 		if(dir_name.find(setups) != string::npos)setup_dir = p;
 	}
 };
@@ -87,18 +87,18 @@ struct setup_match {
 file::path setup_hierarchy::get_subdirectory(const string&exact_setups) {
 	setup_match match(exact_setups);
 	iterate_directory<setup_match, flat_search, sorted>::run(get_path(), match);
-	if(match.setup_dir.empty())ORK_THROW(TXT("Setup permutation not found: ") << exact_setups);
+	if(match.setup_dir.empty())ORK_THROW(ORK("Setup permutation not found: ") << exact_setups);
 	_cached = false;//Dirty, in case the client fetches more than one setup
 	return match.setup_dir;
 }
 
 
 const std::vector<orientation>& setup_hierarchy::get_setups() {
-	return do_get_setups(get_subdirectory().remove_trailing_separator().filename().GEN_STR());
+	return do_get_setups(get_subdirectory().remove_trailing_separator().filename().ORK_GEN_STR());
 }
 
 const std::vector<orientation>& setup_hierarchy::get_setups(const string&exact_setups) {
-	return do_get_setups(get_subdirectory(exact_setups).remove_trailing_separator().filename().GEN_STR());
+	return do_get_setups(get_subdirectory(exact_setups).remove_trailing_separator().filename().ORK_GEN_STR());
 }
 
 
@@ -115,11 +115,11 @@ const std::vector<orientation>&setup_hierarchy::do_get_setups(const string&setup
 			_setups.push_back(string2orientation(setup));
 			strm >> setup;
 		}
-		if(_setups.empty())ORK_THROW(TXT("Setup directory not formatted correctly: ") << get_path() << TXT("/") << setup_dir);
+		if(_setups.empty())ORK_THROW(ORK("Setup directory not formatted correctly: ") << get_path() << ORK("/") << setup_dir);
 
 		_cached = true;
 	}
-	if(_setups.empty())ORK_THROW(TXT("Setups not found for directory: ") << setup_dir);
+	if(_setups.empty())ORK_THROW(ORK("Setups not found for directory: ") << setup_dir);
 	return _setups;
 }
 
