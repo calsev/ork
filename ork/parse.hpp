@@ -100,3 +100,25 @@ public:
 
 }//namespace orq
 }//namespace ork
+
+
+ /*
+ Instantiators for parser components
+ */
+namespace boost {
+namespace spirit {
+namespace qi {
+
+//This is the factory function object invoked in order to create an instance of our parser.
+template<typename modifiers>
+struct make_primitive<ork::orq::tag::id, modifiers> {
+	typedef typename ork::orq::id_parser result_type;
+
+	result_type operator()(unused_type, unused_type) const {
+		return result_type();
+	}
+};
+
+}//namespace qi
+}//namespace spirit
+}//namespace boost
