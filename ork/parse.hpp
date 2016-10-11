@@ -4,7 +4,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include"boost/spirit/home/support/common_terminals.hpp"
-#include"boost/spirit/include/qi.hpp"
+#include"boost/spirit/home/qi.hpp"
 #include"ork/ork.hpp"
 
 
@@ -31,11 +31,20 @@ public:
 	typedef string::const_iterator iter;
 public:
 	identifier() : identifier::base_type(start) {
+		first %=
+			qi::alpha | qi::char_(ORK('_'))
+			;
+		rest %=
+			qi::lexeme[qi::alnum | qi::char_(ORK('_'))]
+			;
 		start %=
-			qi::lexeme[(qi::alpha | qi::char_(ORK('_'))) >> *(qi::alnum | qi::char_(ORK('_')))]
+			first
+			>> *rest
 			;
 	}
 public:
+	qi::rule<iter, letr(), ascii::space_type> first;
+	qi::rule<iter, letr(), ascii::space_type> rest;
 	qi::rule<iter, string(), ascii::space_type> start;
 };
 
