@@ -8,12 +8,23 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/ork.hpp"
 
 
+/*
+Placeholders for parser componets
+*/
+namespace ork {
+namespace orq {
+
+BOOST_SPIRIT_TERMINAL(id);
+
+}//namespace ork
+}//namespace ork
+
+
 namespace ork {
 
 namespace spirit = boost::spirit;
 namespace qi = spirit::qi;
 namespace ascii = spirit::ascii;
-namespace tag = spirit::tag;
 namespace proto = boost::proto;
 
 
@@ -23,7 +34,8 @@ typedef spirit::char_encoding::standard_wide charset;
 typedef spirit::char_encoding::standard charset;
 #endif
 
-namespace parse {
+
+namespace orq {//ork-qi :)
 
 
 struct identifier : qi::grammar<string::const_iterator, string(), ascii::space_type> {
@@ -48,5 +60,5 @@ public:
 };
 
 
-}//namespace parse
+}//namespace orq
 }//namespace ork
