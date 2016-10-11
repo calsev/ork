@@ -64,7 +64,7 @@ extern logger g_log;
 #define ORK_GLOBAL_LOG(LOG_DIRECTORY) ork::logger ork::g_log(LOG_DIRECTORY);
 
 
-#define ORK_LOG_(LOG,SV) BOOST_LOG_SEV(LOG,SV)\
+#define ORK_LOG_(LOG_,SV) BOOST_LOG_SEV(LOG_,SV)\
 	<< boost::log::add_value(BORK("Line"), ORK_LINE)\
 	<< boost::log::add_value(BORK("File"), ORK_FILEN)\
 	<< boost::log::add_value(BORK("Function"), ORK_FUNC)
