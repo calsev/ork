@@ -95,28 +95,6 @@ public://Parser component stuff
 };
 
 
-struct identifier : qi::grammar<string::const_iterator, string(), ascii::space_type> {
-public:
-	typedef string::const_iterator iter;
-public:
-	identifier() : identifier::base_type(start) {
-		first %=
-			qi::alpha | qi::char_(ORK('_'))
-			;
-		rest %=
-			qi::alnum | qi::char_(ORK('_'))
-			;
-		start %=
-			qi::lexeme[first >> *rest]
-			;
-	}
-public:
-	qi::rule<iter, letr()> first;
-	qi::rule<iter, letr()> rest;
-	qi::rule<iter, string(), ascii::space_type> start;
-};
-
-
 }//namespace orq
 }//namespace ork
 
