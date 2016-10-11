@@ -100,7 +100,7 @@ struct lb_com_parser : qi::primitive_parser<lb_com_parser> {
 public://Parser component stuff
 	template<typename context, typename iter>
 	struct attribute {//Define the attribute type exposed by this parser component
-		typedef qi::unused_type type;
+		typedef string type;
 	};
 
 	//This function is called during the actual parsing process
@@ -119,6 +119,8 @@ public://Parser component stuff
 		while(it != last && *it != ORK('\n')) {//Up to but do not consume the eol
 			++it;
 		}
+
+		attribute result(first, it);
 
 		first = it;
 		spirit::traits::assign_to(result, attr);
