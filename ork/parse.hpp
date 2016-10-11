@@ -9,7 +9,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 
 /*
-Placeholders for parser componets
+Placeholders for parser components
 */
 namespace ork {
 namespace orq {
@@ -18,6 +18,21 @@ BOOST_SPIRIT_TERMINAL(id);
 
 }//namespace ork
 }//namespace ork
+
+
+/*
+Enablers for parser components
+*/
+namespace boost {
+namespace spirit {
+
+//Make custom_parser::iter_pos usable as a terminal only, and only for parser expressions (qi::domain).
+template <>
+struct use_terminal<qi::domain, ork::orq::tag::id> : mpl::true_ {};
+
+}//namespace spirit
+}//namespace boost
+
 
 
 namespace ork {
