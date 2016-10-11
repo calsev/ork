@@ -53,6 +53,29 @@ typedef spirit::char_encoding::standard charset;
 namespace orq {//ork-qi :)
 
 
+struct id_parser : qi::primitive_parser<id_parser> {
+public://Parser component stuff
+	template<typename context, typename iter>
+	struct attribute {//Define the attribute type exposed by this parser component
+		typedef string type;
+	};
+
+	//This function is called during the actual parsing process
+	template<typename iter, typename context, typename skipper, typename attribute>
+	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
+		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
+		//TODO//The actual parsing
+		return true;
+	}
+
+	//This function is called during error handling to create a human readable string for the error context.
+	template<typename context>
+	boost::spirit::info what(context&) const {
+		return boost::spirit::info("id");
+	}
+};
+
+
 struct identifier : qi::grammar<string::const_iterator, string(), ascii::space_type> {
 public:
 	typedef string::const_iterator iter;
