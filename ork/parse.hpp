@@ -64,7 +64,26 @@ public://Parser component stuff
 	template<typename iter, typename context, typename skipper, typename attribute>
 	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
 		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
-		//TODO//The actual parsing
+
+		iter it(first);
+		if(!std::isalpha(*it) && *it != ORK('_')) {
+			return false;
+		}
+		while(it != last && (std::isalnum(*it) || *it == ORK('_'))) {
+			++it;
+		}
+
+		if(it != last) {
+			return false;
+		}
+
+		attribute result(first, it);
+		if(result.empty()) {
+			return false;
+		}
+
+		first = it;
+		spirit::traits::assign_to(result, attr);
 		return true;
 	}
 
