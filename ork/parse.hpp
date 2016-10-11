@@ -35,16 +35,15 @@ public:
 			qi::alpha | qi::char_(ORK('_'))
 			;
 		rest %=
-			qi::lexeme[qi::alnum | qi::char_(ORK('_'))]
+			qi::alnum | qi::char_(ORK('_'))
 			;
 		start %=
-			first
-			>> *rest
+			qi::lexeme[first >> *rest]
 			;
 	}
 public:
-	qi::rule<iter, letr(), ascii::space_type> first;
-	qi::rule<iter, letr(), ascii::space_type> rest;
+	qi::rule<iter, letr()> first;
+	qi::rule<iter, letr()> rest;
 	qi::rule<iter, string(), ascii::space_type> start;
 };
 
