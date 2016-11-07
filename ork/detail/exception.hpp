@@ -14,7 +14,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<string>
 #include<ostream>
 #include"ork/detail/text.hpp"
-#include"ork/detail/tools.hpp"
 
 namespace ork {
 

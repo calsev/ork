@@ -11,8 +11,8 @@ Types and utilities for text, files and logging
 */
 
 #include"ork/detail/text.hpp"
-#include"ork/detail/tools.hpp"
 #include"ork/detail/exception.hpp"
+#include"ork/detail/tools.hpp"
 #include"ork/detail/file_system.hpp"
 #include"ork/detail/log.hpp"
 

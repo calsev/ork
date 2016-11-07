@@ -9,6 +9,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 #include"ork/detail/text.hpp"
+#include"ork/detail/exception.hpp"
 
 
 namespace ork {
@@ -39,6 +40,9 @@ namespace ork {
 #else
 #define ORK_NO_EXCEPT//throw()
 #endif
+
+
+#define ORK_UNREACHABLE ORK_THROW(ORK("Unreachable"));
 
 
 /***
