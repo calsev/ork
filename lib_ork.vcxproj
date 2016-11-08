@@ -26,6 +26,7 @@
     <ClInclude Include="ork\ork.hpp" />
     <ClInclude Include="ork\parse.hpp" />
     <ClInclude Include="ork\tagger.hpp" />
+    <ClInclude Include="ork\xml.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\command_line.cpp" />
@@ -35,6 +36,7 @@
     <ClCompile Include="src\html.cpp" />
     <ClCompile Include="src\orientation.cpp" />
     <ClCompile Include="src\tagger.cpp" />
+    <ClCompile Include="src\xml.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EAAA5C18-E699-4262-85EF-BE30441388FD}</ProjectGuid>
@@ -81,7 +83,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;..\glm;$(BOOST_ROOT)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\glm;..\pugixml\src;$(BOOST_ROOT)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BOOST_ALL_DYN_LINK;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName)-d.pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -93,7 +95,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;..\glm;$(BOOST_ROOT)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\glm;..\pugixml\src;$(BOOST_ROOT)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BOOST_ALL_DYN_LINK;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>

@@ -59,6 +59,9 @@
     <ClInclude Include="ork\parse.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ork\xml.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\command_line.cpp">
@@ -80,6 +83,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\tagger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xml.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

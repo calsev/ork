@@ -34,6 +34,11 @@ namespace ork {
 #endif
 
 
+#ifndef ORK_USE_PUGI//Optional dependency
+#define ORK_USE_PUGI 1
+#endif
+
+
 /*
 Auto linking, at least in Visual Studio
 Only link if using the current version of Visual Studio
