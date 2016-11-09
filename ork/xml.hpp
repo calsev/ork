@@ -6,9 +6,9 @@ copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 #include"ork/glm.hpp"
 
-#if ORK_USE_PUGI
-#include"pugixml.hpp"
-#endif
+namespace pugi {
+class xml_node;
+}
 
 
 namespace ork {
@@ -19,9 +19,7 @@ class exportable {
 public:
 	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
 public:
-#if ORK_USE_PUGI
 	virtual void export_xml(pugi::xml_node &n) const = 0;
-#endif
 };
 
 
@@ -32,6 +30,7 @@ public:
 	vector() : _data() {}
 	/*implicit*/vector(const glm::dvec3&vec) : _data(vec) {}
 	vector(const double x, const double y, const double z) : _data(x, y, z) {}
+	explicit vector(pugi::xml_node &node);
 public:
 	string as_string() const;
 
@@ -51,11 +50,13 @@ public:
 	inline bool operator != (const vector &other) const {
 		return !(*this == other);
 	}
-#if ORK_USE_PUGI
-	explicit vector(pugi::xml_node &node);
 	virtual void export_xml(pugi::xml_node &n) const;
-#endif
 };
+
+
+ORK_INLINE o_stream &operator << (o_stream&stream, const ork::xml::vector &vec) {
+	return stream << vec.as_string();
+}
 
 
 }//namespace xml

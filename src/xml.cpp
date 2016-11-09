@@ -5,6 +5,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/geometry.hpp"
 #include"ork/xml.hpp"
 
+#if ORK_USE_PUGI
+#include"pugixml.hpp"
+#endif
+
 
 namespace ork {
 namespace xml {
