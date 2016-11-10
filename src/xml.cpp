@@ -18,6 +18,7 @@ namespace xml {
 void export_file(const string&filename, const exportable&object, const string&root_node_name) {
 	pugi::xml_document doc;
 	object.export_xml(doc.append_child(root_node_name.c_str()));
+	ork::ensure_directory(filename);
 	doc.save_file(filename.c_str());
 }
 void load_and_parse(pugi::xml_document&xml, i_stream&fin) {
