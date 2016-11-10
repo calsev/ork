@@ -7,6 +7,7 @@ copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/glm.hpp"
 
 namespace pugi {
+class xml_document; 
 class xml_node;
 }
 
@@ -21,6 +22,10 @@ public:
 public:
 	virtual void export_xml(pugi::xml_node &n) const = 0;
 };
+
+
+void export_file(const string&filename, const exportable&object, const string&root_node_name);
+void load_and_parse(pugi::xml_document&xml, i_stream&fin);//Just create a file with error checking
 
 
 class vector : public exportable {

@@ -14,6 +14,26 @@ namespace ork {
 namespace xml {
 
 
+#if ORK_USE_PUGI
+void export_file(const string&filename, const exportable&object, const string&root_node_name) {
+	pugi::xml_document doc;
+	object.export_xml(doc.append_child(root_node_name.c_str()));
+	doc.save_file(filename.c_str());
+}
+void load_and_parse(pugi::xml_document&xml, i_stream&fin) {
+	pugi::xml_parse_result result = xml.load(fin);
+	if(!result) {
+		ORK_THROW(ORK("XML parse error") \
+			<< ORK("\n -- Error: ") << result.description() \
+			<< ORK("\n -- Offset: ") << result.offset)//<< ORK(" at [") << (source + result.offset) << ORK("]"))
+	}
+	else {
+		ORK_LOG(ork::severity_level::trace) << ORK("XML parse success");
+	}
+}
+#endif
+
+
 double&vector::x() {
 	return _data.x;
 }
