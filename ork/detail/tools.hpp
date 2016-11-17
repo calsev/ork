@@ -37,8 +37,10 @@ namespace ork {
 
 #if defined __GNUC__ || _MSC_VER > 1800
 #define ORK_NO_EXCEPT noexcept
+#define ORK_CONSTEXPR constexpr
 #else
 #define ORK_NO_EXCEPT//throw()
+#define ORK_CONSTEXPR 
 #endif
 
 
