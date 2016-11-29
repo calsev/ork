@@ -6,6 +6,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<array>
 #include"boost/circular_buffer.hpp"
 
+#include"ork/ork.hpp"
+
 
 namespace ork {
 
