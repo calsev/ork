@@ -19,6 +19,7 @@
     <ClInclude Include="ork\detail\text.hpp" />
     <ClInclude Include="ork\detail\tools.hpp" />
     <ClInclude Include="ork\file_utils.hpp" />
+    <ClInclude Include="ork\filter.hpp" />
     <ClInclude Include="ork\geometry.hpp" />
     <ClInclude Include="ork\glm.hpp" />
     <ClInclude Include="ork\html.hpp" />
