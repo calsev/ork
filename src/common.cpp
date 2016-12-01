@@ -78,7 +78,7 @@ std::vector<char> string2uuid(const bstring&val) {
 From exception.hpp
 */
 
-#ifdef _MSC_VER
+#if ORK_MSC
 
 backtrace generate_backtrace(const unsigned skip_frames) {
 	static const unsigned capture_frames = 128;
@@ -136,7 +136,7 @@ bstring backtrace::str() const {
 	return stream.str();
 }
 
-#else//_MSC_VER
+#else//ORK_MSC
 
 backtrace generate_backtrace(const unsigned skip_frames) {
 	return backtrace();
@@ -147,7 +147,7 @@ bstring backtrace::str() const {
 	return bstring();
 }
 
-#endif//_MSC_VER
+#endif//ORK_MSC
 
 std::ostream &operator << (std::ostream &stream, const backtrace &trace) {
 	return stream << trace.str();

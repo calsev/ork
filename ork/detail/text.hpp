@@ -12,7 +12,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<string>
 #include<sstream>
 #include<iostream>
-#ifndef _MSC_VER
+#include"ork/detail/config.hpp"
+
+#if !ORK_MSC
 #include"boost/current_function.hpp"
 #endif
 
@@ -100,7 +102,7 @@ typedef std::istringstream bi_string_stream;
 #define ORK_FILEN ORK(__FILE__)
 #define ORK_LINE ORK(ORK_STR(__LINE__))
 #if 1
-	#ifdef _MSC_VER
+	#if ORK_MSC
 		#ifdef __FUNCTION__
 			#define ORK_FUNC __FUNCTION__
 		#else
@@ -114,9 +116,9 @@ typedef std::istringstream bi_string_stream;
 		#endif
 	#endif
 #else
-	#if defined _MSC_VER
+	#if ORK_MSC
 		#define ORK_FUNC __FUNCSIG__
-	#elif defined __GNUC__
+	#elif ORK_GCC
 		#define ORK_FUNC __PRETTY_FUNCTION__
 	#else
 		#error "Compiler not supported"

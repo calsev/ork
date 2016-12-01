@@ -8,6 +8,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #error This header can only be included from ork/ork.hpp!
 #endif
 
+#include"ork/detail/config.hpp"
 #include"ork/detail/text.hpp"
 #include"ork/detail/exception.hpp"
 
@@ -16,7 +17,7 @@ namespace ork {
 
 
 #define ORK_WARN_(MSG) ORK_CAT3(ORK_FLOC, ORK(": Warning: "), ORK(MSG))
-#if defined _MSC_VER
+#if ORK_MSC
 #define ORK_VSWARNING(MSG) message(ORK_WARN_(MSG))
 #else
 #define ORK_VSWARNING(MSG) 
@@ -26,16 +27,17 @@ namespace ork {
 //Make the code execute as one statement; used because it could be more exotic(per-platform) in the future.
 #define ORK_STMT(CODE) {CODE} //do{CODE}while(false);
 
-#if defined _MSC_VER
+
+#if ORK_MSC
 #define ORK_INLINE __forceinline
-#elif defined __GNUC__
+#elif ORK_GCC
 #define ORK_INLINE __attribute__((always_inline)) inline
 #else
-#error "Compiler not supported"
+#error Compiler not supported
 #endif
 
 
-#if defined __GNUC__ || _MSC_VER > 1800
+#if ORK_GCC || ORK_MSC > 1800
 #define ORK_NO_EXCEPT noexcept
 #define ORK_CONSTEXPR constexpr
 #else
@@ -84,7 +86,7 @@ Copy and move semantics
 	TYPE(const TYPE&)=default;\
 	TYPE&operator=(const TYPE&)=default;
 
-#if defined __GNUC__ || _MSC_VER > 1700//VS 2013 or later
+#if ORK_GCC || ORK_MSC > 1700//VS 2013 or later
 	#define ORK_NO_COPY_(TYPE)\
 			TYPE(const TYPE&)=delete;\
 			TYPE&operator=(const TYPE&)=delete;
@@ -104,7 +106,7 @@ Copy and move semantics
 #endif
 
 #define ORK_NON_COPYABLE(TYPE) ORK_NO_COPY_(TYPE) ORK_NO_MOVE_(TYPE)
-#if defined __GNUC__ || _MSC_VER > 1700//VS 2013 or later
+#if ORK_GCC || ORK_MSC > 1700//VS 2013 or later
 #define ORK_MOVE_ONLY(TYPE) ORK_NO_COPY_(TYPE) ORK_MOVE_(TYPE)
 #define ORK_MOVEABLE(TYPE) ORK_COPY_(TYPE) ORK_MOVE_(TYPE)
 #endif

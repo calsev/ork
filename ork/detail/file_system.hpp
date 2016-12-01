@@ -14,6 +14,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 //Some boost configuration here
 #define BOOST_SYSTEM_NO_DEPRECATED 1
 #define BOOST_FILESYSTEM_NO_DEPRECATED 1
+#include"ork/detail/config.hpp"
 #include"ork/detail/exception.hpp"
 #include"ork/detail/tools.hpp"
 

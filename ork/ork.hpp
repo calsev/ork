@@ -10,6 +10,7 @@ Cumulative header for the ork framework:
 Types and utilities for text, files and logging
 */
 
+#include"ork/detail/config.hpp"
 #include"ork/detail/text.hpp"
 #include"ork/detail/exception.hpp"
 #include"ork/detail/tools.hpp"
@@ -43,7 +44,7 @@ namespace ork {
 Auto linking, at least in Visual Studio
 Only link if using the current version of Visual Studio
 */
-#if defined _MSC_VER
+#if ORK_MSC
 #ifdef _DEBUG
 #pragma comment(lib,"lib_ork-d")
 #else
@@ -55,7 +56,7 @@ Only link if using the current version of Visual Studio
 /*
 For backtrace generation
 */
-#if defined _MSC_VER
+#if ORK_MSC
 #pragma comment(lib,"DbgHelp.lib")
 #endif
 
