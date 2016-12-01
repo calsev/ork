@@ -20,6 +20,7 @@ Types and utilities for text, files and logging
 
 namespace ork {
 
+
 #define ORK_MAJOR 0
 #define ORK_MINOR 1
 #define ORK_REV 0
@@ -42,14 +43,13 @@ namespace ork {
 
 /*
 Auto linking, at least in Visual Studio
-Only link if using the current version of Visual Studio
 */
 #if ORK_MSC
-#ifdef _DEBUG
-#pragma comment(lib,"lib_ork-d")
-#else
-#pragma comment(lib,"lib_ork")
-#endif
+#	ifdef _DEBUG
+#		pragma comment(lib,"lib_ork-d")
+#	else
+#		pragma comment(lib,"lib_ork")
+#	endif
 #endif
 
 
@@ -57,8 +57,9 @@ Only link if using the current version of Visual Studio
 For backtrace generation
 */
 #if ORK_MSC
-#pragma comment(lib,"DbgHelp.lib")
+#	pragma comment(lib,"DbgHelp.lib")
 #endif
+
 
 //Put this somewhere
 string to_string(const bool val);

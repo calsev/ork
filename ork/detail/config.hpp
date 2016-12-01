@@ -5,7 +5,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 
 #ifndef ORK_ORK_HPP
-#error This header can only be included from ork/ork.hpp!
+#	error This header can only be included from ork/ork.hpp!
 #endif
 
 
@@ -20,10 +20,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 #if ORK_MSC && ORK_MSC < 1800
-#error Visual Studio 2012 or greater required
+#	error Visual Studio 2012 or greater required
 #endif
 #if ORK_GCC && ORK_GCC < 40300
-#error GCC 4.3 or greater required
+#	error GCC 4.3 or greater required
 #endif
 
 
