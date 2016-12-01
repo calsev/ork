@@ -16,11 +16,13 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-#define ORK_WARN_(MSG) ORK_CAT3(ORK_FLOC, ORK(": Warning: "), ORK(MSG))
-#if ORK_MSC
-#define ORK_VSWARNING(MSG) message(ORK_WARN_(MSG))
-#else
-#define ORK_VSWARNING(MSG) 
+#ifndef ORK_WARN_
+#	define ORK_WARN_(MSG) ORK_CAT3(ORK_FLOC, ORK(": Warning: "), ORK(MSG))
+#	if ORK_MSC
+#		define ORK_VSWARNING(MSG) message(ORK_WARN_(MSG))
+#	else
+#		define ORK_VSWARNING(MSG) 
+#	endif
 #endif
 
 
@@ -28,12 +30,23 @@ namespace ork {
 #define ORK_STMT(CODE) {CODE} //do{CODE}while(false);
 
 
-#if ORK_MSC
-#define ORK_INLINE __forceinline
-#elif ORK_GCC
-#define ORK_INLINE __attribute__((always_inline)) inline
-#else
-#error Compiler not supported
+#ifndef ORK_DEPRECATED
+#	if ORK_GCC
+#		define ORK_DEPRECATED __attribute__((deprecated))
+#	else
+#		define ORK_DEPRECATED
+#	endif
+#endif
+
+
+#ifndef ORK_INLINE
+#	if ORK_MSC
+#		define ORK_INLINE __forceinline
+#	elif ORK_GCC
+#		define ORK_INLINE __attribute__((always_inline)) inline
+#	else
+#		error Compiler not supported
+#	endif
 #endif
 
 
