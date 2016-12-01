@@ -50,12 +50,30 @@ namespace ork {
 #endif
 
 
-#if ORK_GCC || ORK_MSC > 1800
-#	define ORK_NO_EXCEPT noexcept
-#	define ORK_CONSTEXPR constexpr
-#else
-#	define ORK_NO_EXCEPT//throw()
-#	define ORK_CONSTEXPR 
+#ifndef ORK_NO_EXCEPT
+#	if ORK_GCC || ORK_MSC > 1800//2015
+#		define ORK_NO_EXCEPT noexcept
+#	else
+#		define ORK_NO_EXCEPT//throw()
+#	endif
+#endif
+
+
+#ifndef ORK_CONSTEXPR
+#	if ORK_GCC || ORK_MSC > 1800//2015
+#		define ORK_CONSTEXPR constexpr
+#	else
+#		define ORK_CONSTEXPR 
+#	endif
+#endif
+
+
+#ifndef ORK_UNUSED
+#	if ORK_GCC
+#		define ORK_UNUSED __attribute__((unused))
+#	else
+#		define ORK_UNUSED
+#	endif
 #endif
 
 
