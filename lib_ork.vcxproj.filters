@@ -65,6 +65,9 @@
     <ClInclude Include="ork\filter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ork\detail\config.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\command_line.cpp">

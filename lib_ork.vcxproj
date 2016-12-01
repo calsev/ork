@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="ork\command_line.hpp" />
     <ClInclude Include="ork\database.hpp" />
+    <ClInclude Include="ork\detail\config.hpp" />
     <ClInclude Include="ork\detail\exception.hpp" />
     <ClInclude Include="ork\detail\file_system.hpp" />
     <ClInclude Include="ork\detail\log.hpp" />
