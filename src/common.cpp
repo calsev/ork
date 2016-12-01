@@ -246,7 +246,7 @@ namespace sinks = boost::log::sinks;
 namespace expr = boost::log::expressions;
 
 
-#if UNICODE
+#if ORK_UNICODE
 typedef boost::log::wformatting_ostream formatting_ostream;
 #else
 typedef boost::log::formatting_ostream formatting_ostream;
@@ -285,7 +285,7 @@ struct logger::impl {
 public:
 	typedef logger::channel_source_type channel_source_type;
 	typedef logger::severity_channel_source_type severity_channel_source_type;
-#if UNICODE
+#if ORK_UNICODE
 	typedef sinks::wtext_ostream_backend backend_type;
 #else
 	typedef sinks::text_ostream_backend backend_type;
@@ -381,12 +381,10 @@ void logger::flush_all() {
 From text.hpp
 */
 
-#if UNICODE || 1
 string_converter_type&g_string_converter() {//From string_types.hpp
 	static string_converter_type s_convert;
 	return s_convert;
 }
-#endif
 
 
 }//namespace ork

@@ -11,10 +11,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace options = boost::program_options;
 
 
-#ifdef UNICODE
-#define ORK_OVAL wvalue
+#if ORK_UNICODE
+#	define ORK_OVAL wvalue
 #else
-#define ORK_OVAL value
+#	define ORK_OVAL value
 #endif
 
 namespace ork {

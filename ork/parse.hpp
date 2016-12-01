@@ -44,7 +44,7 @@ namespace ascii = spirit::ascii;
 namespace proto = boost::proto;
 
 
-#if UNICODE
+#if ORK_UNICODE
 typedef spirit::char_encoding::standard_wide charset;
 #else
 typedef spirit::char_encoding::standard charset;

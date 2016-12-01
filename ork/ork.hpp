@@ -28,15 +28,15 @@ namespace ork {
 #define ORK_VER_STR_ ORK_STR(ORK_CAT5(ORK_MAJOR, ., ORK_MINOR, ., ORK_REV))
 #define ORK_VER_STR_W ORK_WIDEN(ORK_VER_STR_)
 #define ORK_VER_STR_B ORK_VER_STR_
-#ifdef UNICODE
-#define ORK_VER_STR ORK_VER_STR_W
+#if ORK_UNICODE
+#	define ORK_VER_STR ORK_VER_STR_W
 #else
-#define ORK_VER_STR ORK_VER_STR_B
+#	define ORK_VER_STR ORK_VER_STR_B
 #endif
 
 
 #ifndef ORK_USE_PUGI//Optional dependency
-#define ORK_USE_PUGI 1
+#	define ORK_USE_PUGI 1
 #endif
 
 

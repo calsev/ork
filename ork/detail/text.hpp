@@ -12,21 +12,22 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<string>
 #include<sstream>
 #include<iostream>
+#include<codecvt>
+#include<mutex>
 #include"ork/detail/config.hpp"
+
 
 #if !ORK_MSC
 #include"boost/current_function.hpp"
 #endif
 
 
-#if defined UNICODE || defined _UNICODE
-#define UNICODE 1//Avoid checking both everywhere
+#if defined UNICODE || defined _UNICODE//Avoid checking both everywhere
+#	define ORK_UNICODE 1
+#else
+#	define ORK_UNICODE 0
 #endif
 
-#if UNICODE || 1
-#include<codecvt>
-#include<mutex>
-#endif
 
 #if 1
 #include"boost/filesystem/fstream.hpp"
@@ -63,7 +64,7 @@ namespace ork {
 #define ORK_WIDEN(X) ORK_WIDEN_(X)
 
 
-#if UNICODE
+#if ORK_UNICODE
 typedef std::wstring string;
 typedef std::wstringstream string_stream;
 typedef wchar_t letr;
@@ -127,7 +128,7 @@ typedef std::istringstream bi_string_stream;
 #define ORK_FLOC ORK_CAT4(ORK_FILEN, ORK("("), ORK_LINE, ORK(")"))
 
 
-#if UNICODE
+#if ORK_UNICODE
 typedef boost::filesystem::wofstream of_stream;
 typedef boost::filesystem::wifstream if_stream;
 typedef boost::filesystem::wfstream f_stream;
@@ -142,7 +143,6 @@ typedef boost::filesystem::fstream f_stream;
 #endif
 
 
-#if UNICODE || 1
 class string_converter_type {//Just a thread-safe wrapper for std::wstring_convert
 protected:
 	typedef std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>string_converter;
@@ -179,14 +179,14 @@ public:
 	}
 };
 string_converter_type&g_string_converter();
-#endif
 
-#if UNICODE
-#define ORK_STR_2_BYTE(ORK_STRING) ork::g_string_converter().to_bytes(ORK_STRING)
-#define ORK_BYTE_2_STR(ORK_STRING) ork::g_string_converter().from_bytes(ORK_STRING)
+
+#if ORK_UNICODE
+#	define ORK_STR_2_BYTE(ORK_STRING) ork::g_string_converter().to_bytes(ORK_STRING)
+#	define ORK_BYTE_2_STR(ORK_STRING) ork::g_string_converter().from_bytes(ORK_STRING)
 #else
-#define ORK_STR_2_BYTE(ORK_STRING) ORK_STRING
-#define ORK_BYTE_2_STR(ORK_STRING) ORK_STRING
+#	define ORK_STR_2_BYTE(ORK_STRING) ORK_STRING
+#	define ORK_BYTE_2_STR(ORK_STRING) ORK_STRING
 #endif
 
 }//namespace ork

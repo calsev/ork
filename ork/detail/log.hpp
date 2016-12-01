@@ -39,7 +39,7 @@ enum class severity_level {
 
 class logger {
 public:
-#if UNICODE
+#if ORK_UNICODE
 	typedef boost::log::sources::wchannel_logger_mt<log_channel> channel_source_type;
 	typedef boost::log::sources::wseverity_channel_logger<severity_level, log_channel> severity_channel_source_type;
 #else
