@@ -51,11 +51,11 @@ namespace ork {
 
 
 #if ORK_GCC || ORK_MSC > 1800
-#define ORK_NO_EXCEPT noexcept
-#define ORK_CONSTEXPR constexpr
+#	define ORK_NO_EXCEPT noexcept
+#	define ORK_CONSTEXPR constexpr
 #else
-#define ORK_NO_EXCEPT//throw()
-#define ORK_CONSTEXPR 
+#	define ORK_NO_EXCEPT//throw()
+#	define ORK_CONSTEXPR 
 #endif
 
 
@@ -99,7 +99,7 @@ Copy and move semantics
 	TYPE(const TYPE&)=default;\
 	TYPE&operator=(const TYPE&)=default;
 
-#if ORK_GCC || ORK_MSC > 1700//VS 2013 or later
+#if ORK_GCC || ORK_MSC > 1800//VS 2015 or later
 	#define ORK_NO_COPY_(TYPE)\
 			TYPE(const TYPE&)=delete;\
 			TYPE&operator=(const TYPE&)=delete;
@@ -119,9 +119,9 @@ Copy and move semantics
 #endif
 
 #define ORK_NON_COPYABLE(TYPE) ORK_NO_COPY_(TYPE) ORK_NO_MOVE_(TYPE)
-#if ORK_GCC || ORK_MSC > 1700//VS 2013 or later
-#define ORK_MOVE_ONLY(TYPE) ORK_NO_COPY_(TYPE) ORK_MOVE_(TYPE)
-#define ORK_MOVEABLE(TYPE) ORK_COPY_(TYPE) ORK_MOVE_(TYPE)
+#if ORK_GCC || ORK_MSC > 1800//VS 2015 or later
+#	define ORK_MOVE_ONLY(TYPE) ORK_NO_COPY_(TYPE) ORK_MOVE_(TYPE)
+#	define ORK_MOVEABLE(TYPE) ORK_COPY_(TYPE) ORK_MOVE_(TYPE)
 #endif
 
 
