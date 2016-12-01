@@ -60,7 +60,21 @@ This macro is for use by clients
 #endif
 
 
-#ifndef ORK_INLINE
+/*
+Sometimes you gotta C
+*/
+#ifndef ORK_C_CALL
+#	if ORK_MSC
+#		define ORK_C_CALL extern "C" __cdecl
+#	elif ORK_GCC
+#		define ORK_C_CALL extern "C"
+#	else
+#		error Compiler not supported
+#	endif
+#endif 
+
+
+#ifndef ORK_INLINE//Generates a warning if the function cannot be inlined
 #	if ORK_MSC
 #		define ORK_INLINE __forceinline
 #	elif ORK_GCC
