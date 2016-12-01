@@ -19,6 +19,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	error Compiler not supported!
 #endif
 
+
+#if defined _WIN32 && !ORK_MSC//We only support native compilers
+#error Cygwin not supported
+#endif
+
+
 #if ORK_MSC && ORK_MSC < 1800
 #	error Visual Studio 2012 or greater required
 #endif

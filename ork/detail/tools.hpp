@@ -39,6 +39,27 @@ namespace ork {
 #endif
 
 
+/*
+A bit confusing; Ork is MIT licensed and statically linked.
+This macro is for use by clients
+*/
+#ifndef ORK_DLL_API
+#	if ORK_MSC
+#		if ORK_CREATE_DLL//Define to compile DLL
+#			define ORK_DLL_API __declspec(dllexport)
+#		else//Default for using DLL
+#			define ORK_DLL_API __declspec(dllimport)
+#		endif
+#		define ORK_DLL_LOCAL//Default in VS
+#	elif ORK_GCC
+#		define ORK_DLL_API __attribute__ ((visibility ("default")))
+#		define ORK_DLL_LOCAL  __attribute__ ((visibility ("hidden")))//Too bad this is not default
+#	else
+#		error Compiler not supported
+#	endif
+#endif
+
+
 #ifndef ORK_INLINE
 #	if ORK_MSC
 #		define ORK_INLINE __forceinline
