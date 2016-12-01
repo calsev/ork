@@ -18,7 +18,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 
 #if !ORK_MSC
-#include"boost/current_function.hpp"
+#	include"boost/current_function.hpp"
 #endif
 
 
@@ -35,14 +35,16 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 //Forward declaration to keep boost out of headers
 namespace boost {
 namespace filesystem {
+
 class wofstream;
 class wifstream;
 class wfstream;
 class ofstream;
 class ifstream;
 class fstream;
-}
-}
+
+}//namespace filesystem
+}//namespace boost
 #endif
 
 
@@ -65,31 +67,31 @@ namespace ork {
 
 
 #if ORK_UNICODE
-typedef std::wstring string;
-typedef std::wstringstream string_stream;
-typedef wchar_t letr;
-typedef std::wostream o_stream;
-typedef std::wistream i_stream;
-typedef std::wostringstream o_string_stream;
-typedef std::wistringstream i_string_stream;
-#define ORK(X) ORK_WIDEN(X)//The shortest prefixed macro
-#define ORK_CIN std::wcin
-#define ORK_COUT std::wcout
-#define ORK_CERR std::wcerr
-#define ORK_CLOG std::wclog
+	typedef std::wstring string;
+	typedef std::wstringstream string_stream;
+	typedef wchar_t letr;
+	typedef std::wostream o_stream;
+	typedef std::wistream i_stream;
+	typedef std::wostringstream o_string_stream;
+	typedef std::wistringstream i_string_stream;
+	#define ORK(X) ORK_WIDEN(X)//The shortest prefixed macro
+	#define ORK_CIN std::wcin
+	#define ORK_COUT std::wcout
+	#define ORK_CERR std::wcerr
+	#define ORK_CLOG std::wclog
 #else
-typedef std::string string;
-typedef std::stringstream string_stream;
-typedef char letr;
-typedef std::ostream o_stream;
-typedef std::istream i_stream;
-typedef std::ostringstream o_string_stream;
-typedef std::istringstream i_string_stream;
-#define ORK(X) X//The shortest prefixed macro
-#define ORK_CIN std::cin
-#define ORK_COUT std::cout
-#define ORK_CERR std::cerr
-#define ORK_CLOG std::clog
+	typedef std::string string;
+	typedef std::stringstream string_stream;
+	typedef char letr;
+	typedef std::ostream o_stream;
+	typedef std::istream i_stream;
+	typedef std::ostringstream o_string_stream;
+	typedef std::istringstream i_string_stream;
+	#define ORK(X) X//The shortest prefixed macro
+	#define ORK_CIN std::cin
+	#define ORK_COUT std::cout
+	#define ORK_CERR std::cerr
+	#define ORK_CLOG std::clog
 #endif
 typedef std::string bstring;//Byte string, so that searches can identify unhandled unicode
 typedef std::stringstream b_string_stream;
@@ -102,44 +104,40 @@ typedef std::istringstream bi_string_stream;
 
 #define ORK_FILEN ORK(__FILE__)
 #define ORK_LINE ORK(ORK_STR(__LINE__))
-#if 1
-	#if ORK_MSC
-		#ifdef __FUNCTION__
-			#define ORK_FUNC __FUNCTION__
-		#else
-			#define ORK_FUNC ORK("(unknown_function)")
-		#endif
-	#else
-		#ifdef BOOST_CURRENT_FUNCTION
-			#define ORK_FUNC BOOST_CURRENT_FUNCTION
-		#else
-			#define ORK_FUNC ORK("(unknown_function)")
-		#endif
-	#endif
+
+
+#if ORK_MSC
+#	ifdef __FUNCTION__
+#		define ORK_FUNC __FUNCTION__ //__FUNCSIG__
+#	else
+#		define ORK_FUNC ORK("(unknown_function)")
+#	endif
+#elif ORK_GCC
+#	ifdef BOOST_CURRENT_FUNCTION
+#		define ORK_FUNC BOOST_CURRENT_FUNCTION //__PRETTY_FUNCTION__
+#	else
+#		define ORK_FUNC ORK("(unknown_function)")
+#	endif
 #else
-	#if ORK_MSC
-		#define ORK_FUNC __FUNCSIG__
-	#elif ORK_GCC
-		#define ORK_FUNC __PRETTY_FUNCTION__
-	#else
-		#error "Compiler not supported"
-	#endif
+#	error Compiler not supported
 #endif
+
+
 #define ORK_FLOC ORK_CAT4(ORK_FILEN, ORK("("), ORK_LINE, ORK(")"))
 
 
 #if ORK_UNICODE
-typedef boost::filesystem::wofstream of_stream;
-typedef boost::filesystem::wifstream if_stream;
-typedef boost::filesystem::wfstream f_stream;
-#define ORK_GEN_STR generic_wstring
-#define ORK_STRING wstring
+	typedef boost::filesystem::wofstream of_stream;
+	typedef boost::filesystem::wifstream if_stream;
+	typedef boost::filesystem::wfstream f_stream;
+	#define ORK_GEN_STR generic_wstring
+	#define ORK_STRING wstring
 #else
-typedef boost::filesystem::ofstream of_stream;
-typedef boost::filesystem::ifstream if_stream;
-typedef boost::filesystem::fstream f_stream;
-#define ORK_GEN_STR generic_string
-#define ORK_STRING string
+	typedef boost::filesystem::ofstream of_stream;
+	typedef boost::filesystem::ifstream if_stream;
+	typedef boost::filesystem::fstream f_stream;
+	#define ORK_GEN_STR generic_string
+	#define ORK_STRING string
 #endif
 
 
