@@ -63,13 +63,20 @@ This macro is for use by clients
 /*
 Sometimes you gotta C
 */
-#ifndef ORK_C_CALL
+#ifndef ORK_C_CALL_
 #	if ORK_MSC
-#		define ORK_C_CALL extern "C" __cdecl
+#		define ORK_C_CALL_ __cdecl
 #	elif ORK_GCC
-#		define ORK_C_CALL extern "C"
+#		define ORK_C_CALL_
 #	else
 #		error Compiler not supported
+#	endif
+#endif
+#ifndef ORK_C_CALL
+#	ifdef __cplusplus
+#		define ORK_C_CALL extern "C" ORK_C_CALL_
+#	else
+#		define ORK_C_CALL ORK_C_CALL_
 #	endif
 #endif 
 
