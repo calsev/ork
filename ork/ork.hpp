@@ -45,7 +45,7 @@ namespace ork {
 Auto linking, at least in Visual Studio
 */
 #if ORK_MSC
-#	ifdef _DEBUG
+#	if ORK_DEBUG
 #		pragma comment(lib,"lib_ork-d")
 #	else
 #		pragma comment(lib,"lib_ork")
