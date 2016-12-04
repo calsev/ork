@@ -40,14 +40,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #		endif
 #		define ORK_DEBUG 1
 #		define ORK_NDEBUG 0
-#	elif defined NDEBUG || defined _NDEBUG
-#		if defined DEBUG  || defined _DEBUG
-#			error Cannot define debug and not debug
-#		endif
+#	else
 #		define ORK_DEBUG 0
 #		define ORK_NDEBUG 1
-#	else
-#		error Must define debug or not debug
 #	endif
 #endif
 
