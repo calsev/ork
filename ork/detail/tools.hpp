@@ -68,7 +68,7 @@ Usage: ORK_C_LINK ORK_DLL_API int ORK_C_CALL my_func(int arg);
 #	ifdef __cplusplus
 #		define ORK_C_LINK extern "C"
 #	else
-#		define ORK_C_LINK
+#		define ORK_C_LINK extern
 #	endif
 #endif
 #ifndef ORK_C_CALL
