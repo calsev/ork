@@ -62,24 +62,24 @@ This macro is for use by clients
 
 /*
 Sometimes you gotta C
-Usage: ORK_C_CALL ORK_DLL_API int ORK_C_DECL my_func(int arg);
+Usage: ORK_C_LINK ORK_DLL_API int ORK_C_CALL my_func(int arg);
 */
-#ifndef ORK_C_DECL
+#ifndef ORK_C_LINK
+#	ifdef __cplusplus
+#		define ORK_C_LINK extern "C"
+#	else
+#		define ORK_C_LINK
+#	endif
+#endif
+#ifndef ORK_C_CALL
 #	if ORK_MSC
-#		define ORK_C_DECL __cdecl
+#		define ORK_C_CALL __cdecl
 #	elif ORK_GCC
-#		define ORK_C_DECL
+#		define ORK_C_CALL
 #	else
 #		error Compiler not supported
 #	endif
 #endif
-#ifndef ORK_C_CALL
-#	ifdef __cplusplus
-#		define ORK_C_CALL extern "C"
-#	else
-#		define ORK_C_CALL ORK_C_CALL_
-#	endif
-#endif 
 
 
 #ifndef ORK_INLINE//Generates a warning if the function cannot be inlined
