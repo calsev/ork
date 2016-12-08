@@ -19,6 +19,7 @@
     <ClInclude Include="ork\detail\log.hpp" />
     <ClInclude Include="ork\detail\text.hpp" />
     <ClInclude Include="ork\detail\tools.hpp" />
+    <ClInclude Include="ork\distribution.hpp" />
     <ClInclude Include="ork\file_utils.hpp" />
     <ClInclude Include="ork\filter.hpp" />
     <ClInclude Include="ork\geometry.hpp" />
@@ -33,6 +34,9 @@
   <ItemGroup>
     <ClCompile Include="src\command_line.cpp" />
     <ClCompile Include="src\common.cpp" />
+    <ClCompile Include="src\distribution.cpp">
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
     <ClCompile Include="src\geometry.cpp" />
     <ClCompile Include="src\glm.cpp" />
     <ClCompile Include="src\html.cpp" />
