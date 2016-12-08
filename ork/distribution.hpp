@@ -39,4 +39,38 @@ public:
 random&g_random();//Static because construction is expensive
 
 
+template<typename T>
+class triangle_distribution {
+public:
+	using val_type = T;
+protected:
+	val_type _min;
+	val_type _mid;
+	val_type _max;
+public:
+	triangle_distribution(const val_type min, const val_type mid, const val_type max) :_min(min), _mid(mid), _max(max) {
+		if(min >= mid) {
+			ORK_THROW(ORK("Min must be less than mid"));
+		}
+		if(mid >= max) {
+			ORK_THROW(ORK("Mid must be less than max"));
+		}
+	}
+public:
+	val_type operator()(const val_type val)const {
+		if(val < _min) {
+			return static_cast<val_type>(0);
+		}
+		if(val <= _mid) {
+			return (val - _min) / (_mid - _min);
+		}
+		if(val <= _max) {
+			return (val - _mid) / (_max - _mid);
+		}
+		//val > max
+		return static_cast<val_type>(0);
+	}
+};
+
+
 }//namespace ork
