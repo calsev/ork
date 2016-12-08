@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ork\color.hpp" />
     <ClInclude Include="ork\command_line.hpp" />
     <ClInclude Include="ork\database.hpp" />
     <ClInclude Include="ork\detail\config.hpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="ork\xml.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\color.cpp" />
     <ClCompile Include="src\command_line.cpp" />
     <ClCompile Include="src\common.cpp" />
     <ClCompile Include="src\distribution.cpp">
