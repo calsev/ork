@@ -8,6 +8,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	error This header can only be included from ork/ork.hpp!
 #endif
 
+#ifndef ORK_DLL//Shared library configuration
+#	define ORK_DLL 1
+#endif
+
 #ifndef ORK_AUTO_LINK//Auto link ork library
 #	define ORK_AUTO_LINK 1
 #endif
