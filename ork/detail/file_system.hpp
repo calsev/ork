@@ -27,15 +27,15 @@ namespace file = boost::filesystem;
 class file::path;
 
 
-bool test_directory(const file::path&file_or_directory);
-bool test_file(const file::path&file);
+ORK_EXT(bool) test_directory(const file::path&file_or_directory);
+ORK_EXT(bool) test_file(const file::path&file);
 
 //Create a directory, and all parent directories if these do not already exist.
 //Return true if the directory was created or if it already existed, otherwise false to indicate an error.
 //This function can handle absolute or relative path names.
 //The file version creates the parent directory.
-bool ensure_directory(file::path file_or_directory);
-bool ensure_file(const file::path&file);
+ORK_EXT(bool) ensure_directory(file::path file_or_directory);
+ORK_EXT(bool) ensure_file(const file::path&file);
 
 
 #define ORK_FILE_OPEN_ERR(MSG,FILE_NAME)ORK_STMT(\

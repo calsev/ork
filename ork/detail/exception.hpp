@@ -35,8 +35,8 @@ struct backtrace {
 };
 
 
-backtrace generate_backtrace(const unsigned skip_frames = 0);
-bo_stream &operator << (bo_stream& stream, const backtrace& trace);
+ORK_EXT(backtrace) generate_backtrace(const unsigned skip_frames = 0);
+ORK_EXT(bo_stream&) operator << (bo_stream& stream, const backtrace& trace);
 
 
 /*
