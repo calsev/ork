@@ -8,7 +8,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	error This header can only be included from ork/ork.hpp!
 #endif
 
-#include"ork/detail/config.hpp"
+#include"ork/detail/config_internal.hpp"
 #include"ork/detail/text.hpp"
 #include"ork/detail/exception.hpp"
 

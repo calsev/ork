@@ -14,7 +14,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<iostream>
 #include<codecvt>
 #include<mutex>
-#include"ork/detail/config.hpp"
+#include"ork/detail/config_internal.hpp"
 
 
 #if !ORK_MSC

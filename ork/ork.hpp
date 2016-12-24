@@ -10,7 +10,7 @@ Cumulative header for the ork framework:
 Types and utilities for text, files and logging
 */
 
-#include"ork/detail/config.hpp"
+#include"ork/detail/config_internal.hpp"
 #include"ork/detail/text.hpp"
 #include"ork/detail/exception.hpp"
 #include"ork/detail/tools.hpp"
