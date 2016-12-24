@@ -40,20 +40,22 @@ namespace ork {
 
 
 /*
-A bit confusing; Ork is MIT licensed and statically linked.
-This macro is for use by clients
+This macro is for use internally by ork and by clients
 */
-#ifndef ORK_DLL_API
-#	if ORK_MSC
-#		if ORK_CREATE_DLL//Define to compile DLL
-#			define ORK_DLL_API __declspec(dllexport)
+#ifndef ORK_API
+#	ifndef ORK_DLL
+#		define ORK_API
+#		define ORK_LOCAL
+#	elif ORK_MSC
+#		if ORK_BUILD_ORK//Define to compile DLL
+#			define ORK_API __declspec(dllexport)
 #		else//Default for using DLL
-#			define ORK_DLL_API __declspec(dllimport)
+#			define ORK_API __declspec(dllimport)
 #		endif
-#		define ORK_DLL_LOCAL//Default in VS
+#		define ORK_LOCAL//Default in VS
 #	elif ORK_GCC
-#		define ORK_DLL_API __attribute__ ((visibility ("default")))
-#		define ORK_DLL_LOCAL  __attribute__ ((visibility ("hidden")))//Too bad this is not default
+#		define ORK_API __attribute__ ((visibility ("default")))
+#		define ORK_LOCAL  __attribute__ ((visibility ("hidden")))//Too bad this is not default
 #	else
 #		error Compiler not supported
 #	endif
@@ -62,7 +64,7 @@ This macro is for use by clients
 
 /*
 Sometimes you gotta C
-Usage: ORK_C_LINK ORK_DLL_API int ORK_C_CALL my_func(int arg);
+Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
 */
 #ifndef ORK_C_LINK
 #	ifdef __cplusplus
@@ -71,11 +73,13 @@ Usage: ORK_C_LINK ORK_DLL_API int ORK_C_CALL my_func(int arg);
 #		define ORK_C_LINK extern
 #	endif
 #endif
-#ifndef ORK_C_CALL
+
+
+#ifndef ORK_CALL
 #	if ORK_MSC
-#		define ORK_C_CALL __cdecl
+#		define ORK_CALL __fastcall//Default for x64, __cdecl is default for x86
 #	elif ORK_GCC
-#		define ORK_C_CALL
+#		define ORK_CALL
 #	else
 #		error Compiler not supported
 #	endif
