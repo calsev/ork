@@ -11,7 +11,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"boost/log/sinks/sync_frontend.hpp"
 #include"boost/log/sinks/text_ostream_backend.hpp"
 
-#include"ork/ork.hpp"
 #include"ork/command_line.hpp"
 #include"ork/tagger.hpp"
 #include"ork/file_utils.hpp"
@@ -20,9 +19,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"windows.h"
 #include"DbgHelp.h"
 
-
 namespace ork {
-
 
 /*
 This is the combined implementation file for the common library.
@@ -376,6 +373,17 @@ void logger::flush_all() {
 }
 
 
+logger*_g_log = nullptr;
+int g_log(const string&directory) {
+	static logger log(directory);
+	_g_log = &log;
+	return 0;
+}
+logger& g_log() {
+	return *_g_log;
+}
+
+
 
 /*
 From text.hpp
@@ -385,6 +393,5 @@ string_converter_type&g_string_converter() {//From string_types.hpp
 	static string_converter_type s_convert;
 	return s_convert;
 }
-
 
 }//namespace ork
