@@ -81,6 +81,17 @@ This macro is for use internally by ork and by clients
 #endif
 
 
+/*
+Convenience macro for functions
+*/
+#ifndef ORK_EXT//External
+#	define ORK_EXT(RETVAL) ORK_API RETVAL ORK_CALL
+#endif
+#ifndef ORK_INT//Internal
+#	define ORK_INT(RETVAL) ORK_LOCAL RETVAL ORK_CALL
+#endif
+
+
 namespace ork {
 
 
