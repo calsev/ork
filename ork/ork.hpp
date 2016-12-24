@@ -10,6 +10,7 @@ Cumulative header for the ork framework:
 Types and utilities for text, files and logging
 */
 
+#include"ork/config/config.hpp"
 #include"ork/detail/config_internal.hpp"
 #include"ork/detail/text.hpp"
 #include"ork/detail/exception.hpp"
@@ -36,28 +37,27 @@ namespace ork {
 #endif
 
 
-#ifndef ORK_USE_PUGI//Optional dependency
-#	define ORK_USE_PUGI 1
-#endif
-
-
 /*
 Auto linking, at least in Visual Studio
 */
-#if ORK_MSC
-#	if ORK_DEBUG
-#		pragma comment(lib,"lib_ork-d")
-#	else
-#		pragma comment(lib,"lib_ork")
+#if ORK_AUTO_LINK && ORK_MSC
+#	if !ORK_BUILD_ORK
+#		if ORK_DEBUG
+#			pragma comment(lib,"orkd")
+#		else
+#			pragma comment(lib,"ork")
+#		endif
+#	endif
+#if ORK_AUTO_LINK_3P
+#	pragma comment(lib,"DbgHelp.lib")//For backtrace generation
+#	if ORK_USE_PUGI
+#		if ORK_DEBUG
+#			pragma comment(lib,"pugixmld")
+#		else
+#			pragma comment(lib,"pugixml")
+#		endif
 #	endif
 #endif
-
-
-/*
-For backtrace generation
-*/
-#if ORK_MSC
-#	pragma comment(lib,"DbgHelp.lib")
 #endif
 
 
