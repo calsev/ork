@@ -47,6 +47,17 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 
+#ifndef ORK_CALL
+#	if ORK_MSC
+#		define ORK_CALL __fastcall//Default for x64, __cdecl is default for x86
+#	elif ORK_GCC
+#		define ORK_CALL
+#	else
+#		error Compiler not supported
+#	endif
+#endif
+
+
 /*
 This macro is for use internally by ork and by clients
 */

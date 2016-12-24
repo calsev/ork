@@ -52,17 +52,6 @@ Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
 #endif
 
 
-#ifndef ORK_CALL
-#	if ORK_MSC
-#		define ORK_CALL __fastcall//Default for x64, __cdecl is default for x86
-#	elif ORK_GCC
-#		define ORK_CALL
-#	else
-#		error Compiler not supported
-#	endif
-#endif
-
-
 #ifndef ORK_INLINE//Generates a warning if the function cannot be inlined
 #	if ORK_MSC
 #		define ORK_INLINE __forceinline
