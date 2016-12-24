@@ -40,29 +40,6 @@ namespace ork {
 
 
 /*
-This macro is for use internally by ork and by clients
-*/
-#ifndef ORK_API
-#	ifndef ORK_DLL
-#		define ORK_API
-#		define ORK_LOCAL
-#	elif ORK_MSC
-#		if ORK_BUILD_ORK//Define to compile DLL
-#			define ORK_API __declspec(dllexport)
-#		else//Default for using DLL
-#			define ORK_API __declspec(dllimport)
-#		endif
-#		define ORK_LOCAL//Default in VS
-#	elif ORK_GCC
-#		define ORK_API __attribute__ ((visibility ("default")))
-#		define ORK_LOCAL  __attribute__ ((visibility ("hidden")))//Too bad this is not default
-#	else
-#		error Compiler not supported
-#	endif
-#endif
-
-
-/*
 Sometimes you gotta C
 Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
 */
