@@ -30,7 +30,7 @@ macro(mark_empty_internal _var)
 	set(${_var} "" CACHE INTERNAL "" FORCE)
 endmacro()
 
-macro(detect_option _var _msg _val)
+macro(detect_option_flag _var _msg _val)
 	if(DEFINED ${_var})
 	  option(${_var} "${_msg}" ${${_var}})
 	else()
@@ -60,18 +60,18 @@ endmacro()
 
 
 ##Level 0
-detect_option(ORK_BUILD_BZ2 "Enable building bzip" OFF)
-detect_option(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
-detect_option(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
-detect_option(ORK_BUILD_PUGI "Enable building pugixml" OFF)
-detect_option(ORK_BUILD_ZLIB "Enable building zlib" OFF)
+detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
+detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
+detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
+detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" OFF)
+detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
 
 ##Level 1
-detect_option(ORK_BUILD_ORK "Enable building ork" ON)
-detect_option(ORK_BUILD_PNG "Enable building libpng" OFF)
+detect_option_flag(ORK_BUILD_ORK "Enable building ork" ON)
+detect_option_flag(ORK_BUILD_PNG "Enable building libpng" OFF)
 
 ##Level 2
-detect_option(ORK_BUILD_FT2 "Enable building freetype" OFF)
+detect_option_flag(ORK_BUILD_FT2 "Enable building freetype" OFF)
 
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
