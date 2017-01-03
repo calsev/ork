@@ -78,6 +78,9 @@ macro(install_shared _targ _head)
 endmacro()
 
 
+detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)
+detect_option_path(ORK_3P_BOOST_SRC_DIR "Path of external boost installation" "${CMAKE_SOURCE_DIR}/../boost")
+
 ##Level 0
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
 detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
@@ -173,7 +176,11 @@ set_as_internal(INSTALL_INC_DIR "${CMAKE_INSTALL_PREFIX}/inc")
 set_as_internal(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 detect_option_path(ORK_3P_SOURCE_DIR "Path of third-party directory (location of submodules)" "${CMAKE_CURRENT_SOURCE_DIR}/../..")
-find_3p_path(3P_BOOST_SRC_DIR "boost" "boost")
+if(ORK_EXTERNAL_BOOST)
+	set_as_internal(3P_BOOST_SRC_DIR "${ORK_3P_BOOST_SRC_DIR}")
+else()
+	find_3p_path(3P_BOOST_SRC_DIR "boost" "boost")
+endif()
 find_3p_path(3P_BZ2_SRC_DIR "bz2" "bzip")
 find_3p_path(3P_FT2_SRC_DIR "ft2" "freetype")
 find_3p_path(3P_GLM_SRC_DIR "glm" "glm")
