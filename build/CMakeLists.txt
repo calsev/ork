@@ -60,18 +60,18 @@ endmacro()
 
 
 ##Level 0
-detect_option(ORK_BUILD_BZ2 "Enable building bzip" ON)
+detect_option(ORK_BUILD_BZ2 "Enable building bzip" OFF)
 detect_option(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
 detect_option(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
-detect_option(ORK_BUILD_PUGI "Enable building pugixml" ON)
-detect_option(ORK_BUILD_ZLIB "Enable building zlib" ON)
+detect_option(ORK_BUILD_PUGI "Enable building pugixml" OFF)
+detect_option(ORK_BUILD_ZLIB "Enable building zlib" OFF)
 
 ##Level 1
 detect_option(ORK_BUILD_ORK "Enable building ork" ON)
-detect_option(ORK_BUILD_PNG "Enable building libpng" ON)
+detect_option(ORK_BUILD_PNG "Enable building libpng" OFF)
 
 ##Level 2
-detect_option(ORK_BUILD_FT2 "Enable building freetype" ON)
+detect_option(ORK_BUILD_FT2 "Enable building freetype" OFF)
 
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
