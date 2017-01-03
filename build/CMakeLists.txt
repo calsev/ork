@@ -32,9 +32,15 @@ endmacro()
 
 macro(detect_option_flag _var _msg _val)
 	if(DEFINED ${_var})
-	  option(${_var} "${_msg}" ${${_var}})
+		option(${_var} "${_msg}" ${${_var}})
 	else()
-	  option(${_var} "${_msg}" ${_val})
+		option(${_var} "${_msg}" ${_val})
+	endif()
+endmacro()
+
+macro(detect_option_path _var _msg _val)
+	if(NOT DEFINED ${_var})
+		set(${_var} ${_val} PATH "${_msg}")
 	endif()
 endmacro()
 
@@ -147,12 +153,13 @@ mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
 set_as_internal(CMAKE_DEBUG_POSTFIX "d")
-set_as_internal(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../bin")
+detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
+set_as_internal(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
 set_as_internal(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set_as_internal(INSTALL_INC_DIR "${CMAKE_INSTALL_PREFIX}/inc")
 set_as_internal(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-set_as_internal(3P_SOURCE_DIR "${CMAKE_SOURCE_DIR}/../../3p")
+detect_option_path(3P_SOURCE_DIR "Path of third-party directory (location of submodules)" "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 set_as_internal(3P_BOOST_SRC_DIR "${3P_SOURCE_DIR}/boost")
 set_as_internal(3P_BZ2_SRC_DIR "${3P_SOURCE_DIR}/bz2")
 set_as_internal(3P_FT2_SRC_DIR "${3P_SOURCE_DIR}/ft2")
