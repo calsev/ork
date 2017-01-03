@@ -3,10 +3,10 @@ project(ork CXX)
 
 set(VERSION "0.0.0") #No formal release yet
 
-detect_option(ORK_BUILD_SHARED "Building shared library instead of static" ON)
-detect_option(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
-detect_option(ORK_AUTO_LINK_3P "If auto-linking, also auto-link any built dependencies" ON)
-detect_option(ORK_USE_PUGI "Enable Pugi XML usage" ON)
+detect_option_flag(ORK_BUILD_SHARED "Building shared library instead of static" ON)
+detect_option_flag(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
+detect_option_flag(ORK_AUTO_LINK_3P "If auto-linking, also auto-link any built dependencies" ON)
+detect_option_flag(ORK_USE_PUGI "Enable Pugi XML usage" ON)
 
 
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
