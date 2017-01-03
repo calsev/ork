@@ -30,6 +30,7 @@ macro(mark_empty_internal _var)
 	set(${_var} "" CACHE INTERNAL "" FORCE)
 endmacro()
 
+
 macro(detect_option_flag _var _msg _val)
 	if(DEFINED ${_var})
 		option(${_var} "${_msg}" ${${_var}})
@@ -43,6 +44,18 @@ macro(detect_option_path _var _msg _val)
 		set(${_var} ${_val} PATH "${_msg}")
 	endif()
 endmacro()
+
+
+macro(find_3p_path _var _val1 _val2)
+	if(EXISTS "${ORK_3P_SOURCE_DIR}/${_val1}")
+		set_as_internal(${_var} "${ORK_3P_SOURCE_DIR}/${_val1}")
+	elseif(EXISTS "${ORK_3P_SOURCE_DIR}/${_val2}")
+		set_as_internal(${_var} "${ORK_3P_SOURCE_DIR}/${_val2}")
+	else()
+		message(FATAL_ERROR "Cannot find third-party directory ${_val1} or ${_val2}")
+	endif()
+endmacro()
+
 
 macro(install_bin _targ)
 	if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
