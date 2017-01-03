@@ -69,7 +69,7 @@ endmacro()
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
 detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
 detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
-detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" OFF)
+detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" ON)
 detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
 
 ##Level 1

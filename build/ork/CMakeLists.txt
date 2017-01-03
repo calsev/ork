@@ -7,6 +7,9 @@ detect_option_flag(ORK_BUILD_SHARED "Building shared library instead of static" 
 detect_option_flag(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
 detect_option_flag(ORK_AUTO_LINK_3P "If auto-linking, also auto-link any built dependencies" ON)
 detect_option_flag(ORK_USE_PUGI "Enable Pugi XML usage" ON)
+if(ORK_USE_PUGI AND NOT ORK_BUILD_PUGI)
+	message(FATAL_ERROR "Ork using Pugi but Pugi is not being built")
+endif()
 
 
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
