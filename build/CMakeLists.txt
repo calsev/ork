@@ -187,7 +187,7 @@ else()
 endif()
 find_3p_path(ORK_BUILD_BZ2 3P_BZ2_SRC_DIR "bz2" "bzip")
 find_3p_path(ORK_BUILD_FT2 3P_FT2_SRC_DIR "ft2" "freetype")
-find_3p_path("ON" 3P_GLM_SRC_DIR "glm" "glm")
+find_3p_path(ORK_BUILD_ORK 3P_GLM_SRC_DIR "glm" "glm") #Ork requires GLM
 find_3p_path(ORK_BUILD_JPEG 3P_JPEG_SRC_DIR "jpeg" "jpeg-turbo")
 find_3p_path(ORK_BUILD_ORK 3P_ORK_SRC_DIR "ork" "ork")
 find_3p_path(ORK_BUILD_PNG 3P_PNG_SRC_DIR "png" "libpng")
