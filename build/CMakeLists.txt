@@ -101,8 +101,8 @@ project(third_party)
 
 #Must be tested after project
 if(MSVC_VERSION)
-	if(NOT ${MSVC_VERSION} EQUAL 1900)
-		message(FATAL_ERROR "Error: Only Visual Studio 2015 is supported")
+	if(${MSVC_VERSION} LESS 1800)
+		message(FATAL_ERROR "Error: Only Visual Studio 2013 and above are supported")
 	endif()
 elseif(NOT CMAKE_C_COMPILER_ID)
 	message(FATAL_ERROR "Compiler not found")
