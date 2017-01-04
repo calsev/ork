@@ -16,20 +16,23 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/detail/config_internal.hpp"
 #include"ork/detail/text.hpp"
 
-namespace ork {
+#if ORK_MSC
+#pragma warning(push)
+#pragma warning(disable : 4251) //DLL interface for X needs DLL interface for Y
+#endif
 
+namespace ork {
 
 typedef std::runtime_error exception;
 
-
-struct stack_frame {
+struct ORK_ORK_API stack_frame {
 	bstring function;
 	bstring filename;
 	unsigned line;
 };
 
 
-struct backtrace {
+struct ORK_ORK_API backtrace {
 	std::deque<stack_frame> frames;
 	bstring str() const;
 };
@@ -56,3 +59,7 @@ Exceptions do not support unicode!
 )
 
 }//namespace ork
+
+#if ORK_MSC
+#pragma warning(pop)
+#endif
