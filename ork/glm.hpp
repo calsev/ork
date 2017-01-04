@@ -17,31 +17,31 @@ struct dunit3 {
 private:
 	glm::dvec3 _vec;
 public:
-	explicit dunit3(const glm::dvec3&vector) :_vec(glm::normalize(vector)) {}
-	dunit3(const double x, const double y, const double z) :_vec(glm::normalize(glm::dvec3(x, y, z))) {}
+	ORK_INLINE explicit dunit3(const glm::dvec3&vector) :_vec(glm::normalize(vector)) {}
+	ORK_INLINE dunit3(const double x, const double y, const double z) :_vec(glm::normalize(glm::dvec3(x, y, z))) {}
 public:
-	const glm::dvec3&get()const {
+	ORK_INLINE const glm::dvec3&get()const {
 		return _vec;
 	}
-	double&operator[](const size_t index) {
+	ORK_INLINE double&operator[](const size_t index) {
 		return _vec[static_cast<unsigned>(index)];
 	}
-	const double&operator[](const size_t index)const {
+	ORK_INLINE const double&operator[](const size_t index)const {
 		return _vec[static_cast<unsigned>(index)];
 	}
-	double x()const { return _vec.x; }
-	double y()const { return _vec.y; }
-	double z()const { return _vec.z; }
-	const double&operator[](const unsigned index) const {//unsigned because glm uses int indices
+	ORK_INLINE double x()const { return _vec.x; }
+	ORK_INLINE double y()const { return _vec.y; }
+	ORK_INLINE double z()const { return _vec.z; }
+	ORK_INLINE const double&operator[](const unsigned index) const {//unsigned because glm uses int indices
 		return _vec[index];
 	}
-	dunit3 operator-()const {
+	ORK_INLINE dunit3 operator-()const {
 		return dunit3(-_vec);
 	}
-	unsigned size()const {//unsigned for consistency with glm
+	ORK_INLINE unsigned size()const {//unsigned for consistency with glm
 		return 3;
 	}
-	unsigned length()const {//For consistency with glm
+	ORK_INLINE unsigned length()const {//For consistency with glm
 		return 3;
 	}
 };
