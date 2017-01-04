@@ -47,7 +47,7 @@ template<unsigned order, unsigned inverse_alpha>struct butterworth;
 
 template<>
 struct butterworth<2, 4> : public detail::ring<3> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.29289321881333563000,
 			0.58578643762667126000,
@@ -68,7 +68,7 @@ struct butterworth<2, 4> : public detail::ring<3> {
 };
 
 template<>struct butterworth<2, 8> :public detail::ring<3> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.09763107689932175300,
 			0.19526215379864351000,
@@ -89,7 +89,7 @@ template<>struct butterworth<2, 8> :public detail::ring<3> {
 };
 
 template<>struct butterworth<2, 16> :public detail::ring<3> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.02995247960866337400,
 			0.05990495921732674800,
@@ -110,7 +110,7 @@ template<>struct butterworth<2, 16> :public detail::ring<3> {
 };
 
 template<>struct butterworth<2, 32> :public detail::ring<3> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.00831055513615891820,
 			0.01662111027231783600,
@@ -131,7 +131,7 @@ template<>struct butterworth<2, 32> :public detail::ring<3> {
 };
 
 template<>struct butterworth<4, 4> :public detail::ring<5> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.09398064470252343000,
 			0.37592257881009372000,
@@ -156,7 +156,7 @@ template<>struct butterworth<4, 4> :public detail::ring<5> {
 };
 
 template<>struct butterworth<4, 8> :public detail::ring<5> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.01020853419306819500,
 			0.04083413677227278000,
@@ -181,7 +181,7 @@ template<>struct butterworth<4, 8> :public detail::ring<5> {
 };
 
 template<>struct butterworth<4, 16> :public detail::ring<5> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.00092507968628719654,
 			0.00370031874514878620,
@@ -206,7 +206,7 @@ template<>struct butterworth<4, 16> :public detail::ring<5> {
 };
 
 template<>struct butterworth<4, 32> :public detail::ring<5> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.00006661889502014782,
 			0.00026647558008059127,
@@ -231,7 +231,7 @@ template<>struct butterworth<4, 32> :public detail::ring<5> {
 };
 
 template<>struct butterworth<8, 4> :public detail::ring<9> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.00927650977743330230,
 			0.07421207821946641800,
@@ -264,7 +264,7 @@ template<>struct butterworth<8, 4> :public detail::ring<9> {
 };
 
 template<>struct butterworth<8, 8> :public detail::ring<9> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.00010881080315039874,
 			0.00087048642520318989,
@@ -297,7 +297,7 @@ template<>struct butterworth<8, 8> :public detail::ring<9> {
 };
 
 template<>struct butterworth<8, 16> :public detail::ring<9> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.00000095022413522387,
 			0.00000760179308179098,
@@ -330,7 +330,7 @@ template<>struct butterworth<8, 16> :public detail::ring<9> {
 };
 
 template<>struct butterworth<8, 32> :public detail::ring<9> {
-	double tick(double x) {
+	ORK_API double tick(double x) {
 		static const std::array<double, BUFF_SIZE> A = {
 			0.00000000727990092326,
 			0.00000005823920738611,

@@ -113,7 +113,7 @@ void visit_directory(const file::path&dir, const bool recursive, const bool sort
 
 
 //Returns the subdirectory that sorts to the top
-bool top_subdirectory(const file::path&dir, file::path&p);
+ORK_ORK_EXT(bool) top_subdirectory(const file::path&dir, file::path&p);
 
 
 template<class T>

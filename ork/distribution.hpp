@@ -15,28 +15,28 @@ Class that generates some random distributions
 Thread safe
 */
 class random {
-protected:
+private:
 	struct impl;
-protected:
+private:
 	std::shared_ptr<impl>_pimpl;
 public:
-	random();
-	~random();
+	ORK_ORK_API random();
+	ORK_ORK_API ~random();
 public:
-	double uniform_prob();
-	double triangular_prob();//Symmetric about 0.5
-	bool uniform_true(const double prob);
+	ORK_ORK_API double uniform_prob();
+	ORK_ORK_API double triangular_prob();//Symmetric about 0.5
+	ORK_ORK_API bool uniform_true(const double prob);
 
-	int uniform(const int max);//[0, ..., max]
-	size_t uniform(const size_t max);//[0, ..., max]
+	ORK_ORK_API int uniform(const int max);//[0, ..., max]
+	ORK_ORK_API size_t uniform(const size_t max);//[0, ..., max]
 
-	int uniform_index(const int min, const int max);//[min, ..., max]
-	size_t uniform_index(const size_t min, const size_t max);//[min, ..., max]
+	ORK_ORK_API int uniform_index(const int min, const int max);//[min, ..., max]
+	ORK_ORK_API size_t uniform_index(const size_t min, const size_t max);//[min, ..., max]
 
-	size_t discrete_index(const std::vector<double>&likelihoods);//Weighted selection
+	ORK_ORK_API size_t discrete_index(const std::vector<double>&likelihoods);//Weighted selection
 };
 
-random&g_random();//Static because construction is expensive
+ORK_ORK_EXT(random&) g_random();//Static because construction is expensive
 
 
 template<typename T>

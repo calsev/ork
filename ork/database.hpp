@@ -10,8 +10,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-bstring uuid2string(const char*const value);
-std::vector<char> string2uuid(const bstring&val);
+ORK_ORK_EXT(bstring) uuid2string(const char*const value);
+ORK_ORK_EXT(std::vector<char>) string2uuid(const bstring&val);
 
 #define ORK_SQ_ALWAYS(CODE, MSG) ORK_STMT(\
 	const int sqlite_status(CODE);\

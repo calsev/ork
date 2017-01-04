@@ -30,7 +30,7 @@ enum class rotation_direction {
 	counter_clockwise
 };
 
-rotation_direction operator-(const rotation_direction dir);
+ORK_ORK_EXT(rotation_direction) operator-(const rotation_direction dir);
 
 enum class angle {
 	  radian
@@ -69,17 +69,17 @@ bool angles_advance_clockwise(const double start_angle, double mid_angle, double
 namespace GLM {
 namespace MC {
 
-const glm::dmat3x3&lcs_mat(const orientation axis);
-glm::dvec3 to_lcs(const glm::dvec3&vec, const orientation axis);
-glm::dvec3 to_lcs(const double val, const orientation axis);
+ORK_ORK_EXT(const glm::dmat3x3&) lcs_mat(const orientation axis);
+ORK_ORK_EXT(glm::dvec3) to_lcs(const glm::dvec3&vec, const orientation axis);
+ORK_ORK_EXT(glm::dvec3) to_lcs(const double val, const orientation axis);
 
-const glm::dmat3x3&wcs_mat(const orientation axis);
-glm::dvec3 to_wcs(const glm::dvec3&vec, const orientation axis);
-glm::dvec3 to_wcs(const double val, const orientation axis);
+ORK_ORK_EXT(const glm::dmat3x3&) wcs_mat(const orientation axis);
+ORK_ORK_EXT(glm::dvec3) to_wcs(const glm::dvec3&vec, const orientation axis);
+ORK_ORK_EXT(glm::dvec3) to_wcs(const double val, const orientation axis);
 
 
 //Given an MC standard view, return the directions in the plane.
-struct view {
+struct ORK_ORK_API view {
 	union {
 		std::array<orientation, 4>dirs;
 		struct {//Must remain in counter-clockwise order (see rotate)
@@ -93,33 +93,33 @@ struct view {
 	view(const orientation r, const orientation u, const orientation l, const orientation d) :right(r), up(u), left(l), down(d) {}
 };
 
-const view&get_view(const orientation axis);
+ORK_ORK_EXT(const view&) get_view(const orientation axis);
 
-struct rotated_view :public view {
+struct ORK_ORK_API rotated_view :public view {
 	rotation_direction direction;
 	int rotations;
 	rotated_view(const rotation_direction dir, const int num) :direction(dir), rotations(num) {}
 };
 
 
-rotated_view rotated(const view&v, const rotation_direction dir, const int rotations);
+ORK_ORK_EXT(rotated_view) rotated(const view&v, const rotation_direction dir, const int rotations);
 
 
 }//namespace MC
 
 
  //These are not projections because we remain 3D, although if we assume RH/LH we could just make them 2D
-glm::dvec3 point_on_plane(const glm::dvec3&vec, const orientation axis);
-glm::dvec3 point_on_plane(const glm::dvec3&vec, const GLM::dunit3&normal);
+ORK_ORK_EXT(glm::dvec3) point_on_plane(const glm::dvec3&vec, const orientation axis);
+ORK_ORK_EXT(glm::dvec3) point_on_plane(const glm::dvec3&vec, const GLM::dunit3&normal);
 
 
-bool points_advance_clockwise(const glm::dvec2&begin, const glm::dvec2&end, const glm::dvec2&center);
-bool points_advance_clockwise(const glm::dvec3&begin, const glm::dvec3&end, const glm::dvec3&center, const GLM::dunit3&normal);
+ORK_ORK_EXT(bool) points_advance_clockwise(const glm::dvec2&begin, const glm::dvec2&end, const glm::dvec2&center);
+ORK_ORK_EXT(bool) points_advance_clockwise(const glm::dvec3&begin, const glm::dvec3&end, const glm::dvec3&center, const GLM::dunit3&normal);
 
 
-double point_on_axis(const glm::dvec3&pos, orientation axis);
-double point_on_axis(const glm::dvec3&pos, const GLM::dunit3&axis);
-double point_on_axis(const glm::dvec3&pos, const glm::dvec3&axis);
+ORK_ORK_EXT(double) point_on_axis(const glm::dvec3&pos, orientation axis);
+ORK_ORK_EXT(double) point_on_axis(const glm::dvec3&pos, const GLM::dunit3&axis);
+ORK_ORK_EXT(double) point_on_axis(const glm::dvec3&pos, const glm::dvec3&axis);
 
 
 class bounding_box {

@@ -135,10 +135,3 @@ Convenience macro for functions
 #ifndef ORK_INT//Internal
 #	define ORK_INT(RETVAL) ORK_LOCAL RETVAL ORK_CALL
 #endif
-
-
-namespace ork {
-
-
-
-}//namespace ork
