@@ -49,16 +49,16 @@ public:
 ORK_INLINE glm::dvec3 operator*(const double lhs, const dunit3&rhs) {
 	return lhs*rhs.get();
 }
-o_stream&operator<<(o_stream&stream, const dunit3&vec);
+ORK_ORK_EXT(o_stream&) operator<<(o_stream&stream, const dunit3&vec);
 
 
 //Simply tired of defining these
-extern const dunit3 pos_x;
-extern const dunit3 neg_x;
-extern const dunit3 pos_y;
-extern const dunit3 neg_y;
-extern const dunit3 pos_z;
-extern const dunit3 neg_z;
+ORK_EXTERN const dunit3 pos_x;
+ORK_EXTERN const dunit3 neg_x;
+ORK_EXTERN const dunit3 pos_y;
+ORK_EXTERN const dunit3 neg_y;
+ORK_EXTERN const dunit3 pos_z;
+ORK_EXTERN const dunit3 neg_z;
 
 
 //GLM version of loops, needed because GLM uses length() and unsigned as the type
@@ -272,25 +272,25 @@ ORK_INLINE bool greater_equal<double>(const double&lhs, const double&rhs) {
 
 
 //Rotates a vector about the origin, such that normal would become new_normal if subject to the same rotation
-glm::dvec3 rotate(const glm::dvec3&vec, const dunit3&normal, const dunit3&new_normal);
+ORK_ORK_EXT(glm::dvec3) rotate(const glm::dvec3&vec, const dunit3&normal, const dunit3&new_normal);
 
 
-glm::dvec3 proj_on_plane(const glm::dvec3&vec, const GLM::dunit3&normal);
+ORK_ORK_EXT(glm::dvec3) proj_on_plane(const glm::dvec3&vec, const GLM::dunit3&normal);
 
 
 /*
 Orientation stuff
 */
-const dunit3&orientation2direction(orientation axis);
+ORK_ORK_EXT(const dunit3&) orientation2direction(orientation axis);
 
 
 }//namespace GLM
 
-string to_string(const glm::dvec3&vec);
+ORK_ORK_EXT(string) to_string(const glm::dvec3&vec);
 
 }//namespace ork
 
 namespace glm {
-ork::o_stream&operator<<(ork::o_stream&stream, const glm::dvec2&vec);
-ork::o_stream&operator<<(ork::o_stream&stream, const glm::dvec3&vec);
+ORK_ORK_EXT(ork::o_stream&) operator<<(ork::o_stream&stream, const glm::dvec2&vec);
+ORK_ORK_EXT(ork::o_stream&) operator<<(ork::o_stream&stream, const glm::dvec3&vec);
 }

@@ -11,18 +11,18 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 namespace ork {
 
-double mm2inch(double mm);
+ORK_ORK_EXT(double) mm2inch(double mm);
 
 //Given an angle in radians, return that angle in degrees
-double rad2deg(double rad);
+ORK_ORK_EXT(double) rad2deg(double rad);
 
 //Given an angle in degrees, return that angle in radians
-double deg2rad(double deg);
+ORK_ORK_EXT(double) deg2rad(double deg);
 
 //Given an angle in Radians, return the equivalent angle on [0, 2*pi]
-double simple_angle(double angle);
+ORK_ORK_EXT(double) simple_angle(double angle);
 
-string to_dimension(const double coord);//Fixed point for export
+ORK_ORK_EXT(string) to_dimension(const double coord);//Fixed point for export
 
 
 enum class rotation_direction {
@@ -123,87 +123,89 @@ double point_on_axis(const glm::dvec3&pos, const glm::dvec3&axis);
 
 
 class bounding_box {
-protected:
+private:
 	glm::dvec3 _min_pt;
 	glm::dvec3 _max_pt;
 public:
-	bounding_box() : _min_pt(0., 0., 0.), _max_pt(0., 0., 0.) {}
-	bounding_box(const glm::dvec3&v1, const glm::dvec3&v2);
-	bounding_box(const bounding_box&rhs) : _min_pt(rhs._min_pt), _max_pt(rhs._max_pt) {};
-	bounding_box&operator=(const bounding_box&rhs) {
+	ORK_INLINE bounding_box() : _min_pt(0., 0., 0.), _max_pt(0., 0., 0.) {}
+	ORK_ORK_API bounding_box(const glm::dvec3&v1, const glm::dvec3&v2);
+	ORK_INLINE bounding_box(const bounding_box&rhs) : _min_pt(rhs._min_pt), _max_pt(rhs._max_pt) {};
+	ORK_INLINE bounding_box&operator=(const bounding_box&rhs) {
 		_min_pt = rhs._min_pt;
 		_max_pt = rhs._max_pt;
 		return *this;
 	}
 public:
-	const glm::dvec3&min_pt()const {
+	ORK_INLINE const glm::dvec3&min_pt()const {
 		return _min_pt;
 	}
-	const glm::dvec3&max_pt()const {
+	ORK_INLINE const glm::dvec3&max_pt()const {
 		return _max_pt;
 	}
-	glm::dvec3 mid_pt() const;
-	double mid_pt(const orientation axis)const;
-	double mid_pt(const glm::dvec3&direction)const;
-	double mid_pt(const GLM::dunit3&direction)const;
-	double max_corner_distance()const;
-	double range_on_axis(const orientation axis)const;
-	double range_on_axis(const glm::dvec3&direction)const;
-	double range_on_axis(const GLM::dunit3&direction)const;
-	double limit_on_axis(const orientation axis)const;
-	double limit_on_axis(const glm::dvec3&direction)const;
-	double limit_on_axis(const GLM::dunit3&direction)const;
-	bool strictly_contained_in(const bounding_box&other)const;
-	bool strictly_contains(const bounding_box&other)const;
-	bool strictly_overlaps(const bounding_box&other)const;//Neither inside nor outside
-	bool weakly_contained_in(const bounding_box&other)const;
-	bool weakly_contains(const bounding_box&other)const;
-	bool weakly_overlaps(const bounding_box&other)const;
-	double shortest_side()const;
-	double volume()const;
-	void grow(const orientation axis, double depth);
-	void shrink(const orientation axis, double depth);
-	void resize(const orientation axis, double depth);
+	ORK_ORK_API glm::dvec3 mid_pt() const;
+	ORK_ORK_API double mid_pt(const orientation axis)const;
+	ORK_ORK_API double mid_pt(const glm::dvec3&direction)const;
+	ORK_ORK_API double mid_pt(const GLM::dunit3&direction)const;
+	ORK_ORK_API double max_corner_distance()const;
+	ORK_ORK_API double range_on_axis(const orientation axis)const;
+	ORK_ORK_API double range_on_axis(const glm::dvec3&direction)const;
+	ORK_ORK_API double range_on_axis(const GLM::dunit3&direction)const;
+	ORK_ORK_API double limit_on_axis(const orientation axis)const;
+	ORK_ORK_API double limit_on_axis(const glm::dvec3&direction)const;
+	ORK_ORK_API double limit_on_axis(const GLM::dunit3&direction)const;
+	ORK_ORK_API bool strictly_contained_in(const bounding_box&other)const;
+	ORK_ORK_API bool strictly_contains(const bounding_box&other)const;
+	ORK_ORK_API bool strictly_overlaps(const bounding_box&other)const;//Neither inside nor outside
+	ORK_ORK_API bool weakly_contained_in(const bounding_box&other)const;
+	ORK_ORK_API bool weakly_contains(const bounding_box&other)const;
+	ORK_ORK_API bool weakly_overlaps(const bounding_box&other)const;
+	ORK_ORK_API double shortest_side()const;
+	ORK_ORK_API double volume()const;
+	ORK_ORK_API void grow(const orientation axis, double depth);
+	ORK_ORK_API void shrink(const orientation axis, double depth);
+	ORK_ORK_API void resize(const orientation axis, double depth);
 };
 
-bool operator==(const bounding_box&lhs, const bounding_box&rhs);
+ORK_ORK_EXT(bool) operator==(const bounding_box&lhs, const bounding_box&rhs);
 
-bounding_box operator|(const bounding_box&lhs, const bounding_box&rhs);
+ORK_ORK_EXT(bounding_box) operator|(const bounding_box&lhs, const bounding_box&rhs);
 
-string bounding_box2string(const bounding_box&box);
+ORK_ORK_EXT(string) bounding_box2string(const bounding_box&box);
 
-o_stream&operator<<(o_stream&strm, const bounding_box&);
+ORK_ORK_EXT(o_stream&) operator<<(o_stream&strm, const bounding_box&);
 
 
 //This is a minimal replacement for acis interval
 class interval {
-protected:
+private:
 	double _min;
 	double _max;
 public:
-	interval(const double p1, const double p2) :_min(p1 < p2 ? p1 : p2), _max(p1 < p2 ? p2 : p1) {}
+	ORK_INLINE interval(const double p1, const double p2) :_min(p1 < p2 ? p1 : p2), _max(p1 < p2 ? p2 : p1) {}
 public:
-	double min()const {
+	ORK_INLINE double min()const {
 		return _min;
 	}
-	double max()const {
+	ORK_INLINE double max()const {
 		return _max;
 	}
-	double length()const {
+	ORK_INLINE double length()const {
 		return _max - _min;
 	}
 };
 
 
-interval project_box_on_axis(const glm::dvec3&p1, const glm::dvec3&p2, const GLM::dunit3&axis);
+ORK_ORK_EXT(interval) project_box_on_axis(const glm::dvec3&p1, const glm::dvec3&p2, const GLM::dunit3&axis);
 
 
 //Either unions or a virtual base, we go low-level here
-struct segment {
+struct ORK_API segment {
+public:
 	enum type {
 		line,
 		arc
 	};
+public:
 	type geometry;
 	//'unions' for line and arc
 	glm::dvec3 begin_center;
@@ -214,7 +216,7 @@ struct segment {
 	double begin_rad;
 	double sweep_rad;
 public:
-	segment(const type geo) :geometry(geo), begin_center(0.), end(0.), normal(orientation::neg_z), radius(0.), begin_rad(0.), sweep_rad(0.) {}
+	explicit segment(const type geo) :geometry(geo), begin_center(0.), end(0.), normal(orientation::neg_z), radius(0.), begin_rad(0.), sweep_rad(0.) {}
 	segment(const glm::dvec3&begin, const glm::dvec3&end) :geometry(type::line), begin_center(begin), end(end), normal(orientation::neg_z), radius(0.), begin_rad(0.), sweep_rad(0.) {}
 	segment(const glm::dvec3&center, const orientation normal, const double rad, const double begin_angle, const double end_angle)
 		:geometry(type::arc), begin_center(center), end(0.), normal(normal), radius(rad), begin_rad(begin_angle), sweep_rad(end_angle) {}
@@ -222,19 +224,19 @@ public:
 
 
 class chain {
-protected:
+private:
 	std::vector<segment>_segments;
 public:
-	chain() :_segments() {}
-	chain(chain&&other) :_segments(std::move(other._segments)) {}
+	ORK_INLINE chain() :_segments() {}
+	ORK_INLINE chain(chain&&other) :_segments(std::move(other._segments)) {}
 public:
-	chain&operator=(chain&&other) {
+	ORK_INLINE chain&operator=(chain&&other) {
 		_segments = std::move(other._segments);
 		return *this;
 	}
-	const std::vector<segment>&segments()const { return _segments; }
-	std::vector<segment>&segments(){ return _segments; }
-	void push_back(const segment&s) { _segments.push_back(s); }
+	ORK_INLINE const std::vector<segment>&segments()const { return _segments; }
+	ORK_INLINE std::vector<segment>&segments(){ return _segments; }
+	ORK_INLINE void push_back(const segment&s) { _segments.push_back(s); }
 };
 
 
