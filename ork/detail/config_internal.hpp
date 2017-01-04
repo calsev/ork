@@ -101,10 +101,18 @@ Plain versions are for use by clients
 
 
 /*
+For global exports
+*/
+#ifndef ORK_EXTERN
+#	define ORK_EXTERN extern ORK_API
+#endif
+
+
+/*
 For template exports
 */
 #ifndef ORK_EXT_TEMP
-#	if ORK_ORK_DLL && !ORK_BUILD_ORK && ORK_MSC
+#	if !ORK_BUILD_ORK && ORK_MSC
 #		define ORK_EXT_TEMP extern template
 #	else
 #		define ORK_EXT_TEMP template
