@@ -2,6 +2,11 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
+#if _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4996) //Boost unsafe parameters
+#endif
+
 #include<thread>
 #include<boost/random.hpp>
 
@@ -103,3 +108,7 @@ random&g_random() {
 
 
 }//namespace ork
+
+#if ORK_MSC
+#pragma warning(pop)
+#endif
