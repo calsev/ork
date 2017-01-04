@@ -5,6 +5,11 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 #include"ork/ork.hpp"
 
+#if ORK_MSC
+#pragma warning(push)
+#pragma warning(disable : 4251) //DLL interface for X needs DLL interface for Y
+#endif
+
 namespace ork {
 
 
@@ -27,21 +32,21 @@ namespace html {
 
 
 //Base class for html stuff
-struct exportable {
+struct ORK_ORK_API exportable {
 public:
 	bstring style = BORK("");
 	bool col_span = false;//Used only if this is inside a table
 public:
 	virtual ~exportable() {}
 	exportable() {}
-	exportable(const bstring&style_) :style(style_) {}
+	explicit exportable(const bstring&style_) :style(style_) {}
 	exportable(const bstring&style_, const bool span) :style(style_), col_span(span) {}
 public:
 	virtual std::ostream& export_html(std::ostream&out)const = 0;
 };
 
 
-struct pair : public exportable {
+struct ORK_ORK_API pair : public exportable {
 public:
 	bstring key;
 	bstring value;
@@ -53,7 +58,7 @@ public:
 };
 
 
-struct string : public exportable {
+struct ORK_ORK_API string : public exportable {
 public:
 	bstring text = BORK("");
 public:
@@ -64,7 +69,7 @@ public:
 };
 
 
-struct heading : public string {
+struct ORK_ORK_API heading : public string {
 public:
 	unsigned level = 1;
 public:
@@ -75,7 +80,7 @@ public:
 };
 
 
-struct page_break : public exportable {
+struct ORK_ORK_API page_break : public exportable {
 public:
 public:
 public:
@@ -83,7 +88,7 @@ public:
 };
 
 
-struct padding {
+struct ORK_ORK_API padding {
 public:
 	int top = 0;
 	int right = 0;
@@ -97,7 +102,7 @@ public:
 };
 
 
-struct image : public exportable {
+struct ORK_ORK_API image : public exportable {
 public:
 	bstring source = BORK("");
 	bstring alt_text = BORK("");
@@ -111,7 +116,7 @@ public:
 };
 
 
-struct style : public exportable {
+struct ORK_ORK_API style : public exportable {
 public:
 	static const unsigned bold = 0x1<<0;
 	static const unsigned serif = 0x1<<1;
@@ -136,7 +141,7 @@ public:
 };
 
 
-struct image_style : public exportable {
+struct ORK_ORK_API image_style : public exportable {
 public:
 	bstring name = BORK("");
 	align alignment = align::left;
@@ -148,7 +153,7 @@ public:
 };
 
 
-struct div_style : public exportable {
+struct ORK_ORK_API div_style : public exportable {
 public:
 	bstring name = BORK("");
 	unsigned width_px = 0;
@@ -161,7 +166,7 @@ public:
 };
 
 
-struct table_style : public exportable {
+struct ORK_ORK_API table_style : public exportable {
 public:
 	bstring name = BORK("");
 	unsigned border_width = 0;
@@ -186,7 +191,7 @@ public:
 };
 
 
-struct line_style : public exportable {
+struct ORK_ORK_API line_style : public exportable {
 public:
 	bstring name = BORK("");
 	unsigned width_pct = 0;
@@ -202,7 +207,7 @@ public:
 };
 
 
-struct style_set : public exportable {
+struct ORK_ORK_API style_set : public exportable {
 public:
 	std::vector<html::style>styles;
 	std::vector<image_style>image_styles;
@@ -216,7 +221,7 @@ public:
 };
 
 
-struct header : public exportable {
+struct ORK_ORK_API header : public exportable {
 public:
 	bstring author = BORK("");
 	bstring description = BORK("");
@@ -229,7 +234,7 @@ public:
 };
 
 
-struct line : public exportable {
+struct ORK_ORK_API line : public exportable {
 public:
 	//unsigned width_px = 80;
 	//bool align_left = false;
@@ -240,7 +245,7 @@ public:
 };
 
 
-struct label : public exportable {
+struct ORK_ORK_API label : public exportable {
 public:
 	bstring text;
 public:
@@ -250,12 +255,12 @@ public:
 };
 
 
-struct table_element {
+struct ORK_ORK_API table_element {
 	static void export_html(const exportable*element, const size_t remain_col, std::ostream&out);
 };
 
 
-struct table : public exportable {
+struct ORK_ORK_API table : public exportable {
 public:
 	typedef std::unique_ptr<exportable>ptr_type;
 	typedef std::vector<ptr_type>row_type;
@@ -269,6 +274,7 @@ protected:
 public:
 	table(const bstring&style, const unsigned num_column) :_table_style(style), _num_column(num_column) {}
 	table(const bstring&style, const unsigned num_column, const unsigned pad, const unsigned space) :_table_style(style), _num_column(num_column), padding(pad), spacing(space) {}
+	ORK_MOVE_ONLY_5(table, padding, spacing, _table_style, _num_column, _rows);
 public:
 	size_t num_column()const {
 		return _num_column;
@@ -283,7 +289,7 @@ public:
 };
 
 
-struct div : public exportable {
+struct ORK_ORK_API div : public exportable {
 public:
 	typedef std::unique_ptr<exportable>ptr_type;
 public:
@@ -296,7 +302,7 @@ public:
 };
 
 
-struct body : public exportable {
+struct ORK_ORK_API body : public exportable {
 public:
 	std::vector<div>divs;
 public:
@@ -307,7 +313,7 @@ public:
 };
 
 
-struct document : public exportable {
+struct ORK_ORK_API document : public exportable {
 public:
 	header head;
 	html::body body;
@@ -322,3 +328,7 @@ public:
 
 }//namespace html
 }//namespace ork
+
+#if ORK_MSC
+#pragma warning(pop)
+#endif
