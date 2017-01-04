@@ -59,14 +59,33 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 
 /*
-This macro is for use internally by ork and by clients
+ORK_ORK versions are for internal use by ork
+Plain versions are for use by clients
 */
+#ifndef ORK_ORK_API
+#	ifndef ORK_ORK_DLL
+#		define ORK_ORK_API
+#		define ORK_ORK_LOCAL
+#	elif ORK_MSC
+#		if ORK_BUILD_ORK//Define to compile Ork DLL
+#			define ORK_ORK_API __declspec(dllexport)
+#		else//Default for using DLL
+#			define ORK_ORK_API __declspec(dllimport)
+#		endif
+#		define ORK_ORK_LOCAL//Default in VS
+#	elif ORK_GCC
+#		define ORK_ORK_API __attribute__ ((visibility ("default")))
+#		define ORK_ORK_LOCAL  __attribute__ ((visibility ("hidden")))//Too bad this is not default
+#	else
+#		error Compiler not supported
+#	endif
+#endif
 #ifndef ORK_API
 #	ifndef ORK_DLL
 #		define ORK_API
 #		define ORK_LOCAL
 #	elif ORK_MSC
-#		if ORK_BUILD_ORK//Define to compile DLL
+#		if ORK_BUILD_DLL//Define to compile client DLL
 #			define ORK_API __declspec(dllexport)
 #		else//Default for using DLL
 #			define ORK_API __declspec(dllimport)
@@ -84,6 +103,12 @@ This macro is for use internally by ork and by clients
 /*
 Convenience macro for functions
 */
+#ifndef ORK_ORK_EXT//External
+#	define ORK_ORK_EXT(RETVAL) ORK_ORK_API RETVAL ORK_CALL
+#endif
+#ifndef ORK_ORK_INT//Internal
+#	define ORK_ORK_INT(RETVAL) ORK_ORK_LOCAL RETVAL ORK_CALL
+#endif
 #ifndef ORK_EXT//External
 #	define ORK_EXT(RETVAL) ORK_API RETVAL ORK_CALL
 #endif

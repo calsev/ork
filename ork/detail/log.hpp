@@ -61,8 +61,8 @@ public:
 
 
 //The logger must be terminated before main exits, so not a global!
-ORK_EXT(int) g_log(const string&directory);
-ORK_EXT(logger&) g_log();
+ORK_ORK_EXT(int) g_log(const string&directory);
+ORK_ORK_EXT(logger&) g_log();
 #define ORK_GLOBAL_LOG(LOG_DIRECTORY) const int g_log_val = ork::g_log(LOG_DIRECTORY);
 
 

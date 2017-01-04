@@ -176,7 +176,7 @@ public:
 		lock_type lock(m_mutex); return m_converter.from_bytes(first, last);
 	}
 };
-ORK_EXT(string_converter_type&) g_string_converter();
+ORK_ORK_EXT(string_converter_type&) g_string_converter();
 
 
 #if ORK_UNICODE

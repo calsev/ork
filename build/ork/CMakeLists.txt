@@ -20,7 +20,7 @@ file(READ "${3P_ORK_SRC_DIR}/ork/config/config.hpp" ORK_CONFIG_H)
 if(NOT ORK_BUILD_SHARED)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_DLL) 1" "\\1 0"
+		"(#	define ORK_ORK_DLL) 1" "\\1 0"
 	)
 	set(ORK_LINK_MODE "STATIC")
 else()
