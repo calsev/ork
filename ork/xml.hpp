@@ -16,11 +16,11 @@ namespace ork {
 namespace xml {
 
 
-class exportable {
+class ORK_ORK_API exportable {
 public:
-	ORK_ORK_API virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+	 virtual ~exportable() {}//To support polymorphic hierarchies of nodes
 public:
-	ORK_ORK_API virtual void export_xml(pugi::xml_node &n) const = 0;
+	virtual void export_xml(pugi::xml_node &n) const = 0;
 };
 
 

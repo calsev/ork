@@ -12,12 +12,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 Placeholders for parser components
 */
 namespace ork {
-namespace orq {
+namespace orq {//ork-qi :)
 
 BOOST_SPIRIT_TERMINAL(id);
 BOOST_SPIRIT_TERMINAL(lb_com);//'pound comment'
 
-}//namespace ork
+}//namespace orq
 }//namespace ork
 
 
@@ -54,7 +54,7 @@ typedef spirit::char_encoding::standard charset;
 namespace orq {//ork-qi :)
 
 
-struct id_parser : qi::primitive_parser<id_parser> {
+struct ORK_ORK_API id_parser : qi::primitive_parser<id_parser> {
 public://Parser component stuff
 	template<typename context, typename iter>
 	struct attribute {//Define the attribute type exposed by this parser component
@@ -72,10 +72,10 @@ public://Parser component stuff
 
 		iter it(first);
 		if(!std::isalpha(*it) && *it != ORK('_')) {
-			return false;
+			return false;//First character must be letter or underscore
 		}
 		while(it != last && (std::isalnum(*it) || *it == ORK('_'))) {
-			++it;
+			++it;//Subsequent characters can be numbers also
 		}
 
 		attribute result(first, it);
@@ -96,7 +96,7 @@ public://Parser component stuff
 };
 
 
-struct lb_com_parser : qi::primitive_parser<lb_com_parser> {
+struct ORK_ORK_API lb_com_parser : qi::primitive_parser<lb_com_parser> {
 public://Parser component stuff
 	template<typename context, typename iter>
 	struct attribute {//Define the attribute type exposed by this parser component

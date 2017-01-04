@@ -142,37 +142,37 @@ typedef std::istringstream bi_string_stream;
 
 
 class string_converter_type {//Just a thread-safe wrapper for std::wstring_convert
-protected:
+private:
 	typedef std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>string_converter;
 	typedef std::mutex mutex_type;
 	typedef std::lock_guard<mutex_type>lock_type;
-protected:
+private:
 	string_converter m_converter;
 	std::mutex m_mutex;
 public:
-	std::string to_bytes(const wchar_t s) {
+	ORK_ORK_API std::string to_bytes(const wchar_t s) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(s);
 	}
-	std::string to_bytes(const wchar_t*s) {
+	ORK_ORK_API std::string to_bytes(const wchar_t*s) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(s);
 	}
-	std::string to_bytes(const std::wstring&s) {
+	ORK_ORK_API std::string to_bytes(const std::wstring&s) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(s);
 	}
-	std::string to_bytes(const wchar_t*first, const wchar_t*last) {
+	ORK_ORK_API std::string to_bytes(const wchar_t*first, const wchar_t*last) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(first, last);
 	}
 
-	std::wstring from_bytes(const char s) {
+	ORK_ORK_API std::wstring from_bytes(const char s) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(s);
 	}
-	std::wstring from_bytes(const char*s) {
+	ORK_ORK_API std::wstring from_bytes(const char*s) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(s);
 	}
-	std::wstring from_bytes(const std::string&s) {
+	ORK_ORK_API std::wstring from_bytes(const std::string&s) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(s);
 	}
-	std::wstring from_bytes(const char*first, const char*last) {
+	ORK_ORK_API std::wstring from_bytes(const char*first, const char*last) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(first, last);
 	}
 };

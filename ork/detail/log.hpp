@@ -22,13 +22,13 @@ namespace ork {
 
 
 enum class log_channel {
-	debug_trace//For now all error, debug, trace goes to one file
+	  debug_trace//For now all error, debug, trace goes to one file
 	, output_data//For now, all program output goes to one file
 };
 
 
 enum class severity_level {
-	trace
+	  trace
 	, debug
 	, info
 	, warning
@@ -46,9 +46,9 @@ public:
 	typedef boost::log::sources::channel_logger_mt<log_channel> channel_source_type;
 	typedef boost::log::sources::severity_channel_logger<severity_level, log_channel> severity_channel_source_type;
 #endif
-protected:
+private:
 	struct impl;
-protected:
+private:
 	std::unique_ptr<impl>p_impl;
 public:
 	ORK_ORK_API explicit logger(const file::path&log_file);

@@ -62,8 +62,8 @@ Auto linking, at least in Visual Studio
 
 
 //Put this somewhere
-string to_string(const bool val);
-bool string2bool(string val);
+ORK_ORK_EXT(string) to_string(const bool val);
+ORK_ORK_EXT(bool) string2bool(string val);
 
 
 }//namespace ork
