@@ -63,7 +63,7 @@ ORK_ORK versions are for internal use by ork
 Plain versions are for use by clients
 */
 #ifndef ORK_ORK_API
-#	ifndef ORK_ORK_DLL
+#	if !ORK_ORK_DLL
 #		define ORK_ORK_API
 #		define ORK_ORK_LOCAL
 #	elif ORK_MSC
@@ -81,7 +81,7 @@ Plain versions are for use by clients
 #	endif
 #endif
 #ifndef ORK_API
-#	ifndef ORK_DLL
+#	if !ORK_DLL
 #		define ORK_API
 #		define ORK_LOCAL
 #	elif ORK_MSC
@@ -96,6 +96,18 @@ Plain versions are for use by clients
 #		define ORK_LOCAL  __attribute__ ((visibility ("hidden")))//Too bad this is not default
 #	else
 #		error Compiler not supported
+#	endif
+#endif
+
+
+/*
+For template exports
+*/
+#ifndef ORK_EXT_TEMP
+#	if ORK_ORK_DLL && !ORK_BUILD_ORK && ORK_MSC
+#		define ORK_EXT_TEMP extern template
+#	else
+#		define ORK_EXT_TEMP template
 #	endif
 #endif
 
