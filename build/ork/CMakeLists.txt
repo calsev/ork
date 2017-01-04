@@ -86,6 +86,6 @@ if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
 	)
 	install(
 		FILES "${3P_ORK_BIN_DIR}/ork/config/config.hpp"
-		DESTINATION "${3P_ORK_BIN_DIR}/ork/config"
+		DESTINATION "${INSTALL_INC_DIR}/ork/config"
 	)
 endif()
