@@ -21,7 +21,7 @@ namespace ork {
 
 
 typedef int(*main_func)(const int argc, const char*const argv[]);
-int invoke_main(const std::vector<string>&args, main_func f);
+ORK_ORK_EXT(int) invoke_main(const std::vector<string>&args, main_func f);
 
 
 class command_handler {
@@ -31,15 +31,15 @@ private:
 	options::options_description _desc;
 	options::variables_map _vm;
 public:
-	command_handler();
-	virtual ~command_handler() {}
+	ORK_ORK_API command_handler();
+	ORK_ORK_API virtual ~command_handler() {}
 public:
 	//Configures and parses command line, calling add_options and extract_option_value
-	bool operator()(const int argc, const letr*const argv[]);
-	bool operator()(const int argc, const letr*const argv[], const bstring&positional_op);
-	bool operator()(const bstring&env_prefix);
-	bool operator()(std::istream&config_file);
-	const options::variables_map&variable_map()const {
+	ORK_ORK_API bool operator()(const int argc, const letr*const argv[]);
+	ORK_ORK_API bool operator()(const int argc, const letr*const argv[], const bstring&positional_op);
+	ORK_ORK_API bool operator()(const bstring&env_prefix);
+	ORK_ORK_API bool operator()(std::istream&config_file);
+	ORK_ORK_API const options::variables_map& variable_map()const {
 		return _vm;
 	}
 private:

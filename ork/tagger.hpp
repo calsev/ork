@@ -15,22 +15,21 @@ namespace ork {
 //This class is thread safe and intended for static usage.
 //We might make a global environment with in the future, but for now we use a static to set the root directory
 class tagger {
-protected:
-protected:
+private:
 	static file::path _debug_root;//Global guarded by mutex
 	static std::mutex _mutex;
 	std::atomic<unsigned>_count;//Local static
 	const bool _number_folder;//Local static constant
 	const string _tag;//Local static constant
 public:
-	tagger(const string&tag) :_count(0), _number_folder(true), _tag(tag) {}
-	tagger(const string&tag, bool numbered_folders) :_count(0), _number_folder(numbered_folders), _tag(tag) {}
+	ORK_INLINE explicit tagger(const string&tag) :_count(0), _number_folder(true), _tag(tag) {}
+	ORK_INLINE tagger(const string&tag, bool numbered_folders) :_count(0), _number_folder(numbered_folders), _tag(tag) {}
 	ORK_NON_COPYABLE(tagger)
 public:
-	static void set_debug_root(const string&directory);
-	static void set_debug_root(const string&as_is_path, const string&to_be_path);
-	string operator()();//Fetch instance tag
-	unsigned count();//The number of times this has been invoked
+	ORK_ORK_API static void set_debug_root(const string&directory);
+	ORK_ORK_API static void set_debug_root(const string&as_is_path, const string&to_be_path);
+	ORK_ORK_API string operator()();//Fetch instance tag
+	ORK_ORK_API unsigned count();//The number of times this has been invoked
 };
 
 

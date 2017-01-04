@@ -51,12 +51,12 @@ protected:
 protected:
 	std::unique_ptr<impl>p_impl;
 public:
-	logger(const file::path&log_file);
-	~logger();
+	ORK_ORK_API explicit logger(const file::path&log_file);
+	ORK_ORK_API ~logger();
 public:
-	severity_channel_source_type&log();
-	channel_source_type&lout();
-	void flush_all();
+	ORK_ORK_API severity_channel_source_type& log();
+	ORK_ORK_API channel_source_type& lout();
+	ORK_ORK_API void flush_all();
 };
 
 
