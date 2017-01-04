@@ -203,7 +203,11 @@ set_as_internal(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
 set_as_internal(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
 set_as_internal(3P_ZLIB_BIN_DIR "${3P_BIN_DIR}/zlib")
 
-set_as_internal(3P_BOOST_LIB_DIR "${ORK_3P_SOURCE_DIR}/deps/lib")
+if(ORK_EXTERNAL_BOOST) #This is not general
+	set_as_internal(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64")
+else()
+	set_as_internal(3P_BOOST_LIB_DIR "${ORK_3P_SOURCE_DIR}/deps/lib")
+endif()
 add_definitions(-DBOOST_ALL_DYN_LINK) #Link boost shared libs
 
 
