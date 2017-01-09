@@ -58,6 +58,17 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 
+#ifndef ORK_C_CALL
+#	if ORK_MSC
+#		define ORK_C_CALL __cdecl
+#	elif ORK_GCC
+#		define ORK_C_CALL
+#	else
+#		error Compiler not supported
+#	endif
+#endif
+
+
 /*
 ORK_ORK versions are for internal use by ork
 Plain versions are for use by clients
