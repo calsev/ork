@@ -32,6 +32,7 @@ The scale must favor greater variation in green.
 We unroll a unit circle for hue, but with smaller variance for green distribution.
 */
 ORK_ORK_EXT(color4) normalized_lightness(const color4&c);
+ORK_ORK_EXT(color4) normalized_lightness(const color4&c, const float one_norm);
 
 ORK_ORK_EXT(color4) normalized_hue(const float value);//Value is defined on [0, 1]
 

@@ -17,12 +17,16 @@ const color4 blue = {0., 0., 1., 1.};
 
 
 color4 normalized_lightness(const color4&c) {
+	return normalized_lightness(c, 1.f);
+}
+color4 normalized_lightness(const color4&c, const float one_norm) {
 	/*
 	This is waay simplified, and uses made-up linear coefficients.
 	Basically, yellow-green appears light and violet-blue appears dark.
 	*/
 	const float value = c.r*1.0f + c.g*1.3f + c.b*0.7f;
-	return color4(glm::vec3(c / value), c.a);//Scale colors, keep alpha
+	const glm::vec3 normed(c*one_norm / value);//For debugging
+	return color4(normed, c.a);//Scale colors, keep alpha
 }
 
 
