@@ -75,4 +75,13 @@ std::vector<color4>contrast_array(const size_t size) {
 
 }//namespace ork
 
+namespace glm {
+
+ork::o_stream&operator<<(ork::o_stream&stream, const ork::color4&c) {
+	stream << ORK("(") << c.r << ORK(", ") << c.g << ORK(", ") << c.b << ORK(", ") << c.a << ORK(")");
+	return stream;
+}
+
+}
+
 #endif//ORK_USE_GLM

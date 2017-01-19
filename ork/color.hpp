@@ -42,4 +42,10 @@ ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size);//Return colo
 
 }//namespace ork
 
+namespace glm {
+
+ORK_ORK_EXT(ork::o_stream&) operator<<(ork::o_stream&stream, const ork::color4&vec);
+
+}
+
 #endif//ORK_USE_GLM
