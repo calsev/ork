@@ -37,13 +37,19 @@ color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	Each color should be symmetrical and occupy 1.0 width.
 	We narrow the green spectrum to 0.8.
 	*/
+	static ork::triangle_distribution<float>blue_l{-1.0f, -0.5f, 0.1f};//Periodicity
 	static ork::triangle_distribution<float>red_l{-0.5f, 0.1f, 0.5f};//0.0 should be pure red
 	static ork::triangle_distribution<float>green{0.1f, 0.5f, 0.9f};//0.5 is pure green
-	static ork::triangle_distribution<float>blue{0.5f, 0.9f, 1.5f};//1.0 should be pure blue
-	static ork::triangle_distribution<float>red_h{0.9f, 1.5f, 2.1f};//Periodicity
+	static ork::triangle_distribution<float>blue_h{0.5f, 0.9f, 1.5f};//1.0 should be pure blue
+	static ork::triangle_distribution<float>red_h{0.9f, 1.5f, 2.0f};//Periodicity
 
-	const float val = value*1.5f;
-	return{red_l(val) + red_h(val), green(val), blue(val), 1.f};
+	const float rl = red_l(value);
+	const float rh = red_h(value);
+	const float g = green(value);
+	const float bl = blue_l(value);
+	const float bh = blue_h(value);
+	const glm::dvec4 normed{rl + rh, g, bl + bh, 1.f};
+	return normed;
 }
 
 
