@@ -65,7 +65,7 @@ public:
 			return (val - _min) / (_mid - _min);
 		}
 		if(val <= _max) {
-			return (val - _mid) / (_max - _mid);
+			return (_max - val) / (_max - _mid);
 		}
 		//val > max
 		return static_cast<val_type>(0);
