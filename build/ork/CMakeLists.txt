@@ -6,6 +6,7 @@ set(VERSION "0.0.0") #No formal release yet
 detect_option_flag(ORK_BUILD_SHARED "Building shared library instead of static" ON)
 detect_option_flag(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
 detect_option_flag(ORK_AUTO_LINK_3P "If auto-linking, also auto-link any built dependencies" ON)
+detect_option_flag(ORK_USE_GLM "Enable GLM usage" ON)
 detect_option_flag(ORK_USE_PUGI "Enable Pugi XML usage" ON)
 if(ORK_USE_PUGI AND NOT ORK_BUILD_PUGI)
 	message(FATAL_ERROR "Ork using Pugi but Pugi is not being built")
@@ -36,6 +37,12 @@ if(NOT ORK_AUTO_LINK_3P)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_AUTO_LINK_3P) 1" "\\1 0"
+	)
+endif()
+if(NOT ORK_USE_GLM)
+	string(
+		REGEX REPLACE
+		"(#	define ORK_USE_GLM) 1" "\\1 0"
 	)
 endif()
 if(NOT ORK_USE_PUGI)

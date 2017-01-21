@@ -8,8 +8,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/geometry.hpp"
 #include"ork/glm.hpp"
 
+#if ORK_USE_GLM
 #include"glm/mat3x3.hpp"
 #include"glm/gtx/vector_angle.hpp"
+#endif//ORK_USE_GLM
 
 
 namespace ork {
@@ -64,6 +66,8 @@ namespace GLM {
 
 
 namespace MC {
+
+#if ORK_USE_GLM
 
 const glm::dmat3x3 zero_mat(glm::dvec3(0.0, 0.0, 0.0), glm::dvec3(0.0, 0.0, 0.0), glm::dvec3(0.0, 0.0, 0.0));
 /*
@@ -142,6 +146,8 @@ glm::dvec3 to_wcs(const double val, const orientation axis) {
 	return val * orientation2direction(axis).get() * wcs_mat(axis);
 }
 
+#endif//ORK_USE_GLM
+
 
 rotated_view rotated(const view&v, const rotation_direction dir, const int rotations) {
 	//CC is increasing due to how we defined our members
@@ -186,6 +192,8 @@ const view&get_view(const orientation axis) {
 
 }//namespace MC
 
+
+#if ORK_USE_GLM
 
 glm::dvec3 point_on_plane(const glm::dvec3&vec, const orientation axis) {
 	switch(axis) {
@@ -467,6 +475,8 @@ o_stream&operator<<(o_stream&strm, const bounding_box&box) {
 	strm << bounding_box2string(box);
 	return strm;
 }
+
+#endif//ORK_USE_GLM
 
 
 }//namespace GLM

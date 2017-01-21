@@ -69,6 +69,8 @@ bool angles_advance_clockwise(const double start_angle, double mid_angle, double
 namespace GLM {
 namespace MC {
 
+#if ORK_USE_GLM
+
 ORK_ORK_EXT(const glm::dmat3x3&) lcs_mat(const orientation axis);
 ORK_ORK_EXT(glm::dvec3) to_lcs(const glm::dvec3&vec, const orientation axis);
 ORK_ORK_EXT(glm::dvec3) to_lcs(const double val, const orientation axis);
@@ -76,6 +78,8 @@ ORK_ORK_EXT(glm::dvec3) to_lcs(const double val, const orientation axis);
 ORK_ORK_EXT(const glm::dmat3x3&) wcs_mat(const orientation axis);
 ORK_ORK_EXT(glm::dvec3) to_wcs(const glm::dvec3&vec, const orientation axis);
 ORK_ORK_EXT(glm::dvec3) to_wcs(const double val, const orientation axis);
+
+#endif//ORK_USE_GLM
 
 
 //Given an MC standard view, return the directions in the plane.
@@ -107,6 +111,8 @@ ORK_ORK_EXT(rotated_view) rotated(const view&v, const rotation_direction dir, co
 
 }//namespace MC
 
+
+#if ORK_USE_GLM
 
  //These are not projections because we remain 3D, although if we assume RH/LH we could just make them 2D
 ORK_ORK_EXT(glm::dvec3) point_on_plane(const glm::dvec3&vec, const orientation axis);
@@ -174,6 +180,8 @@ ORK_ORK_EXT(string) bounding_box2string(const bounding_box&box);
 
 ORK_ORK_EXT(o_stream&) operator<<(o_stream&strm, const bounding_box&);
 
+#endif//ORK_USE_GLM
+
 
 //This is a minimal replacement for acis interval
 class interval {
@@ -193,6 +201,9 @@ public:
 		return _max - _min;
 	}
 };
+
+
+#if ORK_USE_GLM
 
 
 ORK_ORK_EXT(interval) project_box_on_axis(const glm::dvec3&p1, const glm::dvec3&p2, const GLM::dunit3&axis);
@@ -238,6 +249,9 @@ public:
 	ORK_INLINE std::vector<segment>&segments(){ return _segments; }
 	ORK_INLINE void push_back(const segment&s) { _segments.push_back(s); }
 };
+
+
+#endif//ORK_USE_GLM
 
 
 }//namespace glm

@@ -7,6 +7,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include"ork/glm.hpp"
 
+#if ORK_USE_GLM
 #include"glm/gtx/rotate_vector.hpp"
 #include"glm/gtx/vector_angle.hpp"
 
@@ -116,3 +117,5 @@ ork::o_stream&operator<<(ork::o_stream&stream, const glm::dvec3&vec) {
 }
 
 }//namespace glm
+
+#endif//ORK_USE_GLM

@@ -28,6 +28,9 @@ ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object, co
 ORK_ORK_EXT(void) load_and_parse(pugi::xml_document&xml, i_stream&fin);//Just create a file with error checking
 
 
+#if ORK_USE_GLM
+
+
 class vector : public exportable {
 private:
 	glm::dvec3 _data;
@@ -62,6 +65,9 @@ public:
 ORK_INLINE o_stream &operator << (o_stream&stream, const ork::xml::vector &vec) {
 	return stream << vec.as_string();
 }
+
+
+#endif//ORK_USE_GLM
 
 
 }//namespace xml

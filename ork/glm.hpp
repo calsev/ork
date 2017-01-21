@@ -5,6 +5,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 
 #include"ork/orientation.hpp"
+#if ORK_USE_GLM
 #include"glm/vec3.hpp"
 #include"glm/geometric.hpp"
 
@@ -294,3 +295,5 @@ namespace glm {
 ORK_ORK_EXT(ork::o_stream&) operator<<(ork::o_stream&stream, const glm::dvec2&vec);
 ORK_ORK_EXT(ork::o_stream&) operator<<(ork::o_stream&stream, const glm::dvec3&vec);
 }
+
+#endif//ORK_USE_GLM

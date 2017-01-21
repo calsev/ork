@@ -35,6 +35,8 @@ void load_and_parse(pugi::xml_document&xml, i_stream&fin) {
 #endif
 
 
+#if ORK_USE_GLM
+
 double&vector::x() {
 	return _data.x;
 }
@@ -99,6 +101,8 @@ void vector::export_xml(pugi::xml_node &node) const {
 	node.attribute(ORK("z")).set_value(to_dimension(_data.z).c_str());
 }
 #endif
+
+#endif//ORK_USE_GLM
 
 
 }//namespace xml

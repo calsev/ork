@@ -20,6 +20,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	define ORK_AUTO_LINK_3P ORK_AUTO_LINK
 #endif
 
+#ifndef ORK_USE_GLM//Optional dependency
+#	define ORK_USE_GLM 1
+#endif
+
 #ifndef ORK_USE_PUGI//Optional dependency
 #	define ORK_USE_PUGI 1
 #endif

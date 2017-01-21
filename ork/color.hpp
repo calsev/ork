@@ -6,6 +6,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<vector>
 #include"ork/ork.hpp"
 
+#if ORK_USE_GLM
 #include"glm/vec4.hpp"
 
 
@@ -40,3 +41,5 @@ ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size);//Return colo
 
 
 }//namespace ork
+
+#endif//ORK_USE_GLM
