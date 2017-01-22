@@ -15,6 +15,7 @@ namespace ork {
 namespace orq {//ork-qi :)
 
 BOOST_SPIRIT_TERMINAL(id);
+BOOST_SPIRIT_TERMINAL(quote);
 BOOST_SPIRIT_TERMINAL(lb_com);//'pound comment'
 
 }//namespace orq
@@ -29,6 +30,7 @@ namespace spirit {
 
 //Make custom parser usable as a terminal only, and only for parser expressions (qi::domain).
 template<> struct use_terminal<qi::domain, ork::orq::tag::id> : mpl::true_ {};
+template<> struct use_terminal<qi::domain, ork::orq::tag::quote> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::lb_com> : mpl::true_ {};
 
 }//namespace spirit
@@ -96,6 +98,52 @@ public://Parser component stuff
 };
 
 
+struct ORK_ORK_API quote_parser : qi::primitive_parser<quote_parser> {
+public://Parser component stuff
+	template<typename context, typename iter>
+	struct attribute {//Define the attribute type exposed by this parser component
+		typedef string type;
+	};
+
+	//This function is called during the actual parsing process
+	template<typename iter, typename context, typename skipper, typename attribute>
+	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
+		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
+
+		if(first == last) {
+			return false;
+		}
+
+		iter it(first);
+		if(*it++ != ORK('"')) {//Consume the quote
+			return false;
+		}
+		while(it != last && *it != ORK('"')) {//Up to but do not consume the quote
+			++it;
+		}
+		if(it == last) {
+			return false;
+		}
+		if(*it++ != ORK('"')) {//Consume the quote
+			return false;
+		}
+
+		attribute result(first, it);
+		//Allow empty attribute
+
+		first = it;
+		spirit::traits::assign_to(result, attr);
+		return true;
+	}
+
+	//This function is called during error handling to create a human readable string for the error context.
+	template<typename context>
+	boost::spirit::info what(context&) const {
+		return boost::spirit::info("quote");
+	}
+};
+
+
 struct ORK_ORK_API lb_com_parser : qi::primitive_parser<lb_com_parser> {
 public://Parser component stuff
 	template<typename context, typename iter>
@@ -136,9 +184,9 @@ public://Parser component stuff
 }//namespace ork
 
 
- /*
- Instantiators for parser components
- */
+/*
+Instantiators for parser components
+*/
 namespace boost {
 namespace spirit {
 namespace qi {
@@ -147,6 +195,14 @@ namespace qi {
 template<typename modifiers>
 struct make_primitive<ork::orq::tag::id, modifiers> {
 	typedef typename ork::orq::id_parser result_type;
+
+	result_type operator()(unused_type, unused_type) const {
+		return result_type();
+	}
+};
+template<typename modifiers>
+struct make_primitive<ork::orq::tag::quote, modifiers> {
+	typedef typename ork::orq::quote_parser result_type;
 
 	result_type operator()(unused_type, unused_type) const {
 		return result_type();
