@@ -191,31 +191,19 @@ namespace boost {
 namespace spirit {
 namespace qi {
 
-//This is the factory function object invoked in order to create an instance of our parser.
-template<typename modifiers>
-struct make_primitive<ork::orq::tag::id, modifiers> {
-	typedef typename ork::orq::id_parser result_type;
-
-	result_type operator()(unused_type, unused_type) const {
-		return result_type();
-	}
+//This is the factory function object that is invoked to create an instance of our parser.
+#define ORK_ORQ_FACTORY(TAG)\
+template<typename modifiers>\
+struct make_primitive<ork::orq::tag::TAG, modifiers> {\
+	typedef typename ork::orq::ORK_CAT(TAG,_parser) result_type;\
+	result_type operator()(unused_type, unused_type) const {\
+		return result_type();\
+	}\
 };
-template<typename modifiers>
-struct make_primitive<ork::orq::tag::quote, modifiers> {
-	typedef typename ork::orq::quote_parser result_type;
 
-	result_type operator()(unused_type, unused_type) const {
-		return result_type();
-	}
-};
-template<typename modifiers>
-struct make_primitive<ork::orq::tag::lb_com, modifiers> {
-	typedef typename ork::orq::lb_com_parser result_type;
-
-	result_type operator()(unused_type, unused_type) const {
-		return result_type();
-	}
-};
+ORK_ORQ_FACTORY(id);
+ORK_ORQ_FACTORY(quote);
+ORK_ORQ_FACTORY(lb_com);
 
 }//namespace qi
 }//namespace spirit
