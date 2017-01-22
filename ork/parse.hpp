@@ -128,7 +128,7 @@ public://Parser component stuff
 			return false;
 		}
 
-		attribute result(first, it);
+		attribute result(++first, it - 1);//Do not include quotes
 		//Allow empty attribute
 
 		first = it;
