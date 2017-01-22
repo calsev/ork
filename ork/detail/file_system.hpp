@@ -48,5 +48,8 @@ ORK_ORK_EXT(bool) ensure_file(const file::path&file);
 #define ORK_FILE_WRITE(FILE_NAME)\
 	ork::of_stream fout(FILE_NAME);\
 	if(!fout)ORK_FILE_OPEN_ERR(ORK("Could not open output file!"), FILE_NAME)
+#define ORK_FILE_PARSE(FILE_NAME)\
+	ORK_FILE_READ(FILE_NAME)\
+	fin.unsetf(std::ios::skipws);
 
 }//namespace ork
