@@ -21,6 +21,10 @@ enum class color_space {
 
 typedef glm::vec4 color4;//we co-opt for hsv also
 
+//Convenience
+ORK_ORK_API extern const color4 red;
+ORK_ORK_API extern const color4 green;
+ORK_ORK_API extern const color4 blue;
 
 
 /*
