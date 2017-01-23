@@ -13,7 +13,14 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-typedef glm::vec4 color4;
+enum class color_space {
+	  rgb
+	, hsv//alias for hsb
+	, hsl
+};
+
+typedef glm::vec4 color4;//we co-opt for hsv also
+
 
 
 /*
