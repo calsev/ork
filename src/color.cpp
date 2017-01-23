@@ -11,6 +11,104 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+float to_hex_space(const color4&c, const float max, const float chroma) {
+	/*
+	Six vertices for hexagon
+	Define periodic, circular space: red is 0, green is 2, blue is 4
+	*/
+	if(chroma == 0.f) {
+		return 0.f;//By convention, to avoid divide by 0;
+	}
+	else if(max == c.r) {//The red third, rotate [+1, -1] about datum 0;
+		return std::fmod((c.g - c.b) / chroma, 6.f);
+	}
+	else if(max == c.g) {//The green third, rotate [+1, -1] about datum 2;
+		return (c.b - c.r) / chroma + 2.f;
+	}
+	else {//max == c.b //The blue third, rotate [+1, -1] about datum 4;
+		return (c.r - c.g) / chroma + 4.f;
+	}
+}
+
+float hsv_saturation(const float chroma, const float value) {
+	if(value == 0.f) {
+		return 0.f;
+	}
+	return chroma / value;//(max - min)/max
+}
+
+float hsl_saturation(const float chroma, const float lightness) {
+	if(lightness == 1.f) {
+		return 0.f;
+	}
+	return chroma / (1.f - std::abs(2.f * lightness - 1.f));//(max - min)/(1 - |(max + min) - 1|)
+}
+
+glm::vec3 calc_rgb(const float C, const float min, const float h_6) {
+	const float X = C*(1.f - std::abs(std::fmod(h_6, 2.f) - 1.f));
+	if(h_6 < 1.f) {
+		return glm::vec3{C, X, 0.f}+min;
+	}
+	else if(h_6 < 2.f) {
+		return glm::vec3{X, C, 0.f}+min;
+	}
+	else if(h_6 < 3.f) {
+		return glm::vec3{0.f, C, X}+min;
+	}
+	else if(h_6 < 4.f) {
+		return glm::vec3{0.f, X, C}+min;
+	}
+	else if(h_6 < 5.f) {
+		return glm::vec3{X, 0.f, C}+min;
+	}
+	else {
+		return glm::vec3{C, 0.f, X}+min;
+	}
+}
+
+
+color4 convert(const color4&c, const color_space from_space, const color_space to_space) {
+	/*
+	RGB cube, HSV cylinder, HSL cone
+	In short, turn the cube so 0,0,0 is at bottom and 1,1,1 is at top.
+	The other 6 points of the cube project onto the corners of a hexagon.
+	Rotate so that red is at 0 datum.
+	See https://en.wikipedia.org/wiki/HSL_and_HSV for a good geometric description.
+	*/
+	if(from_space == to_space) {//A useful invariant below
+		return c;
+	}
+	if(from_space == color_space::rgb) {
+		const float min = std::min(c.r, std::min(c.g, c.b));
+		const float max = std::max(c.r, std::max(c.g, c.b));
+		const float chroma = max - min;//The normalized scale for color magnitudes
+
+		const float hue = to_hex_space(c, max, chroma) / 6.f;//Normalize six-point space to unit interval
+		const float val_light = to_space == color_space::hsv ? max : (max + min)*0.5f;
+		const float saturation = to_space == color_space::hsv ? hsv_saturation(chroma, val_light) : hsl_saturation(chroma, val_light);
+
+		return color4{hue, saturation, val_light, c.a};
+	}
+	else {
+		const bool is_hsv = from_space == color_space::hsv;//Otherwise HSL
+
+		const float chroma = is_hsv
+			? c.y*c.z//S*V
+			: (1.f - std::abs(2.f*c.z - 1.f))*c.y//(1 - |2*L - 1|)*S
+			;
+
+		const float h_6 = c.x*6.f;//To hex coordinates
+		const float min = is_hsv
+			? c.z - chroma
+			: c.z - chroma*0.5f
+			;
+		const glm::vec3 rgb{calc_rgb(chroma, min, h_6)};
+		return color4{rgb,c.a};
+	}
+	
+}
+
+
 ORK_ORK_API const color4 red = {1., 0., 0., 1.};
 ORK_ORK_API const color4 green = {0., 1., 0., 1.};
 ORK_ORK_API const color4 blue = {0., 0., 1., 1.};

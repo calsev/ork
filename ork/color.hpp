@@ -26,6 +26,8 @@ ORK_ORK_API extern const color4 red;
 ORK_ORK_API extern const color4 green;
 ORK_ORK_API extern const color4 blue;
 
+ORK_ORK_EXT(color4) convert(const color4&c, const color_space from_space, const color_space to_space);
+
 
 /*
 Human color perception is not linear, see Munsell, L*c*h, and L*a*b color systems. https://en.wikipedia.org/wiki/Color_difference.
