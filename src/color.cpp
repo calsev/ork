@@ -11,9 +11,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-const color4 red = {1., 0., 0., 1.};
-const color4 green = {0., 1., 0., 1.};
-const color4 blue = {0., 0., 1., 1.};
+ORK_ORK_API const color4 red = {1., 0., 0., 1.};
+ORK_ORK_API const color4 green = {0., 1., 0., 1.};
+ORK_ORK_API const color4 blue = {0., 0., 1., 1.};
 
 
 color4 normalized_lightness(const color4&c) {
