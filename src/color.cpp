@@ -16,29 +16,29 @@ float to_hex_space(const color4&c, const float max, const float chroma) {
 	Six vertices for hexagon
 	Define periodic, circular space: red is 0, green is 2, blue is 4
 	*/
-	if(chroma == 0.f) {
+	if(chroma <= 0.f) {
 		return 0.f;//By convention, to avoid divide by 0;
 	}
-	else if(max == c.r) {//The red third, rotate [+1, -1] about datum 0;
+	else if(max <= c.r) {//The red third, rotate [+1, -1] about datum 0;
 		return std::fmod((c.g - c.b) / chroma, 6.f);
 	}
-	else if(max == c.g) {//The green third, rotate [+1, -1] about datum 2;
+	else if(max <= c.g) {//The green third, rotate [+1, -1] about datum 2;
 		return (c.b - c.r) / chroma + 2.f;
 	}
-	else {//max == c.b //The blue third, rotate [+1, -1] about datum 4;
+	else {//max <= c.b //The blue third, rotate [+1, -1] about datum 4;
 		return (c.r - c.g) / chroma + 4.f;
 	}
 }
 
 float hsv_saturation(const float chroma, const float value) {
-	if(value == 0.f) {
+	if(value <= 0.f) {
 		return 0.f;
 	}
 	return chroma / value;//(max - min)/max
 }
 
 float hsl_saturation(const float chroma, const float lightness) {
-	if(lightness == 1.f) {
+	if(lightness <= 0.f || 1.f <= lightness) {
 		return 0.f;
 	}
 	return chroma / (1.f - std::abs(2.f * lightness - 1.f));//(max - min)/(1 - |(max + min) - 1|)
