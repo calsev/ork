@@ -113,13 +113,24 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 			: (1.f - std::abs(2.f*c.z - 1.f))*c.y//(1 - |2*L - 1|)*S
 			;
 
-		const float h_6 = c.x*6.f;//To hex coordinates
 		const float min = is_hsv
 			? c.z - chroma
 			: c.z - chroma*0.5f
 			;
-		const glm::vec3 rgb{calc_rgb(chroma, min, h_6)};
-		return color4{rgb,c.a};
+		if(to_space == color_space::rgb) {
+			const float h_6 = c.x*6.f;//To hex coordinates
+			const glm::vec3 rgb{calc_rgb(chroma, min, h_6)};
+			return color4{rgb, c.a};
+		}
+		else {
+			const float max = is_hsv
+				? c.z
+				: c.z + chroma*0.5f
+				;
+			const float val_light = value_or_lightness(min, max, to_space);
+			const float saturation = calc_saturation(chroma, val_light, to_space);
+			return color4(c.x, saturation, val_light, c.a);
+		}
 	}
 	
 }
