@@ -20,7 +20,8 @@ float to_hex_space(const color4&c, const float max, const float chroma) {
 		return 0.f;//By convention, to avoid divide by 0;
 	}
 	else if(max <= c.r) {//The red third, rotate [+1, -1] about datum 0;
-		return std::fmod((c.g - c.b) / chroma, 6.f);
+		const float hue = (c.g - c.b) / chroma;
+		return hue >= 0.f ? hue : hue + 6.f;//Perdiodicity, stay in [0, 1]
 	}
 	else if(max <= c.g) {//The green third, rotate [+1, -1] about datum 2;
 		return (c.b - c.r) / chroma + 2.f;
