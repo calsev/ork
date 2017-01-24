@@ -2,6 +2,7 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
+#include<algorithm>
 #include"ork/color.hpp"
 #include"ork/distribution.hpp"
 
@@ -9,6 +10,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"glm/vec3.hpp"
 
 namespace ork {
+
+
+//Waiting for C++17
+ORK_INLINE float clamp(const float val, const float min, const float max) {
+	return std::min(std::max(val, min), max);
+}
 
 
 float to_hex_space(const color4&c, const float max, const float chroma) {
@@ -83,6 +90,43 @@ glm::vec3 calc_rgb(const float C, const float min, const float h_6) {
 }
 
 
+color4 truncate_hue(const color4&c, const color_space cs) {
+	if(cs == color_space::rgb) {
+		return c;//This call does not really make sense, but we allow it
+	}
+	color4 retval(c);
+	if(std::min(c.g, c.b) <= 0.f) {//Saturation or bottom of cone, hue = 0 by convention
+		retval.r = 0.f;
+	}
+	if(cs == color_space::hsl && c.b >= 1.0) {//Top of cone
+		retval.r = 0.f;
+	}
+	if(retval.r >= 1.f) {
+		retval.r -= 1.f;//Origin wraps to 0
+	}
+	return retval;
+}
+
+
+color4 truncate_cone(const color4&c, const color_space cs) {
+	switch(cs) {
+	case color_space::rgb:
+		return c;//This call does not really make sense, but we allow it
+	case color_space::hsv:
+		return color4(c.r, std::min(c.g, c.b), c.b, c.a);//Single cone
+	case color_space::hsl:
+		const float width = 1.f - std::abs(0.5f - c.b) * 2;//Double cone
+		return color4(c.r, std::min(c.g, width), c.b, c.a);
+	}
+	ORK_UNREACHABLE
+}
+
+
+color4 truncate(const color4&c, const color_space cs) {
+	return truncate_hue(truncate_cone(c, cs), cs);
+}
+
+
 color4 convert(const color4&c, const color_space from_space, const color_space to_space) {
 	/*
 	RGB cube, HSV cylinder, HSL cone
@@ -112,7 +156,6 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 			? c.y*c.z//S*V
 			: (1.f - std::abs(2.f*c.z - 1.f))*c.y//(1 - |2*L - 1|)*S
 			;
-
 		const float min = is_hsv
 			? c.z - chroma
 			: c.z - chroma*0.5f
