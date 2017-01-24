@@ -108,22 +108,23 @@ color4 truncate_hue(const color4&c, const color_space cs) {
 }
 
 
-color4 truncate_cone(const color4&c, const color_space cs) {
-	switch(cs) {
-	case color_space::rgb:
+color4 truncate_saturation(const color4&c, const color_space cs) {
+	if(cs == color_space::rgb) {
 		return c;//This call does not really make sense, but we allow it
-	case color_space::hsv:
-		return color4(c.r, std::min(c.g, c.b), c.b, c.a);//Single cone
-	case color_space::hsl:
-		const float width = 1.f - std::abs(0.5f - c.b) * 2;//Double cone
-		return color4(c.r, std::min(c.g, width), c.b, c.a);
 	}
-	ORK_UNREACHABLE
+	color4 retval(c);
+	if(c.b <= 0.f) {//Saturation or bottom of cone, hue = 0 by convention
+		retval.g = 0.f;
+	}
+	if(cs == color_space::hsl && c.b >= 1.0) {//Top of cone
+		retval.g = 0.f;
+	}
+	return retval;
 }
 
 
 color4 truncate(const color4&c, const color_space cs) {
-	return truncate_hue(truncate_cone(c, cs), cs);
+	return truncate_hue(truncate_saturation(c, cs), cs);
 }
 
 

@@ -28,7 +28,7 @@ ORK_ORK_API extern const color4 blue;
 
 
 ORK_ORK_EXT(color4) truncate_hue(const color4&c, const color_space cs);//Convention for hue when rgb=0,0,0
-ORK_ORK_EXT(color4) truncate_cone(const color4&c, const color_space cs);//Saturation cone
+ORK_ORK_EXT(color4) truncate_saturation(const color4&c, const color_space cs);//Saturation cone
 ORK_ORK_EXT(color4) truncate(const color4&c, const color_space cs);//Both
 
 
