@@ -31,19 +31,34 @@ float to_hex_space(const color4&c, const float max, const float chroma) {
 	}
 }
 
-float hsv_saturation(const float chroma, const float value) {
-	if(value <= 0.f) {
-		return 0.f;
+
+float value_or_lightness(const float min, const float max, const color_space cs) {
+	switch(cs) {
+	case color_space::hsv:
+		return max;
+	case color_space::hsl:
+		return (max + min)*0.5f;
+	default:
+		ORK_THROW(ORK("Invalid color space"));
 	}
-	return chroma / value;//(max - min)/max
+}
+float calc_saturation(const float chroma, const float value_or_lightness, const color_space cs) {
+	switch(cs) {
+	case color_space::hsv:
+		if(value_or_lightness <= 0.f) {
+			return 0.f;
+		}
+		return chroma / value_or_lightness;//(max - min)/max
+	case color_space::hsl:
+		if(value_or_lightness <= 0.f || 1.f <= value_or_lightness) {
+			return 0.f;
+		}
+		return chroma / (1.f - std::abs(2.f * value_or_lightness - 1.f));//(max - min)/(1 - |(max + min) - 1|)
+	default:
+		ORK_THROW(ORK("Invalid color space"));
+	}
 }
 
-float hsl_saturation(const float chroma, const float lightness) {
-	if(lightness <= 0.f || 1.f <= lightness) {
-		return 0.f;
-	}
-	return chroma / (1.f - std::abs(2.f * lightness - 1.f));//(max - min)/(1 - |(max + min) - 1|)
-}
 
 glm::vec3 calc_rgb(const float C, const float min, const float h_6) {
 	const float X = C*(1.f - std::abs(std::fmod(h_6, 2.f) - 1.f));
@@ -85,8 +100,8 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 		const float chroma = max - min;//The normalized scale for color magnitudes
 
 		const float hue = to_hex_space(c, max, chroma) / 6.f;//Normalize six-point space to unit interval
-		const float val_light = to_space == color_space::hsv ? max : (max + min)*0.5f;
-		const float saturation = to_space == color_space::hsv ? hsv_saturation(chroma, val_light) : hsl_saturation(chroma, val_light);
+		const float val_light = value_or_lightness(min, max, to_space);
+		const float saturation = calc_saturation(chroma, val_light, to_space);
 
 		return color4{hue, saturation, val_light, c.a};
 	}
