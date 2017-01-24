@@ -3,6 +3,9 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<algorithm>
+#include<iomanip>
+#include"boost/algorithm/string.hpp"
+
 #include"ork/color.hpp"
 #include"ork/distribution.hpp"
 
@@ -257,6 +260,15 @@ std::vector<color4>contrast_array(const size_t size) {
 		retval.push_back(normalized_lumina(normalized_hue(val), 1.f, color_space::rgb));
 	}
 	return std::move(retval);
+}
+
+
+string to_hex(const color4&c, const color_space cs) {
+	const color4 rgb(convert(c, cs, color_space::rgb));
+	ork::o_string_stream stream;
+	stream	<< std::setfill(ORK('0')) << std::hex
+			<< std::setw(2) << short(rgb.r*255.f) << std::setw(2) << short(rgb.g*255.f) << std::setw(2) << short(rgb.b*255.f) << std::setw(2) << short(rgb.a*255.f);
+	return boost::to_upper_copy(stream.str());
 }
 
 

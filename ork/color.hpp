@@ -61,6 +61,9 @@ ORK_ORK_EXT(color4) normalized_red_green(const float weight);//Returns a normali
 ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size);//Return colors that are different from each other
 
 
+ORK_ORK_EXT(string) to_hex(const color4&c, const color_space cs);
+
+
 }//namespace ork
 
 namespace glm {
