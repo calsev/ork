@@ -21,10 +21,11 @@ enum class color_space {
 
 typedef glm::vec4 color4;//we co-opt for hsv also
 
-//Convenience
+//Convenience definitions, in RGB
 ORK_ORK_API extern const color4 red;
 ORK_ORK_API extern const color4 green;
 ORK_ORK_API extern const color4 blue;
+ORK_ORK_API extern const color4 white;
 
 
 ORK_ORK_EXT(color4) truncate_hue(const color4&c, const color_space cs);//Convention for hue when rgb=0,0,0
@@ -50,8 +51,8 @@ b.
 The scale must favor greater variation in green.
 We unroll a unit circle for hue, but with smaller variance for green distribution.
 */
-ORK_ORK_EXT(color4) normalized_lightness(const color4&c);
-ORK_ORK_EXT(color4) normalized_lightness(const color4&c, const float one_norm);
+ORK_ORK_EXT(color4) normalized_lightness(const color4&c, const float lightness, const color_space cs);
+ORK_ORK_EXT(color4) normalized_lumina(const color4&c, const float lumina, const color_space cs);
 
 ORK_ORK_EXT(color4) normalized_hue(const float value);//Value is defined on [0, 1]
 

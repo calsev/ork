@@ -183,19 +183,27 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 ORK_ORK_API const color4 red = {1., 0., 0., 1.};
 ORK_ORK_API const color4 green = {0., 1., 0., 1.};
 ORK_ORK_API const color4 blue = {0., 0., 1., 1.};
+ORK_ORK_API const color4 white = {1., 1., 1., 1.};
 
 
-color4 normalized_lightness(const color4&c) {
-	return normalized_lightness(c, 1.f);
+color4 normalized_lightness(const color4&c, const float lightness, const color_space cs) {
+	color4 hsl = convert(c, cs, color_space::hsl);
+	hsl.b = lightness;
+	return convert(hsl, color_space::hsl, cs);
 }
-color4 normalized_lightness(const color4&c, const float one_norm) {
+color4 normalized_lumina(const color4&c, const float lumina, const color_space cs) {
 	/*
-	This is waay simplified, and uses made-up linear coefficients.
+	This is a simplified model using lumina 601 coefficients https://en.wikipedia.org/wiki/HSL_and_HSV.
 	Basically, yellow-green appears light and violet-blue appears dark.
 	*/
-	const float value = c.r*1.0f + c.g*1.3f + c.b*0.7f;
-	const glm::vec3 normed(c*one_norm / value);//For debugging
-	return color4(normed, c.a);//Scale colors, keep alpha
+	const color4 rgb = convert(c, cs, color_space::rgb);
+	const float curr_lumina = 0.30f*c.r + 0.59f*c.g + 0.11f*c.b;
+	if(curr_lumina <= 0.f) {
+		return convert(white*lumina, color_space::rgb, cs);
+	}
+	color4 hsl = convert(c, cs, color_space::hsl);
+	hsl.b = std::min(1.f, hsl.b*lumina / curr_lumina);
+	return convert(hsl, color_space::hsl, cs);
 }
 
 
@@ -246,7 +254,7 @@ std::vector<color4>contrast_array(const size_t size) {
 	std::vector<color4>retval;
 	LOOPI(size) {
 		const float val = float(i) / float(size - 1);
-		retval.push_back(normalized_lightness(normalized_hue(val)));
+		retval.push_back(normalized_lumina(normalized_hue(val), 1.f, color_space::rgb));
 	}
 	return std::move(retval);
 }
