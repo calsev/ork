@@ -52,13 +52,14 @@ The scale must favor greater variation in green.
 We unroll a unit circle for hue, but with smaller variance for green distribution.
 */
 ORK_ORK_EXT(color4) normalized_lightness(const color4&c, const float lightness, const color_space cs);
-ORK_ORK_EXT(color4) normalized_lumina(const color4&c, const float lumina, const color_space cs);
+ORK_ORK_EXT(color4) normalized_luma(const color4&c, const float luma, const color_space cs);
 
 ORK_ORK_EXT(color4) normalized_hue(const float value);//Value is defined on [0, 1]
 
 ORK_ORK_EXT(color4) normalized_red_green(const float weight);//Returns a normalized color on continuum red-green weighted on interval [0, 1]
 
-ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size);//Return colors that are different from each other
+ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size);
+ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size, const float luma);//Return colors that are different from each other
 
 
 ORK_ORK_EXT(string) to_hex(const color4&c, const color_space cs);

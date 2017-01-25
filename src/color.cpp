@@ -194,19 +194,30 @@ color4 normalized_lightness(const color4&c, const float lightness, const color_s
 	hsl.b = lightness;
 	return convert(hsl, color_space::hsl, cs);
 }
-color4 normalized_lumina(const color4&c, const float lumina, const color_space cs) {
+float luma(const color4&rgb) {
+#if 0//luma 601 goes overboard; blue is clearly brightest
+	return 0.30f*c.r + 0.59f*c.g + 0.11f*c.b;
+#else
+	return 0.3f*rgb.r + 0.5f*rgb.g + 0.2f*rgb.b;
+#endif
+}
+color4 normalized_luma(const color4&c, const float lum, const color_space cs) {
 	/*
-	This is a simplified model using lumina 601 coefficients https://en.wikipedia.org/wiki/HSL_and_HSV.
+	This is a simplified model using luma 601 coefficients https://en.wikipedia.org/wiki/HSL_and_HSV.
 	Basically, yellow-green appears light and violet-blue appears dark.
 	*/
-	const color4 rgb = convert(c, cs, color_space::rgb);
-	const float curr_lumina = 0.30f*c.r + 0.59f*c.g + 0.11f*c.b;
-	if(curr_lumina <= 0.f) {
-		return convert(white*lumina, color_space::rgb, cs);
+	color4 rgb(convert(c, cs, color_space::rgb));
+	if(rgb.r <= 0.f && rgb.g <= 0.f && rgb.b <= 0.f) {
+		return convert(white*lum, color_space::rgb, cs);
 	}
-	color4 hsl = convert(c, cs, color_space::hsl);
-	hsl.b = std::min(1.f, hsl.b*lumina / curr_lumina);
-	return convert(hsl, color_space::hsl, cs);
+	float curr_luma = luma(rgb);
+	while(std::abs(lum - curr_luma) > 0.02) {//Arbitrary magic number
+		color4 hsl(convert(rgb, color_space::rgb, color_space::hsl));
+		hsl.b = std::min(1.f, hsl.b*(1.f + 0.2f*(lum - curr_luma)));
+		rgb = convert(hsl, color_space::hsl, color_space::rgb);
+		curr_luma = luma(rgb);
+	}
+	return convert(rgb, color_space::rgb, cs);
 }
 
 
@@ -239,7 +250,10 @@ color4 normalized_red_green(const float weight) {
 }
 
 
-std::vector<color4>contrast_array(const size_t size) {
+std::vector<color4> contrast_array(const size_t size) {
+	return contrast_array(size, 0.2f);
+}
+std::vector<color4>contrast_array(const size_t size, const float luma) {
 	/*
 	1.
 	We want max difference between colors, garish is encouraged, so saturation is constant 100%.
@@ -257,7 +271,9 @@ std::vector<color4>contrast_array(const size_t size) {
 	std::vector<color4>retval;
 	LOOPI(size) {
 		const float val = float(i) / float(size - 1);
-		retval.push_back(normalized_lumina(normalized_hue(val), 1.f, color_space::rgb));
+		const color4 hue(normalized_hue(val));
+		const color4 luma(normalized_luma(hue, luma, color_space::rgb));
+		retval.push_back(luma);
 	}
 	return std::move(retval);
 }
