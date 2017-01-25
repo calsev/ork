@@ -56,6 +56,29 @@ typedef spirit::char_encoding::standard charset;
 namespace orq {//ork-qi :)
 
 
+namespace detail {
+
+
+template<typename iter>
+bool consume_identifier(iter& it, const iter&first, const iter& last) {
+	if(it == last) {
+		return false;
+	}
+
+	if(!std::isalpha(*it) && *it != ORK('_')) {
+		return false;//First character must be letter or underscore
+	}
+	while(it != last && (std::isalnum(*it) || *it == ORK('_'))) {
+		++it;//Subsequent characters can be numbers also
+	}
+
+	return it != first;
+}
+
+
+}//namespace detail
+
+
 struct ORK_ORK_API id_parser : qi::primitive_parser<id_parser> {
 public://Parser component stuff
 	template<typename context, typename iter>
@@ -68,23 +91,12 @@ public://Parser component stuff
 	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
 		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
 
-		if(first == last) {
-			return false;
-		}
-
 		iter it(first);
-		if(!std::isalpha(*it) && *it != ORK('_')) {
-			return false;//First character must be letter or underscore
-		}
-		while(it != last && (std::isalnum(*it) || *it == ORK('_'))) {
-			++it;//Subsequent characters can be numbers also
+		if(!detail::consume_identifier(it, first, last)) {
+			return false;
 		}
 
 		attribute result(first, it);
-		if(result.empty()) {
-			return false;
-		}
-
 		first = it;
 		spirit::traits::assign_to(result, attr);
 		return true;
