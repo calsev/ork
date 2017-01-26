@@ -89,14 +89,15 @@ ORK_INLINE bool consume_identifier(iter& it, const iter&first, const iter& last)
 		return false;
 	}
 
-	if(!std::isalpha(*it) && *it != ORK('_')) {
+	auto ch = *it;
+	if(!std::isalpha(ch) && ch != ORK('_')) {
 		return false;//First character must be letter or underscore
 	}
-	while(it != last && (std::isalnum(*it) || *it == ORK('_'))) {
-		++it;//Subsequent characters can be numbers also
+	while((std::isalnum(ch) || ch == ORK('_')) && ++it != last) {
+		ch = *it;//Subsequent characters can be numbers also
 	}
 
-	return it != first;
+	return true;//We consumed at least the first character
 }
 
 
@@ -109,17 +110,14 @@ ORK_INLINE bool consume_quote(iter&it, const iter& first, const iter& last) {
 	if(*it++ != ORK('"')) {//Consume the quote
 		return false;
 	}
-	while(it != last && *it != ORK('"')) {//Up to but do not consume the quote
-		++it;
-	}
-	if(it == last) {
-		return false;
-	}
-	if(*it++ != ORK('"')) {//Consume the quote
-		return false;
+	for(/**/; *it != ORK('"'); ++it) {//Up to but do not consume the quote
+		if(it == last) {
+			return false;
+		}
 	}
 
-	return it != first;//Consume pair of quotes, but allow empty attribute
+	++it;//Consume second in pair of quotes
+	return true;//Allow empty attribute
 }
 
 
