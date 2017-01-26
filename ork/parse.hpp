@@ -76,6 +76,29 @@ bool consume_identifier(iter& it, const iter&first, const iter& last) {
 }
 
 
+template<typename iter>
+bool consume_quote(iter&it, const iter& first, const iter& last) {
+	if(first == last) {
+		return false;
+	}
+
+	if(*it++ != ORK('"')) {//Consume the quote
+		return false;
+	}
+	while(it != last && *it != ORK('"')) {//Up to but do not consume the quote
+		++it;
+	}
+	if(it == last) {
+		return false;
+	}
+	if(*it++ != ORK('"')) {//Consume the quote
+		return false;
+	}
+
+	return it != first;//Consume pair of quotes, but allow empty attribute
+}
+
+
 }//namespace detail
 
 
@@ -122,27 +145,12 @@ public://Parser component stuff
 	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
 		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
 
-		if(first == last) {
-			return false;
-		}
-
 		iter it(first);
-		if(*it++ != ORK('"')) {//Consume the quote
-			return false;
-		}
-		while(it != last && *it != ORK('"')) {//Up to but do not consume the quote
-			++it;
-		}
-		if(it == last) {
-			return false;
-		}
-		if(*it++ != ORK('"')) {//Consume the quote
+		if(!detail::consume_quote(it, first, last)) {
 			return false;
 		}
 
-		attribute result(++first, it - 1);//Do not include quotes
-		//Allow empty attribute
-
+		attribute result(++first, it - 1);//Do not include quotes; preserve it
 		first = it;
 		spirit::traits::assign_to(result, attr);
 		return true;
