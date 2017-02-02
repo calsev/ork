@@ -79,11 +79,19 @@ assert(f1==f2);//have fun crashing
 assert(might_be_equal(f1,f2));//We are safe, assuming IEEE 754 (Ok,I am not authoritatively positive)
 There are false positives with small numbers!
 */
+template<typename T>struct default_epsilon_factor {
+	static const unsigned value = 16;//This is only verified over time as the minimum upper bound across ACIS and OCC when T is double
+};
+template<typename T, unsigned eps_factor = default_epsilon_factor<T>::value>
+ORK_INLINE ORK_CONSTEXPR T tolerance() {
+	return eps_factor * std::numeric_limits<T>::epsilon();
+}
+
 namespace detail {
 
-template<typename T, unsigned eps_factor = 16, unsigned rel_factor = 1>
+template<typename T, unsigned eps_factor = default_epsilon_factor<T>::value, unsigned rel_factor = 1>
 ORK_INLINE bool equal_simple(const T&lhs, const T&rhs) {
-	static const T abs_eps = eps_factor * std::numeric_limits<T>::epsilon();//We need an absolute epsilon
+	static const T abs_eps = tolerance<T, eps_factor>();//We need an absolute epsilon
 	static const T rel_eps = rel_factor * abs_eps;//Factor of 2 to allow for the case of second LSB bump
 	return std::abs(lhs - rhs) <= std::max(abs_eps, rel_eps*std::max(lhs, rhs));
 }
