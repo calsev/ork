@@ -54,12 +54,12 @@ ORK_ORK_EXT(o_stream&) operator<<(o_stream&stream, const dunit3&vec);
 
 
 //Simply tired of defining these
-ORK_EXTERN const dunit3 pos_x;
-ORK_EXTERN const dunit3 neg_x;
-ORK_EXTERN const dunit3 pos_y;
-ORK_EXTERN const dunit3 neg_y;
-ORK_EXTERN const dunit3 pos_z;
-ORK_EXTERN const dunit3 neg_z;
+ORK_ORK_EXTERN const dunit3 pos_x;
+ORK_ORK_EXTERN const dunit3 neg_x;
+ORK_ORK_EXTERN const dunit3 pos_y;
+ORK_ORK_EXTERN const dunit3 neg_y;
+ORK_ORK_EXTERN const dunit3 pos_z;
+ORK_ORK_EXTERN const dunit3 neg_z;
 
 
 //GLM version of loops, needed because GLM uses length() and unsigned as the type

@@ -21,12 +21,12 @@ o_stream&operator<<(o_stream&stream, const dunit3&vec) {
 	return stream << vec.get();
 }
 
-const dunit3 pos_x(1.0, 0.0, 0.0);
-const dunit3 neg_x(-1., 0.0, 0.0);
-const dunit3 pos_y(0.0, 1.0, 0.0);
-const dunit3 neg_y(0.0, -1., 0.0);
-const dunit3 pos_z(0.0, 0.0, 1.0);
-const dunit3 neg_z(0.0, 0.0, -1.);
+ORK_ORK_API const dunit3 pos_x(1.0, 0.0, 0.0);
+ORK_ORK_API const dunit3 neg_x(-1., 0.0, 0.0);
+ORK_ORK_API const dunit3 pos_y(0.0, 1.0, 0.0);
+ORK_ORK_API const dunit3 neg_y(0.0, -1., 0.0);
+ORK_ORK_API const dunit3 pos_z(0.0, 0.0, 1.0);
+ORK_ORK_API const dunit3 neg_z(0.0, 0.0, -1.);
 
 
 glm::dvec3 rotate(const glm::dvec3&vec, const dunit3&normal, const dunit3&new_normal) {

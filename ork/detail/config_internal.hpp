@@ -114,6 +114,9 @@ Plain versions are for use by clients
 /*
 For global exports
 */
+#ifndef ORK_ORK_EXTERN
+#	define ORK_ORK_EXTERN extern ORK_ORK_API
+#endif
 #ifndef ORK_EXTERN
 #	define ORK_EXTERN extern ORK_API
 #endif
