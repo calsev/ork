@@ -250,3 +250,34 @@ ORK_ORQ_FACTORY(lb_com);
 }//namespace qi
 }//namespace spirit
 }//namespace boost
+
+
+namespace ork {
+namespace orq {
+
+
+template<typename T>struct numeric;
+#define ORK_ORQ_NUMERIC(TYPE, TAG) \
+template<>struct numeric<TYPE> {\
+	static ORK_CONSTEXPR auto tag()->decltype(TAG)& {\
+		return TAG;\
+	}\
+};
+
+ORK_ORQ_NUMERIC(unsigned short, qi::ushort_);
+ORK_ORQ_NUMERIC(unsigned, qi::uint_);
+ORK_ORQ_NUMERIC(unsigned long, qi::ulong_);
+ORK_ORQ_NUMERIC(unsigned long long, qi::ulong_long);
+
+ORK_ORQ_NUMERIC(short, qi::short_);
+ORK_ORQ_NUMERIC(int, qi::int_);
+ORK_ORQ_NUMERIC(long, qi::long_);
+ORK_ORQ_NUMERIC(long long, qi::long_long);
+
+ORK_ORQ_NUMERIC(float, qi::float_);
+ORK_ORQ_NUMERIC(double, qi::double_);
+ORK_ORQ_NUMERIC(long double, qi::long_double);
+
+
+}//namespace orq
+}//namespace ork
