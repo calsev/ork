@@ -155,6 +155,11 @@ std::ostream &operator << (std::ostream &stream, const backtrace &trace) {
 From file_system.hpp
 */
 
+std::array<uint8_t, 3>utf8_bom = {0xEF, 0xBB, 0xBF};
+std::array<uint8_t, 4>utf8_bom_ = {0xEF, 0xBB, 0xBF, 0x00};//For null termination
+const char*const utf8_bom_str = reinterpret_cast<char*>(utf8_bom_.data());//Reinterpret cast used to handle pos/neg chars
+
+
 bool test_directory(const file::path&file_or_directory) {
 	return file::exists(file_or_directory) && file::is_directory(file_or_directory);
 }

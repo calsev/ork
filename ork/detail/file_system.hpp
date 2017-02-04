@@ -22,6 +22,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+ORK_ORK_EXTERN std::array<uint8_t, 3>utf8_bom;
+ORK_ORK_EXTERN const char*const utf8_bom_str;
+
+
 //Forward declaration to keep boost out of headers
 namespace file = boost::filesystem;
 class file::path;
