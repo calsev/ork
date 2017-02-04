@@ -39,21 +39,23 @@ template<> struct use_terminal<qi::domain, ork::orq::tag::lb_com> : mpl::true_ {
 
 
 namespace ork {
+namespace orq {//ork-qi :)
+
 
 namespace spirit = boost::spirit;
 namespace qi = spirit::qi;
-namespace ascii = spirit::ascii;
 namespace proto = boost::proto;
 
 
 #if ORK_UNICODE
-typedef spirit::char_encoding::standard_wide charset;
+using charset = spirit::char_encoding::standard_wide;
+using space_type = spirit::standard_wide::space_type;
+using spirit::standard_wide::space;
 #else
-typedef spirit::char_encoding::standard charset;
+using charset = spirit::char_encoding::standard;
+using space_type = spirit::standard::space_type;
+using spirit::standard::space;
 #endif
-
-
-namespace orq {//ork-qi :)
 
 
 namespace detail {
