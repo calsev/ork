@@ -8,9 +8,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	error This header can only be included from ork/ork.hpp!
 #endif
 
-
-#include<sstream>
+#include<array>
 #include<fstream>
+#include<sstream>
 //Some boost configuration here
 #define BOOST_SYSTEM_NO_DEPRECATED 1
 #define BOOST_FILESYSTEM_NO_DEPRECATED 1
