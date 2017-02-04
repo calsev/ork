@@ -182,6 +182,19 @@ bool ensure_file(const file::path&file) {
 /*
 From file_utils.hpp
 */
+
+bool discard_bom(bi_stream&fin) {
+	for(const uint8_t bom : utf8_bom) {
+		const uint8_t curr = fin.get();
+		if(curr != bom) {
+			fin.seekg(0);
+			return false;
+		}
+	}
+	return true;
+}
+
+
 bool top_subdirectory(const file::path&dir, file::path&p) {
 	if(!test_directory(dir))ORK_FILE_OPEN_ERR(ORK("Error searching directory!"), dir);
 

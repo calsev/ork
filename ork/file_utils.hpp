@@ -11,6 +11,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+//Discard UTF-8 BOM, return true if found
+bool discard_bom(bi_stream&fin);
+
+
 /*
 Below is implemented generic directory iteration.
 The only requirement on the functor is that following is a valid statement: functor(const path&);
