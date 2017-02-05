@@ -123,6 +123,23 @@ ORK_INLINE bool consume_quote(iter&it, const iter& first, const iter& last) {
 }
 
 
+template<typename iter>
+ORK_INLINE bool consume_lb_com(iter&it, const iter& first, const iter& last) {
+	if(it == last) {
+		return false;
+	}
+
+	if(*it++ != ORK('#')) {//Consume the marker
+		return false;
+	}
+	while(it != last && *it != ORK('\n')) {//Up to but do not consume the eol
+		++it;
+	}
+
+	return true;//We consumed at least the first character
+}
+
+
 }//namespace detail
 
 
@@ -200,16 +217,9 @@ public://Parser component stuff
 	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
 		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
 
-		if(first == last) {
-			return false;
-		}
-
 		iter it(first);
-		if(*it++ != ORK('#')) {//Consume the marker
+		if(!detail::consume_lb_com(it, first, last)) {
 			return false;
-		}
-		while(it != last && *it != ORK('\n')) {//Up to but do not consume the eol
-			++it;
 		}
 
 		first = it;
