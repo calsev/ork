@@ -17,6 +17,7 @@ namespace orq {//ork-qi :)
 BOOST_SPIRIT_TERMINAL(id);
 BOOST_SPIRIT_TERMINAL(quote);
 BOOST_SPIRIT_TERMINAL(lb_com);//'pound comment'
+BOOST_SPIRIT_TERMINAL(lb_com_skip);//'comment skipper'
 
 }//namespace orq
 }//namespace ork
@@ -32,6 +33,7 @@ namespace spirit {
 template<> struct use_terminal<qi::domain, ork::orq::tag::id> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::quote> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::lb_com> : mpl::true_ {};
+template<> struct use_terminal<qi::domain, ork::orq::tag::lb_com_skip> : mpl::true_ {};
 
 }//namespace spirit
 }//namespace boost
@@ -246,6 +248,41 @@ public://Parser component stuff
 };
 
 
+struct ORK_ORK_API lb_com_skip_parser : qi::primitive_parser<lb_com_skip_parser> {
+public://Parser component stuff
+	template<typename context, typename iter>
+	struct attribute {//Define the attribute type exposed by this parser component
+		typedef qi::unused_type type;
+	};
+
+	//This function is called during the actual parsing process
+	template<typename iter, typename context, typename skipper, typename attribute>
+	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
+		iter it(first);
+		bool consumed = false;
+		while(true) {
+			if(detail::consume_space(it, first, last) || detail::consume_lb_com(it, first, last)) {
+				consumed = true;
+			}
+			else {
+				break;
+			}
+		}
+
+		if(consumed) {
+			first = it;
+		}
+		return consumed;
+	}
+
+	//This function is called during error handling to create a human readable string for the error context.
+	template<typename context>
+	boost::spirit::info what(context&) const {
+		return boost::spirit::info("lb_com_skip");
+	}
+};
+
+
 }//namespace orq
 }//namespace ork
 
@@ -270,6 +307,7 @@ struct make_primitive<ork::orq::tag::TAG, modifiers> {\
 ORK_ORQ_FACTORY(id);
 ORK_ORQ_FACTORY(quote);
 ORK_ORQ_FACTORY(lb_com);
+ORK_ORQ_FACTORY(lb_com_skip);
 
 }//namespace qi
 }//namespace spirit
