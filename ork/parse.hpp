@@ -92,10 +92,10 @@ ORK_INLINE bool consume_identifier(iter& it, const iter&first, const iter& last)
 	}
 
 	auto ch = *it;
-	if(!std::isalpha(ch) && ch != ORK('_')) {
+	if(!std::isalpha(ch) && ch != ORK('_')) {//NOT charset: this is programming language (ascii) identifier
 		return false;//First character must be letter or underscore
 	}
-	while((std::isalnum(ch) || ch == ORK('_')) && ++it != last) {
+	while((std::isalnum(ch) || ch == ORK('_')) && ++it != last) {//NOT charset: this is programming language (ascii) identifier
 		ch = *it;//Subsequent characters can be numbers also
 	}
 
@@ -120,6 +120,18 @@ ORK_INLINE bool consume_quote(iter&it, const iter& first, const iter& last) {
 
 	++it;//Consume second in pair of quotes
 	return true;//Allow empty attribute
+}
+
+
+template<typename iter>
+ORK_INLINE bool consume_space(iter&it, const iter& first, const iter& last) {
+	if(it == last) {
+		return false;
+	}
+
+	while(charset::isspace(*it) && ++it != last) {}
+
+	return it != first;
 }
 
 
