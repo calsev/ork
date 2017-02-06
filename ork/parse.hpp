@@ -14,6 +14,7 @@ Placeholders for parser components
 namespace ork {
 namespace orq {//ork-qi :)
 
+BOOST_SPIRIT_TERMINAL(alpha_bool);
 BOOST_SPIRIT_TERMINAL(id);
 BOOST_SPIRIT_TERMINAL(quote);
 BOOST_SPIRIT_TERMINAL(lb_com);//'pound comment'
@@ -30,6 +31,7 @@ namespace boost {
 namespace spirit {
 
 //Make custom parser usable as a terminal only, and only for parser expressions (qi::domain).
+template<> struct use_terminal<qi::domain, ork::orq::tag::alpha_bool> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::id> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::quote> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::lb_com> : mpl::true_ {};
@@ -155,6 +157,55 @@ ORK_INLINE bool consume_lb_com(iter&it, const iter& first, const iter& last) {
 
 
 }//namespace detail
+
+
+struct ORK_ORK_API alpha_bool_parser : qi::primitive_parser<alpha_bool_parser> {
+public://Parser component stuff
+	template<typename context, typename iter>
+	struct attribute {//Define the attribute type exposed by this parser component
+		typedef bool type;
+	};
+
+	//This function is called during the actual parsing process
+	template<typename iter, typename context, typename skipper, typename attribute>
+	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
+		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
+
+		iter it(first);
+		if(detail::consume_lit(ORK("yes"), it, first, last)) {
+			first = it;
+			spirit::traits::assign_to(true, attr);
+			return true;
+		}
+		it = first;
+		if(detail::consume_lit(ORK("no"), it, first, last)) {
+			first = it;
+			spirit::traits::assign_to(false, attr);
+			return true;
+		}
+
+		it = first;
+		if(detail::consume_lit(ORK("true"), it, first, last)) {
+			first = it;
+			spirit::traits::assign_to(true, attr);
+			return true;
+		}
+		it = first;
+		if(detail::consume_lit(ORK("false"), it, first, last)) {
+			first = it;
+			spirit::traits::assign_to(false, attr);
+			return true;
+		}
+
+		return false;
+	}
+
+	//This function is called during error handling to create a human readable string for the error context.
+	template<typename context>
+	boost::spirit::info what(context&) const {
+		return boost::spirit::info("alpha_bool");
+	}
+};
 
 
 struct ORK_ORK_API id_parser : qi::primitive_parser<id_parser> {
@@ -306,6 +357,7 @@ struct make_primitive<ork::orq::tag::TAG, modifiers> {\
 	}\
 };
 
+ORK_ORQ_FACTORY(alpha_bool);
 ORK_ORQ_FACTORY(id);
 ORK_ORQ_FACTORY(quote);
 ORK_ORQ_FACTORY(lb_com);
@@ -327,6 +379,8 @@ template<>struct numeric<TYPE> {\
 		return TAG;\
 	}\
 };
+
+ORK_ORQ_NUMERIC(bool, alpha_bool);//So we can use key-value template,etc.
 
 ORK_ORQ_NUMERIC(unsigned short, qi::ushort_);
 ORK_ORQ_NUMERIC(unsigned, qi::uint_);
