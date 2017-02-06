@@ -258,21 +258,23 @@ public://Parser component stuff
 	//This function is called during the actual parsing process
 	template<typename iter, typename context, typename skipper, typename attribute>
 	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
-		iter it(first);
-		bool consumed = false;
-		while(true) {
-			if(detail::consume_space(it, first, last) || detail::consume_lb_com(it, first, last)) {
-				consumed = true;
+		const iter first_copy(first);
+		do {
+			iter it(first);
+			if(detail::consume_space(it, first, last)) {
+				first = it;
+				continue;
 			}
-			else {
-				break;
-			}
-		}
 
-		if(consumed) {
-			first = it;
-		}
-		return consumed;
+			it = first;
+			if(detail::consume_lb_com(it, first, last)) {
+				first = it;
+				continue;
+			}
+
+			break;
+		} while(true);
+		return first != first_copy;
 	}
 
 	//This function is called during error handling to create a human readable string for the error context.
