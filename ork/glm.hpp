@@ -79,8 +79,16 @@ assert(f1==f2);//have fun crashing
 assert(might_be_equal(f1,f2));//We are safe, assuming IEEE 754 (Ok,I am not authoritatively positive)
 There are false positives with small numbers!
 */
-template<typename T>struct default_epsilon_factor {
-	static const unsigned value = 16;//This is only verified over time as the minimum upper bound across ACIS and OCC when T is double
+template<typename T>struct default_epsilon_factor;
+template<>struct default_epsilon_factor<float> {
+	static const unsigned value = 16;//A guesstimate
+};
+template<>struct default_epsilon_factor<double> {
+#if ORK_USE_ACIS
+	static const unsigned value = 16;//This is only verified over time as the minimum upper bound across ACIS when T is double
+#else //OCC
+	static const unsigned value = 64;//This is only verified over time as the minimum upper bound across OCC when T is double
+#endif
 };
 template<typename T, unsigned eps_factor = default_epsilon_factor<T>::value>
 ORK_INLINE ORK_CONSTEXPR T tolerance() {
