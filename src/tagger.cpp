@@ -20,14 +20,14 @@ string tagger::operator()() {
 	string_stream stream;
 	file::path p(_debug_root);
 	if(_number_folder) {
-		stream << _tag << _count++ << ORK("/");
+		stream << _tag << ORK("_") << _count++ << ORK("/");
 		p /= stream.str();
 		return p.ORK_GEN_STR();
 	}
 	else {
 		stream << _tag << ORK("/");
 		p /= stream.str();
-		return p.ORK_GEN_STR() + boost::lexical_cast<string>(_count++);
+		return p.ORK_GEN_STR() + boost::lexical_cast<string>(_count++) + ORK("_");
 	}
 }
 

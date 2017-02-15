@@ -33,7 +33,7 @@ public:
 };
 
 
-//TODO: This is not really common stuff
+//TODO: This is not reusable code, push down to project
 //We use this class to generate setup paths so that downstream can use the exact same logic
 class setup_hierarchy {
 private:
