@@ -199,6 +199,10 @@ template<class V>
 ORK_INLINE bool axial(const V&v1, const V&v2) {
 	return parallel<V>(v1, v2) || parallel<V>(v1, -v2);
 }
+template<class V>
+ORK_INLINE bool collinear(const V&v1, const V&v2) {//Just an alias
+	return parallel<V>(v1, v2) || parallel<V>(v1, -v2);
+}
 
 
 template<class V>
