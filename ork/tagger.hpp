@@ -22,6 +22,8 @@ private:
 	const bool _number_folder;//Local static constant
 	const string _tag;//Local static constant
 public:
+	ORK_ORK_API static string sub_tag(const string&tag, size_t&index);
+public:
 	ORK_INLINE explicit tagger(const string&tag) :_count(0), _number_folder(true), _tag(tag) {}
 	ORK_INLINE tagger(const string&tag, bool numbered_folders) :_count(0), _number_folder(numbered_folders), _tag(tag) {}
 	ORK_NON_COPYABLE(tagger)

@@ -16,6 +16,12 @@ namespace ork {
 file::path tagger::_debug_root(ORK("./debug"));
 std::mutex tagger::_mutex;
 
+string tagger::sub_tag(const string&tag, size_t&index) {
+	string_stream stream;
+	stream << tag << index++ << ORK("_");
+	return stream.str();
+}
+
 string tagger::operator()() {
 	string_stream stream;
 	file::path p(_debug_root);
