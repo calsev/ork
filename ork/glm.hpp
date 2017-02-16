@@ -85,9 +85,9 @@ template<>struct default_epsilon_factor<float> {
 };
 template<>struct default_epsilon_factor<double> {
 #if ORK_USE_ACIS
-	static const unsigned value = 16;//This is only verified over time as the minimum upper bound across ACIS when T is double
+	static const unsigned value = 0x1 << 4;//This is only verified over time as the minimum upper bound across ACIS when T is double
 #else //OCC
-	static const unsigned value = 64;//This is only verified over time as the minimum upper bound across OCC when T is double
+	static const unsigned value = 0x1 << 16;//This is only verified over time as the minimum upper bound across OCC when T is double
 #endif
 };
 template<typename T, unsigned eps_factor = default_epsilon_factor<T>::value>
