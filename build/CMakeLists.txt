@@ -66,6 +66,9 @@ macro(install_bin _targ)
 			RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
 			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
 		)
+		install(
+			FILES $<TARGET_PDB_FILE:${_targ}> DESTINATION "${INSTALL_BIN_DIR}" OPTIONAL
+		)
 	endif()
 endmacro()
 
