@@ -66,6 +66,7 @@ namespace ork {
 #define ORK_WIDEN(X) ORK_WIDEN_(X)
 
 
+
 #if ORK_UNICODE
 	typedef std::wstring string;
 	typedef std::wstringstream string_stream;
@@ -74,6 +75,7 @@ namespace ork {
 	typedef std::wistream i_stream;
 	typedef std::wostringstream o_string_stream;
 	typedef std::wistringstream i_string_stream;
+	typedef std::wstreambuf streambuf;
 	#define ORK(X) ORK_WIDEN(X)//The shortest prefixed macro
 	#define ORK_CIN std::wcin
 	#define ORK_COUT std::wcout
@@ -87,6 +89,7 @@ namespace ork {
 	typedef std::istream i_stream;
 	typedef std::ostringstream o_string_stream;
 	typedef std::istringstream i_string_stream;
+	typedef std::streambuf streambuf;
 	#define ORK(X) X//The shortest prefixed macro
 	#define ORK_CIN std::cin
 	#define ORK_COUT std::cout
