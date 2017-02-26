@@ -101,6 +101,11 @@ string to_string(const glm::dvec3&vec) {
 	stream << vec;
 	return stream.str();
 }
+string to_string(const GLM::dunit3&vec) {
+	string_stream stream;
+	stream << vec;
+	return stream.str();
+}
 
 }//namespace ork
 

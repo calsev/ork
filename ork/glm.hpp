@@ -308,6 +308,7 @@ ORK_ORK_EXT(const dunit3&) orientation2direction(orientation axis);
 }//namespace GLM
 
 ORK_ORK_EXT(string) to_string(const glm::dvec3&vec);
+ORK_ORK_EXT(string) to_string(const GLM::dunit3&vec);
 
 }//namespace ork
 
