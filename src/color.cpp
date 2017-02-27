@@ -242,9 +242,9 @@ color4 normalized_luma(const color4&c, const float lum, const color_space cs) {
 color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	/*
 	This is waay simplified, and uses made-up triangle distributions.
-	We multiply value by 1.5 instead of using thirds.
-	Each color should be symmetrical and occupy 1.0 width.
-	We narrow the green spectrum to 0.8.
+	If we offset peaks by 0.05 green hues are too close.
+	If we offset peaks by 0.10 red and blue hues are too close.
+	So we offset by 0.05 and place a dead zone of 0.10 centered around pure green.
 	*/
 	static ork::triangle_distribution<float>blue_l{-0.95f, -0.5f, 0.05f};//Periodicity
 	static ork::triangle_distribution<float>red_l{-0.5f, 0.05f, 0.5f};//0.0 should be pure red
@@ -252,7 +252,13 @@ color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	static ork::triangle_distribution<float>blue_h{0.5f, 0.95f, 1.5f};//1.0 should be pure blue
 	static ork::triangle_distribution<float>red_h{0.95f, 1.5f, 1.95f};//Periodicity
 
-	float transformed = 0.05 + 1.45*value;//Pure red to pure red
+	const bool bottom_half = value < 0.5;
+	//half-range of value is 0.5, half-range of dead-zone scale is 0.55/2 + (0.45 - 0.05) = 0.275 + 0.4 = 0.675
+	const float scaled = (bottom_half ? value : value - 0.5f)*0.675f / 0.5f;
+
+	//Bottom start point is 0.05 - 0.55/2 = 0.05 - 0.275 = -0.225
+	//Top start point is 0.5 + 0.05 = 0.55
+	float transformed = bottom_half ? -0.225 + scaled : 0.55 + scaled;
 	const float rl = red_l(transformed);
 	const float rh = red_h(transformed);
 	const float g = green(transformed);
