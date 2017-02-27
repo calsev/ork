@@ -244,28 +244,27 @@ color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	This is waay simplified, and uses made-up triangle distributions.
 	If we offset peaks by 0.05 green hues are too close.
 	If we offset peaks by 0.10 red and blue hues are too close.
-	So we offset by 0.05 and place a dead zone of 0.10 centered around pure green.
+	So we offset by 0.05 and place a dead zone of 0.10 centered around each pure color
 	*/
-	static ork::triangle_distribution<float>blue_l{-0.95f, -0.5f, 0.05f};//Periodicity
-	static ork::triangle_distribution<float>red_l{-0.5f, 0.05f, 0.5f};//0.0 should be pure red
-	static ork::triangle_distribution<float>green{0.05f, 0.5f, 0.95f};//0.5 is pure green
-	static ork::triangle_distribution<float>blue_h{0.5f, 0.95f, 1.5f};//1.0 should be pure blue
-	static ork::triangle_distribution<float>red_h{0.95f, 1.5f, 1.95f};//Periodicity
+	static ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
+	static ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
+	static ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
+	static ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
 
-	const bool bottom_half = value < 0.5;
-	//half-range of value is 0.5, half-range of dead-zone scale is 0.55/2 + (0.45 - 0.05) = 0.275 + 0.4 = 0.675
-	const float scaled = (bottom_half ? value : value - 0.5f)*0.675f / 0.5f;
-
-	//Bottom start point is 0.05 - 0.55/2 = 0.05 - 0.275 = -0.225
-	//Top start point is 0.5 + 0.05 = 0.55
-	float transformed = bottom_half ? -0.225 + scaled : 0.55 + scaled;
-	const float rl = red_l(transformed);
-	const float rh = red_h(transformed);
-	const float g = green(transformed);
-	const float bl = blue_l(transformed);
-	const float bh = blue_h(transformed);
-	const glm::dvec4 normed{rl + rh, g, bl + bh, 1.f};
-	return normed;
+	const float scaled = value*1.5f;//red-red is 1.5 period
+	const float third_scale = std::fmod(scaled, 0.5f)*0.8f;//Dead zone of 0.1 reduces each third to 0.4/0.5 = 0.8
+	if(scaled < 0.5f) {
+		const float offset = 0.05f + third_scale;
+		return glm::dvec4 {red_l(offset), green(offset), 0.f, 1.f};
+	}
+	else if(scaled < 1.f) {
+		const float offset = 0.55f + third_scale;
+		return glm::dvec4{0.f, green(offset), blue(offset), 1.f};
+	}
+	else {
+		const float offset = 1.05f + third_scale;
+		return glm::dvec4{red_h(offset), 0.f, blue(offset), 1.f};
+	}
 }
 
 
