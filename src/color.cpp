@@ -289,7 +289,7 @@ std::vector<color4>contrast_array(const size_t size, const float luma) {
 	*/
 	std::vector<color4>retval;
 	LOOPI(size) {
-		const float val = float(i) / float(size - 1);
+		const float val = float(i) / float(size);//Size bars separate size + 1 spaces
 		const color4 hue(normalized_hue(val));
 		const color4 luma(normalized_luma(hue, luma, color_space::rgb));
 		retval.push_back(luma);
