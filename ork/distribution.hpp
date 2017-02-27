@@ -73,4 +73,45 @@ public:
 };
 
 
+template<typename T>
+class trapezoid_distribution {
+public:
+	using val_type = T;
+protected:
+	val_type _min;
+	val_type _mid_min;
+	val_type _mid_max;
+	val_type _max;
+public:
+	trapezoid_distribution(const val_type min, const val_type mid_min, const val_type mid_max, const val_type max) :_min(min), _mid_min(mid_min), _mid_max(mid_max), _max(max) {
+		if(min >= mid_min) {
+			ORK_THROW(ORK("Min must be less than mid"));
+		}
+		if(mid_min >= mid_max) {
+			ORK_THROW(ORK("mid_min must be less than mid_max"));
+		}
+		if(mid_max >= max) {
+			ORK_THROW(ORK("Mid must be less than max"));
+		}
+	}
+public:
+	val_type operator()(const val_type val)const {
+		if(val < _min) {
+			return static_cast<val_type>(0);
+		}
+		if(val <= _mid_min) {
+			return (val - _min) / (_mid_min - _min);
+		}
+		if(val <= _mid_max) {
+			return static_cast<val_type>(1);
+		}
+		if(val <= _max) {
+			return (_max - val) / (_max - _mid_max);
+		}
+		//max < val
+		return static_cast<val_type>(0);
+	}
+};
+
+
 }//namespace ork
