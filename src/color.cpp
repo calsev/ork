@@ -218,8 +218,10 @@ color4 normalized_lightness(const color4&c, const float lightness, const color_s
 const glm::vec3 intensity = {0.30f, 0.59f, 0.11f};
 #elif 0//This was a little dark in the red-green range
 const glm::vec3 intensity = {0.30f, 0.50f, 0.20f};
-#else
+#elif 0//Green was a bit bright and blue a bit dark
 const glm::vec3 intensity = {0.32f, 0.46f, 0.22f};
+#else
+const glm::vec3 intensity = {0.32f, 0.48f, 0.20f};
 #endif
 
 
