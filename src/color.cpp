@@ -244,7 +244,7 @@ color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	This is waay simplified, and uses made-up triangle distributions.
 	If we offset peaks by 0.05 green hues are too close.
 	If we offset peaks by 0.10 red and blue hues are too close.
-	So we offset by 0.05 and place a dead zone of 0.10 centered around each pure color
+	So we forget offsets and place a dead zone of 0.10 centered around red/blue and 0.2 around green
 	*/
 	static ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
 	static ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
@@ -252,17 +252,19 @@ color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	static ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
 
 	const float scaled = value*1.5f;//red-red is 1.5 period
-	const float third_scale = std::fmod(scaled, 0.5f)*0.8f;//Dead zone of 0.1 reduces each third to 0.4/0.5 = 0.8
 	if(scaled < 0.5f) {
-		const float offset = 0.05f + third_scale;
+		const float third_scale = std::fmod(scaled, 0.5f)*0.7f;//Dead zone of 0.15 reduces each third to 0.35/0.5 = 0.7
+		const float offset = 0.05f + third_scale;//So [0.05, 0.4]
 		return glm::dvec4 {red_l(offset), green(offset), 0.f, 1.f};
 	}
 	else if(scaled < 1.f) {
-		const float offset = 0.55f + third_scale;
+		const float third_scale = std::fmod(scaled, 0.5f)*0.7f;//Dead zone of 0.15 reduces each third to 0.35/0.5 = 0.7
+		const float offset = 0.60f + third_scale;//So [0.6, 0.95]
 		return glm::dvec4{0.f, green(offset), blue(offset), 1.f};
 	}
 	else {
-		const float offset = 1.05f + third_scale;
+		const float third_scale = std::fmod(scaled, 0.5f)*0.8f;//Dead zone of 0.10 reduces each third to 0.4/0.5 = 0.8
+		const float offset = 1.05f + third_scale;//So [1.05, 1.45]
 		return glm::dvec4{red_h(offset), 0.f, blue(offset), 1.f};
 	}
 }
