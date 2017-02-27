@@ -225,7 +225,7 @@ const glm::vec3 intensity = {0.32f, 0.48f, 0.20f};
 #endif
 
 
-float luma_factor(const float hue, float saturation) {
+float luma_factor(const color4&c, const color_space cs) {
 	/*
 	Human color perception is highly non-linear.
 	This is a very simplified model.
@@ -238,9 +238,11 @@ float luma_factor(const float hue, float saturation) {
 	static const ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
 	static const ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
 
-	const float scaled = hue*1.5f;//red-red is 1.5 period
-	const glm::vec3 rbg{red_l(scaled) + red_h(scaled), green(scaled), blue(scaled)};
-	return glm::dot(intensity, rbg)*saturation + (1.f - saturation);
+	const color4 hsv(convert(c, cs, color_space::hsv));
+	const float scaled_hue = hsv.r*1.5f;//red-red is 1.5 period
+	const glm::vec3 rbg{red_l(scaled_hue) + red_h(scaled_hue), green(scaled_hue), blue(scaled_hue)};
+	const float retval = glm::dot(intensity, rbg)*hsv.g + (1.f - hsv.g);
+	return retval;//Debugging
 }
 
 
