@@ -233,10 +233,10 @@ float luma_factor(const float hue, float saturation) {
 	We use triangle distributions with different peaks to equalize sensitivity to primaries.
 	We decrease variance to lighten secondaries.
 	*/
-	static ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
-	static ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
-	static ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
-	static ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
+	static const ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
+	static const ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
+	static const ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
+	static const ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
 
 	const float scaled = hue*1.5f;//red-red is 1.5 period
 	const glm::vec3 rbg{red_l(scaled) + red_h(scaled), green(scaled), blue(scaled)};
@@ -276,10 +276,10 @@ color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	If we offset peaks by 0.10 red and blue hues are too close.
 	So we forget offsets and place a dead zone of 0.10 centered around red/blue and 0.2 around green
 	*/
-	static ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
-	static ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
-	static ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
-	static ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
+	static const ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
+	static const ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
+	static const ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
+	static const ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
 
 	const float scaled = value*1.5f;//red-red is 1.5 period
 	if(scaled < 0.5f) {
