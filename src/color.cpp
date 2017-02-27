@@ -246,17 +246,18 @@ color4 normalized_hue(const float value) {//Value is defined on [0, 1]
 	Each color should be symmetrical and occupy 1.0 width.
 	We narrow the green spectrum to 0.8.
 	*/
-	static ork::triangle_distribution<float>blue_l{-1.0f, -0.5f, 0.1f};//Periodicity
-	static ork::triangle_distribution<float>red_l{-0.5f, 0.1f, 0.5f};//0.0 should be pure red
-	static ork::triangle_distribution<float>green{0.1f, 0.5f, 0.9f};//0.5 is pure green
-	static ork::triangle_distribution<float>blue_h{0.5f, 0.9f, 1.5f};//1.0 should be pure blue
-	static ork::triangle_distribution<float>red_h{0.9f, 1.5f, 2.0f};//Periodicity
+	static ork::triangle_distribution<float>blue_l{-0.95f, -0.5f, 0.05f};//Periodicity
+	static ork::triangle_distribution<float>red_l{-0.5f, 0.05f, 0.5f};//0.0 should be pure red
+	static ork::triangle_distribution<float>green{0.05f, 0.5f, 0.95f};//0.5 is pure green
+	static ork::triangle_distribution<float>blue_h{0.5f, 0.95f, 1.5f};//1.0 should be pure blue
+	static ork::triangle_distribution<float>red_h{0.95f, 1.5f, 1.95f};//Periodicity
 
-	const float rl = red_l(value);
-	const float rh = red_h(value);
-	const float g = green(value);
-	const float bl = blue_l(value);
-	const float bh = blue_h(value);
+	float transformed = 0.05 + 1.45*value;//Pure red to pure red
+	const float rl = red_l(transformed);
+	const float rh = red_h(transformed);
+	const float g = green(transformed);
+	const float bl = blue_l(transformed);
+	const float bh = blue_h(transformed);
 	const glm::dvec4 normed{rl + rh, g, bl + bh, 1.f};
 	return normed;
 }
