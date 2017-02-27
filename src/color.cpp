@@ -15,6 +15,16 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+#if ORK_DEBUG
+#define ORK_NEG_COLOR_CHECK(COLOR)\
+if(COLOR.r < 0.f || COLOR.g < 0.f || COLOR.b < 0.f) {\
+	ORK_THROW(ORK("Negative color"));\
+}
+#else
+#define ORK_NEG_COLOR_CHECK(COLOR)
+#endif
+
+
 //Waiting for C++17
 ORK_INLINE float clamp(const float val, const float min, const float max) {
 	return std::min(std::max(val, min), max);
@@ -151,7 +161,9 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 		const float val_light = value_or_lightness(min, max, to_space);
 		const float saturation = calc_saturation(chroma, val_light, to_space);
 
-		return color4{hue, saturation, val_light, c.a};
+		color4 retval{hue, saturation, val_light, c.a};//Debugging
+		ORK_NEG_COLOR_CHECK(retval);
+		return retval;
 	}
 	else {
 		const bool is_hsv = from_space == color_space::hsv;//Otherwise HSL
@@ -160,14 +172,16 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 			? c.y*c.z//S*V
 			: (1.f - std::abs(2.f*c.z - 1.f))*c.y//(1 - |2*L - 1|)*S
 			;
-		const float min = is_hsv
+		const float min = std::max(0.f, is_hsv
 			? c.z - chroma
 			: c.z - chroma*0.5f
-			;
+		);
 		if(to_space == color_space::rgb) {
 			const float h_6 = c.x*6.f;//To hex coordinates
 			const glm::vec3 rgb{calc_rgb(chroma, min, h_6)};
-			return color4{rgb, c.a};
+			color4 retval{rgb, c.a};//Debugging
+			ORK_NEG_COLOR_CHECK(retval);
+			return retval;
 		}
 		else {
 			const float max = is_hsv
@@ -176,7 +190,9 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 				;
 			const float val_light = value_or_lightness(min, max, to_space);
 			const float saturation = calc_saturation(chroma, val_light, to_space);
-			return color4(c.x, saturation, val_light, c.a);
+			color4 retval{c.x, saturation, val_light, c.a};//Debugging
+			ORK_NEG_COLOR_CHECK(retval);
+			return retval;
 		}
 	}
 	
