@@ -223,6 +223,25 @@ const glm::vec3 intensity = {0.32f, 0.46f, 0.22f};
 #endif
 
 
+float luma_factor(const float hue, float saturation) {
+	/*
+	Human color perception is highly non-linear.
+	This is a very simplified model.
+	Seconday hues are easier to distinguish, but appear darker than primaries.
+	We use triangle distributions with different peaks to equalize sensitivity to primaries.
+	We decrease variance to lighten secondaries.
+	*/
+	static ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
+	static ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
+	static ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
+	static ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
+
+	const float scaled = hue*1.5f;//red-red is 1.5 period
+	const glm::vec3 rbg{red_l(scaled) + red_h(scaled), green(scaled), blue(scaled)};
+	return glm::dot(intensity, rbg)*saturation + (1.f - saturation);
+}
+
+
 float luma(const color4&rgb) {
 	return glm::dot(intensity, glm::vec3(rgb));
 }
