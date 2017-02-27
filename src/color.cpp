@@ -213,8 +213,10 @@ color4 normalized_lightness(const color4&c, const float lightness, const color_s
 float luma(const color4&rgb) {
 #if 0//luma 601 goes overboard; blue is clearly brightest
 	return 0.30f*c.r + 0.59f*c.g + 0.11f*c.b;
-#else
+#elif 0//This was a little dark in the red-green range
 	return 0.3f*rgb.r + 0.5f*rgb.g + 0.2f*rgb.b;
+#else
+	return 0.32f*rgb.r + 0.46f*rgb.g + 0.22f*rgb.b;
 #endif
 }
 color4 normalized_luma(const color4&c, const float lum, const color_space cs) {
