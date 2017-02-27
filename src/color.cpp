@@ -10,7 +10,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/distribution.hpp"
 
 #if ORK_USE_GLM
+#include"glm/glm.hpp"
 #include"glm/vec3.hpp"
+
 
 namespace ork {
 
@@ -210,15 +212,22 @@ color4 normalized_lightness(const color4&c, const float lightness, const color_s
 	hsl.b = lightness;
 	return convert(hsl, color_space::hsl, cs);
 }
-float luma(const color4&rgb) {
+
+
 #if 0//luma 601 goes overboard; blue is clearly brightest
-	return 0.30f*c.r + 0.59f*c.g + 0.11f*c.b;
+const glm::vec3 intensity = {0.30f, 0.59f, 0.11f};
 #elif 0//This was a little dark in the red-green range
-	return 0.3f*rgb.r + 0.5f*rgb.g + 0.2f*rgb.b;
+const glm::vec3 intensity = {0.30f, 0.50f, 0.20f};
 #else
-	return 0.32f*rgb.r + 0.46f*rgb.g + 0.22f*rgb.b;
+const glm::vec3 intensity = {0.32f, 0.46f, 0.22f};
 #endif
+
+
+float luma(const color4&rgb) {
+	return glm::dot(intensity, glm::vec3(rgb));
 }
+
+
 color4 normalized_luma(const color4&c, const float lum, const color_space cs) {
 	/*
 	This is a simplified model using luma 601 coefficients https://en.wikipedia.org/wiki/HSL_and_HSV.
