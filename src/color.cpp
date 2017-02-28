@@ -271,33 +271,38 @@ color4 normalized_luma(const color4&c, const float lum, const color_space cs) {
 }
 
 
-color4 normalized_hue(const float value) {//Value is defined on [0, 1]
+float normalized_hue(const float hue) {//hue is defined on [0, 1]
 	/*
-	This is waay simplified, and uses made-up triangle distributions.
-	If we offset peaks by 0.05 green hues are too close.
-	If we offset peaks by 0.10 red and blue hues are too close.
-	So we forget offsets and place a dead zone of 0.10 centered around red/blue and 0.2 around green
+	Human perception of color difference is not linear.
+	We support a simple model of dead zones around primary colors and peak shifts.
 	*/
-	static const ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
-	static const ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
-	static const ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
-	static const ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
+	//These are half-widths of dead zones
+	static const float red_gap = 0.05f;
+	static const float green_gap = 0.05f;
+	static const float blue_gap = 0.10f;
 
-	const float scaled = value*1.5f;//red-red is 1.5 period
-	if(scaled < 0.5f) {
-		const float third_scale = std::fmod(scaled, 0.5f)*0.7f;//Dead zone of 0.15 reduces each third to 0.35/0.5 = 0.7
-		const float offset = 0.05f + third_scale;//So [0.05, 0.4]
-		return glm::dvec4 {red_l(offset), green(offset), 0.f, 1.f};
+	static const float green_peak = 1.7f;//2.0 is nominal, compress red-green range
+	static const float blue_peak = 3.85f;//4.0 is nominal, center on remainder
+
+	const float scale = 6.f;
+	const float scaled_hue = hue*scale;//red-red is 1.5 period
+	if(scaled_hue < green_peak) {
+		static const float third_width = green_peak - 0.f;
+		static const float third_scale = (2.f - red_gap - green_gap) / third_width;
+		const float offset = 0.f + red_gap + third_scale*(scaled_hue - 0.f);
+		return offset / scale;
 	}
-	else if(scaled < 1.f) {
-		const float third_scale = std::fmod(scaled, 0.5f)*0.7f;//Dead zone of 0.15 reduces each third to 0.35/0.5 = 0.7
-		const float offset = 0.60f + third_scale;//So [0.6, 0.95]
-		return glm::dvec4{0.f, green(offset), blue(offset), 1.f};
+	else if(scaled_hue < blue_peak) {
+		static const float third_width = blue_peak - green_peak;
+		static const float third_scale = (2.f - green_gap - blue_gap) / third_width;
+		const float offset = 2.f + green_gap + third_scale*(scaled_hue - green_peak);
+		return offset / scale;
 	}
 	else {
-		const float third_scale = std::fmod(scaled, 0.5f)*0.8f;//Dead zone of 0.10 reduces each third to 0.4/0.5 = 0.8
-		const float offset = 1.05f + third_scale;//So [1.05, 1.45]
-		return glm::dvec4{red_h(offset), 0.f, blue(offset), 1.f};
+		static const float third_width = 6.f - blue_peak;
+		static const float third_scale = (2.f - blue_gap - red_gap) / third_width;
+		const float offset = 4.f + blue_gap + third_scale*(scaled_hue - blue_peak);
+		return offset / scale;
 	}
 }
 
@@ -329,9 +334,10 @@ std::vector<color4>contrast_array(const size_t size, const float luma) {
 	std::vector<color4>retval;
 	LOOPI(size) {
 		const float val = float(i) / float(size);//Size bars separate size + 1 spaces
-		const color4 hue(normalized_hue(val));
-		const color4 luma(normalized_luma(hue, luma, color_space::rgb));
-		retval.push_back(luma);
+		const color4 hsl(normalized_hue(val), 1.f, luma, 1.f);
+		const color4 luma(normalized_luma(hsl, luma, color_space::hsl));
+		const color4 rgb(convert(luma, color_space::hsl, color_space::rgb));
+		retval.push_back(rgb);
 	}
 	return std::move(retval);
 }

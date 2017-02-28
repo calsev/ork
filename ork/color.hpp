@@ -54,7 +54,7 @@ We unroll a unit circle for hue, but with smaller variance for green distributio
 ORK_ORK_EXT(color4) normalized_lightness(const color4&c, const float lightness, const color_space cs);
 ORK_ORK_EXT(color4) normalized_luma(const color4&c, const float luma, const color_space cs);
 
-ORK_ORK_EXT(color4) normalized_hue(const float value);//Value is defined on [0, 1]
+ORK_ORK_EXT(float) normalized_hue(const float hue);//Value is defined on [0, 1]
 
 ORK_ORK_EXT(color4) normalized_red_green(const float weight);//Returns a normalized color on continuum red-green weighted on interval [0, 1]
 
