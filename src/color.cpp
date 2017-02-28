@@ -310,11 +310,15 @@ std::vector<color4>contrast_array(const size_t size, const float luma) {
 	Humans process difference more easily bwtween colors in close proximity if variation is smallish.
 	We can't account for spatial proximity within this function interface, but it is something to think about.
 	*/
+	static const float luma_alpha = 0.90;//Consecutive colors have luma toggled
+	const float top_luma = luma*luma_alpha + 1.f - luma_alpha;
+	const float bottom_luma = luma*luma_alpha;
+
 	std::vector<color4>retval;
 	LOOPI(size) {
 		const float val = float(i) / float(size);//Size bars separate size + 1 spaces
 		const color4 hsl(normalized_hue(val), 1.f, luma, 1.f);
-		const color4 luma(normalized_luma(hsl, luma, color_space::hsl));
+		const color4 luma(normalized_luma(hsl, i & 0x1 ? bottom_luma : top_luma, color_space::hsl));
 		const color4 rgb(convert(luma, color_space::hsl, color_space::rgb));
 		retval.push_back(rgb);
 	}
