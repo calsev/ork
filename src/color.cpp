@@ -225,27 +225,6 @@ const glm::vec3 intensity = {0.32f, 0.48f, 0.20f};
 #endif
 
 
-float luma_factor(const color4&c, const color_space cs) {
-	/*
-	Human color perception is highly non-linear.
-	This is a very simplified model.
-	Seconday hues are easier to distinguish, but appear darker than primaries.
-	We use triangle distributions with different peaks to equalize sensitivity to primaries.
-	We decrease variance to lighten secondaries.
-	*/
-	static const ork::triangle_distribution<float>red_l{-0.5f, 0.0f, 0.5f};//0.0 should be pure red
-	static const ork::triangle_distribution<float>green{0.0f, 0.5f, 1.0f};//0.5 is pure green
-	static const ork::triangle_distribution<float>blue{0.5f, 1.0f, 1.5f};//1.0 should be pure blue
-	static const ork::triangle_distribution<float>red_h{1.0f, 1.5f, 2.0f};//Periodicity
-
-	const color4 hsv(convert(c, cs, color_space::hsv));
-	const float scaled_hue = hsv.r*1.5f;//red-red is 1.5 period
-	const glm::vec3 rbg{red_l(scaled_hue) + red_h(scaled_hue), green(scaled_hue), blue(scaled_hue)};
-	const float retval = glm::dot(intensity, rbg)*hsv.g + (1.f - hsv.g);
-	return retval;//Debugging
-}
-
-
 float luma(const color4&rgb) {
 	return glm::dot(intensity, glm::vec3(rgb));
 }
@@ -253,7 +232,7 @@ float luma(const color4&rgb) {
 
 color4 normalized_luma(const color4&c, const float lum, const color_space cs) {
 	/*
-	This is a simplified model using luma 601 coefficients https://en.wikipedia.org/wiki/HSL_and_HSV.
+	This is a simplified model using luma coefficients https://en.wikipedia.org/wiki/HSL_and_HSV.
 	Basically, yellow-green appears light and violet-blue appears dark.
 	*/
 	color4 rgb(convert(c, cs, color_space::rgb));
