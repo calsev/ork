@@ -167,8 +167,20 @@ bool test_file(const file::path&file) {
 	return file::exists(file) && file::is_regular_file(file);
 }
 bool ensure_directory(file::path file_or_directory) {
-	if(!file::is_directory(file_or_directory))file_or_directory.remove_filename();
-	if(file_or_directory.empty() || file::exists(file_or_directory))return true;
+	file_or_directory.make_preferred();//Remove remove_filename and remove_trailing_separator have problems with mixed slashes
+	if(file_or_directory.empty()) {
+		return true;
+	}
+	if(test_directory(file_or_directory)) {
+		return true;
+	}
+	if(file_or_directory.has_extension()) {//Hard to tell if a path would be a directory or file
+		file_or_directory.remove_filename();
+	}
+	file_or_directory.remove_trailing_separator();
+	if(test_directory(file_or_directory)) {
+		return true;
+	}
 	return file::create_directories(file_or_directory);
 }
 bool ensure_file(const file::path&file) {
