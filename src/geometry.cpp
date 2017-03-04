@@ -40,10 +40,17 @@ double simple_angle(double angle) {
 
 
 string to_dimension(const double coord) {
-	string_stream stream;
-	stream << std::fixed << std::showpoint << std::setprecision(4);
-	stream << coord;
-	return stream.str();
+	static const int max_precision = 15;
+	for(int precision = 1; precision < max_precision + 1; ++precision) {
+		string_stream stream;
+		stream << std::fixed << std::showpoint << std::setprecision(precision) << coord;
+		double val;
+		stream >> val;
+		if(GLM::equal(coord, val) || precision == max_precision) {
+			return stream.str();
+		}
+		++precision;
+	}
 }
 
 
