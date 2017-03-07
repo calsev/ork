@@ -40,17 +40,21 @@ double simple_angle(double angle) {
 
 
 string to_dimension(const double coord) {
-	static const int max_precision = 15;
+	static const int max_precision = 16;
+	bool was_equal = false;
 	for(int precision = 1; precision < max_precision + 1; ++precision) {
 		string_stream stream;
 		stream << std::fixed << std::showpoint << std::setprecision(precision) << coord;
 		double val;
 		stream >> val;
-		if(GLM::equal(coord, val) || precision == max_precision) {
+		if(was_equal || precision == max_precision) {
 			return stream.str();
 		}
-		++precision;
+		if(GLM::equal(coord, val)) {
+			was_equal = true;
+		}
 	}
+	ORK_UNREACHABLE
 }
 
 
