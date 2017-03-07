@@ -26,6 +26,7 @@ ORK_ORK_API extern const color4 red;
 ORK_ORK_API extern const color4 green;
 ORK_ORK_API extern const color4 blue;
 ORK_ORK_API extern const color4 white;
+ORK_ORK_API extern const color4 black;
 
 
 ORK_ORK_EXT(color4) truncate_hue(const color4&c, const color_space cs);//Convention for hue when rgb=0,0,0
@@ -60,6 +61,7 @@ ORK_ORK_EXT(color4) normalized_red_green(const float weight);//Returns a normali
 
 ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size);
 ORK_ORK_EXT(std::vector<color4>) contrast_array(const size_t size, const float luma);//Return colors that are different from each other
+ORK_ORK_EXT(std::vector<color4>) grey_array(const size_t size, float min_luma, float max_luma);
 
 
 ORK_ORK_EXT(string) to_hex(const color4&c, const color_space cs);

@@ -12,6 +12,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #if ORK_USE_GLM
 #include"glm/glm.hpp"
 #include"glm/vec3.hpp"
+#include"glm/gtx/compatibility.hpp"
 
 
 namespace ork {
@@ -205,6 +206,7 @@ ORK_ORK_API const color4 red = {1., 0., 0., 1.};
 ORK_ORK_API const color4 green = {0., 1., 0., 1.};
 ORK_ORK_API const color4 blue = {0., 0., 1., 1.};
 ORK_ORK_API const color4 white = {1., 1., 1., 1.};
+ORK_ORK_API const color4 black = {0., 0., 0., 1.};
 
 
 color4 normalized_lightness(const color4&c, const float lightness, const color_space cs) {
@@ -310,8 +312,9 @@ std::vector<color4>contrast_array(const size_t size, const float luma) {
 	Humans process difference more easily bwtween colors in close proximity if variation is smallish.
 	We can't account for spatial proximity within this function interface, but it is something to think about.
 	*/
-	static const float luma_alpha = 0.90;//Consecutive colors have luma toggled
-	const float top_luma = luma*luma_alpha + 1.f - luma_alpha;
+	static const float luma_alpha = 0.90f;//Consecutive colors have luma toggled
+	const float max_luma = std::min(1.f, 2.f*luma);//Blending to white can be too extreme when luma is dark
+	const float top_luma = glm::lerp(max_luma, luma, luma_alpha);
 	const float bottom_luma = luma*luma_alpha;
 
 	std::vector<color4>retval;
@@ -321,6 +324,21 @@ std::vector<color4>contrast_array(const size_t size, const float luma) {
 		const color4 luma(normalized_luma(hsl, i & 0x1 ? bottom_luma : top_luma, color_space::hsl));
 		const color4 rgb(convert(luma, color_space::hsl, color_space::rgb));
 		retval.push_back(rgb);
+	}
+	return std::move(retval);
+}
+std::vector<color4> grey_array(const size_t size, float min_luma, float max_luma) {
+	if(size == 1) {
+		return std::vector<color4> {glm::lerp(black, white, (min_luma + max_luma) / 2.f)};
+	}
+
+	const color4 dark(glm::lerp(black, white, min_luma));
+	const color4 light(glm::lerp(black, white, min_luma));
+
+	std::vector<color4>retval;
+	LOOPI(size) {
+		const float alpha = float(i) / float(size - 1);
+		retval.push_back(glm::lerp(dark, light, alpha));
 	}
 	return std::move(retval);
 }
