@@ -333,7 +333,7 @@ std::vector<color4> grey_array(const size_t size, float min_luma, float max_luma
 	}
 
 	const color4 dark(glm::lerp(black, white, min_luma));
-	const color4 light(glm::lerp(black, white, min_luma));
+	const color4 light(glm::lerp(black, white, max_luma));
 
 	std::vector<color4>retval;
 	LOOPI(size) {
