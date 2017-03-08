@@ -79,25 +79,33 @@ assert(f1==f2);//have fun crashing
 assert(might_be_equal(f1,f2));//We are safe, assuming IEEE 754 (Ok,I am not authoritatively positive)
 There are false positives with small numbers!
 */
+template<typename T>struct epsilon_type;
+template<>struct epsilon_type<float> {
+	using type = uint32_t;
+};
+template<>struct epsilon_type<double> {
+	using type = uint64_t;
+};
+
 template<typename T>struct default_epsilon_factor;
 template<>struct default_epsilon_factor<float> {
-	static const unsigned value = 16;//A guesstimate
+	static const epsilon_type<float>::type value = static_cast<epsilon_type<float>::type>(0x1) << 4;//A guesstimate
 };
 template<>struct default_epsilon_factor<double> {
 #if ORK_USE_ACIS
-	static const unsigned value = 0x1 << 4;//This is only verified over time as the minimum upper bound across ACIS when T is double
+	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 4;//This is only verified over time as the minimum upper bound across ACIS when T is double
 #else //OCC
-	static const unsigned value = 0x1 << 16;//This is only verified over time as the minimum upper bound across OCC when T is double
+	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 24;//This is only verified over time as the minimum upper bound across OCC when T is double
 #endif
 };
-template<typename T, unsigned eps_factor = default_epsilon_factor<T>::value>
+template<typename T, typename epsilon_type<T>::type eps_factor = default_epsilon_factor<T>::value>
 ORK_INLINE ORK_CONSTEXPR T tolerance() {
 	return eps_factor * std::numeric_limits<T>::epsilon();
 }
 
 namespace detail {
 
-template<typename T, unsigned eps_factor = default_epsilon_factor<T>::value, unsigned rel_factor = 1>
+template<typename T, typename epsilon_type<T>::type eps_factor = default_epsilon_factor<T>::value, typename epsilon_type<T>::type rel_factor = static_cast<epsilon_type<T>::type>(1)>
 ORK_INLINE bool equal_simple(const T&lhs, const T&rhs) {
 	static const T abs_eps = tolerance<T, eps_factor>();//We need an absolute epsilon
 	static const T rel_eps = rel_factor * abs_eps;//Factor of 2 to allow for the case of second LSB bump
