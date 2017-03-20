@@ -15,7 +15,8 @@ namespace ork {
 namespace orq {//ork-qi :)
 
 BOOST_SPIRIT_TERMINAL(alpha_bool);
-BOOST_SPIRIT_TERMINAL(id);
+BOOST_SPIRIT_TERMINAL(id);//Identifier as typically defined in programming languages
+BOOST_SPIRIT_TERMINAL(name);//Human-like name (can include hyphen)
 BOOST_SPIRIT_TERMINAL(quote);
 BOOST_SPIRIT_TERMINAL(lb_com);//'pound comment'
 BOOST_SPIRIT_TERMINAL(lb_com_skip);//'comment skipper'
@@ -33,6 +34,7 @@ namespace spirit {
 //Make custom parser usable as a terminal only, and only for parser expressions (qi::domain).
 template<> struct use_terminal<qi::domain, ork::orq::tag::alpha_bool> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::id> : mpl::true_ {};
+template<> struct use_terminal<qi::domain, ork::orq::tag::name> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::quote> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::lb_com> : mpl::true_ {};
 template<> struct use_terminal<qi::domain, ork::orq::tag::lb_com_skip> : mpl::true_ {};
@@ -101,6 +103,24 @@ ORK_INLINE bool consume_identifier(iter& it, const iter&first, const iter& last)
 	}
 	while((std::isalnum(ch) || ch == ORK('_')) && ++it != last) {//NOT charset: this is programming language (ascii) identifier
 		ch = *it;//Subsequent characters can be numbers also
+	}
+
+	return true;//We consumed at least the first character
+}
+
+
+template<typename iter>
+ORK_INLINE bool consume_name(iter& it, const iter&first, const iter& last) {
+	if(it == last) {
+		return false;
+	}
+
+	auto ch = *it;
+	if(!charset::isalpha(ch)) {//Using charset: this is human (unicode) identifier
+		return false;//First character must be letter
+	}
+	while((charset::isalpha(ch) || ch == ORK('_') || ch == ORK('-')) && ++it != last) {//Using charset: this is human (unicode) identifier
+		ch = *it;//Subsequent characters can be hyphens also, underscores allowed due to common usage in databases/files
 	}
 
 	return true;//We consumed at least the first character
@@ -239,6 +259,37 @@ public://Parser component stuff
 };
 
 
+struct ORK_ORK_API name_parser : qi::primitive_parser<name_parser> {
+public://Parser component stuff
+	template<typename context, typename iter>
+	struct attribute {//Define the attribute type exposed by this parser component
+		typedef string type;
+	};
+
+	//This function is called during the actual parsing process
+	template<typename iter, typename context, typename skipper, typename attribute>
+	bool parse(iter& first, const iter& last, context&ctxt, const skipper& skip, attribute& attr) const {
+		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
+
+		iter it(first);
+		if(!detail::consume_name(it, first, last)) {
+			return false;
+		}
+
+		attribute result(first, it);
+		first = it;
+		spirit::traits::assign_to(result, attr);
+		return true;
+	}
+
+	//This function is called during error handling to create a human readable string for the error context.
+	template<typename context>
+	boost::spirit::info what(context&) const {
+		return boost::spirit::info("name");
+	}
+};
+
+
 struct ORK_ORK_API quote_parser : qi::primitive_parser<quote_parser> {
 public://Parser component stuff
 	template<typename context, typename iter>
@@ -359,6 +410,7 @@ struct make_primitive<ork::orq::tag::TAG, modifiers> {\
 
 ORK_ORQ_FACTORY(alpha_bool);
 ORK_ORQ_FACTORY(id);
+ORK_ORQ_FACTORY(name);
 ORK_ORQ_FACTORY(quote);
 ORK_ORQ_FACTORY(lb_com);
 ORK_ORQ_FACTORY(lb_com_skip);
