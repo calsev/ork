@@ -119,8 +119,8 @@ ORK_INLINE bool consume_name(iter& it, const iter&first, const iter& last) {
 	if(!charset::isalpha(ch)) {//Using charset: this is human (unicode) identifier
 		return false;//First character must be letter
 	}
-	while((charset::isalpha(ch) || ch == ORK('_') || ch == ORK('-')) && ++it != last) {//Using charset: this is human (unicode) identifier
-		ch = *it;//Subsequent characters can be hyphens also, underscores allowed due to common usage in databases/files
+	while((charset::isalnum(ch) || ch == ORK('_') || ch == ORK('-')) && ++it != last) {//Using charset: this is human (unicode) identifier
+		ch = *it;//Subsequent characters can be hyphens also, underscore/number allowed due to common usage in databases/files
 	}
 
 	return true;//We consumed at least the first character
