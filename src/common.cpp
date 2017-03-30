@@ -34,9 +34,13 @@ bool string2bool(string val) {
 	boost::to_lower(val);
 	if(val == ORK("t"))return true;
 	if(val == ORK("true"))return true;
+	if(val == ORK("y"))return true;
+	if(val == ORK("yes"))return true;
 	if(val == ORK("1"))return true;
 	if(val == ORK("f"))return false;
 	if(val == ORK("false"))return false;
+	if(val == ORK("n"))return false;
+	if(val == ORK("no"))return false;
 	if(val == ORK("0"))return false;
 	ORK_THROW(ORK("Invalid bool value"));
 }
