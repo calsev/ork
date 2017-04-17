@@ -39,6 +39,7 @@ double simple_angle(double angle) {
 }
 
 
+#if ORK_USE_GLM
 string to_dimension(const double coord) {
 	static const int max_precision = 16;
 	bool was_equal = false;
@@ -56,6 +57,7 @@ string to_dimension(const double coord) {
 	}
 	ORK_UNREACHABLE
 }
+#endif
 
 
 rotation_direction operator-(const rotation_direction dir) {

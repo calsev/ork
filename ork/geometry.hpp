@@ -22,8 +22,9 @@ ORK_ORK_EXT(double) deg2rad(double deg);
 //Given an angle in Radians, return the equivalent angle on [0, 2*pi]
 ORK_ORK_EXT(double) simple_angle(double angle);
 
+#if ORK_USE_GLM
 ORK_ORK_EXT(string) to_dimension(const double coord);//Fixed point for export
-
+#endif
 
 enum class rotation_direction {
 	clockwise,
