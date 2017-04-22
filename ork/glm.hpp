@@ -87,10 +87,23 @@ template<>struct epsilon_type<double> {
 	using type = uint64_t;
 };
 
+
+/*
+Precision is for modeling, for kernels that take such an argument (OCC)
+Tolerance is for checking.
+*/
+template<typename T>
+ORK_INLINE ORK_CONSTEXPR T precision() {
+	return (static_cast<epsilon_type<double>::type>(0x1) << 4) * std::numeric_limits<T>::epsilon();
+}
+
+
 template<typename T>struct default_epsilon_factor;
 template<>struct default_epsilon_factor<float> {
 	static const epsilon_type<float>::type value = static_cast<epsilon_type<float>::type>(0x1) << 4;//A guesstimate
 };
+
+
 template<>struct default_epsilon_factor<double> {
 #if ORK_USE_ACIS
 	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 4;//This is only verified over time as the minimum upper bound across ACIS when T is double
@@ -98,10 +111,13 @@ template<>struct default_epsilon_factor<double> {
 	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 28;//This is only verified over time as the minimum upper bound across OCC when T is double
 #endif
 };
+
+
 template<typename T, typename epsilon_type<T>::type eps_factor = default_epsilon_factor<T>::value>
 ORK_INLINE ORK_CONSTEXPR T tolerance() {
 	return eps_factor * std::numeric_limits<T>::epsilon();
 }
+
 
 namespace detail {
 

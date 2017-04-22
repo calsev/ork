@@ -75,12 +75,7 @@ string vector::as_string() const {
 }
 
 bool vector::operator == (const vector &other) const {
-	static const double tolerance = 0.0001;//TODO: This is problematic, given lack of units (e.g. meters)
-
-	if(std::abs(_data.x - other._data.x) > tolerance) return false;
-	if(std::abs(_data.y - other._data.y) > tolerance) return false;
-	if(std::abs(_data.z - other._data.z) > tolerance) return false;
-	return true;
+	return GLM::equal(_data, other._data);
 }
 
 
