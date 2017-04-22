@@ -95,7 +95,7 @@ template<>struct default_epsilon_factor<double> {
 #if ORK_USE_ACIS
 	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 4;//This is only verified over time as the minimum upper bound across ACIS when T is double
 #else //OCC
-	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 24;//This is only verified over time as the minimum upper bound across OCC when T is double
+	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 28;//This is only verified over time as the minimum upper bound across OCC when T is double
 #endif
 };
 template<typename T, typename epsilon_type<T>::type eps_factor = default_epsilon_factor<T>::value>
