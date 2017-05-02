@@ -57,6 +57,13 @@ Auto linking, at least in Visual Studio
 #			pragma comment(lib,"pugixml")
 #		endif
 #	endif
+#	if ORK_USE_JSON
+#		if ORK_DEBUG
+#			pragma comment(lib,"jsoncppd")
+#		else
+#			pragma comment(lib,"jsoncpp")
+#		endif
+#	endif
 #endif
 #endif
 

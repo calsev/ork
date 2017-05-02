@@ -27,3 +27,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #ifndef ORK_USE_PUGI//Optional dependency
 #	define ORK_USE_PUGI 1
 #endif
+
+#ifndef ORK_USE_JSON//Optional dependency
+#	define ORK_USE_JSON 1
+#endif
