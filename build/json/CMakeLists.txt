@@ -5,6 +5,7 @@ file(READ "${3P_JSON_SRC_DIR}/version" VERSION)
 
 
 add_definitions(-DJSON_DLL_BUILD)
+set(JSONCPP_USE_SECURE_MEMORY "0")
 
 macro(parse_version _ver _prefix)
 	set(VERSION_REGEX "[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9_]+)?")
@@ -34,7 +35,6 @@ set(JSON_PUBLIC_HDRS #For build
 	"${JSON_INC_DIR}/forwards.h"
 	"${JSON_INC_DIR}/reader.h"
 	"${JSON_INC_DIR}/value.h"
-	"${JSON_INC_DIR}/version.h"
 	"${JSON_INC_DIR}/writer.h"
 	"${3P_JSON_BIN_DIR}/include/json/version.h"
 )
