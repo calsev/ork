@@ -121,7 +121,7 @@ set(FT2_WIN_SRCS
 )
 
 
-add_library(ft2 ${FT2_SRCS} ${FT2_WIN_SRCS} ${FT2_PUBLIC_HDRS} ${FT2_PRIVATE_HDRS})
+add_library(ft2 SHARED ${FT2_SRCS} ${FT2_WIN_SRCS} ${FT2_PUBLIC_HDRS} ${FT2_PRIVATE_HDRS})
 
 if(ORK_BUILD_ZLIB)
 	target_link_libraries(ft2 PRIVATE zlib)
