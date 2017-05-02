@@ -1,7 +1,6 @@
 /*
-This file is part of the PSU ARL Weld Analysis Kit developed by
-The Pennsylvania State University Applied Research Laboratory.  Full
-copyright and license terms can be found in the LICENSE.txt file.
+This file is part of the ORK library.
+Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include"ork/glm.hpp"
