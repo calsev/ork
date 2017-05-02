@@ -79,6 +79,8 @@ file(GLOB ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/*.cpp"
 )
 
+source_group(TREE "${3P_ORK_SRC_DIR}/ork")
+
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
 add_library(ork ${ORK_LINK_MODE} ${ORK_SRCS} ${ORK_PUBLIC_HDRS} ${ORK_PRIVATE_HDRS})

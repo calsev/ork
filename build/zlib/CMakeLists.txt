@@ -12,12 +12,12 @@ endif()
 
 configure_file(
 	"${3P_ZLIB_SRC_DIR}/zconf.h.cmakein"
-	"${CMAKE_CURRENT_BINARY_DIR}/zconf.h" @ONLY
+	"${3P_ZLIB_BIN_DIR}/zconf.h" @ONLY
 )
 
 
 set(ZLIB_PUBLIC_HDRS
-	"${CMAKE_CURRENT_BINARY_DIR}/zconf.h"
+	"${3P_ZLIB_BIN_DIR}/zconf.h"
 	"${3P_ZLIB_SRC_DIR}/zlib.h"
 )
 set(ZLIB_PRIVATE_HDRS
