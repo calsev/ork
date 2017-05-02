@@ -117,7 +117,7 @@ endif()
 
 #Used for concatenating to avoid repeats
 if(NOT ORK_CMAKE_RAN_INTERNAL)
-set(ORK_CMAKE_RUN_ONCE "ON")
+	set(ORK_CMAKE_RUN_ONCE "ON")
 endif()
 set_as_internal(ORK_CMAKE_RAN_INTERNAL "ON")
 
@@ -144,9 +144,9 @@ else()
 endif()
 
 
-set(CMAKE_CXX_STANDARD "11" CACHE INTERNAL "" FORCE)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
-SET(CMAKE_CXX_EXTENSIONS OFF)
+set_as_internal(CMAKE_CXX_STANDARD "11")
+set_as_internal(CMAKE_CXX_STANDARD_REQUIRED "ON")
+set_as_internal(CMAKE_CXX_EXTENSIONS "ON")
 
 ensure_non_empty(CMAKE_CXX_FLAGS)
 if(ORK_CMAKE_RUN_ONCE)
