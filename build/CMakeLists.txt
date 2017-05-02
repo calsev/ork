@@ -91,7 +91,9 @@ endif()
 ##Level 0
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
 detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
+detect_option_flag(ORK_BUILD_GLM "Enable building GLM" ON) #Not actually building but using
 detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
+detect_option_flag(ORK_BUILD_JSON "Enable building jsoncpp" OFF)
 detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" ON)
 detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
 
@@ -182,36 +184,54 @@ set_as_internal(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set_as_internal(INSTALL_INC_DIR "${CMAKE_INSTALL_PREFIX}/inc")
 set_as_internal(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
+
 detect_option_path(ORK_3P_SOURCE_DIR "Path of third-party directory (location of submodules)" "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 if(ORK_EXTERNAL_BOOST)
 	set_as_internal(3P_BOOST_SRC_DIR "${ORK_3P_BOOST_SRC_DIR}")
 else()
 	find_3p_path("ON" 3P_BOOST_SRC_DIR "boost" "boost")
 endif()
+
+##Level 0
 find_3p_path(ORK_BUILD_BZ2 3P_BZ2_SRC_DIR "bz2" "bzip")
-find_3p_path(ORK_BUILD_FT2 3P_FT2_SRC_DIR "ft2" "freetype")
-find_3p_path(ORK_BUILD_ORK 3P_GLM_SRC_DIR "glm" "glm") #Ork requires GLM
 find_3p_path(ORK_BUILD_JPEG 3P_JPEG_SRC_DIR "jpeg" "jpeg-turbo")
-find_3p_path(ORK_BUILD_ORK 3P_ORK_SRC_DIR "ork" "ork")
-find_3p_path(ORK_BUILD_PNG 3P_PNG_SRC_DIR "png" "libpng")
+find_3p_path(ORK_BUILD_GLM 3P_GLM_SRC_DIR "glm" "glm")
+find_3p_path(ORK_BUILD_HARFBUZZ 3P_HARFBUZZ_SRC_DIR "harfbuzz" "harfbuzz")
+find_3p_path(ORK_BUILD_JSON 3P_JSON_SRC_DIR "json" "jsoncpp")
 find_3p_path(ORK_BUILD_PUGI 3P_PUGI_SRC_DIR "pugi" "pugixml")
 find_3p_path(ORK_BUILD_ZLIB 3P_ZLIB_SRC_DIR "zlib" "libz")
 
-set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-set_as_internal(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
-set_as_internal(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
-set_as_internal(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
-set_as_internal(3P_ORK_BIN_DIR "${3P_BIN_DIR}/ork")
-set_as_internal(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
-set_as_internal(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
-set_as_internal(3P_ZLIB_BIN_DIR "${3P_BIN_DIR}/zlib")
+##Level 1
+find_3p_path(ORK_BUILD_ORK 3P_ORK_SRC_DIR "ork" "ork")
+find_3p_path(ORK_BUILD_PNG 3P_PNG_SRC_DIR "png" "libpng")
 
+##Level 2
+find_3p_path(ORK_BUILD_FT2 3P_FT2_SRC_DIR "ft2" "freetype")
+
+
+set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 if(ORK_EXTERNAL_BOOST) #This is not general
 	set_as_internal(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64")
 else()
 	set_as_internal(3P_BOOST_LIB_DIR "${ORK_3P_SOURCE_DIR}/deps/lib")
 endif()
 add_definitions(-DBOOST_ALL_DYN_LINK) #Link boost shared libs
+
+##Level 0
+set_as_internal(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
+set_as_internal(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
+#GLM
+#harfbuzz
+set_as_internal(3P_JSON_BIN_DIR "${3P_BIN_DIR}/json")
+set_as_internal(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
+set_as_internal(3P_ZLIB_BIN_DIR "${3P_BIN_DIR}/zlib")
+
+##Level 1
+set_as_internal(3P_ORK_BIN_DIR "${3P_BIN_DIR}/ork")
+set_as_internal(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
+
+##Level 2
+set_as_internal(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
 
 
 #mark_as_internal(CMAKE_ASM_MASM_COMPILER)
@@ -269,6 +289,11 @@ endif()
 if(ORK_BUILD_JPEG)
 	add_subdirectory("./jpeg" "${3P_JPEG_BIN_DIR}")
 endif()
+#GLM nothing to build
+#Harfbuzz under construction
+if(ORK_BUILD_JSON)
+	add_subdirectory("./json" "${3P_JSON_BIN_DIR}")
+endif()
 if(ORK_BUILD_PUGI)
 	add_subdirectory("./pugi" "${3P_PUGI_BIN_DIR}")
 endif()
@@ -281,7 +306,6 @@ endif()
 if(ORK_BUILD_ORK)
 	add_subdirectory("./ork" "${3P_ORK_BIN_DIR}")
 endif()
-
 if(ORK_BUILD_PNG)
 	if(NOT ORK_BUILD_ZLIB)
 		message(FATAL_ERROR "libpng requires zlib but zlib is not configured to build")

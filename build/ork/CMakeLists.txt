@@ -7,7 +7,14 @@ detect_option_flag(ORK_BUILD_SHARED "Building shared library instead of static" 
 detect_option_flag(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
 detect_option_flag(ORK_AUTO_LINK_3P "If auto-linking, also auto-link any built dependencies" ON)
 detect_option_flag(ORK_USE_GLM "Enable GLM usage" ON)
+detect_option_flag(ORK_USE_JSON "Enable JsonCPP usage" OFF)
 detect_option_flag(ORK_USE_PUGI "Enable Pugi XML usage" ON)
+if(ORK_USE_GLM AND NOT ORK_BUILD_GLM)
+	message(FATAL_ERROR "Ork using GLM but GLM is not being built")
+endif()
+if(ORK_USE_JSON AND NOT ORK_BUILD_JSON)
+	message(FATAL_ERROR "Ork using JSON but JSON is not being built")
+endif()
 if(ORK_USE_PUGI AND NOT ORK_BUILD_PUGI)
 	message(FATAL_ERROR "Ork using Pugi but Pugi is not being built")
 endif()
@@ -45,6 +52,12 @@ if(NOT ORK_USE_GLM)
 		"(#	define ORK_USE_GLM) 1" "\\1 0"
 	)
 endif()
+if(ORK_USE_JSON)
+	string(
+		REGEX REPLACE
+		"(#	define ORK_USE_JSON) 0" "\\1 1"
+	)
+endif()
 if(NOT ORK_USE_PUGI)
 	string(
 		REGEX REPLACE
@@ -70,6 +83,9 @@ file(GLOB ORK_SRCS
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
 add_library(ork ${ORK_LINK_MODE} ${ORK_SRCS} ${ORK_PUBLIC_HDRS} ${ORK_PRIVATE_HDRS})
 
+if(ORK_USE_JSON)
+	target_link_libraries(ork PUBLIC jsoncpp)
+endif()
 if(ORK_USE_PUGI)
 	target_link_libraries(ork PUBLIC pugixml)
 endif()
