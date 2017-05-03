@@ -7,6 +7,7 @@ add_definitions(-DZLIB_DLL)
 if(MSVC)
 	add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
 	add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4267") #Narrowing conversion
 endif()
 
 
