@@ -86,14 +86,9 @@ vector::vector(pugi::xml_node &node) {
 	_data.z = node.attribute(ORK("z")).as_double();
 }
 void vector::export_xml(pugi::xml_node &node) const {
-	node.append_attribute(ORK("x"));
-	node.attribute(ORK("x")).set_value(to_dimension(_data.x).c_str());
-
-	node.append_attribute(ORK("y"));
-	node.attribute(ORK("y")).set_value(to_dimension(_data.y).c_str());
-
-	node.append_attribute(ORK("z"));
-	node.attribute(ORK("z")).set_value(to_dimension(_data.z).c_str());
+	node.append_attribute(ORK("x")).set_value(to_dimension(_data.x).c_str());
+	node.append_attribute(ORK("y")).set_value(to_dimension(_data.y).c_str());
+	node.append_attribute(ORK("z")).set_value(to_dimension(_data.z).c_str());
 }
 #endif
 
