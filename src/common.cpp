@@ -182,6 +182,9 @@ bool ensure_directory(file::path file_or_directory) {
 		file_or_directory.remove_filename();
 	}
 	file_or_directory.remove_trailing_separator();
+	if(file_or_directory.empty()) {
+		return true;//The path ws a file in the current directory
+	}
 	if(test_directory(file_or_directory)) {
 		return true;
 	}
