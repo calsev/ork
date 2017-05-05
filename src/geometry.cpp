@@ -20,6 +20,9 @@ namespace ork {
 double mm2inch(double mm) {
 	return mm / 25.4;
 }
+double inch2mm(double inch) {
+	return inch*25.4;
+}
 
 // Given an angle in radians, return that angle in degrees
 double rad2deg(double rad) {
