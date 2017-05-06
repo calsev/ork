@@ -29,6 +29,7 @@ if(NOT ORK_BUILD_SHARED)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_ORK_DLL) 1" "\\1 0"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 	set(ORK_LINK_MODE "STATIC")
 else()
@@ -38,18 +39,21 @@ if(NOT ORK_AUTO_LINK)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_AUTO_LINK) 1" "\\1 0"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
 if(NOT ORK_AUTO_LINK_3P)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_AUTO_LINK_3P) 1" "\\1 0"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
 if(NOT ORK_USE_GLM)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_USE_GLM) 1" "\\1 0"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
 if(NOT ORK_USE_JSON)
@@ -62,6 +66,7 @@ if(NOT ORK_USE_PUGI)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_USE_PUGI) 1" "\\1 0"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
 file(WRITE "${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_CONFIG_H}")
