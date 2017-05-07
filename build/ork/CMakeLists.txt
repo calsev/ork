@@ -77,14 +77,13 @@ file(GLOB ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/detail/*.hpp"
 	"${3P_ORK_BIN_DIR}/ork/config/config.hpp"
 )
-file(GLOB ORK_PRIVATE_HDRS
-	
+set(ORK_PRIVATE_HDRS
 )
 file(GLOB ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/*.cpp"
 )
 
-source_group(TREE "${3P_ORK_SRC_DIR}/ork")
+#source_group(TREE "${3P_ORK_SRC_DIR}/ork")
 
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
@@ -103,9 +102,15 @@ target_include_directories(
 	PUBLIC $<BUILD_INTERFACE:${3P_ORK_BIN_DIR}>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_ORK_SRC_DIR}>
 	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
-	PUBLIC "${3P_GLM_SRC_DIR}"
 	PUBLIC "${3P_BOOST_SRC_DIR}"
 )
+if(ORK_USE_GLM)
+	target_include_directories(
+		ork
+		PUBLIC "${3P_GLM_SRC_DIR}"
+	)
+endif()
+
 
 install_bin(ork)
 if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
