@@ -144,9 +144,10 @@ else()
 endif()
 
 
-set_as_internal(CMAKE_CXX_STANDARD "11")
+#CMake is a bit behind on C++ versions
+set_as_internal(CMAKE_CXX_STANDARD "14")
 set_as_internal(CMAKE_CXX_STANDARD_REQUIRED "ON")
-set_as_internal(CMAKE_CXX_EXTENSIONS "ON")
+set_as_internal(CMAKE_CXX_EXTENSIONS "OFF")
 
 ensure_non_empty(CMAKE_CXX_FLAGS)
 if(ORK_CMAKE_RUN_ONCE)
