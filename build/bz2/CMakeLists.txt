@@ -27,7 +27,7 @@ set(BZ2_SRCS
 	"${3P_BZ2_SRC_DIR}/randtable.c"
 )
 set(BZ2_DLL_SRCS
-	"${CMAKE_CURRENT_SOURCE_DIR}/bz2.def"
+	"${CMAKE_CURRENT_SOURCE_DIR}/bz2.def" #Must be source of ork cmake file
 )
 
 
