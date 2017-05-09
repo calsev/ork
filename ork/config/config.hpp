@@ -9,9 +9,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 
-#define ORK_MAJOR 0
-#define ORK_MINOR 1//2 digit
-#define ORK_PATCH 1//2 digits
+#define ORK_VERSION_MAJOR 0
+#define ORK_VERSION_MINOR 1//2 digit
+#define ORK_VERSION_PATCH 1//2 digits
 #define ORK_VERSION 101//1.0 is 10000
 
 
