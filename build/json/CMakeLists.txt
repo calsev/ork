@@ -10,18 +10,6 @@ if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4275") #DLL Export class inherits from non-DLL class (std::exception)
 endif()
 
-macro(parse_version _ver _prefix)
-	set(VERSION_REGEX "[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9_]+)?")
-	if(${_ver} MATCHES ${VERSION_REGEX})
-		string(REGEX MATCHALL "[0-9]+|-([A-Za-z0-9_]+)" VERSION_PARTS ${_ver})
-		list(GET VERSION_PARTS 0 ${_prefix}_MAJOR)
-		list(GET VERSION_PARTS 1 ${_prefix}_MINOR)
-		list(GET VERSION_PARTS 2 ${_prefix}_PATCH)
-	else()
-		message(FATAL_ERROR "Invalid version: ${${_ver}}")
-	endif()
-endmacro()
-
 parse_version(${VERSION} "JSONCPP_VERSION")
 
 configure_file(

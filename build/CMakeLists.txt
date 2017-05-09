@@ -59,6 +59,19 @@ macro(find_3p_path _build _var _val1 _val2)
 endmacro()
 
 
+macro(parse_version _ver _prefix)
+	set(VERSION_REGEX "[0-9]+\\.[0-9]+\\.[0-9]+")
+	if(${_ver} MATCHES ${VERSION_REGEX})
+		string(REGEX MATCHALL "[0-9]+|-([A-Za-z0-9_]+)" VERSION_PARTS ${_ver})
+		list(GET VERSION_PARTS 0 ${_prefix}_MAJOR)
+		list(GET VERSION_PARTS 1 ${_prefix}_MINOR)
+		list(GET VERSION_PARTS 2 ${_prefix}_PATCH)
+	else()
+		message(FATAL_ERROR "Invalid version: ${${_ver}}")
+	endif()
+endmacro()
+
+
 macro(install_bin _targ)
 	if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
 		install(
