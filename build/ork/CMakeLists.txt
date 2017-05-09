@@ -21,10 +21,26 @@ endif()
 
 
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
+parse_version(${VERSION} "ORK_VERSION")
 
 
 #Configure header, done with regex to avoid a separate 'in' header
 file(READ "${3P_ORK_SRC_DIR}/ork/config/config.hpp" ORK_CONFIG_H)
+string(
+	REGEX REPLACE
+	"#define (ORK_VERSION_MAJOR) [0-9]+" "#define \\1 ${ORK_VERSION_MAJOR}"
+	ORK_CONFIG_H "${ORK_CONFIG_H}"
+)
+string(
+	REGEX REPLACE
+	"#define (ORK_VERSION_MINOR) [0-9]+" "#define \\1 ${ORK_VERSION_MINOR}"
+	ORK_CONFIG_H "${ORK_CONFIG_H}"
+)
+string(
+	REGEX REPLACE
+	"#define (ORK_VERSION_PATCH) [0-9]+" "#define \\1 ${ORK_VERSION_PATCH}"
+	ORK_CONFIG_H "${ORK_CONFIG_H}"
+)
 if(NOT ORK_BUILD_SHARED)
 	string(
 		REGEX REPLACE
