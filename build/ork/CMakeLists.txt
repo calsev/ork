@@ -1,7 +1,7 @@
 
 project(ork CXX)
 
-set(VERSION "0.0.0") #No formal release yet
+set(VERSION "0.1.1")
 
 detect_option_flag(ORK_BUILD_SHARED "Building shared library instead of static" ON)
 detect_option_flag(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
@@ -69,6 +69,7 @@ if(NOT ORK_USE_PUGI)
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
+file(WRITE "${3P_ORK_SRC_DIR}/version.txt" "${VERSION}\n")
 file(WRITE "${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_CONFIG_H}")
 
 
