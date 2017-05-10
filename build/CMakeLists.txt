@@ -189,12 +189,16 @@ else()
 	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
 endif()
 
+set(ORK_DEBUG_FLAGS "-D_DEBUG")
+set(ORK_RELEASE_FLAGS "")
 
-mark_as_internal(CMAKE_CXX_FLAGS_DEBUG)
-mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
+mark_as_internal(CMAKE_CXX_FLAGS)
+append_as_internal(CMAKE_CXX_FLAGS_DEBUG ORK_DEBUG_FLAGS)
+append_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL ORK_RELEASE_FLAGS)
 ensure_non_empty(CMAKE_CXX_FLAGS_RELEASE)
-set_as_internal(CMAKE_CXX_FLAGS_RELEASE "/D_NDEBUG /MD /Zi /Ox /Ob2")#Default: /O2, we could use regex replace
-mark_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+STRING(REPLACE "O2" "Ox" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+append_string_internal(CMAKE_CXX_FLAGS_RELEASE "/Zi ${ORK_RELEASE_FLAGS}")
+append_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO ORK_RELEASE_FLAGS)
 
 mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
 
