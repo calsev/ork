@@ -270,6 +270,10 @@ set_as_internal(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
 
 mark_as_internal(CMAKE_RC_COMPILER)
 mark_as_internal(CMAKE_RC_FLAGS)
+mark_as_internal(CMAKE_RC_FLAGS_DEBUG)
+mark_empty_internal(CMAKE_RC_FLAGS_MINSIZEREL)
+mark_empty_internal(CMAKE_RC_FLAGS_RELEASE)
+mark_empty_internal(CMAKE_RC_FLAGS_RELWITHDEBINFO)
 
 
 mark_as_internal(CMAKE_LINKER)
