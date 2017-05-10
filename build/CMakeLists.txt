@@ -1,10 +1,14 @@
 #This is a non-interactive build script that makes exactly what we require.
-#All cache variables are exposed.
+#All cache variables are set then hidden.
 #GUI mode is invoked to detect if any variables have been added in child projects.
 
 cmake_minimum_required(VERSION 3.2) #Just a guess, must be 3.x
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+
+##########
+#Macro Section
+##########
 
 macro(ensure_non_empty _var)
 	if(NOT ${_var})
@@ -117,31 +121,6 @@ macro(install_shared _targ _head)
 endmacro()
 
 
-detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)
-if(ORK_EXTERNAL_BOOST)
-	detect_option_path(ORK_3P_BOOST_SRC_DIR "Path of external boost installation" "${CMAKE_SOURCE_DIR}/../boost")
-endif()
-
-##Level 0
-detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
-detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
-detect_option_flag(ORK_BUILD_GLM "Enable building GLM" OFF) #Not actually building but using
-detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
-detect_option_flag(ORK_BUILD_JSON "Enable building jsoncpp" OFF)
-detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" OFF)
-detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
-
-##Level 1
-detect_option_flag(ORK_BUILD_ORK "Enable building ork" ON)
-detect_option_flag(ORK_BUILD_PNG "Enable building libpng" OFF)
-
-##Level 2
-detect_option_flag(ORK_BUILD_FT2 "Enable building freetype" OFF)
-
-##Level 3
-detect_option_flag(ORK_BUILD_OSG "Enable building OpenSceneGraph" OFF)
-
-
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(FATAL_ERROR "Prevented in-tree built. Call cmake from outside source tree.")
 endif()
@@ -168,6 +147,10 @@ mark_as_internal(CMAKE_CONFIGURATION_TYPES)
 
 project(third_party)
 
+
+##########
+#Language Section
+##########
 
 #CMake is a bit behind on C++ versions
 set_as_internal(CMAKE_CXX_STANDARD "14")
@@ -213,12 +196,92 @@ mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
+#mark_as_internal(CMAKE_ASM_MASM_COMPILER)
+#mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
+#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_DEBUG)
+#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_MINSIZEREL)
+#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELEASE)
+#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO)
+
+
+mark_as_internal(CMAKE_RC_COMPILER)
+mark_as_internal(CMAKE_RC_FLAGS)
+mark_as_internal(CMAKE_RC_FLAGS_DEBUG)
+mark_empty_internal(CMAKE_RC_FLAGS_MINSIZEREL)
+mark_empty_internal(CMAKE_RC_FLAGS_RELEASE)
+mark_empty_internal(CMAKE_RC_FLAGS_RELWITHDEBINFO)
+
+
+mark_as_internal(CMAKE_LINKER)
+
+mark_as_internal(CMAKE_EXE_LINKER_FLAGS)
+mark_as_internal(CMAKE_EXE_LINKER_FLAGS_DEBUG)
+mark_as_internal(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL)
+ensure_non_empty(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
+set_as_internal(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
+mark_as_internal(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
+
+mark_as_internal(CMAKE_MODULE_LINKER_FLAGS)
+mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_DEBUG)
+mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL)
+ensure_non_empty(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
+set_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO}")
+mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
+
+mark_as_internal(CMAKE_SHARED_LINKER_FLAGS)
+mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_DEBUG)
+mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL)
+ensure_non_empty(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
+set_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO}")
+mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
+
+mark_as_internal(CMAKE_STATIC_LINKER_FLAGS)
+mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_DEBUG)
+mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL)
+mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELEASE)
+mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO)
+
+
+set_as_internal(CMAKE_SKIP_INSTALL_RPATH ON)
+set_as_internal(CMAKE_SKIP_RPATH ON)
+set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
+
+
+##########
+#Options and Paths Section
+##########
+
 set_as_internal(CMAKE_DEBUG_POSTFIX "d")
 detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
 set_as_internal(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
 set_as_internal(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set_as_internal(INSTALL_INC_DIR "${CMAKE_INSTALL_PREFIX}/inc")
 set_as_internal(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+
+
+detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)
+if(ORK_EXTERNAL_BOOST)
+	detect_option_path(ORK_3P_BOOST_SRC_DIR "Path of external boost installation" "${CMAKE_SOURCE_DIR}/../boost")
+endif()
+
+##Level 0
+detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
+detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
+detect_option_flag(ORK_BUILD_GLM "Enable building GLM" OFF) #Not actually building but using
+detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
+detect_option_flag(ORK_BUILD_JSON "Enable building jsoncpp" OFF)
+detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" OFF)
+detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
+
+##Level 1
+detect_option_flag(ORK_BUILD_ORK "Enable building ork" ON)
+detect_option_flag(ORK_BUILD_PNG "Enable building libpng" OFF)
+
+##Level 2
+detect_option_flag(ORK_BUILD_FT2 "Enable building freetype" OFF)
+
+##Level 3
+detect_option_flag(ORK_BUILD_OSG "Enable building OpenSceneGraph" OFF)
 
 
 detect_option_path(ORK_3P_SOURCE_DIR "Path of third-party directory (location of submodules)" "${CMAKE_CURRENT_SOURCE_DIR}/../..")
@@ -276,56 +339,9 @@ set_as_internal(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
 set_as_internal(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
 
 
-#mark_as_internal(CMAKE_ASM_MASM_COMPILER)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_DEBUG)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_MINSIZEREL)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELEASE)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO)
-
-
-mark_as_internal(CMAKE_RC_COMPILER)
-mark_as_internal(CMAKE_RC_FLAGS)
-mark_as_internal(CMAKE_RC_FLAGS_DEBUG)
-mark_empty_internal(CMAKE_RC_FLAGS_MINSIZEREL)
-mark_empty_internal(CMAKE_RC_FLAGS_RELEASE)
-mark_empty_internal(CMAKE_RC_FLAGS_RELWITHDEBINFO)
-
-
-mark_as_internal(CMAKE_LINKER)
-
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS)
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS_DEBUG)
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL)
-ensure_non_empty(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
-set_as_internal(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS)
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_DEBUG)
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL)
-ensure_non_empty(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
-set_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO}")
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS)
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_DEBUG)
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL)
-ensure_non_empty(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
-set_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO}")
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_STATIC_LINKER_FLAGS)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_DEBUG)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELEASE)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO)
-
-
-set_as_internal(CMAKE_SKIP_INSTALL_RPATH ON)
-set_as_internal(CMAKE_SKIP_RPATH ON)
-set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
-
+##########
+#Build Section
+##########
 
 ##Level 0
 
