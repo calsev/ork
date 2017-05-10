@@ -169,6 +169,11 @@ mark_as_internal(CMAKE_CONFIGURATION_TYPES)
 project(third_party)
 
 
+#CMake is a bit behind on C++ versions
+set_as_internal(CMAKE_CXX_STANDARD "14")
+set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
+set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
+
 #Must be tested after project
 if(MSVC_VERSION)
 	if(${MSVC_VERSION} LESS 1800)
@@ -182,11 +187,6 @@ else()
 	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
 endif()
 
-
-#CMake is a bit behind on C++ versions
-set_as_internal(CMAKE_CXX_STANDARD "14")
-set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
-set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
 
 ensure_non_empty(CMAKE_CXX_FLAGS)
 if(ORK_CMAKE_RUN_ONCE)
