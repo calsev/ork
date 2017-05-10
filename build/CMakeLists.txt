@@ -155,6 +155,8 @@ endif()
 #Used for concatenating to avoid repeats
 if(NOT ORK_CMAKE_RAN_INTERNAL)
 	set(ORK_CMAKE_RUN_ONCE ON)
+else()
+	set(ORK_CMAKE_RUN_ONCE OFF)
 endif()
 set_as_internal(ORK_CMAKE_RAN_INTERNAL ON)
 
