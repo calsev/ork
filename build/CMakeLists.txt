@@ -175,31 +175,21 @@ set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
 set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
 
 #Must be tested after project
+#This was causing problems with boost
 if(MSVC_VERSION)
 	if(${MSVC_VERSION} LESS 1800)
 		message(FATAL_ERROR "Error: Only Visual Studio 2013 and above are supported")
 	endif()
+	#append_string_internal(CMAKE_CXX_FLAGS "/std:c++latest")
 elseif(NOT CMAKE_C_COMPILER_ID)
 	message(FATAL_ERROR "Compiler not found")
 elseif(${CMAKE_C_COMPILER_ID} EQUAL GNU)
-	#Nothing to do here
+	#append_string_internal(CMAKE_CXX_FLAGS "-std=c++17")
 else()
 	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
 endif()
 
 
-ensure_non_empty(CMAKE_CXX_FLAGS)
-if(ORK_CMAKE_RUN_ONCE)
-	if(ORK_CMAKE_RUN_ONCE)
-		mark_as_internal(CMAKE_CXX_FLAGS) #This was causing problems with boost
-	elseif(MSVC)
-		set_as_internal(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
-	elseif(UNIX)
-		set_as_internal(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-	else()
-		message(FATAL_ERROR "Compiler not supported")
-	endif()
-endif()
 mark_as_internal(CMAKE_CXX_FLAGS_DEBUG)
 mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
 ensure_non_empty(CMAKE_CXX_FLAGS_RELEASE)
