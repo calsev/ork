@@ -130,9 +130,9 @@ endif()
 
 #Used for concatenating to avoid repeats
 if(NOT ORK_CMAKE_RAN_INTERNAL)
-	set(ORK_CMAKE_RUN_ONCE "ON")
+	set(ORK_CMAKE_RUN_ONCE ON)
 endif()
-set_as_internal(ORK_CMAKE_RAN_INTERNAL "ON")
+set_as_internal(ORK_CMAKE_RAN_INTERNAL ON)
 
 
 #Must be set before PROJECT to hide
@@ -159,8 +159,8 @@ endif()
 
 #CMake is a bit behind on C++ versions
 set_as_internal(CMAKE_CXX_STANDARD "14")
-set_as_internal(CMAKE_CXX_STANDARD_REQUIRED "ON")
-set_as_internal(CMAKE_CXX_EXTENSIONS "OFF")
+set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
+set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
 
 ensure_non_empty(CMAKE_CXX_FLAGS)
 if(ORK_CMAKE_RUN_ONCE)
@@ -205,7 +205,7 @@ detect_option_path(ORK_3P_SOURCE_DIR "Path of third-party directory (location of
 if(ORK_EXTERNAL_BOOST)
 	set_as_internal(3P_BOOST_SRC_DIR "${ORK_3P_BOOST_SRC_DIR}")
 else()
-	find_3p_path("ON" 3P_BOOST_SRC_DIR "boost" "boost")
+	find_3p_path(ON 3P_BOOST_SRC_DIR "boost" "boost")
 endif()
 
 ##Level 0
@@ -292,9 +292,9 @@ mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELEASE)
 mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO)
 
 
-set_as_internal(CMAKE_SKIP_INSTALL_RPATH "YES")
-set_as_internal(CMAKE_SKIP_RPATH "YES")
-set_as_internal(CMAKE_VERBOSE_MAKEFILE "NO")
+set_as_internal(CMAKE_SKIP_INSTALL_RPATH ON)
+set_as_internal(CMAKE_SKIP_RPATH ON)
+set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
 
 
 ##Level 0
@@ -317,7 +317,7 @@ if(ORK_BUILD_ZLIB)
 	add_subdirectory("./zlib" "${3P_ZLIB_BIN_DIR}")
 endif()
 
-####Level 1
+##Level 1
 
 if(ORK_BUILD_ORK)
 	add_subdirectory("./ork" "${3P_ORK_BIN_DIR}")
@@ -329,7 +329,7 @@ if(ORK_BUILD_PNG)
 	add_subdirectory("./png" "${3P_PNG_BIN_DIR}")
 endif()
 
-####Level 2
+##Level 2
 
 if(ORK_BUILD_FT2)
 	if(NOT ORK_BUILD_PNG)
@@ -338,6 +338,6 @@ if(ORK_BUILD_FT2)
 	add_subdirectory("./ft2" "${3P_FT2_BIN_DIR}")
 endif()
 
-####Level 3
+##Level 3
 
 add_subdirectory("./cleanup")
