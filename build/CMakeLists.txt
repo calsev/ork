@@ -206,7 +206,11 @@ mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 mark_as_internal(CMAKE_RC_COMPILER)
 mark_as_internal(CMAKE_RC_FLAGS)
-mark_as_internal(CMAKE_RC_FLAGS_DEBUG)
+if(CMAKE_RC_FLAGS_DEBUG)#Not always defined
+	mark_as_internal(CMAKE_RC_FLAGS_DEBUG)
+else()
+	mark_empty_internal(CMAKE_RC_FLAGS_DEBUG)
+endif()
 mark_empty_internal(CMAKE_RC_FLAGS_MINSIZEREL)
 mark_empty_internal(CMAKE_RC_FLAGS_RELEASE)
 mark_empty_internal(CMAKE_RC_FLAGS_RELWITHDEBINFO)
