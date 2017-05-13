@@ -96,6 +96,51 @@ ORK_INLINE bool consume_lit(string_t const& str, iter&it, const iter& first, ite
 
 
 /*
+Bool, no 1/0 allowed
+*/
+template<typename iter>
+ORK_INLINE bool consume_alpha_bool(iter& it, const iter&first, const iter& last, bool&val) {
+	if(it == last) {
+		return false;
+	}
+
+	if(consume_lit(ORK("true"), it, first, last)) {
+		val = true;
+		return true;
+	}
+	it = first;
+	if(consume_lit(ORK("false"), it, first, last)) {
+		val = false; 
+		return true;
+	}
+
+	it = first;
+	if(consume_lit(ORK("yes"), it, first, last)) {
+		val = true; 
+		return true;
+	}
+	it = first;
+	if(consume_lit(ORK("no"), it, first, last)) {
+		val = false; 
+		return true;
+	}
+
+	it = first;
+	if(consume_lit(ORK("on"), it, first, last)) {
+		val = true; 
+		return true;
+	}
+	it = first;
+	if(consume_lit(ORK("off"), it, first, last)) {
+		val = false; 
+		return true;
+	}
+
+	return false;
+}
+
+
+/*
 An identifier is a typical C/C++/Java/C# name: start with underscore/letter, continue with underscore/letter/digit
 */
 template<typename iter>
@@ -257,45 +302,14 @@ public://Parser component stuff
 		boost::spirit::qi::skip_over(first, last, skip);//All primitive parsers pre-skip
 
 		iter it(first);
-		if(detail::consume_lit(ORK("yes"), it, first, last)) {
-			first = it;
-			spirit::traits::assign_to(true, attr);
-			return true;
-		}
-		it = first;
-		if(detail::consume_lit(ORK("no"), it, first, last)) {
-			first = it;
-			spirit::traits::assign_to(false, attr);
-			return true;
+		bool val = false;
+		if(!detail::consume_alpha_bool(it, first, last, val)) {
+			return false;
 		}
 
-		it = first;
-		if(detail::consume_lit(ORK("true"), it, first, last)) {
-			first = it;
-			spirit::traits::assign_to(true, attr);
-			return true;
-		}
-		it = first;
-		if(detail::consume_lit(ORK("false"), it, first, last)) {
-			first = it;
-			spirit::traits::assign_to(false, attr);
-			return true;
-		}
-
-		it = first;
-		if(detail::consume_lit(ORK("on"), it, first, last)) {
-			first = it;
-			spirit::traits::assign_to(true, attr);
-			return true;
-		}
-		it = first;
-		if(detail::consume_lit(ORK("off"), it, first, last)) {
-			first = it;
-			spirit::traits::assign_to(false, attr);
-			return true;
-		}
-
-		return false;
+		first = it;
+		spirit::traits::assign_to(val, attr);
+		return true;
 	}
 
 	//This function is called during error handling to create a human readable string for the error context.
