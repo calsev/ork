@@ -237,6 +237,19 @@ public://Parser component stuff
 			return true;
 		}
 
+		it = first;
+		if(detail::consume_lit(ORK("on"), it, first, last)) {
+			first = it;
+			spirit::traits::assign_to(true, attr);
+			return true;
+		}
+		it = first;
+		if(detail::consume_lit(ORK("off"), it, first, last)) {
+			first = it;
+			spirit::traits::assign_to(false, attr);
+			return true;
+		}
+
 		return false;
 	}
 
