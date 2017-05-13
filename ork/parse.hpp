@@ -263,7 +263,7 @@ public://Parser component stuff
 	//This function is called during error handling to create a human readable string for the error context.
 	template<typename context>
 	boost::spirit::info what(context&) const {
-		return boost::spirit::info("alpha_bool");
+		return boost::spirit::info(BORK("alpha_bool"));
 	}
 };
 
@@ -294,7 +294,7 @@ public://Parser component stuff
 	//This function is called during error handling to create a human readable string for the error context.
 	template<typename context>
 	boost::spirit::info what(context&) const {
-		return boost::spirit::info("id");
+		return boost::spirit::info(BORK("id"));
 	}
 };
 
@@ -325,7 +325,7 @@ public://Parser component stuff
 	//This function is called during error handling to create a human readable string for the error context.
 	template<typename context>
 	boost::spirit::info what(context&) const {
-		return boost::spirit::info("name");
+		return boost::spirit::info(BORK("name"));
 	}
 };
 
@@ -356,7 +356,7 @@ public://Parser component stuff
 	//This function is called during error handling to create a human readable string for the error context.
 	template<typename context>
 	boost::spirit::info what(context&) const {
-		return boost::spirit::info("string");
+		return boost::spirit::info(BORK("variant"));
 	}
 };
 
@@ -387,7 +387,7 @@ public://Parser component stuff
 	//This function is called during error handling to create a human readable string for the error context.
 	template<typename context>
 	boost::spirit::info what(context&) const {
-		return boost::spirit::info("quote");
+		return boost::spirit::info(BORK("quote"));
 	}
 };
 
@@ -416,7 +416,7 @@ public://Parser component stuff
 	//This function is called during error handling to create a human readable string for the error context.
 	template<typename context>
 	boost::spirit::info what(context&) const {
-		return boost::spirit::info("lb_com");
+		return boost::spirit::info(BORK("lb_com"));
 	}
 };
 
@@ -453,7 +453,7 @@ public://Parser component stuff
 	//This function is called during error handling to create a human readable string for the error context.
 	template<typename context>
 	boost::spirit::info what(context&) const {
-		return boost::spirit::info("lb_com_skip");
+		return boost::spirit::info(BORK("lb_com_skip"));
 	}
 };
 
