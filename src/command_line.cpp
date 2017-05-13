@@ -10,12 +10,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 int invoke_main(const std::vector<string>&args, main_func f) {
-	std::vector<const letr*>argv;
+	std::vector<const char_t*>argv;
 	argv.push_back(ORK("this_should_be_the_invoked_command"));
 	for(const string&arg : args)argv.push_back(arg.c_str());
 
 	string_stream cmd;
-	for(const letr*const arg : argv) {
+	for(const char_t*const arg : argv) {
 		cmd << arg << ORK(" ");
 	}
 	ORK_LOG(severity_level::info) << ORK("\n -- Command Line: ") << cmd.str();
@@ -40,7 +40,7 @@ void command_handler::call_add_options() {
 }
 
 
-bool command_handler::process_commands(const options::basic_parsed_options<letr>&ops) {
+bool command_handler::process_commands(const options::basic_parsed_options<char_t>&ops) {
 	try {
 		options::store(ops, _vm);
 		if(_vm.count(BORK("help"))) {//Check here to ignore any missing options
@@ -78,22 +78,22 @@ bool command_handler::process_commands(const options::basic_parsed_options<letr>
 	}
 
 
-bool command_handler::operator()(const int argc, const letr*const argv[]) {
+bool command_handler::operator()(const int argc, const char_t*const argv[]) {
 	try {
 		call_add_options();
-		options::basic_parsed_options<letr>ops(options::parse_command_line<letr>(argc, argv, _desc));
+		options::basic_parsed_options<char_t>ops(options::parse_command_line<char_t>(argc, argv, _desc));
 		return process_commands(ops);
 	}
 	COMMAND_CATCH
 }
 
 
-bool command_handler::operator()(const int argc, const letr*const argv[], const bstring&positional_op) {
+bool command_handler::operator()(const int argc, const char_t*const argv[], const bstring&positional_op) {
 	try {
 		call_add_options();
 		options::positional_options_description p;
 		p.add(positional_op.c_str(), -1);
-		options::basic_parsed_options<letr>ops(options::command_line_parser(argc, argv).options(_desc).positional(p).run());
+		options::basic_parsed_options<char_t>ops(options::command_line_parser(argc, argv).options(_desc).positional(p).run());
 		return process_commands(ops);
 	}
 	COMMAND_CATCH
@@ -103,7 +103,7 @@ bool command_handler::operator()(const int argc, const letr*const argv[], const 
 bool command_handler::operator()(const bstring&env_prefix) {
 	try {
 		call_add_options();
-		options::basic_parsed_options<letr>ops(options::parse_environment(_desc, env_prefix));
+		options::basic_parsed_options<char_t>ops(options::parse_environment(_desc, env_prefix));
 		return process_commands(ops);
 	}
 	COMMAND_CATCH
@@ -113,7 +113,7 @@ bool command_handler::operator()(const bstring&env_prefix) {
 bool command_handler::operator()(std::istream&config_file) {
 	try {
 		call_add_options();
-		options::basic_parsed_options<letr>ops(options::parse_config_file(config_file, _desc));
+		options::basic_parsed_options<char_t>ops(options::parse_config_file(config_file, _desc));
 		return process_commands(ops);
 	}
 	COMMAND_CATCH

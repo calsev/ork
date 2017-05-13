@@ -239,7 +239,7 @@ From log.hpp
 */
 
 o_stream&operator<<(o_stream&strm, log_channel chan) {
-	static const letr* strings[] = {
+	static const char_t* strings[] = {
 		ORK("Debug/Trace")
 		, ORK("Output/Data")
 	};
@@ -253,7 +253,7 @@ o_stream&operator<<(o_stream&strm, log_channel chan) {
 
 
 o_stream&operator<<(o_stream&strm, severity_level sev) {
-	static const letr* strings[] = {
+	static const char_t* strings[] = {
 		//These are fixed width, maybe this should be done in formatting instead
 		ORK("TRACE")
 		, ORK("DEBUG")

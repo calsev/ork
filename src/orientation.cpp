@@ -33,7 +33,7 @@ orientation operator-(orientation or ) {
 }
 
 //These must be in the same order as the enum
-static const letr* oriention_strings[] = {
+static const char_t* oriention_strings[] = {
 	ORK("+X"),
 	ORK("-X"),
 	ORK("+Y"),
@@ -57,7 +57,7 @@ i_stream&operator >> (i_stream&strm, orientation& or ) {
 }
 
 
-const letr*orientation2string(orientation or ) {
+const char_t*orientation2string(orientation or ) {
 	const size_t index = static_cast<size_t>(or );
 	if(index < sizeof(oriention_strings) / sizeof(*oriention_strings)) return oriention_strings[index];
 	else ORK_THROW(ORK("Attempt to convert invalid orientation"));
@@ -81,8 +81,8 @@ orientation string2orientation(const string&val) {
 std::vector<string>parse_orientation_strings(const string&line) {
 	std::vector<string>retval;
 	//Build the orientations
-	typedef boost::tokenizer<boost::char_separator<letr> > tokenizer;
-	boost::char_separator<letr> delim(ORK(" \t"));//Whitespace can be space or tab
+	typedef boost::tokenizer<boost::char_separator<char_t> > tokenizer;
+	boost::char_separator<char_t> delim(ORK(" \t"));//Whitespace can be space or tab
 	tokenizer tokens(line, delim);
 	for(const string&str : tokens) {
 		retval.push_back(str);

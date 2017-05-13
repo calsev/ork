@@ -70,7 +70,7 @@ namespace ork {
 #if ORK_UNICODE
 	typedef std::wstring string;
 	typedef std::wstringstream string_stream;
-	typedef wchar_t letr;
+	typedef wchar_t char_t;
 	typedef std::wostream o_stream;
 	typedef std::wistream i_stream;
 	typedef std::wostringstream o_string_stream;
@@ -84,7 +84,7 @@ namespace ork {
 #else
 	typedef std::string string;
 	typedef std::stringstream string_stream;
-	typedef char letr;
+	typedef char char_t;
 	typedef std::ostream o_stream;
 	typedef std::istream i_stream;
 	typedef std::ostringstream o_string_stream;

@@ -22,7 +22,7 @@ ORK_ORK_EXT(orientation) operator-(orientation);
 ORK_ORK_EXT(o_stream&) operator<<(o_stream&strm, orientation);
 ORK_ORK_EXT(i_stream&) operator>>(i_stream&strm, orientation&);
 
-ORK_ORK_EXT(const letr*) orientation2string(orientation);
+ORK_ORK_EXT(const char_t*) orientation2string(orientation);
 ORK_ORK_EXT(orientation) string2orientation(const string&val);
 
 ORK_ORK_EXT(std::vector<string>) parse_orientation_strings(const string&line);
