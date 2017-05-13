@@ -147,6 +147,9 @@ ORK_INLINE bool consume_dec_int(iter& it, const iter&first, const iter& last) {
 		return false;
 	}
 
+	if(*it == ORK('-') && ++it != last) {
+		/*Do Nothing*/
+	}
 	while(std::isdigit(*it) && ++it != last) {//NOT charset: this is programming language (ascii) identifier
 		/*Do Nothing*/
 	}
@@ -165,6 +168,9 @@ ORK_INLINE bool consume_real(iter& it, const iter&first, const iter& last) {
 		return false;
 	}
 
+	if(*it == ORK('-') && ++it != last) {
+		/*Do Nothing*/
+	}
 	while((std::isdigit(*it)) && ++it != last) {//NOT charset: this is programming language (ascii) identifier
 		/*Do Nothing*/
 	}
