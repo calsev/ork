@@ -93,6 +93,9 @@ ORK_INLINE bool consume_lit(string_t const& str, iter&it, const iter& first, ite
 }
 
 
+/*
+An identifier is a typical C/C++/Java/C# name: start with underscore/letter, continue with underscore/letter/digit
+*/
 template<typename iter>
 ORK_INLINE bool consume_identifier(iter& it, const iter&first, const iter& last) {
 	if(it == last) {
@@ -104,13 +107,17 @@ ORK_INLINE bool consume_identifier(iter& it, const iter&first, const iter& last)
 		return false;//First character must be letter or underscore
 	}
 	while((std::isalnum(ch) || ch == ORK('_')) && ++it != last) {//NOT charset: this is programming language (ascii) identifier
-		ch = *it;//Subsequent characters can be numbers also
+		ch = *it;//Subsequent characters can be digits also
 	}
 
 	return true;//We consumed at least the first character
 }
 
 
+/*
+A 'name' is a bit of a muddy combination of proper name (e.g. Harold, Hawai'i, Dan-Man) and a user name (e.g. cool_guy_32, _hack0r_0110)
+We require: start with letter/underscore, continue with letter/digit/underscore/dash/apostrophe
+*/
 template<typename iter>
 ORK_INLINE bool consume_name(iter& it, const iter&first, const iter& last) {
 	if(it == last) {
@@ -118,10 +125,10 @@ ORK_INLINE bool consume_name(iter& it, const iter&first, const iter& last) {
 	}
 
 	auto ch = *it;
-	if(!charset::isalpha(ch)) {//Using charset: this is human (unicode) identifier
+	if(!charset::isalpha(ch) && ch != ORK('_')) {//Using charset: this is human (unicode) identifier
 		return false;//First character must be letter
 	}
-	while((charset::isalnum(ch) || ch == ORK('_') || ch == ORK('-')) && ++it != last) {//Using charset: this is human (unicode) identifier
+	while((charset::isalnum(ch) || ch == ORK('_') || ch == ORK('-') || ch == ORK('\'')) && ++it != last) {//Using charset: this is human (unicode) identifier
 		ch = *it;//Subsequent characters can be hyphens also, underscore/number allowed due to common usage in databases/files
 	}
 
