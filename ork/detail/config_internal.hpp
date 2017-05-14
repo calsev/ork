@@ -26,7 +26,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 
 #if ORK_MSC && ORK_MSC < 1800
-#	error Visual Studio 2012 or greater required
+#	error Visual Studio 2013 or greater required
 #endif
 #if ORK_GCC && ORK_GCC < 40300
 #	error GCC 4.3 or greater required
