@@ -96,6 +96,7 @@ namespace ork {
 	#define ORK_CERR std::cerr
 	#define ORK_CLOG std::clog
 #endif
+typedef std::wstring wstring;
 typedef std::string bstring;//Byte string, so that searches can identify unhandled unicode
 typedef std::stringstream b_string_stream;
 typedef std::ostream bo_stream;
@@ -153,29 +154,29 @@ private:
 	string_converter m_converter;
 	std::mutex m_mutex;
 public:
-	ORK_ORK_API std::string to_bytes(const wchar_t s) {
+	ORK_ORK_API bstring to_bytes(const wchar_t s) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(s);
 	}
-	ORK_ORK_API std::string to_bytes(const wchar_t*s) {
+	ORK_ORK_API bstring to_bytes(const wchar_t*s) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(s);
 	}
-	ORK_ORK_API std::string to_bytes(const std::wstring&s) {
+	ORK_ORK_API bstring to_bytes(const wstring&s) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(s);
 	}
-	ORK_ORK_API std::string to_bytes(const wchar_t*first, const wchar_t*last) {
+	ORK_ORK_API bstring to_bytes(const wchar_t*first, const wchar_t*last) {
 		lock_type lock(m_mutex); return m_converter.to_bytes(first, last);
 	}
 
-	ORK_ORK_API std::wstring from_bytes(const char s) {
+	ORK_ORK_API wstring from_bytes(const char s) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(s);
 	}
-	ORK_ORK_API std::wstring from_bytes(const char*s) {
+	ORK_ORK_API wstring from_bytes(const char*s) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(s);
 	}
-	ORK_ORK_API std::wstring from_bytes(const std::string&s) {
+	ORK_ORK_API wstring from_bytes(const bstring&s) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(s);
 	}
-	ORK_ORK_API std::wstring from_bytes(const char*first, const char*last) {
+	ORK_ORK_API wstring from_bytes(const char*first, const char*last) {
 		lock_type lock(m_mutex); return m_converter.from_bytes(first, last);
 	}
 };
