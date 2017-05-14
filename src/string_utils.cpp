@@ -38,4 +38,33 @@ bool str_equal(const wchar_t*const lhs, const wchar_t*const rhs) {
 }
 
 
+double to_double(const char*const str) {
+	return std::strtod(str, nullptr);
+}
+double to_double(const wchar_t*const str) {
+	return std::wcstod(str, nullptr);
+}
+double to_double(const bstring&str) {
+	return std::strtod(str.c_str(), nullptr);
+}
+double to_double(const wstring&str) {
+	return std::wcstod(str.c_str(), nullptr);
+}
+
+
+//We could also static cast double versions
+float to_float(const char*const str) {
+	return std::strtof(str, nullptr);
+}
+float to_float(const wchar_t*const str) {
+	return std::wcstof(str, nullptr);
+}
+float to_float(const bstring&str) {
+	return std::strtof(str.c_str(), nullptr);
+}
+float to_float(const wstring&str) {
+	return std::wcstof(str.c_str(), nullptr);
+}
+
+
 }//namespace ork

@@ -17,4 +17,15 @@ ORK_ORK_EXT(bool) str_equal(const char*const, const char*const);
 ORK_ORK_EXT(bool) str_equal(const wchar_t*const, const wchar_t*const);
 
 
+ORK_ORK_EXT(double) to_double(const char*const);
+ORK_ORK_EXT(double) to_double(const wchar_t*const);
+ORK_ORK_EXT(double) to_double(const bstring&);
+ORK_ORK_EXT(double) to_double(const wstring&);
+
+ORK_ORK_EXT(float) to_float(const char*const);
+ORK_ORK_EXT(float) to_float(const wchar_t*const);
+ORK_ORK_EXT(float) to_float(const bstring&);
+ORK_ORK_EXT(float) to_float(const wstring&);
+
+
 }//namespace ork
