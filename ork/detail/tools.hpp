@@ -34,7 +34,7 @@ namespace ork {
 #	if ORK_GCC
 #		define ORK_DEPRECATED __attribute__((deprecated))
 #	else
-#		define ORK_DEPRECATED
+#		define ORK_DEPRECATED __declspec(deprecated)
 #	endif
 #endif
 
