@@ -173,6 +173,7 @@ detect_option_flag(ORK_BUILD_PNG "Enable building libpng" OFF)
 detect_option_flag(ORK_BUILD_FT2 "Enable building freetype" OFF)
 
 ##Level 3
+detect_option_flag(ORK_BUILD_OCE "Enable building OpenCascade" OFF)
 detect_option_flag(ORK_BUILD_OSG "Enable building OpenSceneGraph" OFF)
 
 
@@ -200,6 +201,7 @@ find_3p_path(ORK_BUILD_PNG 3P_PNG_SRC_DIR "png" "libpng")
 find_3p_path(ORK_BUILD_FT2 3P_FT2_SRC_DIR "ft2" "freetype")
 
 ##Level 3
+find_3p_path(ORK_BUILD_OCE 3P_OCE_SRC_DIR "oce" "occt")
 find_3p_path(ORK_BUILD_OSG 3P_OSG_SRC_DIR "osg" "openscenegraph")
 
 
@@ -228,6 +230,7 @@ set_as_internal(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
 set_as_internal(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
 
 ##Level 3
+set_as_internal(3P_OCE_BIN_DIR "${3P_BIN_DIR}/oce")
 set_as_internal(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
 
 
@@ -277,6 +280,9 @@ if(ORK_BUILD_FT2)
 endif()
 
 ##Level 3
+if(ORK_BUILD_OCE)
+	add_subdirectory("./oce" "${3P_OCE_BIN_DIR}")
+endif()
 if(ORK_BUILD_OSG)
 	add_subdirectory("./osg" "${3P_OSG_BIN_DIR}")
 endif()
