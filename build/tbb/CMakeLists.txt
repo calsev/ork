@@ -20,6 +20,14 @@ if(MSVC)
 endif()
 
 
+execute_process(
+	COMMAND cmd " /C date /T"
+	OUTPUT_VARIABLE _configure_date
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/version_string.ver.in" "${3P_TBB_BIN_DIR}/version_string.ver" @ONLY)
+
+
 file(GLOB TBB_SRCS
 	"${3P_TBB_SRC_DIR}/src/tbb/*.cpp"
 	"${3P_TBB_SRC_DIR}/src/old/*.cpp"
