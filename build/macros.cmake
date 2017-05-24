@@ -99,15 +99,15 @@ macro(install_bin _targ)
 	endif()
 endmacro()
 
-macro(install_headers _head)
+macro(install_headers _head _dest)
 	if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
 		install(
 			FILES ${_head}
-			DESTINATION "${INSTALL_INC_DIR}"
+			DESTINATION "${_dest}"
 		)
 	endif()
 endmacro()
 macro(install_shared _targ _head)
 	install_bin(${_targ})
-	install_headers(${_head})
+	install_headers(${_head} "${INSTALL_INC_DIR}")
 endmacro()

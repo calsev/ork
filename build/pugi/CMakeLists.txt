@@ -66,5 +66,5 @@ target_include_directories(
 )
 
 install_bin(pugixml)
-install_headers("${3P_PUGI_SRC_DIR}/src/pugixml.hpp")
-install_headers("${3P_PUGI_BIN_DIR}/pugiconfig.hpp")
+install_headers("${3P_PUGI_SRC_DIR}/src/pugixml.hpp" "${INSTALL_INC_DIR}")
+install_headers("${3P_PUGI_BIN_DIR}/pugiconfig.hpp" "${INSTALL_INC_DIR}")
