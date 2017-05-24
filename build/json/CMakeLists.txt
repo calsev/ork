@@ -54,14 +54,5 @@ target_include_directories(
 
 
 install_bin(jsoncpp)
-if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
-	install(
-		DIRECTORY "${3P_JSON_SRC_DIR}/include/json/" #Note trailing slash
-		DESTINATION "${INSTALL_INC_DIR}/json"
-		PATTERN "version.h" EXCLUDE
-	)
-	install(
-		FILES "${3P_JSON_BIN_DIR}/include/json/version.h"
-		DESTINATION "${INSTALL_INC_DIR}/json"
-	)
-endif()
+install_header_dir("${3P_JSON_SRC_DIR}/include/json" "${INSTALL_INC_DIR}/json" "version.h")
+install_headers("${3P_JSON_BIN_DIR}/include/json/version.h" "${INSTALL_INC_DIR}/json")

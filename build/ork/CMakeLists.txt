@@ -130,14 +130,5 @@ endif()
 
 
 install_bin(ork)
-if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
-	install(
-		DIRECTORY "${3P_ORK_SRC_DIR}/ork/" #Note trailing slash
-		DESTINATION "${INSTALL_INC_DIR}/ork"
-		PATTERN "config" EXCLUDE
-	)
-	install(
-		FILES "${3P_ORK_BIN_DIR}/ork/config/config.hpp"
-		DESTINATION "${INSTALL_INC_DIR}/ork/config"
-	)
-endif()
+install_header_dir("${3P_ORK_SRC_DIR}/ork" "${INSTALL_INC_DIR}/ork" "config")
+install_headers("${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${INSTALL_INC_DIR}/ork/config")

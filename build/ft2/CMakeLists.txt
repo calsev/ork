@@ -144,15 +144,5 @@ target_include_directories(
 )
 
 install_bin(ft2)
-if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
-	install(
-		DIRECTORY "${3P_FT2_SRC_DIR}/include/" #Note trailing slash
-		DESTINATION "${INSTALL_INC_DIR}"
-		PATTERN "internal" EXCLUDE
-		PATTERN "ftoption.h" EXCLUDE
-	)
-	install(
-		FILES "${3P_FT2_BIN_DIR}/include/freetype/config/ftoption.h"
-		DESTINATION "${INSTALL_INC_DIR}/freetype/config"
-	)
-endif()
+install_header_dir("${3P_FT2_SRC_DIR}/include" "${INSTALL_INC_DIR}" "internal|ftoption.h")
+install_headers("${3P_FT2_BIN_DIR}/include/freetype/config/ftoption.h" "${INSTALL_INC_DIR}/freetype/config")
