@@ -54,8 +54,8 @@ list(APPEND TBB_MALLOC_SRCS
 set(CMAKE_ASM_MASM_FLAGS "/DEM64T=1 ${CMAKE_ASM_MASM_FLAGS}")
 
 
-set(ENABLE_RTTI "/EHsc /GR ") #Catch C++ exceptions only (C no throw, no asynch), RTTI
-set(DISABLE_RTTI "/EHs- /GR- ") #Catch no exceptions, no RTTI
+set(ENABLE_RTTI "/GR ") #Catch C++ exceptions only (C no throw, no asynch), RTTI
+set(DISABLE_RTTI "/GR- ") #Catch no exceptions, no RTTI
 
 
 #Create def for shared libs
