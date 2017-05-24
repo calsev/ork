@@ -107,6 +107,17 @@ macro(install_headers _head _dest)
 		)
 	endif()
 endmacro()
+
+macro(install_header_dir _dir _dest _exclude)
+	if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
+		install(
+			DIRECTORY "${_dir}/" #Note trailing slash
+			DESTINATION "${_dest}"
+			PATTERN "${_exclude}" EXCLUDE
+		)
+	endif()
+endmacro()
+
 macro(install_shared _targ _head)
 	install_bin(${_targ})
 	install_headers(${_head} "${INSTALL_INC_DIR}")
