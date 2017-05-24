@@ -78,7 +78,7 @@ add_library(tbb SHARED ${TBB_SRCS})
 set_target_properties(tbb PROPERTIES FOLDER "TBB")
 target_compile_definitions(tbb PUBLIC "__TBB_NO_IMPLICIT_LINKAGE=1")
 target_compile_definitions(tbb PRIVATE "__TBB_BUILD=1")
-target_compile_options(tbb PRIVATE "${ENABLE_RTTI}")
+set_property(TARGET tbb APPEND_STRING PROPERTY COMPILE_FLAGS ${ENABLE_RTTI})
 set_property(TARGET tbb APPEND PROPERTY LINK_FLAGS "/DEF:${3P_TBB_BIN_DIR}/tbb.def")
 set_source_files_properties(${3P_TBB_SRC_DIR}/src/tbb/scheduler.cpp COMPILE_FLAGS "/wd4458 ") #Declaration hides class member
 add_dependencies(tbb tbb_def_files)
@@ -86,8 +86,9 @@ add_dependencies(tbb tbb_def_files)
 target_include_directories(
 	tbb
 	PUBLIC $<BUILD_INTERFACE:${3P_TBB_BIN_DIR}>
-	PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
-	PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
+	PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/include>
+	PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
+	PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
 	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
 )
 
@@ -97,15 +98,16 @@ if(TBB_BUILD_TBBMALLOC)
 	set_target_properties(tbbmalloc PROPERTIES FOLDER "TBB")
 	target_compile_definitions(tbbmalloc PUBLIC "__TBB_NO_IMPLICIT_LINKAGE=1" "__TBBMALLOC_NO_IMPLICIT_LINKAGE=1")
 	target_compile_definitions(tbb PRIVATE "__TBBMALLOC_BUILD=1")
-	target_compile_options(tbb PRIVATE "${DISABLE_RTTI}")
+	set_property(TARGET tbbmalloc APPEND_STRING PROPERTY COMPILE_FLAGS ${DISABLE_RTTI})
 	set_property(TARGET tbbmalloc APPEND PROPERTY LINK_FLAGS "/DEF:${3P_TBB_BIN_DIR}/tbbmalloc.def")
 	add_dependencies(tbbmalloc tbb_def_files)
 	
 	target_include_directories(
 		tbbmalloc
 		PUBLIC $<BUILD_INTERFACE:${3P_TBB_BIN_DIR}>
-		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
-		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
+		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/include>
+		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
+		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
 		INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
 	)
 endif()
@@ -114,14 +116,15 @@ if(TBB_BUILD_TBBMALLOC_PROXY)
 	add_library(tbbmalloc_proxy SHARED ${TBB_PROXY_SRCS})
 	set_target_properties(tbbmalloc_proxy PROPERTIES FOLDER "TBB")
 	target_compile_definitions(tbbmalloc_proxy PRIVATE "__TBBMALLOC_BUILD=1")
-	target_compile_options(tbbmalloc_proxy PRIVATE "${DISABLE_RTTI}")
+	set_property(TARGET tbbmalloc_proxy APPEND_STRING PROPERTY COMPILE_FLAGS ${DISABLE_RTTI})
 	target_link_libraries(tbbmalloc_proxy tbbmalloc)
 	
 	target_include_directories(
 		tbbmalloc_proxy
 		PUBLIC $<BUILD_INTERFACE:${3P_TBB_BIN_DIR}>
-		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
-		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
+		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/include>
+		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
+		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
 		INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
 	)
 endif()
