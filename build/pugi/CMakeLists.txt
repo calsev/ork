@@ -66,13 +66,5 @@ target_include_directories(
 )
 
 install_bin(pugixml)
-if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
-	install(
-		FILES "${3P_PUGI_SRC_DIR}/src/pugixml.hpp"
-		DESTINATION "${INSTALL_INC_DIR}"
-	)
-	install(
-		FILES "${3P_PUGI_BIN_DIR}/pugiconfig.hpp"
-		DESTINATION "${INSTALL_INC_DIR}"
-	)
-endif()
+install_headers("${3P_PUGI_SRC_DIR}/src/pugixml.hpp")
+install_headers("${3P_PUGI_BIN_DIR}/pugiconfig.hpp")
