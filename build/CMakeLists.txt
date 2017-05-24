@@ -163,6 +163,7 @@ detect_option_flag(ORK_BUILD_GLM "Enable building GLM" OFF) #Not actually buildi
 detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
 detect_option_flag(ORK_BUILD_JSON "Enable building jsoncpp" OFF)
 detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" OFF)
+detect_option_flag(ORK_BUILD_TBB "Enable building TBB" OFF)
 detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
 
 ##Level 1
@@ -191,6 +192,7 @@ find_3p_path(ORK_BUILD_GLM 3P_GLM_SRC_DIR "glm" "glm")
 find_3p_path(ORK_BUILD_HARFBUZZ 3P_HARFBUZZ_SRC_DIR "harfbuzz" "harfbuzz")
 find_3p_path(ORK_BUILD_JSON 3P_JSON_SRC_DIR "json" "jsoncpp")
 find_3p_path(ORK_BUILD_PUGI 3P_PUGI_SRC_DIR "pugi" "pugixml")
+find_3p_path(ORK_BUILD_TBB 3P_TBB_SRC_DIR "tbb" "tbb")
 find_3p_path(ORK_BUILD_ZLIB 3P_ZLIB_SRC_DIR "zlib" "libz")
 
 ##Level 1
@@ -220,6 +222,7 @@ set_as_internal(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
 #harfbuzz
 set_as_internal(3P_JSON_BIN_DIR "${3P_BIN_DIR}/json")
 set_as_internal(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
+set_as_internal(3P_TBB_BIN_DIR "${3P_BIN_DIR}/tbb")
 set_as_internal(3P_ZLIB_BIN_DIR "${3P_BIN_DIR}/zlib")
 
 ##Level 1
@@ -253,6 +256,9 @@ if(ORK_BUILD_JSON)
 endif()
 if(ORK_BUILD_PUGI)
 	add_subdirectory("./pugi" "${3P_PUGI_BIN_DIR}")
+endif()
+if(ORK_BUILD_TBB)
+	add_subdirectory("./tbb" "${3P_TBB_BIN_DIR}")
 endif()
 if(ORK_BUILD_ZLIB)
 	add_subdirectory("./zlib" "${3P_ZLIB_BIN_DIR}")
