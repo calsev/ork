@@ -71,9 +71,11 @@ add_custom_command(
 	MAIN_DEPENDENCY ${3P_TBB_SRC_DIR}/src/tbbmalloc/${ARCH_PREFIX}-tbbmalloc-export.def
 )
 add_custom_target(tbb_def_files DEPENDS tbb.def tbbmalloc.def)
+set_target_properties(tbb_def_files PROPERTIES FOLDER "TBB")
 
 
 add_library(tbb SHARED ${TBB_SRCS})
+set_target_properties(tbb PROPERTIES FOLDER "TBB")
 target_compile_definitions(tbb PUBLIC "__TBB_NO_IMPLICIT_LINKAGE=1")
 target_compile_definitions(tbb PRIVATE "__TBB_BUILD=1")
 target_compile_options(tbb PRIVATE "${ENABLE_RTTI}")
@@ -92,6 +94,7 @@ target_include_directories(
 
 if(TBB_BUILD_TBBMALLOC)
 	add_library(tbbmalloc SHARED ${TBB_MALLOC_SRCS})
+	set_target_properties(tbbmalloc PROPERTIES FOLDER "TBB")
 	target_compile_definitions(tbbmalloc PUBLIC "__TBB_NO_IMPLICIT_LINKAGE=1" "__TBBMALLOC_NO_IMPLICIT_LINKAGE=1")
 	target_compile_definitions(tbb PRIVATE "__TBBMALLOC_BUILD=1")
 	target_compile_options(tbb PRIVATE "${DISABLE_RTTI}")
@@ -109,6 +112,7 @@ endif()
 
 if(TBB_BUILD_TBBMALLOC_PROXY)
 	add_library(tbbmalloc_proxy SHARED ${TBB_PROXY_SRCS})
+	set_target_properties(tbbmalloc_proxy PROPERTIES FOLDER "TBB")
 	target_compile_definitions(tbbmalloc_proxy PRIVATE "__TBBMALLOC_BUILD=1")
 	target_compile_options(tbbmalloc_proxy PRIVATE "${DISABLE_RTTI}")
 	target_link_libraries(tbbmalloc_proxy tbbmalloc)
