@@ -84,14 +84,6 @@ mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
-#mark_as_internal(CMAKE_ASM_MASM_COMPILER)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_DEBUG)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_MINSIZEREL)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELEASE)
-#mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO)
-
-
 mark_as_internal(CMAKE_RC_COMPILER)
 mark_as_internal(CMAKE_RC_FLAGS)
 if(CMAKE_RC_FLAGS_DEBUG)#Not always defined
@@ -140,7 +132,7 @@ set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
 
 
 ##########
-#Options and Paths Section
+#Options Section
 ##########
 
 set_as_internal(CMAKE_DEBUG_POSTFIX "d")
@@ -184,6 +176,25 @@ if(ORK_EXTERNAL_BOOST)
 else()
 	find_3p_path(ON 3P_BOOST_SRC_DIR "boost" "boost")
 endif()
+
+
+##########
+#Assembly requires explicit enable
+##########
+if()
+	enable_language(ASM_MASM)
+	mark_as_internal(CMAKE_ASM_MASM_COMPILER)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_DEBUG)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_MINSIZEREL)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELEASE)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO)
+endif()
+
+
+##########
+#Paths Section
+##########
 
 ##Level 0
 find_3p_path(ORK_BUILD_BZ2 3P_BZ2_SRC_DIR "bz2" "bzip")

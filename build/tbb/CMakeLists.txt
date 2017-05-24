@@ -1,6 +1,5 @@
 
 project(tbb CXX)
-enable_language(ASM_MASM)
 
 detect_option_flag(TBB_BUILD_TBBMALLOC "Build TBB malloc library" ON)
 detect_option_flag(TBB_BUILD_TBBMALLOC_PROXY "Build TBB malloc proxy library" ON)
