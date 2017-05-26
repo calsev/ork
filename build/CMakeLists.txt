@@ -181,7 +181,7 @@ endif()
 ##########
 #Assembly requires explicit enable
 ##########
-if()
+if(ORK_BUILD_TBB)
 	enable_language(ASM_MASM)
 	mark_as_internal(CMAKE_ASM_MASM_COMPILER)
 	mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
