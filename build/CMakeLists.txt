@@ -219,11 +219,7 @@ find_3p_path(ORK_BUILD_OSG 3P_OSG_SRC_DIR "osg" "openscenegraph")
 
 
 set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-if(ORK_EXTERNAL_BOOST) #This is not general
-	set_as_internal(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64")
-else()
-	detect_path(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64" "${3P_BOOST_SRC_DIR}/stage/lib")
-endif()
+detect_path(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64" "${3P_BOOST_SRC_DIR}/stage/lib")
 add_definitions(-DBOOST_ALL_DYN_LINK) #Link boost shared libs
 
 ##Level 0
