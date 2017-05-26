@@ -60,15 +60,20 @@ macro(detect_option_path _var _msg _val)
 endmacro()
 
 
+macro(detect_path _var _val1 _val2)
+	if(EXISTS "${_val1}")
+		set_as_internal(${_var} "${_val1}")
+	elseif(EXISTS "${_val2}")
+		set_as_internal(${_var} "${_val2}")
+	else()
+		message(FATAL_ERROR "Cannot find path ${_val1} or ${_val2}")
+	endif()
+endmacro()
+
+
 macro(find_3p_path _build _var _val1 _val2)
 	if(${_build})
-		if(EXISTS "${ORK_3P_SOURCE_DIR}/${_val1}")
-			set_as_internal(${_var} "${ORK_3P_SOURCE_DIR}/${_val1}")
-		elseif(EXISTS "${ORK_3P_SOURCE_DIR}/${_val2}")
-			set_as_internal(${_var} "${ORK_3P_SOURCE_DIR}/${_val2}")
-		else()
-			message(FATAL_ERROR "Cannot find third-party directory ${_val1} or ${_val2}")
-		endif()
+		detect_path(${_var} "${ORK_3P_SOURCE_DIR}/${_val1}" "${ORK_3P_SOURCE_DIR}/${_val2}")
 	endif()
 endmacro()
 
