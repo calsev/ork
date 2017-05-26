@@ -145,7 +145,7 @@ set_as_internal(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)
 if(ORK_EXTERNAL_BOOST)
-	detect_option_path(ORK_3P_BOOST_SRC_DIR "Path of external boost installation" "${CMAKE_SOURCE_DIR}/../boost")
+	detect_option_path(ORK_3P_BOOST_SRC_DIR "Path of external boost installation" "${CMAKE_SOURCE_DIR}/../lib/boost")
 endif()
 
 ##Level 0
@@ -222,7 +222,7 @@ set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 if(ORK_EXTERNAL_BOOST) #This is not general
 	set_as_internal(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64")
 else()
-	set_as_internal(3P_BOOST_LIB_DIR "${ORK_3P_SOURCE_DIR}/deps/lib")
+	detect_path(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64" "${3P_BOOST_SRC_DIR}/stage/lib")
 endif()
 add_definitions(-DBOOST_ALL_DYN_LINK) #Link boost shared libs
 
