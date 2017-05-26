@@ -1,9 +1,6 @@
 
 project(tbb CXX)
 
-detect_option_flag(TBB_BUILD_TBBMALLOC "Build TBB malloc library" ON)
-detect_option_flag(TBB_BUILD_TBBMALLOC_PROXY "Build TBB malloc proxy library" ON)
-
 
 add_definitions(-DDO_ITT_NOTIFY)
 add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
@@ -101,7 +98,7 @@ target_include_directories(
 )
 
 
-if(TBB_BUILD_TBBMALLOC)
+if(ORK_BUILD_TBB_MALLOC)
 	add_library(tbbmalloc SHARED ${TBB_MALLOC_SRCS})
 	set_target_properties(tbbmalloc PROPERTIES FOLDER "TBB")
 	target_compile_definitions(tbbmalloc PUBLIC "__TBB_NO_IMPLICIT_LINKAGE" "__TBBMALLOC_NO_IMPLICIT_LINKAGE")
@@ -120,7 +117,7 @@ if(TBB_BUILD_TBBMALLOC)
 	)
 endif()
 
-if(TBB_BUILD_TBBMALLOC_PROXY)
+if(ORK_BUILD_TBB_MALLOC_PROXY)
 	add_library(tbbmalloc_proxy SHARED ${TBB_PROXY_SRCS})
 	set_target_properties(tbbmalloc_proxy PROPERTIES FOLDER "TBB")
 	target_compile_definitions(tbbmalloc_proxy PRIVATE "__TBBMALLOC_BUILD")
@@ -139,10 +136,10 @@ endif()
 
 
 install_bin(tbb)
-if(TBB_BUILD_TBBMALLOC)
+if(ORK_BUILD_TBB_MALLOC)
 	install_bin(tbbmalloc)
 endif()
-if(TBB_BUILD_TBBMALLOC_PROXY)
+if(ORK_BUILD_TBB_MALLOC_PROXY)
 	install_bin(tbbmalloc_proxy)
 endif()
 install_header_dir("${3P_ORK_SRC_DIR}/tbb" "${INSTALL_INC_DIR}" "dummy_pattern")

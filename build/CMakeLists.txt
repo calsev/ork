@@ -178,6 +178,12 @@ else()
 endif()
 
 
+if(ORK_BUILD_TBB)
+	detect_option_flag(ORK_BUILD_TBB_MALLOC "Build TBB malloc library" ON)
+	detect_option_flag(ORK_BUILD_TBB_MALLOC_PROXY "Build TBB malloc proxy library" ON)
+endif()
+
+
 ##########
 #Assembly requires explicit enable
 ##########
