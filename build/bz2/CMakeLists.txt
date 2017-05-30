@@ -5,6 +5,7 @@ set(VERSION "1.0.6")
 
 if(MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+	add_definitions(-D_FILE_OFFSET_BITS=64)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4244") #Narrowing conversion
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4267") #Narrowing conversion
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4996") #POSIX names deprecated
