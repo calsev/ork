@@ -1,5 +1,5 @@
 
-project(OCE)
+project(oce)
 
 add_definitions(-D_OCC64)
 if(ORK_BUILD_TBB)
@@ -61,7 +61,10 @@ set(OCE_MODULES
 )
 
 set(OCE_INCLUDE_DIRECTORIES "${OCE_BIN_BUILD_INC_DIR} ${OCE_BIN_INSTALL_INC_DIR} ${3P_OCE_SRC_DIR}/inc")#Order matters for config header
-foreach(module "${OCE_MODULES}")
+foreach(module ${OCE_MODULES})
+	if(NOT IS_DIRECTORY "${3P_OCE_SRC_DIR}/src/${module}")
+		message(FATAL_ERROR "Source directory does not exist: ${3P_OCE_SRC_DIR}/src/${module}")
+	endif()
 	file(GLOB module_srcs
 		"${3P_OCE_SRC_DIR}/src/${module}/*.cxx"
 		"${3P_OCE_SRC_DIR}/src/${module}/*.c"
