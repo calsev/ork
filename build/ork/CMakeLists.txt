@@ -89,15 +89,44 @@ file(WRITE "${3P_ORK_SRC_DIR}/version.txt" "${VERSION}\n")
 file(WRITE "${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_CONFIG_H}")
 
 
-file(GLOB ORK_PUBLIC_HDRS
-	"${3P_ORK_SRC_DIR}/ork/*.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/*.hpp"
+set(ORK_PUBLIC_HDRS
+	"${3P_ORK_SRC_DIR}/ork/color.hpp"
+	"${3P_ORK_SRC_DIR}/ork/command_line.hpp"
+	"${3P_ORK_SRC_DIR}/ork/database.hpp"
+	"${3P_ORK_SRC_DIR}/ork/distribution.hpp"
+	"${3P_ORK_SRC_DIR}/ork/file_utils.hpp"
+	"${3P_ORK_SRC_DIR}/ork/filter.hpp"
+	"${3P_ORK_SRC_DIR}/ork/geometry.hpp"
+	"${3P_ORK_SRC_DIR}/ork/glm.hpp"
+	"${3P_ORK_SRC_DIR}/ork/html.hpp"
+	"${3P_ORK_SRC_DIR}/ork/orientation.hpp"
+	"${3P_ORK_SRC_DIR}/ork/ork.hpp"
+	"${3P_ORK_SRC_DIR}/ork/parse.hpp"
+	"${3P_ORK_SRC_DIR}/ork/string_utils.hpp"
+	"${3P_ORK_SRC_DIR}/ork/tagger.hpp"
+	"${3P_ORK_SRC_DIR}/ork/xml.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/config_internal.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/exception.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/file_system.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/log.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/text.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/tools.hpp"
 	"${3P_ORK_BIN_DIR}/ork/config/config.hpp"
 )
 set(ORK_PRIVATE_HDRS
 )
-file(GLOB ORK_SRCS
-	"${3P_ORK_SRC_DIR}/src/*.cpp"
+set(ORK_SRCS
+	"${3P_ORK_SRC_DIR}/src/color.cpp"
+	"${3P_ORK_SRC_DIR}/src/command_line.cpp"
+	"${3P_ORK_SRC_DIR}/src/common.cpp"
+	"${3P_ORK_SRC_DIR}/src/distribution.cpp"
+	"${3P_ORK_SRC_DIR}/src/geometry.cpp"
+	"${3P_ORK_SRC_DIR}/src/glm.cpp"
+	"${3P_ORK_SRC_DIR}/src/html.cpp"
+	"${3P_ORK_SRC_DIR}/src/orientation.cpp"
+	"${3P_ORK_SRC_DIR}/src/string_utils.cpp"
+	"${3P_ORK_SRC_DIR}/src/tagger.cpp"
+	"${3P_ORK_SRC_DIR}/src/xml.cpp"
 )
 
 #source_group(TREE "${3P_ORK_SRC_DIR}/ork")
