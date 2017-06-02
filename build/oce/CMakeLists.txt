@@ -60,7 +60,11 @@ set(OCE_MODULES
 	
 )
 
-set(OCE_INCLUDE_DIRECTORIES "${OCE_BIN_BUILD_INC_DIR} ${OCE_BIN_INSTALL_INC_DIR} ${3P_OCE_SRC_DIR}/inc")#Order matters for config header
+set(OCE_INCLUDE_DIRECTORIES
+	"${OCE_BIN_BUILD_INC_DIR}" #Order matters for config header
+	"${OCE_BIN_INSTALL_INC_DIR}"
+	"${3P_OCE_SRC_DIR}/inc"
+)
 foreach(module ${OCE_MODULES})
 	if(NOT IS_DIRECTORY "${3P_OCE_SRC_DIR}/src/${module}")
 		message(FATAL_ERROR "Source directory does not exist: ${3P_OCE_SRC_DIR}/src/${module}")
@@ -80,10 +84,10 @@ foreach(module ${OCE_MODULES})
 	source_group("${module}" FILES "${module_srcs}")
 	
 	set(OCE_PUBLIC_HDRS "${OCE_PUBLIC_HDRS} ${module_hdrs}")
-	set(OCE_SRCS "${OCE_SRCS} ${module_srcs}")
-	set(OCE_INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES} ${3P_OCE_SRC_DIR}/src/${module}")
+	list(APPEND OCE_SRCS ${module_srcs})
+	list(APPEND OCE_INCLUDE_DIRECTORIES "${3P_OCE_SRC_DIR}/src/${module}")
 	if(IS_DIRECTORY "${3P_OCE_SRC_DIR}/drv/${module}")
-	    set(OCE_INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES} ${3P_OCE_SRC_DIR}/drv/${module}")
+	    list(APPEND OCE_INCLUDE_DIRECTORIES "${3P_OCE_SRC_DIR}/drv/${module}")
 	endif()
 	
 	add_definitions("-D__${module}_DLL")
