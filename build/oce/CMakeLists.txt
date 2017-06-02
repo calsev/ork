@@ -48,10 +48,10 @@ set(OCE_CONFIG_HDRS
 )
 file(GLOB OCE_PUBLIC_HDRS
 	"${OCE_CONFIG_HDRS}"
-	#${OCE_SOURCE_DIR}/inc/*.h
-	#${OCE_SOURCE_DIR}/inc/*.hxx
-	#${OCE_SOURCE_DIR}/inc/*.gxx
-	#${OCE_SOURCE_DIR}/inc/*.lxx
+	#${3P_OCE_SRC_DIR}/inc/*.h
+	#${3P_OCE_SRC_DIR}/inc/*.hxx
+	#${3P_OCE_SRC_DIR}/inc/*.gxx
+	#${3P_OCE_SRC_DIR}/inc/*.lxx
 )
 set(OCE_PRIVATE_HDRS)
 set(OCE_SRCS)
@@ -63,24 +63,24 @@ set(OCE_MODULES
 set(OCE_INCLUDE_DIRECTORIES "${OCE_BIN_BUILD_INC_DIR} ${OCE_BIN_INSTALL_INC_DIR} ${3P_OCE_SRC_DIR}/inc")#Order matters for config header
 foreach(module "${OCE_MODULES}")
 	file(GLOB module_srcs
-		"${OCE_SOURCE_DIR}/src/${module}/*.cxx"
-		"${OCE_SOURCE_DIR}/src/${module}/*.c"
-		"${OCE_SOURCE_DIR}/drv/${module}/*.cxx"
-		"${OCE_SOURCE_DIR}/drv/${module}/*.c"
+		"${3P_OCE_SRC_DIR}/src/${module}/*.cxx"
+		"${3P_OCE_SRC_DIR}/src/${module}/*.c"
+		"${3P_OCE_SRC_DIR}/drv/${module}/*.cxx"
+		"${3P_OCE_SRC_DIR}/drv/${module}/*.c"
 	)
 	file(GLOB module_hdrs
-		"${OCE_SOURCE_DIR}/src/${module}/*.h"
-		"${OCE_SOURCE_DIR}/src/${module}/*.hxx"
-		"${OCE_SOURCE_DIR}/src/${module}/*.gxx"
-		"${OCE_SOURCE_DIR}/src/${module}/*.lxx"
+		"${3P_OCE_SRC_DIR}/src/${module}/*.h"
+		"${3P_OCE_SRC_DIR}/src/${module}/*.hxx"
+		"${3P_OCE_SRC_DIR}/src/${module}/*.gxx"
+		"${3P_OCE_SRC_DIR}/src/${module}/*.lxx"
 	)
 	source_group("${module}" FILES "${module_srcs}")
 	
 	set(OCE_PUBLIC_HDRS "${OCE_PUBLIC_HDRS} ${module_hdrs}")
 	set(OCE_SRCS "${OCE_SRCS} ${module_srcs}")
-	set(OCE_INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES} ${OCE_SOURCE_DIR}/src/${module}")
-	if(IS_DIRECTORY "${OCE_SOURCE_DIR}/drv/${module}")
-	    set(OCE_INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES} ${OCE_SOURCE_DIR}/drv/${module}")
+	set(OCE_INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES} ${3P_OCE_SRC_DIR}/src/${module}")
+	if(IS_DIRECTORY "${3P_OCE_SRC_DIR}/drv/${module}")
+	    set(OCE_INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES} ${3P_OCE_SRC_DIR}/drv/${module}")
 	endif()
 	
 	add_definitions("-D__${module}_DLL")
