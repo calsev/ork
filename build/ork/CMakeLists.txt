@@ -21,7 +21,7 @@ endif()
 
 
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
-parse_version(${VERSION} "ORK_VERSION")
+parse_version(${VERSION} "ORK_VERSION") #For config header
 
 
 #Configure header, done with regex to avoid a separate 'in' header
@@ -89,6 +89,17 @@ file(WRITE "${3P_ORK_SRC_DIR}/version.txt" "${VERSION}\n")
 file(WRITE "${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_CONFIG_H}")
 
 
+set(ORK_CONFIG_HDRS
+	"${3P_ORK_BIN_DIR}/ork/config/config.hpp"
+)
+set(ORK_DETAIL_HDRS
+	"${3P_ORK_SRC_DIR}/ork/detail/config_internal.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/exception.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/file_system.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/log.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/text.hpp"
+	"${3P_ORK_SRC_DIR}/ork/detail/tools.hpp"
+)
 set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/color.hpp"
 	"${3P_ORK_SRC_DIR}/ork/command_line.hpp"
@@ -105,13 +116,8 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/string_utils.hpp"
 	"${3P_ORK_SRC_DIR}/ork/tagger.hpp"
 	"${3P_ORK_SRC_DIR}/ork/xml.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/config_internal.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/exception.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/file_system.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/log.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/text.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/tools.hpp"
-	"${3P_ORK_BIN_DIR}/ork/config/config.hpp"
+	"${ORK_CONFIG_HDRS}"
+	"${ORK_DETAIL_HDRS}"
 )
 set(ORK_PRIVATE_HDRS
 )
@@ -129,7 +135,8 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/xml.cpp"
 )
 
-#source_group(TREE "${3P_ORK_SRC_DIR}/ork")
+source_group("config" FILES "${ORK_CONFIG_HDRS}")
+source_group("detail" FILES "${ORK_DETAIL_HDRS}")
 
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
