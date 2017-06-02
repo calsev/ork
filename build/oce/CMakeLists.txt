@@ -47,7 +47,7 @@ set(OCE_CONFIG_HDRS
 	"${OCE_BIN_INSTALL_INC_DIR}/oce-config.h"
 )
 file(GLOB OCE_PUBLIC_HDRS
-	"${OCE_CONFIG_HDRS}"
+list(APPEND OCE_PUBLIC_HDRS "${OCE_CONFIG_HDRS}")
 	#${3P_OCE_SRC_DIR}/inc/*.h
 	#${3P_OCE_SRC_DIR}/inc/*.hxx
 	#${3P_OCE_SRC_DIR}/inc/*.gxx
@@ -82,7 +82,7 @@ foreach(module ${OCE_MODULES})
 	)
 	source_group("${module}" FILES "${module_srcs}")
 	
-	set(OCE_PUBLIC_HDRS "${OCE_PUBLIC_HDRS} ${module_hdrs}")
+	list(APPEND OCE_PUBLIC_HDRS ${module_hdrs})
 	list(APPEND OCE_SRCS ${module_srcs})
 	list(APPEND OCE_INCLUDE_DIRECTORIES "${3P_OCE_SRC_DIR}/src/${module}")
 	if(IS_DIRECTORY "${3P_OCE_SRC_DIR}/drv/${module}")
