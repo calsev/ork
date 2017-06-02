@@ -259,6 +259,25 @@ set(OCE_MODULES
 	STEPControl
 	STEPSelections
 	StepAP209
+	#TKSTEP209
+	StepElement
+	StepFEA
+	RWStepElement
+	RWStepFEA
+	#TKSTEPAttr
+	StepVisual
+	RWStepVisual
+	StepDimTol
+	RWStepDimTol
+	#TKSTEPBase
+	StepBasic
+	RWStepBasic
+	StepRepr
+	RWStepRepr
+	StepGeom
+	RWStepGeom
+	StepShape
+	RWStepShape
 	#TKSTL
 	StlMesh
 	StlAPI
