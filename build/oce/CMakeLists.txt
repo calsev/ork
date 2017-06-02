@@ -315,7 +315,9 @@ foreach(module ${OCE_MODULES})
 		"${3P_OCE_SRC_DIR}/src/${module}/*.gxx"
 		"${3P_OCE_SRC_DIR}/src/${module}/*.lxx"
 	)
-	source_group("${module}" FILES "${module_srcs}")
+	foreach(src ${module_srcs})
+		source_group("${module}" FILES "${src}")
+	endforeach()
 	
 	list(APPEND OCE_PUBLIC_HDRS ${module_hdrs})
 	list(APPEND OCE_SRCS ${module_srcs})
