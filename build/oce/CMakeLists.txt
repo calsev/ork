@@ -79,6 +79,12 @@ set(OCE_MODULES
 	BRepLProp
 	BRepAdaptor
 	BRepTools
+	#TKCDF
+	CDM
+	PCDM
+	CDF
+	UTL
+	LDOM
 	#TKernel
 	FSD
 	MMgt
