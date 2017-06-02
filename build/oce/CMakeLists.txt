@@ -53,7 +53,6 @@ file(GLOB OCE_PUBLIC_HDRS
 	#${3P_OCE_SRC_DIR}/inc/*.gxx
 	#${3P_OCE_SRC_DIR}/inc/*.lxx
 )
-set(OCE_PRIVATE_HDRS)
 set(OCE_SRCS)
 
 set(OCE_MODULES
@@ -94,7 +93,7 @@ foreach(module ${OCE_MODULES})
 endforeach()
 
 
-add_library(oce SHARED ${OCE_SRCS}) #${OCE_PUBLIC_HDRS} ${OCE_PRIVATE_HDRS}
+add_library(oce SHARED ${OCE_SRCS}) #${OCE_PUBLIC_HDRS}
 
 
 #set_property(TARGET oce APPEND PROPERTY INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES}")
