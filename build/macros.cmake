@@ -95,29 +95,31 @@ macro(install_bin _targ)
 	if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
 		install(
 			TARGETS ${_targ}
-			RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
-			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+			RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT Runtime
+			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" COMPONENT Development
 		)
 		install(
-			FILES $<TARGET_PDB_FILE:${_targ}> DESTINATION "${INSTALL_BIN_DIR}" OPTIONAL
+			FILES $<TARGET_PDB_FILE:${_targ}> DESTINATION "${INSTALL_BIN_DIR}" COMPONENT Development OPTIONAL
 		)
 	endif()
 endmacro()
 
 macro(install_headers _head _dest)
-	if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
+	if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
 		install(
 			FILES ${_head}
 			DESTINATION "${_dest}"
+			COMPONENT Development
 		)
 	endif()
 endmacro()
 
 macro(install_header_dir _dir _dest _exclude)
-	if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
+	if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
 		install(
 			DIRECTORY "${_dir}/" #Note trailing slash
 			DESTINATION "${_dest}"
+			COMPONENT Development
 			PATTERN "${_exclude}" EXCLUDE
 		)
 	endif()
