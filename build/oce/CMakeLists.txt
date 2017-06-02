@@ -60,7 +60,6 @@ set(OCE_MODULES
 	IntTools
 	BRepAlgoAPI
 	BOPCol
-	BOPInt
 	BOPDS
 	BOPAlgo
 	BOPTools
@@ -96,7 +95,6 @@ set(OCE_MODULES
 	TShort
 	Units
 	UnitsAPI
-	IncludeLibrary
 	Dico
 	NCollection
 	Message
@@ -159,8 +157,6 @@ set(OCE_MODULES
 	GccAna
 	GccEnt
 	GccInt
-	GccIter
-	GccGeo
 	HatchGen
 	Geom2dHatch
 	Law
@@ -229,7 +225,6 @@ set(OCE_MODULES
 	BiTgte
 	#TKPrim
 	BRepPrim
-	Primitives
 	BRepSweep
 	Sweep
 	BRepPrimAPI
