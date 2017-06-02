@@ -3,10 +3,10 @@
 #GUI mode is invoked to detect if any variables have been added in child projects.
 
 cmake_minimum_required(VERSION 3.2) #Just a guess, must be 3.x
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-
 include("macros.cmake")
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_as_internal(ORK_USE_SOLUTION_FOLDERS ON)
 
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -306,4 +306,4 @@ if(ORK_BUILD_OSG)
 	add_subdirectory("./osg" "${3P_OSG_BIN_DIR}")
 endif()
 
-add_subdirectory("./cleanup")
+add_subdirectory("./cleanup" "${3P_BIN_DIR}/cleanup")#Must be a subdirectory to guarantee order
