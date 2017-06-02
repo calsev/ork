@@ -2,6 +2,12 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
+#include"ork/ork.hpp"
+#if ORK_MSC
+#pragma warning(push)
+#pragma warning(disable : 4244) //Narrowing conversion (boost)
+#endif
+
 #include"boost/algorithm/string.hpp"
 #include"boost/core/null_deleter.hpp"
 #include"boost/filesystem/path.hpp"
@@ -431,3 +437,7 @@ string_converter_type&g_string_converter() {//From string_types.hpp
 }
 
 }//namespace ork
+
+#if ORK_MSC
+#pragma warning(pop)
+#endif

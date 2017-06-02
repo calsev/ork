@@ -18,7 +18,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #if ORK_MSC
 #pragma warning(push)
-#pragma warning(disable : 4251) //DLL interface for X needs DLL interface for Y
+#pragma warning(disable : 4251) //DLL interface for X needs DLL interface for Y (std::runtime_error)
 #endif
 
 namespace ork {
