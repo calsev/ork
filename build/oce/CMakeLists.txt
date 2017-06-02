@@ -94,7 +94,7 @@ foreach(module ${OCE_MODULES})
 endforeach()
 
 
-add_library(oce SHARED ${OCE_PUBLIC_HDRS} ${OCE_PRIVATE_HDRS} ${OCE_SRCS})
+add_library(oce SHARED ${OCE_SRCS}) #${OCE_PUBLIC_HDRS} ${OCE_PRIVATE_HDRS}
 
 
 #set_property(TARGET oce APPEND PROPERTY INCLUDE_DIRECTORIES "${OCE_INCLUDE_DIRECTORIES}")
