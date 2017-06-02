@@ -135,8 +135,12 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/xml.cpp"
 )
 
-source_group("config" FILES "${ORK_CONFIG_HDRS}")
-source_group("detail" FILES "${ORK_DETAIL_HDRS}")
+foreach(head ${ORK_CONFIG_HDRS})
+	source_group("config" FILES "${head}")
+endforeach()
+foreach(head ${ORK_DETAIL_HDRS})
+	source_group("detail" FILES "${head}")
+endforeach()
 
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
