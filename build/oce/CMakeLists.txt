@@ -325,13 +325,33 @@ set(OCE_MODULES
 
 #The spaghetti heap of OCE includes some surprising headers
 #No sysmbols are actually used from these modules
-set(OCE_HEADERS
+set(OCE_BUILD_HDRS
 #TKCDF
 	CDM
 	PCDM
 	CDF
 	UTL
 	LDOM
+#TKService
+	#Aspect
+	#SelectBasics
+	#Image
+	#InterfaceGraphic
+	#TColQuantity
+#TKV3d
+	#V3d
+	#Graphic3d
+	#Visual3d
+	#Select3D
+	#Prs3d
+	#StdPrs
+	#SelectMgr
+	#PrsMgr
+	#AIS
+	#DsgPrs
+	#StdSelect
+)
+set(OCE_INSTALL_HDRS
 #TKService
 	#Aspect
 	#SelectBasics
@@ -397,7 +417,8 @@ macro(process_module modules build_src build_inc install_inc)
 endmacro()
 
 process_module(OCE_MODULES ON ON ON)
-process_module(OCE_HEADERS OFF ON ON)
+process_module(OCE_BUILD_HDRS OFF ON ON)
+process_module(OCE_INSTALL_HDRS OFF OFF ON)
 
 
 add_library(oce SHARED ${OCE_SRCS}) #${OCE_PUBLIC_HDRS}
