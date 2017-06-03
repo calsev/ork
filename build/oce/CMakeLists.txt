@@ -57,14 +57,14 @@ list(APPEND OCE_PUBLIC_HDRS "${OCE_CONFIG_HDRS}")
 set(OCE_SRCS)
 
 set(OCE_MODULES
-	#TKBO
+#TKBO
 	IntTools
 	BRepAlgoAPI
 	BOPCol
 	BOPDS
 	BOPAlgo
 	BOPTools
-	#TKBool
+#TKBool
 	TopOpeBRep
 	TopOpeBRepDS
 	TopOpeBRepBuild
@@ -72,7 +72,7 @@ set(OCE_MODULES
 	BRepAlgo
 	BRepFill
 	BRepProj
-	#TKBRep
+#TKBRep
 	TopoDS
 	TopExp
 	TopTools
@@ -80,13 +80,13 @@ set(OCE_MODULES
 	BRepLProp
 	BRepAdaptor
 	BRepTools
-	#TKCDF
+#TKCDF
 	CDM
 	PCDM
 	CDF
 	UTL
 	LDOM
-	#TKernel
+#TKernel
 	FSD
 	MMgt
 	OSD
@@ -105,7 +105,7 @@ set(OCE_MODULES
 	Dico
 	NCollection
 	Message
-	#TKG2d
+#TKG2d
 	Geom2d
 	LProp
 	TColGeom2d
@@ -113,7 +113,7 @@ set(OCE_MODULES
 	Geom2dLProp
 	Geom2dAdaptor
 	GProp
-	#TKG3d
+#TKG3d
 	Geom
 	TColGeom
 	GeomAdaptor
@@ -122,7 +122,7 @@ set(OCE_MODULES
 	Adaptor3d
 	LProp3d
 	TopAbs
-	#TKGeomBase
+#TKGeomBase
 	ProjLib
 	GeomProjLib
 	GCPnts
@@ -145,7 +145,7 @@ set(OCE_MODULES
 	GC
 	GCE2d
 	gce
-	#TKGeomAlgo
+#TKGeomAlgo
 	Hatch
 	GeomInt
 	IntStart
@@ -179,7 +179,7 @@ set(OCE_MODULES
 	NLPlate
 	IntPolyh
 	TopClass
-	#TKIGES
+#TKIGES
 	IGESData
 	IGESFile
 	IGESBasic
@@ -198,13 +198,13 @@ set(OCE_MODULES
 	BRepToIGES
 	BRepToIGESBRep
 	IGESControl
-	#TKLCAF
+#TKLCAF
 	TDF
 	TDataStd
 	TFunction
 	TDocStd
 	AppStdL
-	#TKMath
+#TKMath
 	math
 	ElCLib
 	ElSLib
@@ -223,19 +223,19 @@ set(OCE_MODULES
 	TopLoc
 	Expr
 	ExprIntrp
-	#TKMesh
+#TKMesh
 	BRepMesh
-	#TKOffset
+#TKOffset
 	BRepOffsetAPI
 	Draft
 	BRepOffset
 	BiTgte
-	#TKPrim
+#TKPrim
 	BRepPrim
 	BRepSweep
 	Sweep
 	BRepPrimAPI
-	#TKShHealing
+#TKShHealing
 	ShapeBuild
 	ShapeExtend
 	ShapeConstruct
@@ -246,7 +246,7 @@ set(OCE_MODULES
 	ShapeAlgo
 	ShapeProcess
 	ShapeProcessAPI
-	#TKSTEP
+#TKSTEP
 	StepAP214
 	RWStepAP214
 	StepAP203
@@ -260,17 +260,17 @@ set(OCE_MODULES
 	STEPControl
 	STEPSelections
 	StepAP209
-	#TKSTEP209
+#TKSTEP209
 	StepElement
 	StepFEA
 	RWStepElement
 	RWStepFEA
-	#TKSTEPAttr
+#TKSTEPAttr
 	StepVisual
 	RWStepVisual
 	StepDimTol
 	RWStepDimTol
-	#TKSTEPBase
+#TKSTEPBase
 	StepBasic
 	RWStepBasic
 	StepRepr
@@ -279,12 +279,12 @@ set(OCE_MODULES
 	RWStepGeom
 	StepShape
 	RWStepShape
-	#TKSTL
+#TKSTL
 	StlMesh
 	StlAPI
 	StlTransfer
 	RWStl
-	#TKTopAlgo
+#TKTopAlgo
 	IntCurvesFace
 	MAT
 	MAT2d
@@ -301,7 +301,7 @@ set(OCE_MODULES
 	BRepTopAdaptor
 	BRepBuilderAPI
 	BRepApprox
-	#TKXSBase
+#TKXSBase
 	Interface
 	Transfer
 	IFGraph
