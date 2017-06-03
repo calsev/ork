@@ -11,8 +11,10 @@ add_definitions(-DHAVE_OCE_PATHS_H)
 add_definitions(-DHAVE_CONFIG_H)
 if(MSVC)
 	add_definitions(-DWNT -DCSFDB)
-	add_definitions("-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS")
+	add_definitions("-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") #Narrowing conversion
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4302") #Truncation of pointer due to cast
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4311") #Truncation due to cast
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4312") #Unfortunate reinterpret casts
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4800") #Coercion to bool
 endif()
