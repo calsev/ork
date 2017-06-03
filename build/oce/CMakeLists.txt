@@ -296,6 +296,10 @@ set(OCE_MODULES
 	BRepTopAdaptor
 	BRepBuilderAPI
 	BRepApprox
+#TKXCAF
+	XCAFApp
+	XCAFDoc
+	XCAFPrs
 #TKXSBase
 	Interface
 	Transfer
@@ -313,6 +317,8 @@ set(OCE_MODULES
 	XSAlgo
 	LibCtl
 	MoniTool
+#TKXDESTEP
+	STEPCAFControl
 )
 
 #The spaghetti heap of OCE includes some surprising headers
@@ -324,6 +330,12 @@ set(OCE_HEADERS
 	#CDF
 	#UTL
 	#LDOM
+#TKService
+	#Aspect
+	#SelectBasics
+	#Image
+	#InterfaceGraphic
+	#TColQuantity
 #TKV3d
 	#V3d
 	#Graphic3d
