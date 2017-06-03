@@ -13,6 +13,7 @@ if(MSVC)
 	add_definitions(-DWNT -DCSFDB)
 	add_definitions("-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") #Narrowing conversion
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4312") #Unfortunate reinterpret casts
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4800") #Coercion to bool
 endif()
 set(OCE_ENABLE_DEB_FLAG OFF)#Debug builds link debug OCC?
