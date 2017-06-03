@@ -302,7 +302,7 @@ set(OCE_MODULES
 #No sysmbols are actually used from these modules
 set(OCE_HEADERS
 #TKG2d
-	#Geom2d
+	Geom2d
 	#LProp
 	#TColGeom2d
 	#Adaptor2d
@@ -310,7 +310,7 @@ set(OCE_HEADERS
 	#Geom2dAdaptor
 	#GProp
 #TKG3d
-	#Geom
+	Geom
 	#TColGeom
 	#GeomAdaptor
 	#AdvApprox
@@ -343,35 +343,47 @@ set(OCE_INCLUDE_DIRECTORIES
 	"${OCE_BIN_INSTALL_INC_DIR}"
 	"${3P_OCE_SRC_DIR}/inc"
 )
-foreach(module ${OCE_MODULES})
-	if(NOT IS_DIRECTORY "${3P_OCE_SRC_DIR}/src/${module}")
-		message(FATAL_ERROR "Source directory does not exist: ${3P_OCE_SRC_DIR}/src/${module}")
-	endif()
-	file(GLOB module_srcs
-		"${3P_OCE_SRC_DIR}/src/${module}/*.cxx"
-		"${3P_OCE_SRC_DIR}/src/${module}/*.c"
-		"${3P_OCE_SRC_DIR}/drv/${module}/*.cxx"
-		"${3P_OCE_SRC_DIR}/drv/${module}/*.c"
-	)
-	file(GLOB module_hdrs
-		"${3P_OCE_SRC_DIR}/src/${module}/*.h"
-		"${3P_OCE_SRC_DIR}/src/${module}/*.hxx"
-		"${3P_OCE_SRC_DIR}/src/${module}/*.gxx"
-		"${3P_OCE_SRC_DIR}/src/${module}/*.lxx"
-	)
-	foreach(src ${module_srcs})
-		source_group("${module}" FILES "${src}")
+macro(process_module modules build_src build_inc install_inc)
+	foreach(module ${modules})
+		if(NOT IS_DIRECTORY "${3P_OCE_SRC_DIR}/src/${module}")
+			message(FATAL_ERROR "Source directory does not exist: ${3P_OCE_SRC_DIR}/src/${module}")
+		endif()
+		if(${build_src})
+			file(GLOB module_srcs
+				"${3P_OCE_SRC_DIR}/src/${module}/*.cxx"
+				"${3P_OCE_SRC_DIR}/src/${module}/*.c"
+				"${3P_OCE_SRC_DIR}/drv/${module}/*.cxx"
+				"${3P_OCE_SRC_DIR}/drv/${module}/*.c"
+			)
+			list(APPEND OCE_SRCS ${module_srcs})
+			add_definitions("-D__${module}_DLL")
+			foreach(src ${module_srcs})
+				source_group("${module}" FILES "${src}")
+			endforeach()
+		endif()
+		
+		if(${build_inc} OR ${install_inc})
+			file(GLOB module_hdrs
+				"${3P_OCE_SRC_DIR}/src/${module}/*.h"
+				"${3P_OCE_SRC_DIR}/src/${module}/*.hxx"
+				"${3P_OCE_SRC_DIR}/src/${module}/*.gxx"
+				"${3P_OCE_SRC_DIR}/src/${module}/*.lxx"
+			)
+			if(${build_inc})
+				list(APPEND OCE_INCLUDE_DIRECTORIES "${3P_OCE_SRC_DIR}/src/${module}")
+				if(IS_DIRECTORY "${3P_OCE_SRC_DIR}/drv/${module}")
+					list(APPEND OCE_INCLUDE_DIRECTORIES "${3P_OCE_SRC_DIR}/drv/${module}")
+				endif()
+			endif()
+			if(${install_inc})
+				list(APPEND OCE_PUBLIC_HDRS ${module_hdrs})
+			endif()
+		endif()
 	endforeach()
-	
-	list(APPEND OCE_PUBLIC_HDRS ${module_hdrs})
-	list(APPEND OCE_SRCS ${module_srcs})
-	list(APPEND OCE_INCLUDE_DIRECTORIES "${3P_OCE_SRC_DIR}/src/${module}")
-	if(IS_DIRECTORY "${3P_OCE_SRC_DIR}/drv/${module}")
-	    list(APPEND OCE_INCLUDE_DIRECTORIES "${3P_OCE_SRC_DIR}/drv/${module}")
-	endif()
-	
-	add_definitions("-D__${module}_DLL")
-endforeach()
+endmacro()
+
+process_module("${OCE_MODULES}" ON ON ON)
+process_module("${OCE_HEADERS}" OFF ON ON)
 
 
 add_library(oce SHARED ${OCE_SRCS}) #${OCE_PUBLIC_HDRS}
