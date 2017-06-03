@@ -344,7 +344,7 @@ set(OCE_INCLUDE_DIRECTORIES
 	"${3P_OCE_SRC_DIR}/inc"
 )
 macro(process_module modules build_src build_inc install_inc)
-	foreach(module ${modules})
+	foreach(module ${${modules}})
 		if(NOT IS_DIRECTORY "${3P_OCE_SRC_DIR}/src/${module}")
 			message(FATAL_ERROR "Source directory does not exist: ${3P_OCE_SRC_DIR}/src/${module}")
 		endif()
@@ -382,8 +382,8 @@ macro(process_module modules build_src build_inc install_inc)
 	endforeach()
 endmacro()
 
-process_module("${OCE_MODULES}" ON ON ON)
-process_module("${OCE_HEADERS}" OFF ON ON)
+process_module(OCE_MODULES ON ON ON)
+process_module(OCE_HEADERS OFF ON ON)
 
 
 add_library(oce SHARED ${OCE_SRCS}) #${OCE_PUBLIC_HDRS}
