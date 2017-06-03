@@ -117,29 +117,6 @@ set(OCE_MODULES
 	Adaptor3d
 	LProp3d
 	TopAbs
-#TKGeomBase
-	ProjLib
-	GeomProjLib
-	GCPnts
-	CPnts
-	Approx
-	AppParCurves
-	FEmTool
-	AppCont
-	Extrema
-	IntAna
-	IntAna2d
-	GeomConvert
-	AdvApp2Var
-	GeomLib
-	Geom2dConvert
-	Hermit
-	BndLib
-	AppDef
-	GeomTools
-	GC
-	GCE2d
-	gce
 #TKGeomAlgo
 	Hatch
 	GeomInt
@@ -174,6 +151,29 @@ set(OCE_MODULES
 	NLPlate
 	IntPolyh
 	TopClass
+#TKGeomBase
+	ProjLib
+	GeomProjLib
+	GCPnts
+	CPnts
+	Approx
+	AppParCurves
+	FEmTool
+	AppCont
+	Extrema
+	IntAna
+	IntAna2d
+	GeomConvert
+	AdvApp2Var
+	GeomLib
+	Geom2dConvert
+	Hermit
+	BndLib
+	AppDef
+	GeomTools
+	GC
+	GCE2d
+	gce
 #TKIGES
 	IGESData
 	IGESFile
