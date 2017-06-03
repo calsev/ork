@@ -100,6 +100,23 @@ set(OCE_MODULES
 	Dico
 	NCollection
 	Message
+#TKG2d
+	Geom2d
+	LProp
+	TColGeom2d
+	Adaptor2d
+	Geom2dLProp
+	Geom2dAdaptor
+	GProp
+#TKG3d
+	Geom
+	TColGeom
+	GeomAdaptor
+	AdvApprox
+	GeomLProp
+	Adaptor3d
+	LProp3d
+	TopAbs
 #TKGeomBase
 	ProjLib
 	GeomProjLib
@@ -301,23 +318,6 @@ set(OCE_MODULES
 #The spaghetti heap of OCE includes some surprising headers
 #No sysmbols are actually used from these modules
 set(OCE_HEADERS
-#TKG2d
-	Geom2d
-	#LProp
-	#TColGeom2d
-	#Adaptor2d
-	#Geom2dLProp
-	#Geom2dAdaptor
-	#GProp
-#TKG3d
-	Geom
-	#TColGeom
-	#GeomAdaptor
-	#AdvApprox
-	#GeomLProp
-	#Adaptor3d
-	#LProp3d
-	#TopAbs
 #TKCDF
 	#CDM
 	#PCDM
