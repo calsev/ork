@@ -81,12 +81,6 @@ set(OCE_MODULES
 	BRepLProp
 	BRepAdaptor
 	BRepTools
-#TKCDF
-	CDM
-	PCDM
-	CDF
-	UTL
-	LDOM
 #TKernel
 	FSD
 	MMgt
@@ -106,23 +100,6 @@ set(OCE_MODULES
 	Dico
 	NCollection
 	Message
-#TKG2d
-	Geom2d
-	LProp
-	TColGeom2d
-	Adaptor2d
-	Geom2dLProp
-	Geom2dAdaptor
-	GProp
-#TKG3d
-	Geom
-	TColGeom
-	GeomAdaptor
-	AdvApprox
-	GeomLProp
-	Adaptor3d
-	LProp3d
-	TopAbs
 #TKGeomBase
 	ProjLib
 	GeomProjLib
@@ -319,6 +296,46 @@ set(OCE_MODULES
 	XSAlgo
 	LibCtl
 	MoniTool
+)
+
+#The spaghetti heap of OCE includes some surprising headers
+#No sysmbols are actually used from these modules
+set(OCE_HEADERS
+#TKG2d
+	#Geom2d
+	#LProp
+	#TColGeom2d
+	#Adaptor2d
+	#Geom2dLProp
+	#Geom2dAdaptor
+	#GProp
+#TKG3d
+	#Geom
+	#TColGeom
+	#GeomAdaptor
+	#AdvApprox
+	#GeomLProp
+	#Adaptor3d
+	#LProp3d
+	#TopAbs
+#TKCDF
+	#CDM
+	#PCDM
+	#CDF
+	#UTL
+	#LDOM
+#TKV3d
+	#V3d
+	#Graphic3d
+	#Visual3d
+	#Select3D
+	#Prs3d
+	#StdPrs
+	#SelectMgr
+	#PrsMgr
+	#AIS
+	#DsgPrs
+	#StdSelect
 )
 
 set(OCE_INCLUDE_DIRECTORIES
