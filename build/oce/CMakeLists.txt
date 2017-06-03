@@ -327,11 +327,11 @@ set(OCE_MODULES
 #No sysmbols are actually used from these modules
 set(OCE_HEADERS
 #TKCDF
-	#CDM
-	#PCDM
-	#CDF
-	#UTL
-	#LDOM
+	CDM
+	PCDM
+	CDF
+	UTL
+	LDOM
 #TKService
 	#Aspect
 	#SelectBasics
