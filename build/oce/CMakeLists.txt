@@ -48,10 +48,10 @@ set(OCE_CONFIG_HDRS
 	"${OCE_BIN_INSTALL_INC_DIR}/oce-config.h"
 )
 file(GLOB OCE_PUBLIC_HDRS
-	#${3P_OCE_SRC_DIR}/inc/*.h
-	#${3P_OCE_SRC_DIR}/inc/*.hxx
-	#${3P_OCE_SRC_DIR}/inc/*.gxx
-	#${3P_OCE_SRC_DIR}/inc/*.lxx
+	${3P_OCE_SRC_DIR}/inc/*.h
+	${3P_OCE_SRC_DIR}/inc/*.hxx
+	${3P_OCE_SRC_DIR}/inc/*.gxx
+	${3P_OCE_SRC_DIR}/inc/*.lxx
 )
 list(APPEND OCE_PUBLIC_HDRS "${OCE_CONFIG_HDRS}")
 set(OCE_SRCS)
