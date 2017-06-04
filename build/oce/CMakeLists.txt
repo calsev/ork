@@ -83,6 +83,17 @@ set(OCE_MODULES
 	BRepLProp
 	BRepAdaptor
 	BRepTools
+#TKCAF
+	TDataXtd
+	TNaming
+	TPrsStd
+	AppStd
+#TKCDF
+	CDM
+	PCDM
+	CDF
+	UTL
+	LDOM
 #TKernel
 	FSD
 	MMgt
@@ -298,6 +309,18 @@ set(OCE_MODULES
 	BRepTopAdaptor
 	BRepBuilderAPI
 	BRepApprox
+#TKV3d
+	V3d
+	Graphic3d
+	Visual3d
+	Select3D
+	Prs3d
+	StdPrs
+	SelectMgr
+	PrsMgr
+	AIS
+	DsgPrs
+	StdSelect
 #TKXCAF
 	XCAFApp
 	XCAFDoc
@@ -326,35 +349,12 @@ set(OCE_MODULES
 #The spaghetti heap of OCE includes some surprising headers
 #No sysmbols are actually used from these modules
 set(OCE_BUILD_HDRS
-#TKCAF
-	TDataXtd
-	TNaming
-	TPrsStd
-	AppStd
-#TKCDF
-	CDM
-	PCDM
-	CDF
-	UTL
-	LDOM
 #TKService
 	Aspect
 	SelectBasics
 	Image
 	InterfaceGraphic
 	TColQuantity
-#TKV3d
-	V3d
-	Graphic3d
-	Visual3d
-	Select3D
-	Prs3d
-	StdPrs
-	SelectMgr
-	PrsMgr
-	AIS
-	DsgPrs
-	StdSelect
 )
 set(OCE_INSTALL_HDRS
 )
