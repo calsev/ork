@@ -17,6 +17,7 @@ if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4311") #Truncation due to cast
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4312") #Unfortunate reinterpret casts
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4800") #Coercion to bool
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996") #Deprecated
 endif()
 set(OCE_ENABLE_DEB_FLAG OFF)#Debug builds link debug OCC?
 if(OCE_ENABLE_DEB_FLAG)
@@ -349,6 +350,15 @@ set(OCE_MODULES
 #The spaghetti heap of OCE includes some surprising headers
 #No sysmbols are actually used from these modules
 set(OCE_BUILD_HDRS
+#TKHLR
+	HLRTopoBRep
+	HLRBRep
+	HLRAlgo
+	HLRAppli
+	Intrv
+	TopBas
+	TopCnx
+	Contap
 #TKService
 	Aspect
 	SelectBasics
