@@ -203,7 +203,7 @@ From file_utils.hpp
 
 bool discard_bom(bi_stream&fin) {
 	for(const uint8_t bom : utf8_bom) {
-		const uint8_t curr = fin.get();
+		const uint8_t curr = static_cast<uint8_t>(fin.get());
 		if(curr != bom) {
 			fin.seekg(0);
 			return false;
