@@ -354,9 +354,9 @@ void table::insert_row() {
 	_rows.push_back(row_type());
 	_rows.back().resize(_num_column);
 }
-void table::insert_label(const bstring&style, const bstring&text) {
+void table::insert_label(const bstring&style_, const bstring&text) {
 	insert_row();
-	_rows.back()[0].reset(new label(style, text));
+	_rows.back()[0].reset(new label(style_, text));
 }
 table::row_type&table::at(const size_t index) {
 	return _rows.at(index);
