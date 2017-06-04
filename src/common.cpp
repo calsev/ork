@@ -129,9 +129,8 @@ bstring backtrace::str() const {
 	stream << BORK("backtrace:\n");
 
 	unsigned index = 0;
-	std::deque<stack_frame>::const_iterator frame;
-	for(const stack_frame&frame : frames) {
-		stream << index++ << BORK(": ") << frame.function << BORK(" (") << frame.filename << BORK(":") << frame.line << BORK(")\n");
+	for(const stack_frame&sf : frames) {
+		stream << index++ << BORK(": ") << sf.function << BORK(" (") << sf.filename << BORK(":") << sf.line << BORK(")\n");
 	}
 
 	return stream.str();
