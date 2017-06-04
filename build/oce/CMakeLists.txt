@@ -357,24 +357,6 @@ set(OCE_BUILD_HDRS
 	StdSelect
 )
 set(OCE_INSTALL_HDRS
-#TKService
-	#Aspect
-	#SelectBasics
-	#Image
-	#InterfaceGraphic
-	#TColQuantity
-#TKV3d
-	#V3d
-	#Graphic3d
-	#Visual3d
-	#Select3D
-	#Prs3d
-	#StdPrs
-	#SelectMgr
-	#PrsMgr
-	#AIS
-	#DsgPrs
-	#StdSelect
 )
 
 set(OCE_INCLUDE_DIRECTORIES
