@@ -86,6 +86,10 @@ ORK_ORK_EXT(glm::dvec3) to_wcs(const double val, const orientation axis);
 
 //Given an MC standard view, return the directions in the plane.
 struct ORK_ORK_API view {
+#if ORK_MSC && ORK_MSC < 1920
+#pragma warning(push)
+#pragma warning(disable:4201)//Anonymous struct/union non-standard until C11
+#endif
 	union {
 		std::array<orientation, 4>dirs;
 		struct {//Must remain in counter-clockwise order (see rotate)
@@ -95,8 +99,11 @@ struct ORK_ORK_API view {
 			orientation down;
 		};
 	};
-	view() :right(orientation::pos_x), up(orientation::pos_y), left(orientation::neg_x), down(orientation::neg_y) {}
-	view(const orientation r, const orientation u, const orientation l, const orientation d) :right(r), up(u), left(l), down(d) {}
+#if ORK_MSC
+#pragma warning(pop)
+#endif
+	view() : right(orientation::pos_x), up(orientation::pos_y), left(orientation::neg_x), down(orientation::neg_y) {}
+	view(const orientation r, const orientation u, const orientation l, const orientation d) : right(r), up(u), left(l), down(d) {}
 };
 
 ORK_ORK_EXT(const view&) get_view(const orientation axis);
