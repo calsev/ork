@@ -326,6 +326,11 @@ set(OCE_MODULES
 #The spaghetti heap of OCE includes some surprising headers
 #No sysmbols are actually used from these modules
 set(OCE_BUILD_HDRS
+#TKCAF
+	TDataXtd
+	TNaming
+	TPrsStd
+	AppStd
 #TKCDF
 	CDM
 	PCDM
@@ -339,17 +344,17 @@ set(OCE_BUILD_HDRS
 	#InterfaceGraphic
 	#TColQuantity
 #TKV3d
-	#V3d
-	#Graphic3d
-	#Visual3d
-	#Select3D
-	#Prs3d
-	#StdPrs
-	#SelectMgr
-	#PrsMgr
-	#AIS
-	#DsgPrs
-	#StdSelect
+	V3d
+	Graphic3d
+	Visual3d
+	Select3D
+	Prs3d
+	StdPrs
+	SelectMgr
+	PrsMgr
+	AIS
+	DsgPrs
+	StdSelect
 )
 set(OCE_INSTALL_HDRS
 #TKService
