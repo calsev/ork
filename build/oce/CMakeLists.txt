@@ -338,11 +338,11 @@ set(OCE_BUILD_HDRS
 	UTL
 	LDOM
 #TKService
-	#Aspect
-	#SelectBasics
-	#Image
-	#InterfaceGraphic
-	#TColQuantity
+	Aspect
+	SelectBasics
+	Image
+	InterfaceGraphic
+	TColQuantity
 #TKV3d
 	V3d
 	Graphic3d
