@@ -244,6 +244,13 @@ set(OCE_MODULES
 	BRepSweep
 	Sweep
 	BRepPrimAPI
+#TKService
+	Aspect
+	SelectBasics
+	Image
+	InterfaceGraphic
+	TColQuantity
+	WNT #Windows builds only
 #TKShHealing
 	ShapeBuild
 	ShapeExtend
@@ -350,6 +357,7 @@ set(OCE_MODULES
 #The spaghetti heap of OCE includes some surprising headers
 #No sysmbols are actually used from these modules
 set(OCE_BUILD_HDRS
+	Font #Used by several toolkits
 #TKHLR
 	HLRTopoBRep
 	HLRBRep
@@ -359,12 +367,6 @@ set(OCE_BUILD_HDRS
 	TopBas
 	TopCnx
 	Contap
-#TKService
-	Aspect
-	SelectBasics
-	Image
-	InterfaceGraphic
-	TColQuantity
 )
 set(OCE_INSTALL_HDRS
 )
