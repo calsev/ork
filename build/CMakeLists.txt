@@ -2,7 +2,9 @@
 #All cache variables are set then hidden.
 #GUI mode is invoked to detect if any variables have been added in child projects.
 
-cmake_minimum_required(VERSION 3.2) #Just a guess, must be 3.x
+cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+set(CMAKE_SUPPRESS_REGENERATION ON) #Projects can be run on machines without CMake installed
+
 include("macros.cmake")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
