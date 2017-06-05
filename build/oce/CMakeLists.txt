@@ -188,6 +188,15 @@ set(OCE_MODULES
 	GC
 	GCE2d
 	gce
+#TKHLR
+	HLRTopoBRep
+	HLRBRep
+	HLRAlgo
+	HLRAppli
+	Intrv
+	TopBas
+	TopCnx
+	Contap
 #TKIGES
 	IGESData
 	IGESFile
@@ -358,15 +367,6 @@ set(OCE_MODULES
 #No sysmbols are actually used from these modules
 set(OCE_BUILD_HDRS
 	Font #Used by several toolkits
-#TKHLR
-	HLRTopoBRep
-	HLRBRep
-	HLRAlgo
-	HLRAppli
-	Intrv
-	TopBas
-	TopCnx
-	Contap
 )
 set(OCE_INSTALL_HDRS
 )
