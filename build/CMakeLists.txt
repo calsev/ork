@@ -138,11 +138,15 @@ set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
 ##########
 
 set_as_internal(CMAKE_DEBUG_POSTFIX "d")
-detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
+if(DEFINED CMAKE_INSTALL_PREFIX AND CMAKE_INSTALL_PREFIX)
+	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_INSTALL_PREFIX}")
+else()
+	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
+endif()
 set_as_internal(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
-set_as_internal(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
-set_as_internal(INSTALL_INC_DIR "${CMAKE_INSTALL_PREFIX}/inc")
-set_as_internal(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+set_as_internal(INSTALL_BIN_DIR "${ORK_INSTALL_PREFIX}/bin")
+set_as_internal(INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/inc")
+set_as_internal(INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/lib")
 
 
 detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)
