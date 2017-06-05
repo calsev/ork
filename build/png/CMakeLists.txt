@@ -53,7 +53,7 @@ target_include_directories(
 	png
 	PUBLIC $<BUILD_INTERFACE:${3P_PNG_BIN_DIR}>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_PNG_SRC_DIR}>
-	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 )
 
 install_shared(png ${PNG_PUBLIC_HDRS})

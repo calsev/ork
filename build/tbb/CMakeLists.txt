@@ -94,7 +94,7 @@ target_include_directories(
 	PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/include>
 	PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
 	PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
-	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 )
 
 
@@ -113,7 +113,7 @@ if(ORK_BUILD_TBB_MALLOC)
 		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/include>
 		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
 		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
-		INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+		INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 	)
 endif()
 
@@ -130,7 +130,7 @@ if(ORK_BUILD_TBB_MALLOC_PROXY)
 		PUBLIC $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/include>
 		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src>
 		PRIVATE $<BUILD_INTERFACE:${3P_TBB_SRC_DIR}/src/rml/include>
-		INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+		INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 	)
 endif()
 
@@ -142,4 +142,4 @@ endif()
 if(ORK_BUILD_TBB_MALLOC_PROXY)
 	install_bin(tbbmalloc_proxy)
 endif()
-install_header_dir("${3P_TBB_SRC_DIR}/include/tbb" "${INSTALL_INC_DIR}/tbb" "compat|internal|machine")
+install_header_dir("${3P_TBB_SRC_DIR}/include/tbb" "${ORK_INSTALL_INC_DIR}/tbb" "compat|internal|machine")

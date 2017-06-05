@@ -161,9 +161,9 @@ set_as_internal(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
 detect_option_flag(ORK_INSTALL_BIN_SUFFIX "Subdirectory for installation of executables and shared libraries" bin)
 detect_option_flag(ORK_INSTALL_INC_SUFFIX "Subdirectory for installation of headers" inc)
 detect_option_flag(ORK_INSTALL_LIB_SUFFIX "Subdirectory for installation of static libraries and archives" lib)
-set_as_internal(INSTALL_BIN_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_BIN_SUFFIX}")
-set_as_internal(INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_INC_SUFFIX}")
-set_as_internal(INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_LIB_SUFFIX}")
+set_as_internal(ORK_INSTALL_BIN_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_BIN_SUFFIX}")
+set_as_internal(ORK_INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_INC_SUFFIX}")
+set_as_internal(ORK_INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_LIB_SUFFIX}")
 
 
 detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)

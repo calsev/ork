@@ -49,10 +49,10 @@ target_include_directories(
 	jsoncpp
 	PUBLIC $<BUILD_INTERFACE:${3P_JSON_BIN_DIR}/include>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_JSON_SRC_DIR}/include>
-	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 )
 
 
 install_bin(jsoncpp)
-install_header_dir("${3P_JSON_SRC_DIR}/include/json" "${INSTALL_INC_DIR}/json" "version.h")
-install_headers("${3P_JSON_BIN_DIR}/include/json/version.h" "${INSTALL_INC_DIR}/json")
+install_header_dir("${3P_JSON_SRC_DIR}/include/json" "${ORK_INSTALL_INC_DIR}/json" "version.h")
+install_headers("${3P_JSON_BIN_DIR}/include/json/version.h" "${ORK_INSTALL_INC_DIR}/json")

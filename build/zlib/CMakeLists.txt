@@ -71,7 +71,7 @@ target_include_directories(
 	zlib
 	PUBLIC $<BUILD_INTERFACE:${3P_ZLIB_BIN_DIR}>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_ZLIB_SRC_DIR}>
-	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 )
 
 install_shared(zlib ${ZLIB_PUBLIC_HDRS})

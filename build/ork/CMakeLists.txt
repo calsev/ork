@@ -158,7 +158,7 @@ target_include_directories(
 	ork
 	PUBLIC $<BUILD_INTERFACE:${3P_ORK_BIN_DIR}>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_ORK_SRC_DIR}>
-	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 	PUBLIC "${3P_BOOST_SRC_DIR}"
 )
 if(ORK_USE_GLM)
@@ -170,5 +170,5 @@ endif()
 
 
 install_bin(ork)
-install_header_dir("${3P_ORK_SRC_DIR}/ork" "${INSTALL_INC_DIR}/ork" "config")
-install_headers("${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${INSTALL_INC_DIR}/ork/config")
+install_header_dir("${3P_ORK_SRC_DIR}/ork" "${ORK_INSTALL_INC_DIR}/ork" "config")
+install_headers("${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_INSTALL_INC_DIR}/ork/config")

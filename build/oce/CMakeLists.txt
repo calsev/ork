@@ -27,7 +27,7 @@ endif()
 
 set(OCE_BIN_BUILD_INC_DIR "${3P_OCE_BIN_DIR}/build_inc")
 set(OCE_BIN_INSTALL_INC_DIR "${3P_OCE_BIN_DIR}/install_inc")
-set(OCE_INSTALL_INC_DIR "${INSTALL_INC_DIR}/oce")
+set(OCE_INSTALL_INC_DIR "${ORK_INSTALL_INC_DIR}/oce")
 
 
 #Header used only to build OCE

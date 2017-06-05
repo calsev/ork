@@ -140,9 +140,9 @@ target_include_directories(
 	png
 	PUBLIC $<BUILD_INTERFACE:${3P_FT2_BIN_DIR}/include>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_FT2_SRC_DIR}/include>
-	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 )
 
 install_bin(ft2)
-install_header_dir("${3P_FT2_SRC_DIR}/include" "${INSTALL_INC_DIR}" "internal|ftoption.h")
-install_headers("${3P_FT2_BIN_DIR}/include/freetype/config/ftoption.h" "${INSTALL_INC_DIR}/freetype/config")
+install_header_dir("${3P_FT2_SRC_DIR}/include" "${ORK_INSTALL_INC_DIR}" "internal|ftoption.h")
+install_headers("${3P_FT2_BIN_DIR}/include/freetype/config/ftoption.h" "${ORK_INSTALL_INC_DIR}/freetype/config")

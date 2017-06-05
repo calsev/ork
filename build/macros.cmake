@@ -95,11 +95,11 @@ macro(install_bin _targ)
 	if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
 		install(
 			TARGETS ${_targ}
-			RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT Runtime
-			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" COMPONENT Development
+			RUNTIME DESTINATION "${ORK_INSTALL_BIN_DIR}" COMPONENT Runtime
+			ARCHIVE DESTINATION "${ORK_INSTALL_LIB_DIR}" COMPONENT Development
 		)
 		install(
-			FILES $<TARGET_PDB_FILE:${_targ}> DESTINATION "${INSTALL_BIN_DIR}" COMPONENT Development OPTIONAL
+			FILES $<TARGET_PDB_FILE:${_targ}> DESTINATION "${ORK_INSTALL_BIN_DIR}" COMPONENT Development OPTIONAL
 		)
 	endif()
 endmacro()
@@ -127,7 +127,7 @@ endmacro()
 
 macro(install_shared _targ _head)
 	install_bin(${_targ})
-	install_headers(${_head} "${INSTALL_INC_DIR}")
+	install_headers(${_head} "${ORK_INSTALL_INC_DIR}")
 endmacro()
 
 macro(get_compiler_name _var)

@@ -62,9 +62,9 @@ target_include_directories(
 	pugixml
 	PUBLIC $<BUILD_INTERFACE:${3P_PUGI_BIN_DIR}>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_PUGI_SRC_DIR}/src>
-	INTERFACE $<INSTALL_INTERFACE:${INSTALL_INC_DIR}>
+	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 )
 
 install_bin(pugixml)
-install_headers("${3P_PUGI_SRC_DIR}/src/pugixml.hpp" "${INSTALL_INC_DIR}")
-install_headers("${3P_PUGI_BIN_DIR}/pugiconfig.hpp" "${INSTALL_INC_DIR}")
+install_headers("${3P_PUGI_SRC_DIR}/src/pugixml.hpp" "${ORK_INSTALL_INC_DIR}")
+install_headers("${3P_PUGI_BIN_DIR}/pugiconfig.hpp" "${ORK_INSTALL_INC_DIR}")
