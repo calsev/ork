@@ -86,6 +86,16 @@ mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
+#Fast behavior is bad for CAD kernels
+if(MSVC)
+	detect_option_flag(ORK_FAST_FLOAT "Use fast floating point operations" OFF)
+	if(NOT ORK_FAST_FLOAT)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:precise")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /fp:precise")
+	endif()
+endif()
+
+
 mark_as_internal(CMAKE_RC_COMPILER)
 mark_as_internal(CMAKE_RC_FLAGS)
 if(CMAKE_RC_FLAGS_DEBUG)#Not always defined
@@ -138,7 +148,9 @@ set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
 ##########
 
 set_as_internal(CMAKE_DEBUG_POSTFIX "d")
-if(DEFINED CMAKE_INSTALL_PREFIX AND CMAKE_INSTALL_PREFIX)
+if(DEFINED ORK_INSTALL_PREFIX AND ORK_INSTALL_PREFIX)
+	file(TO_CMAKE_PATH "${ORK_INSTALL_PREFIX}" ORK_INSTALL_PREFIX)
+elseif(DEFINED CMAKE_INSTALL_PREFIX AND CMAKE_INSTALL_PREFIX)
 	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_INSTALL_PREFIX}")
 else()
 	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
