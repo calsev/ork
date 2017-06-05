@@ -148,7 +148,8 @@ set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
 ##########
 
 set_as_internal(CMAKE_DEBUG_POSTFIX "d")
-if(DEFINED ORK_INSTALL_PREFIX AND ORK_INSTALL_PREFIX)
+
+if(DEFINED ORK_INSTALL_PREFIX AND ORK_INSTALL_PREFIX) #We set this previously
 	file(TO_CMAKE_PATH "${ORK_INSTALL_PREFIX}" ORK_INSTALL_PREFIX)
 elseif(DEFINED CMAKE_INSTALL_PREFIX AND CMAKE_INSTALL_PREFIX)
 	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_INSTALL_PREFIX}")
@@ -156,9 +157,13 @@ else()
 	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
 endif()
 set_as_internal(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
-set_as_internal(INSTALL_BIN_DIR "${ORK_INSTALL_PREFIX}/bin")
-set_as_internal(INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/inc")
-set_as_internal(INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/lib")
+
+detect_option_flag(ORK_INSTALL_BIN_SUFFIX "Subdirectory for installation of executables and shared libraries" bin)
+detect_option_flag(ORK_INSTALL_INC_SUFFIX "Subdirectory for installation of headers" inc)
+detect_option_flag(ORK_INSTALL_LIB_SUFFIX "Subdirectory for installation of static libraries and archives" lib)
+set_as_internal(INSTALL_BIN_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_BIN_SUFFIX}")
+set_as_internal(INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_INC_SUFFIX}")
+set_as_internal(INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_LIB_SUFFIX}")
 
 
 detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)
