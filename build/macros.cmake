@@ -130,6 +130,24 @@ macro(install_shared _targ _head)
 	install_headers(${_head} "${ORK_INSTALL_INC_DIR}")
 endmacro()
 
+macro(install_file_or_directory _file_or_dir _dest)
+	if(NOT SKIP_INSTALL_FILES AND NOT SKIP_INSTALL_ALL)
+		if(IS_DIRECTORY "${_file_or_dir}")
+			install(
+				DIRECTORY "${_file_or_dir}/" #Note trailing slash
+				DESTINATION "${_dest}"
+				COMPONENT Runtime
+			)
+		else()
+			install(
+				FILES "${_file_or_dir}"
+				DESTINATION  "${_dest}"
+				COMPONENT Runtime
+			)
+		endif()
+	endif()
+endmacro()
+
 macro(get_compiler_name _var)
 	if(MSVC)
 		if(MSVC11)
