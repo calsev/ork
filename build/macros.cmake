@@ -4,6 +4,10 @@ if(ORK_MACROS_INCLUDED)
 endif()
 set(ORK_MACROS_INCLUDED 1)
 
+####################
+#Variable section
+####################
+
 macro(ensure_non_empty _var)
 	if(NOT ${_var})
 		message(FATAL_ERROR "Error: ${${_var}} not defined")
@@ -49,6 +53,9 @@ macro(mark_empty_internal _var)
 	set(${_var} "" CACHE INTERNAL "" FORCE)
 endmacro()
 
+####################
+#Option section
+####################
 
 macro(detect_option_flag _var _msg _val)
 	if(DEFINED ${_var})
@@ -64,7 +71,6 @@ macro(detect_option_path _var _msg _val)
 	endif()
 endmacro()
 
-
 macro(detect_path _var _val1 _val2)
 	if(EXISTS "${_val1}")
 		set_as_internal(${_var} "${_val1}")
@@ -75,13 +81,15 @@ macro(detect_path _var _val1 _val2)
 	endif()
 endmacro()
 
-
 macro(find_3p_path _build _var _val1 _val2)
 	if(${_build})
 		detect_path(${_var} "${ORK_3P_SOURCE_DIR}/${_val1}" "${ORK_3P_SOURCE_DIR}/${_val2}")
 	endif()
 endmacro()
 
+####################
+#Install section
+####################
 
 macro(parse_version _ver _prefix)
 	set(VERSION_REGEX "[0-9]+\\.[0-9]+\\.[0-9]+")
@@ -94,7 +102,6 @@ macro(parse_version _ver _prefix)
 		message(FATAL_ERROR "Invalid version: ${${_ver}}")
 	endif()
 endmacro()
-
 
 macro(install_bin _targ)
 	if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
@@ -153,6 +160,10 @@ macro(install_file_or_directory _file_or_dir _dest)
 	endif()
 endmacro()
 
+####################
+#Compiler section
+####################
+
 macro(get_compiler_name _var)
 	if(MSVC)
 		if(MSVC11)
@@ -201,3 +212,26 @@ macro(enable_only_cxx_exceptions)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 	endif()
 endmacro()
+
+####################
+#File section
+####################
+
+function(file_2_strings path_to_file_ var_)
+	if(NOT EXISTS "${path_to_file_}")
+		message(FATAL_ERROR "File does not exist: ${path_to_file_}")
+	endif()
+	if(IS_DIRECTORY "${path_to_file_}")
+		message(FATAL_ERROR "Cannot convert directory to strings: ${path_to_file_}")
+	endif()
+	file(STRINGS "${path_to_file_}" _content)
+	set(${var_} "${_content}" PARENT_SCOPE)
+endfunction()
+
+function(if_file_2_strings path_to_file_ var_)
+	set(_content)
+	if(EXISTS "${path_to_file_}")
+		file(STRINGS "${path_to_file_}" _content)
+	endif()
+	set(${var_} "${_content}" PARENT_SCOPE)
+endfunction()
