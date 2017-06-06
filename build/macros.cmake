@@ -1,4 +1,9 @@
 
+if(ORK_MACROS_INCLUDED)
+	return()
+endif()
+set(ORK_MACROS_INCLUDED 1)
+
 macro(ensure_non_empty _var)
 	if(NOT ${_var})
 		message(FATAL_ERROR "Error: ${${_var}} not defined")
