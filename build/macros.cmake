@@ -217,6 +217,21 @@ endmacro()
 #File section
 ####################
 
+function(get_sub_directories parent_directory_ var_)
+	if(NOT IS_DIRECTORY "${parent_directory_}")
+		message(FATAL_ERROR "Invalid directory: ${parent_directory_}")
+	endif()
+	file(GLOB _sub_paths "${parent_directory_}/*")
+	
+	foreach(_curr_path ${_sub_paths})
+		if(IS_DIRECTORY "${_curr_path}")
+			list(APPEND _dirs_only "${_curr_path}")
+		endif()
+	endforeach()
+	
+	set(${var_} "${_dirs_only}" PARENT_SCOPE)
+endfunction()
+
 function(file_2_strings path_to_file_ var_)
 	if(NOT EXISTS "${path_to_file_}")
 		message(FATAL_ERROR "File does not exist: ${path_to_file_}")
