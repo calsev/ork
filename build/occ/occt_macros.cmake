@@ -1,0 +1,123 @@
+
+macro(COLLECT_AND_INSTALL_OCCT_HEADER_FILES ROOT_TARGET_OCCT_DIR OCCT_BUILD_TOOLKITS)
+	set(OCCT_USED_PACKAGES)
+	
+	# consider patched header.in template
+	set(TEMPLATE_HEADER_PATH "${3P_OCC_SRC_DIR}/adm/templates/header.in")
+	
+	set(ROOT_OCCT_DIR ${3P_OCC_SRC_DIR})
+	
+	foreach(OCCT_USED_TOOLKIT ${OCCT_BUILD_TOOLKITS})
+		# append all required package folders
+		set(OCCT_TOOLKIT_PACKAGES)
+		file(STRINGS "${3P_OCC_SRC_DIR}/src/${OCCT_USED_TOOLKIT}/PACKAGES" OCCT_TOOLKIT_PACKAGES)
+		
+		list(APPEND OCCT_USED_PACKAGES ${OCCT_TOOLKIT_PACKAGES})
+	endforeach()
+	
+	list(REMOVE_DUPLICATES OCCT_USED_PACKAGES)
+	
+	set(OCCT_HEADER_FILES_COMPLETE)
+	set(OCCT_HEADER_FILE_NAMES_NOT_IN_FILES)
+	set(OCCT_HEADER_FILE_WITH_PROPER_NAMES)
+	
+	foreach(OCCT_PACKAGE ${OCCT_USED_PACKAGES})
+		if(EXISTS "${3P_OCC_SRC_DIR}/src/${OCCT_PACKAGE}/FILES")
+			file(STRINGS "${3P_OCC_SRC_DIR}/src/${OCCT_PACKAGE}/FILES" OCCT_ALL_FILE_NAMES)
+		else()
+			message(WARNING "FILES has not been found in ${3P_OCC_SRC_DIR}/src/${OCCT_PACKAGE}")
+			continue()
+		endif()
+		
+		list(LENGTH OCCT_ALL_FILE_NAMES ALL_FILES_NB)
+		math(EXPR ALL_FILES_NB "${ALL_FILES_NB} - 1" )
+		
+		# emit warnings if there is unprocessed headers
+		file(GLOB OCCT_ALL_FILES_IN_DIR "${3P_OCC_SRC_DIR}/src/${OCCT_PACKAGE}/*.*")
+		
+		foreach(OCCT_FILE_IN_DIR ${OCCT_ALL_FILES_IN_DIR})
+			get_filename_component(OCCT_FILE_IN_DIR_NAME ${OCCT_FILE_IN_DIR} NAME)
+			
+			set(OCCT_FILE_IN_DIR_STATUS OFF)
+			
+			if(${ALL_FILES_NB} LESS 0)
+				break()
+			endif()
+			
+			foreach(FILE_INDEX RANGE ${ALL_FILES_NB})
+				list(GET OCCT_ALL_FILE_NAMES ${FILE_INDEX} OCCT_FILE_NAME)
+				
+				if("${OCCT_FILE_IN_DIR_NAME}" STREQUAL "${OCCT_FILE_NAME}")
+					set(OCCT_FILE_IN_DIR_STATUS ON)
+					
+					string(REGEX MATCH ".+\\.[hlg]xx|.+\\.h$" IS_HEADER_FOUND "${OCCT_FILE_NAME}")
+					if(IS_HEADER_FOUND)
+						list(APPEND OCCT_HEADER_FILES_COMPLETE ${OCCT_FILE_IN_DIR})
+						
+						# collect header files with name that does not contain its package one
+						string(FIND "${OCCT_FILE_NAME}" "${OCCT_PACKAGE}_" FOUND_INDEX)
+						if(NOT ${FOUND_INDEX} EQUAL 0)
+							list(APPEND OCCT_HEADER_FILE_WITH_PROPER_NAMES "${OCCT_FILE_NAME}")
+						endif()
+					endif()
+					
+					# remove found element from list
+					list(REMOVE_AT OCCT_ALL_FILE_NAMES ${FILE_INDEX})
+					math(EXPR ALL_FILES_NB "${ALL_FILES_NB} - 1" ) # decrement number
+					
+					break()
+				endif()
+			endforeach()
+			
+			if(NOT OCCT_FILE_IN_DIR_STATUS)
+				message(STATUS "Warning. File ${OCCT_FILE_IN_DIR} is not listed in ${3P_OCC_SRC_DIR}/src/${OCCT_PACKAGE}/FILES")
+				
+				string(REGEX MATCH ".+\\.[hlg]xx|.+\\.h$" IS_HEADER_FOUND "${OCCT_FILE_NAME}")
+				if(IS_HEADER_FOUND)
+					list(APPEND OCCT_HEADER_FILE_NAMES_NOT_IN_FILES ${OCCT_FILE_NAME})
+				endif()
+			endif()
+		endforeach()
+	endforeach()
+	
+	foreach(OCCT_HEADER_FILE ${OCCT_HEADER_FILES_COMPLETE})
+		get_filename_component(HEADER_FILE_NAME ${OCCT_HEADER_FILE} NAME)
+		configure_file("${TEMPLATE_HEADER_PATH}" "${ROOT_TARGET_OCCT_DIR}/inc/${HEADER_FILE_NAME}" @ONLY)
+	endforeach()
+	
+	install(FILES ${OCCT_HEADER_FILES_COMPLETE} DESTINATION "${ORK_INSTALL_INC_DIR}")
+endmacro()
+
+# Returns OCC version string from file Standard_Version.hxx (if available)
+function(OCC_VERSION OCC_VERSION_MAJOR OCC_VERSION_MINOR OCC_VERSION_MAINTENANCE OCC_VERSION_DEVELOPMENT OCC_VERSION_STRING_EXT)
+	set(OCC_VERSION_MAJOR         7)
+	set(OCC_VERSION_MINOR         0)
+	set(OCC_VERSION_MAINTENANCE   0)
+	set(OCC_VERSION_DEVELOPMENT   dev)
+	set(OCC_VERSION_COMPLETE      "7.0.0")
+	
+	set(STANDARD_VERSION_FILE "${3P_OCC_SRC_DIR}/src/Standard/Standard_Version.hxx")
+	
+	if(EXISTS "${STANDARD_VERSION_FILE}")
+		foreach(SOUGHT_VERSION OCC_VERSION_MAJOR OCC_VERSION_MINOR OCC_VERSION_MAINTENANCE)
+			file(STRINGS "${STANDARD_VERSION_FILE}" ${SOUGHT_VERSION} REGEX "^#define ${SOUGHT_VERSION} .*")
+			string(REGEX REPLACE ".*${SOUGHT_VERSION} .*([^ ]+).*" "\\1" ${SOUGHT_VERSION} "${${SOUGHT_VERSION}}" )
+		endforeach()
+		
+		foreach(SOUGHT_VERSION OCC_VERSION_DEVELOPMENT OCC_VERSION_COMPLETE)
+			file(STRINGS "${STANDARD_VERSION_FILE}" ${SOUGHT_VERSION} REGEX "^#define ${SOUGHT_VERSION} .*")
+			string(REGEX REPLACE ".*${SOUGHT_VERSION} .*\"([^ ]+)\".*" "\\1" ${SOUGHT_VERSION} "${${SOUGHT_VERSION}}" )
+		endforeach()
+	endif()
+	
+	set(OCC_VERSION_MAJOR "${OCC_VERSION_MAJOR}" PARENT_SCOPE)
+	set(OCC_VERSION_MINOR "${OCC_VERSION_MINOR}" PARENT_SCOPE)
+	set(OCC_VERSION_MAINTENANCE "${OCC_VERSION_MAINTENANCE}" PARENT_SCOPE)
+	set(OCC_VERSION_DEVELOPMENT "${OCC_VERSION_DEVELOPMENT}" PARENT_SCOPE)
+	
+	if(OCC_VERSION_DEVELOPMENT AND OCC_VERSION_COMPLETE)
+		set(OCC_VERSION_STRING_EXT "${OCC_VERSION_COMPLETE}.${OCC_VERSION_DEVELOPMENT}" PARENT_SCOPE)
+	else()
+		set(OCC_VERSION_STRING_EXT "${OCC_VERSION_COMPLETE}" PARENT_SCOPE)
+	endif()
+endfunction()
