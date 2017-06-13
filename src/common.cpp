@@ -359,7 +359,7 @@ public:
 		p_trace_sink.reset(new sink_type(trace_backend));
 		p_trace_sink->set_filter((
 			expr::has_attr(channel) && channel == log_channel::debug_trace
-#if !ORK_DEBUG
+#if !ORK_DEBUG && 0
 			&& expr::has_attr(severity) && severity != severity_level::trace
 #endif
 			));
