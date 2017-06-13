@@ -9,12 +9,17 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"pugixml.hpp"
 #endif
 
+#if ORK_USE_JSON
+#include"json/json.h"
+#endif
+
 
 namespace ork {
 namespace xml {
 
 
 #if ORK_USE_PUGI
+
 void export_file(const string&filename, const exportable&object, const string&root_node_name) {
 	pugi::xml_document doc;
 	object.export_xml(doc.append_child(root_node_name.c_str()));
@@ -22,7 +27,7 @@ void export_file(const string&filename, const exportable&object, const string&ro
 	ORK_FILE_WRITE(filename);
 	doc.save(fout);
 }
-void load_and_parse(pugi::xml_document&xml, i_stream&fin) {
+void load_and_parse(i_stream&fin, pugi::xml_document&xml) {
 	pugi::xml_parse_result result = xml.load(fin);
 	if(!result) {
 		ORK_THROW(ORK("XML parse error") \
@@ -33,6 +38,7 @@ void load_and_parse(pugi::xml_document&xml, i_stream&fin) {
 		ORK_LOG(ork::severity_level::trace) << ORK("XML parse success");
 	}
 }
+
 #endif
 
 
@@ -97,4 +103,26 @@ void vector::export_xml(pugi::xml_node &node) const {
 
 
 }//namespace xml
+
+
+namespace json {
+
+
+#if ORK_USE_JSON
+
+void export_file(const string&filename, const exportable&object) {
+	ork::ensure_directory(filename);
+	ORK_FILE_WRITE(ORK("filename.json"));
+	Json::Value root;
+	object.export_json(root);
+	fout << root << BORK("\n");
+}
+void load_and_parse(i_stream&fin, Json::Value&root) {
+	fin >> root;
+}
+
+#endif
+
+
+}//namespace json
 }//namespace ork

@@ -6,8 +6,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/glm.hpp"
 
 namespace pugi {
-class xml_document; 
+class xml_document;
 class xml_node;
+}
+
+namespace Json {
+class Value;
 }
 
 
@@ -17,14 +21,14 @@ namespace xml {
 
 class ORK_ORK_API exportable {
 public:
-	 virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
 public:
 	virtual void export_xml(pugi::xml_node &n) const = 0;
 };
 
 
 ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object, const string&root_node_name);
-ORK_ORK_EXT(void) load_and_parse(pugi::xml_document&xml, i_stream&fin);//Just create a file with error checking
+ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&xml);//Just create a file with error checking
 
 
 #if ORK_USE_GLM
@@ -70,4 +74,23 @@ ORK_INLINE o_stream &operator << (o_stream&stream, const ork::xml::vector &vec) 
 
 
 }//namespace xml
+
+
+//A bit rough here, but not enough for a new header yet
+namespace json {
+
+
+class ORK_ORK_API exportable {
+public:
+	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+public:
+	virtual void export_json(Json::Value& v) const = 0;
+};
+
+
+ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object);
+ORK_ORK_EXT(void) load_and_parse(i_stream&fin, Json::Value&root);
+
+
+}//namespace json
 }//namespace ork
