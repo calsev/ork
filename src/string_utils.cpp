@@ -106,9 +106,9 @@ std::array<unsigned char, 4>bytes2chars(const std::array<unsigned char, 3>&buf3)
 }
 std::array<unsigned char, 3>chars2bytes(const std::array<unsigned char, 4>&buf4) {
 	return {
-		  (buf4[0] << 2) + ((buf4[1] & 0x30) >> 4)
-		, ((buf4[1] & 0xf) << 4) + ((buf4[2] & 0x3c) >> 2)
-		, ((buf4[2] & 0x3) << 6) + buf4[3]
+		  (buf4[0] << 2) + ((buf4[1] & 0x30) >> 4)//prev [5...0] shifted to [7...2], and [5...4] shifted to [1..0]
+		, ((buf4[1] & 0xf) << 4) + ((buf4[2] & 0x3c) >> 2)//prev [3...0] shifted to [7...4], and [5...2] shifted to [3...0]
+		, ((buf4[2] & 0x3) << 6) + buf4[3]//prev [1...0] shifted to [7...6], and [5...0] stay put
 	};
 }
 
