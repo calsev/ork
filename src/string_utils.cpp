@@ -134,7 +134,7 @@ void encode_bytes(const size_t byte_index, std::array<unsigned char, 3>&buf3byte
 	LOOPI(byte_index + 1) {//There is always one more byte than the index
 		retval += codes_64[buf4chars[i]];//Encode the chars
 	}
-	LOOPI(byte_index - 3) {//Add (3 - byte_index) padding bytes
+	LOOPI(3 - byte_index) {//Add (3 - byte_index) padding bytes
 		retval += fill_char;
 	}
 }
