@@ -67,4 +67,131 @@ float to_float(const wstring&str) {
 }
 
 
+/*
+Base 64 codes are an arbitrary list of printable, non-whitespace, ASCII characters.
+However, this particular encoding is MIME-compatible.
+*/
+const bstring codes_64 = BORK(//26 + 26 + 12 = 64
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	"abcdefghijklmnopqrstuvwxyz"
+	"0123456789+/"
+);
+
+/*
+Because 64 chars can represent only 6 bits, bytes in input must be expanded.
+MIME expands 3 bytes to 4 characters (3*8 = 24 = 4*6).
+Output is padded with the character below to 4 byte alignment, again MIME-compatible.
+Due to byte expansion, 1 '=' indicates 2 bytes and 2 '=' indicates 1 byte.
+*/
+const char fill_char = BORK('=');
+
+ORK_INLINE bool is_base64(const unsigned char c) {
+	return (isalnum(c) || (c == '+') || (c == '/'));
+}
+
+/*
+Here is the expansion.
+Just select the bits from first to last
+	bytes ordered high to low
+	high bit @ 7, low bit @ 0 - adjacent to the next lower byte
+So this makes sense in memory also, if we are running on a big-endian (the good endian) machine
+*/
+std::array<unsigned char, 4>bytes2chars(const std::array<unsigned char, 3>&buf3) {
+	return {
+		  (buf3[0] & 0xfc) >> 2//[7...2], shifted to [5...0]
+		, ((buf3[0] & 0x03) << 4) + ((buf3[1] & 0xf0) >> 4)//prev [1...0] shifted to [5...4], and [7...4] shifted to [3...0]
+		, ((buf3[1] & 0x0f) << 2) + ((buf3[2] & 0xc0) >> 6)//prev [3...0] shifted to [5...2], and [7...6] shifted to [1...0]
+		, buf3[2] & 0x3f//prev [5...0] stay put
+	};
+}
+std::array<unsigned char, 3>chars2bytes(const std::array<unsigned char, 4>&buf4) {
+	return {
+		  (buf4[0] << 2) + ((buf4[1] & 0x30) >> 4)
+		, ((buf4[1] & 0xf) << 4) + ((buf4[2] & 0x3c) >> 2)
+		, ((buf4[2] & 0x3) << 6) + buf4[3]
+	};
+}
+
+
+
+/*
+Hex is a simple byte-to-charactr mapping with no expansion or padding needed
+*/
+const bstring codes_hex = BORK(
+	"0123456789ABCDEF"
+);
+
+ORK_INLINE bool is_hex(const unsigned char c) {
+	return isxdigit(c) != 0;
+}
+
+
+void encode_bytes(const size_t byte_index, std::array<unsigned char, 3>&buf3bytes, std::string&retval) {
+	for(size_t i = byte_index; i < 3; ++i) {
+		buf3bytes[i] = 0;//Pad the buffer with zeros
+	}
+	const std::array<unsigned char, 4>buf4chars = bytes2chars(buf3bytes);
+	LOOPI(byte_index + 1) {//There is always one more byte than the index
+		retval += codes_64[buf4chars[i]];//Encode the chars
+	}
+	LOOPI(byte_index - 3) {//Add (3 - byte_index) padding bytes
+		retval += fill_char;
+	}
+}
+
+
+bstring encode(const unsigned char*str, const size_t size, const encoding enc) {
+	bstring retval;
+	size_t byte_index = 0;//Rolls over every 3
+	std::array<unsigned char, 3>buf3bytes = {0, 0, 0};//Holds the current bytes (3 per 4-character set)
+
+	LOOPI(size) {
+		buf3bytes[byte_index++] = *(str++);
+		if(byte_index == 3) {//Post decement, so we have a full set of 3 source bytes
+			encode_bytes(byte_index, buf3bytes, retval);
+			byte_index = 0;//Next 3 bytes please
+		}
+	}
+	if(byte_index != 0) {//Decode the last (size mod 3) bytes
+		encode_bytes(byte_index, buf3bytes, retval);
+	}
+
+	return retval;
+}
+
+
+void decode_bytes(const size_t byte_index, std::array<unsigned char, 4>&buf4chars, std::string&retval) {
+	for(size_t i = byte_index; i < 4; ++i) {
+		buf4chars[i] = 0;//Pad the buffer with zeros
+	}
+	LOOPI(4) {//Decode the chars
+		buf4chars[i] = static_cast<unsigned char>(codes_64.find(buf4chars[i]));
+	}
+	const std::array<unsigned char, 3>buf3bytes = chars2bytes(buf4chars);
+	LOOPI(byte_index - 1) {//Copy non-padding bytes
+		retval += buf3bytes[i];
+	}
+}
+
+
+bstring decode(const bstring& str) {
+	bstring retval;
+	size_t byte_index = 0;//Rolls over every 4
+	std::array<unsigned char, 4>buf4chars = {0, 0, 0, 0};//Holds the current chars
+
+	for(size_t i = 0; i < str.size() && is_base64(str[i]); ++i) {
+		buf4chars[byte_index++] = str[i];
+		if(byte_index == 4) {//Post decement, so we have a full set of 4 source chars
+			decode_bytes(byte_index, buf4chars, retval);
+			byte_index = 0;//Next 4 chars please
+		}
+	}
+	if(byte_index != 0) {//Decode the last (size mod 4) chars
+		decode_bytes(byte_index, buf4chars, retval);
+	}
+
+	return retval;
+}
+
+
 }//namespace ork

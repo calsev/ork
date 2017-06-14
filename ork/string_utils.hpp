@@ -28,4 +28,14 @@ ORK_ORK_EXT(float) to_float(const bstring&);
 ORK_ORK_EXT(float) to_float(const wstring&);
 
 
+enum class encoding {
+	  base_64
+	//, hex
+};
+
+
+ORK_ORK_EXT(bstring) encode(const unsigned char*str, const size_t size, const encoding enc);
+ORK_ORK_EXT(bstring) decode(const bstring&str, const encoding enc);
+
+
 }//namespace ork
