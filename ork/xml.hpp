@@ -88,6 +88,7 @@ public:
 };
 
 
+ORK_ORK_EXT(void) export_file(const string&filename, const Json::Value&root);
 ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object);
 ORK_ORK_EXT(void) load_and_parse(i_stream&fin, Json::Value&root);
 

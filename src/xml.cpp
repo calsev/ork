@@ -110,15 +110,17 @@ namespace json {
 
 #if ORK_USE_JSON
 
-void export_file(const string&filename, const exportable&object) {
+void export_file(const string&filename, const Json::Value&root) {
 	ork::ensure_directory(filename);
 	ORK_FILE_WRITE(filename);
 
-	Json::Value root;
-	object.export_json(root);
-
 	Json::StyledWriter writer;
 	fout << writer.write(root);
+}
+void export_file(const string&filename, const exportable&object) {
+	Json::Value root;
+	object.export_json(root);
+	export_file(filename, root);
 }
 void load_and_parse(i_stream&fin, Json::Value&root) {
 	fin >> root;
