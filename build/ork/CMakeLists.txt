@@ -110,6 +110,7 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/geometry.hpp"
 	"${3P_ORK_SRC_DIR}/ork/glm.hpp"
 	"${3P_ORK_SRC_DIR}/ork/html.hpp"
+	"${3P_ORK_SRC_DIR}/ork/memory.hpp"
 	"${3P_ORK_SRC_DIR}/ork/orientation.hpp"
 	"${3P_ORK_SRC_DIR}/ork/ork.hpp"
 	"${3P_ORK_SRC_DIR}/ork/parse.hpp"
