@@ -97,21 +97,32 @@ Just select the bits from first to last
 So this makes sense in memory also, if we are running on a big-endian (the good endian) machine
 */
 std::array<unsigned char, 4>bytes2chars(const std::array<unsigned char, 3>&buf3) {
-	return {
+	//Rather than complicate the expressions with casts, we do int arithmetic, then cast at the end
+	std::array<int, 4>vals = {
 		  (buf3[0] & 0xfc) >> 2//[7...2], shifted to [5...0]
 		, ((buf3[0] & 0x03) << 4) + ((buf3[1] & 0xf0) >> 4)//prev [1...0] shifted to [5...4], and [7...4] shifted to [3...0]
 		, ((buf3[1] & 0x0f) << 2) + ((buf3[2] & 0xc0) >> 6)//prev [3...0] shifted to [5...2], and [7...6] shifted to [1...0]
 		, buf3[2] & 0x3f//prev [5...0] stay put
 	};
+	return {
+		  static_cast<unsigned char>(vals[0])
+		, static_cast<unsigned char>(vals[1])
+		, static_cast<unsigned char>(vals[2])
+		, static_cast<unsigned char>(vals[3])
+	};
 }
 std::array<unsigned char, 3>chars2bytes(const std::array<unsigned char, 4>&buf4) {
-	return {
+	std::array<int, 3>vals = {
 		  (buf4[0] << 2) + ((buf4[1] & 0x30) >> 4)//prev [5...0] shifted to [7...2], and [5...4] shifted to [1..0]
 		, ((buf4[1] & 0xf) << 4) + ((buf4[2] & 0x3c) >> 2)//prev [3...0] shifted to [7...4], and [5...2] shifted to [3...0]
 		, ((buf4[2] & 0x3) << 6) + buf4[3]//prev [1...0] shifted to [7...6], and [5...0] stay put
 	};
+	return {
+		  static_cast<unsigned char>(vals[0])
+		, static_cast<unsigned char>(vals[1])
+		, static_cast<unsigned char>(vals[2])
+	};
 }
-
 
 
 /*
