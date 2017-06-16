@@ -23,6 +23,7 @@ If pimpl is being used the functor interfaces cannot be defined in a header.
 The functor must implement both copy and delete interfaces
 std::unique_ptr<T, D> D(const T&);
 void D(T*);
+Note that the copy interface must handle null objects by returning empty pointer
 
 No casting interface is offered, although if the copier supports it...
 No auto_ptr conversion is offered, because who uses auto_ptr?
