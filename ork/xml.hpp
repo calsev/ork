@@ -39,9 +39,13 @@ private:
 	glm::dvec3 _data;
 public:
 	ORK_INLINE vector() : _data() {}
-	/*implicit*/vector(const glm::dvec3&vec) : _data(vec) {}
+	/*implicit*/ORK_INLINE vector(const glm::dvec3&vec) : _data(vec) {}
+	/*implicit*/ORK_INLINE vector(const GLM::dunit3&vec) : _data(vec.get()) {}
 	ORK_INLINE vector(const double x, const double y, const double z) : _data(x, y, z) {}
 	ORK_ORK_API explicit vector(pugi::xml_node &node);
+public:
+	ORK_ORK_API vector&operator=(const glm::dvec3&);
+	ORK_ORK_API vector&operator=(const GLM::dunit3&);
 public:
 	ORK_ORK_API string as_string() const;
 

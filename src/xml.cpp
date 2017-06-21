@@ -44,6 +44,15 @@ void load_and_parse(i_stream&fin, pugi::xml_document&xml) {
 
 #if ORK_USE_GLM
 
+vector&vector::operator=(const glm::dvec3&vec) {
+	_data = vec;
+	return *this;
+}
+vector&vector::operator=(const GLM::dunit3&vec) {
+	_data = vec.get();
+	return *this;
+}
+
 double&vector::x() {
 	return _data.x;
 }
