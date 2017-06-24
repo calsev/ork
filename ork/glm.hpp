@@ -94,7 +94,12 @@ Tolerance is for checking.
 */
 template<typename T>
 ORK_INLINE ORK_CONSTEXPR T precision() {
+#if ORK_USE_ACIS
 	return (static_cast<epsilon_type<double>::type>(0x1) << 4) * std::numeric_limits<T>::epsilon();
+#else//OCC
+	return (static_cast<epsilon_type<double>::type>(0x1) << 8) * std::numeric_limits<T>::epsilon();
+#endif
+	
 }
 
 
@@ -107,7 +112,7 @@ template<>struct default_epsilon_factor<float> {
 template<>struct default_epsilon_factor<double> {
 #if ORK_USE_ACIS
 	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 4;//This is only verified over time as the minimum upper bound across ACIS when T is double
-#else //OCC
+#else//OCC
 	static const epsilon_type<double>::type value = static_cast<epsilon_type<double>::type>(0x1) << 28;//This is only verified over time as the minimum upper bound across OCC when T is double
 #endif
 };
