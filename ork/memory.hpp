@@ -47,7 +47,7 @@ public:
 	value_ptr(pointer p, typename std::conditional<std::is_reference<D>::value, D, const D&> del) noexcept : _ptr(p, del) {}
 	value_ptr(pointer p, typename std::remove_reference<D>::type&& del) noexcept : _ptr(p, std::move(del)) {}
 
-	value_ptr(value_ptr&& x) noexcept : _ptr(std::mode(x._ptr)) {}
+	value_ptr(value_ptr&& x) noexcept : _ptr(std::move(x._ptr)) {}
 	template<class D2>
 	value_ptr(value_ptr<T, D2>&& x) noexcept : _ptr(std::move(x._ptr)) {}
 
@@ -75,6 +75,7 @@ public:
 	
 	value_ptr& operator=(value_ptr&& x) noexcept {
 		_ptr = std::move(x._ptr);
+		return *this;
 	}
 	template<class D2>
 	value_ptr& operator=(value_ptr<T, D2>&& x) noexcept {
