@@ -79,7 +79,7 @@ ORK_ORK versions are for internal use by ork
 Plain versions are for use by clients
 */
 #ifndef ORK_BUILD_ORK
-#    define ORK_BUILD_ORK 0
+#   define ORK_BUILD_ORK 0
 #endif
 #ifndef ORK_ORK_API
 #	if !ORK_ORK_DLL
@@ -100,7 +100,7 @@ Plain versions are for use by clients
 #	endif
 #endif
 #ifndef ORK_DLL
-#    define ORK_DLL 0
+#   define ORK_DLL 0
 #endif
 #ifndef ORK_API
 #	if !ORK_DLL

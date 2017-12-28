@@ -14,7 +14,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<iostream>
 #include<codecvt>
 #include<mutex>
-#include"ork/detail/config_internal.hpp"
 
 
 #if !ORK_MSC
@@ -28,6 +27,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	define ORK_UNICODE 0
 #endif
 
+
+#if ORK_GCC || ORK_MSC >= 1900
+#   define ORK_STL_HAS_FILE 1
+#else
+#   define ORK_STL_HAS_FILE 0
+#endif
 
 #if 1
 #include"boost/filesystem/fstream.hpp"
