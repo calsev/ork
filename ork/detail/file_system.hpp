@@ -11,10 +11,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<array>
 #include<fstream>
 #include<sstream>
-//Some boost configuration here
-#define BOOST_SYSTEM_NO_DEPRECATED 1
-#define BOOST_FILESYSTEM_NO_DEPRECATED 1
-#include"ork/detail/config_internal.hpp"
 #include"ork/detail/exception.hpp"
 #include"ork/detail/tools.hpp"
 
@@ -25,9 +21,7 @@ namespace ork {
 ORK_ORK_EXTERN std::array<uint8_t, 3>utf8_bom;
 ORK_ORK_EXTERN const char*const utf8_bom_str;
 
-
 //Forward declaration to keep boost out of headers
-namespace file = boost::filesystem;
 class file::path;
 
 

@@ -34,12 +34,25 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #   define ORK_STL_HAS_FILE 0
 #endif
 
-#if 1
-#include"boost/filesystem/fstream.hpp"
+
+#if ORK_STL_HAS_FILE
+#   include<experimental/filesystem>
+	namespace ork {
+		namespace file = std::experimental::filesystem::v1;
+	}//namespace ork
 #else
+	//Some boost configuration here
+#   define BOOST_SYSTEM_NO_DEPRECATED 1
+#   define BOOST_FILESYSTEM_NO_DEPRECATED 1
+#   include"boost/filesystem/fstream.hpp"
+	namespace ork {
+		namespace file = boost::filesystem;
+	}//namespace ork
+#endif
+
+
 //Forward declaration to keep boost out of headers
-namespace boost {
-namespace filesystem {
+namespace file {
 
 class wofstream;
 class wifstream;
@@ -48,9 +61,7 @@ class ofstream;
 class ifstream;
 class fstream;
 
-}//namespace filesystem
-}//namespace boost
-#endif
+}//namespace file
 
 
 namespace ork {
