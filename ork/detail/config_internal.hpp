@@ -94,6 +94,9 @@ Plain versions are for use by clients
 #		error Compiler not supported
 #	endif
 #endif
+#ifndef ORK_DLL
+#    define ORK_DLL 0
+#endif
 #ifndef ORK_API
 #	if !ORK_DLL
 #		define ORK_API
