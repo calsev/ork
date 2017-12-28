@@ -73,6 +73,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 ORK_ORK versions are for internal use by ork
 Plain versions are for use by clients
 */
+#ifndef ORK_BUILD_ORK
+#    define ORK_BUILD_ORK 0
+#endif
 #ifndef ORK_ORK_API
 #	if !ORK_ORK_DLL
 #		define ORK_ORK_API
