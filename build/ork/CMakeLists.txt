@@ -76,6 +76,7 @@ if(NOT ORK_USE_JSON)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_USE_JSON) 1" "\\1 0"
+        ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
 if(NOT ORK_USE_PUGI)
