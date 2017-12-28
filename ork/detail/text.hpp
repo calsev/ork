@@ -147,15 +147,15 @@ typedef std::istringstream bi_string_stream;
 
 
 #if ORK_UNICODE
-	typedef boost::filesystem::wofstream of_stream;
-	typedef boost::filesystem::wifstream if_stream;
-	typedef boost::filesystem::wfstream f_stream;
+	typedef file::wofstream of_stream;
+	typedef file::wifstream if_stream;
+	typedef file::wfstream f_stream;
 	#define ORK_GEN_STR generic_wstring
 	#define ORK_STRING wstring
 #else
-	typedef boost::filesystem::ofstream of_stream;
-	typedef boost::filesystem::ifstream if_stream;
-	typedef boost::filesystem::fstream f_stream;
+	typedef file::ofstream of_stream;
+	typedef file::ifstream if_stream;
+	typedef file::fstream f_stream;
 	#define ORK_GEN_STR generic_string
 	#define ORK_STRING string
 #endif
