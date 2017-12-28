@@ -2,7 +2,12 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#pragma once
+#ifdef ORK_CONFIG_HPP
+#	error This header can only be included from ork/ork.hpp!
+#endif
+
+#ifndef ORK_CONFIG_HPP
+#define ORK_CONFIG_HPP
 
 #ifndef ORK_ORK_HPP
 #	error This header can only be included from ork/ork.hpp!
@@ -38,3 +43,5 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #ifndef ORK_USE_JSON//Optional dependency
 #	define ORK_USE_JSON 1
 #endif
+
+#endif ORK_CONFIG_HPP
