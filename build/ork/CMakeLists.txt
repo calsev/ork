@@ -1,7 +1,43 @@
 
 project(ork CXX)
 
-set(VERSION "0.1.1")
+file(READ "${3P_ORK_SRC_DIR}/ork/ork.hpp" ORK_ORK_H)
+
+string(
+	REGEX MATCH
+	"#define ORK_VERSION_MAJOR [0-9]+"
+    ORK_VERSION_MAJOR "${ORK_ORK_H}"
+)
+string(
+	REGEX MATCH
+	"#define ORK_VERSION_MINOR [0-9]+"
+    ORK_VERSION_MINOR "${ORK_ORK_H}"
+)
+string(
+	REGEX MATCH
+	"#define ORK_VERSION_PATCH [0-9]+"
+    ORK_VERSION_PATCH "${ORK_ORK_H}"
+)
+
+string(
+	REGEX REPLACE
+	"#define ORK_VERSION_MAJOR ([0-9]+)" "\\1"
+    ORK_VERSION_MAJOR "${ORK_VERSION_MAJOR}"
+)
+string(
+	REGEX REPLACE
+	"#define ORK_VERSION_MINOR ([0-9]+)" "\\1"
+    ORK_VERSION_MINOR "${ORK_VERSION_MINOR}"
+)
+string(
+	REGEX REPLACE
+	"#define ORK_VERSION_PATCH ([0-9]+)" "\\1"
+    ORK_VERSION_PATCH "${ORK_VERSION_PATCH}"
+)
+
+set(ORK_VERSION_STR "${ORK_VERSION_MAJOR}.${ORK_VERSION_MINOR}.${ORK_VERSION_PATCH}")
+set(VERSION "${ORK_VERSION_STR}")
+
 
 detect_option_flag(ORK_BUILD_SHARED "Building shared library instead of static" ON)
 detect_option_flag(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
@@ -21,26 +57,10 @@ endif()
 
 
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
-parse_version(${VERSION} "ORK_VERSION") #For config header
 
 
 #Configure header, done with regex to avoid a separate 'in' header
 file(READ "${3P_ORK_SRC_DIR}/ork/config/config.hpp" ORK_CONFIG_H)
-string(
-	REGEX REPLACE
-	"#define (ORK_VERSION_MAJOR) [0-9]+" "#define \\1 ${ORK_VERSION_MAJOR}"
-	ORK_CONFIG_H "${ORK_CONFIG_H}"
-)
-string(
-	REGEX REPLACE
-	"#define (ORK_VERSION_MINOR) [0-9]+" "#define \\1 ${ORK_VERSION_MINOR}"
-	ORK_CONFIG_H "${ORK_CONFIG_H}"
-)
-string(
-	REGEX REPLACE
-	"#define (ORK_VERSION_PATCH) [0-9]+" "#define \\1 ${ORK_VERSION_PATCH}"
-	ORK_CONFIG_H "${ORK_CONFIG_H}"
-)
 if(NOT ORK_BUILD_SHARED)
 	string(
 		REGEX REPLACE
