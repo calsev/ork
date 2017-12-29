@@ -7,6 +7,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<sstream>
 
 #include"ork/glm.hpp"
+#include"ork/orientation.hpp"
 
 #if ORK_USE_GLM
 #include"glm/gtx/rotate_vector.hpp"
@@ -75,7 +76,7 @@ glm::dvec3 proj_on_plane(const glm::dvec3&vec, const GLM::dunit3&normal) {
 	return glm::dot(vec, l_forward) * l_forward;
 }
 
-const dunit3&orientation2direction(orientation axis) {
+const dunit3&orientation2direction(const orientation axis) {
 	switch(axis) {
 	case orientation::pos_x:
 		return pos_x;

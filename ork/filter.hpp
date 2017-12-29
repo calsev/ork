@@ -4,9 +4,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include<array>
-#include"boost/circular_buffer.hpp"
-
 #include"ork/ork.hpp"
+
+#include"boost/circular_buffer.hpp"
 
 
 namespace ork {

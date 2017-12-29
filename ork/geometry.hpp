@@ -5,8 +5,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 #include<array>
 #include<vector>
-#include"ork/ork.hpp"
-#include"ork/glm.hpp"
+#include"ork/orientation.hpp"
+
+#include"glm/fwd.hpp"
+#include"glm/vec3.hpp"
 
 
 namespace ork {
@@ -69,6 +71,9 @@ bool angles_advance_clockwise(const double start_angle, double mid_angle, double
 
 
 namespace GLM {
+
+struct dunit3;
+
 namespace MC {
 
 #if ORK_USE_GLM

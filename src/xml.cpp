@@ -6,7 +6,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<iostream>
 #include<sstream>
 
-#include"ork/ork.hpp"
+#include"ork/glm.hpp"
 #include ORK_FILE_INCLUDE
 
 #include"ork/geometry.hpp"

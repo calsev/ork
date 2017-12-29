@@ -3,14 +3,17 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
+#include"ork/ork.hpp"
 
-#include"ork/orientation.hpp"
 #if ORK_USE_GLM
 #include"glm/vec3.hpp"
 #include"glm/geometric.hpp"
 
 
 namespace ork {
+
+enum class orientation;
+
 namespace GLM {//Kind of deceiving, but whatever
 
 
@@ -331,7 +334,7 @@ ORK_ORK_EXT(glm::dvec3) proj_on_plane(const glm::dvec3&vec, const GLM::dunit3&no
 /*
 Orientation stuff
 */
-ORK_ORK_EXT(const dunit3&) orientation2direction(orientation axis);
+ORK_ORK_EXT(const dunit3&) orientation2direction(const orientation axis);
 
 
 }//namespace GLM
