@@ -62,6 +62,10 @@ public:
 	ORK_ORK_API log_stream& operator<< (void* val);
 
 	ORK_ORK_API log_stream& operator<< (std::streambuf* sb);
+
+	ORK_ORK_API log_stream& operator<< (std::ostream& (*pf)(std::ostream&));
+	ORK_ORK_API log_stream& operator<< (std::ios& (*pf)(std::ios&));
+	ORK_ORK_API log_stream& operator<< (std::ios_base& (*pf)(std::ios_base&));
 };
 
 

@@ -66,6 +66,15 @@ log_stream& log_stream::operator<< (void* val) {
 log_stream& log_stream::operator<< (std::streambuf* sb) {
 	return *this;
 }
+log_stream& log_stream::operator<< (std::ostream& (*pf)(std::ostream&)) {
+	return *this;
+}
+log_stream& log_stream::operator<< (std::ios& (*pf)(std::ios&)) {
+	return *this;
+}
+log_stream& log_stream::operator<< (std::ios_base& (*pf)(std::ios_base&)) {
+	return *this;
+}
 
 
 o_stream&operator<<(o_stream&strm, log_channel chan) {
