@@ -19,67 +19,73 @@ namespace ork {
 
 
 struct log_stream::impl {
+public:
+	std::unique_ptr<o_stream>stream;
+public:
+	impl(std::unique_ptr<o_stream>&&stream_) :stream{ std::move(stream_) } {}
 };
 
-log_stream::log_stream() : _pimpl {new impl()} {}
+log_stream::log_stream(std::unique_ptr<o_stream>&&stream) : _pimpl{ new impl{ std::move(stream) } } {}
 log_stream::~log_stream() {}
 
-log_stream& log_stream::operator<< (bool val) {
+#define LOG_STREAM_OPERATOR(TYPE) \
+log_stream& log_stream::operator<< (const TYPE val) {\
+	*(_pimpl->stream) << val;\
+	return *this;\
+}
+LOG_STREAM_OPERATOR(bool)
+LOG_STREAM_OPERATOR(short)
+LOG_STREAM_OPERATOR(unsigned short)
+LOG_STREAM_OPERATOR(int)
+LOG_STREAM_OPERATOR(unsigned)
+LOG_STREAM_OPERATOR(long)
+LOG_STREAM_OPERATOR(unsigned long)
+LOG_STREAM_OPERATOR(long long)
+LOG_STREAM_OPERATOR(unsigned long long)
+LOG_STREAM_OPERATOR(float)
+LOG_STREAM_OPERATOR(double)
+LOG_STREAM_OPERATOR(long double)
+
+#define LOG_STREAM_OPERATOR(TYPE) \
+log_stream& log_stream::operator<< (const TYPE val) {\
+	*(_pimpl->stream) << ORK_BYTE_2_STR(val);\
+	return *this;\
+}
+
+LOG_STREAM_OPERATOR(char)
+LOG_STREAM_OPERATOR(char*)
+LOG_STREAM_OPERATOR(bstring&)
+
+#define LOG_STREAM_OPERATOR(TYPE) \
+log_stream& log_stream::operator<< (const TYPE val) {\
+	*(_pimpl->stream) << ORK_WIDE_2_STR(val);\
+	return *this;\
+}
+
+LOG_STREAM_OPERATOR(wchar_t)
+LOG_STREAM_OPERATOR(wchar_t*)
+LOG_STREAM_OPERATOR(wstring&)
+
+log_stream& log_stream::operator<< (const void* val) {
 	return *this;
 }
-log_stream& log_stream::operator<< (short val) {
+log_stream& log_stream::operator<< (const std::streambuf* sb) {
 	return *this;
 }
-log_stream& log_stream::operator<< (unsigned short val) {
+log_stream& log_stream::operator<< (std::ostream& (const *pf)(std::ostream&)) {
 	return *this;
 }
-log_stream& log_stream::operator<< (int val) {
+log_stream& log_stream::operator<< (std::ios& (const *pf)(std::ios&)) {
 	return *this;
 }
-log_stream& log_stream::operator<< (unsigned int val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (long val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (unsigned long val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (long long val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (unsigned long long val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (float val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (double val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (long double val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (void* val) {
-	return *this;
-}
-log_stream& log_stream::operator<< (std::streambuf* sb) {
-	return *this;
-}
-log_stream& log_stream::operator<< (std::ostream& (*pf)(std::ostream&)) {
-	return *this;
-}
-log_stream& log_stream::operator<< (std::ios& (*pf)(std::ios&)) {
-	return *this;
-}
-log_stream& log_stream::operator<< (std::ios_base& (*pf)(std::ios_base&)) {
+log_stream& log_stream::operator<< (std::ios_base& (const *pf)(std::ios_base&)) {
 	return *this;
 }
 
 
 o_stream&operator<<(o_stream&strm, log_channel chan) {
 	static const char_t* strings[] = {
-		ORK("Debug/Trace")
+		  ORK("Debug/Trace")
 		, ORK("Output/Data")
 	};
 
@@ -94,7 +100,7 @@ o_stream&operator<<(o_stream&strm, log_channel chan) {
 o_stream&operator<<(o_stream&strm, severity_level sev) {
 	static const char_t* strings[] = {
 		//These are fixed width, maybe this should be done in formatting instead
-		ORK("TRACE")
+		  ORK("TRACE")
 		, ORK("DEBUG")
 		, ORK("INFO ")
 		, ORK("WARN ")

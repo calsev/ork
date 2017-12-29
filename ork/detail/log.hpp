@@ -44,7 +44,7 @@ private:
 private:
 	std::unique_ptr<impl>_pimpl;
 public:
-	ORK_ORK_API log_stream();
+	ORK_ORK_API log_stream(std::unique_ptr<o_stream>&&);
 	ORK_ORK_API ~log_stream();
 public:
 	ORK_ORK_API log_stream& operator<< (bool val);
@@ -59,6 +59,14 @@ public:
 	ORK_ORK_API log_stream& operator<< (float val);
 	ORK_ORK_API log_stream& operator<< (double val);
 	ORK_ORK_API log_stream& operator<< (long double val);
+
+	ORK_ORK_API log_stream& operator<< (const char);
+	ORK_ORK_API log_stream& operator<< (const wchar_t);
+	ORK_ORK_API log_stream& operator<< (const char*);
+	ORK_ORK_API log_stream& operator<< (const wchar_t*);
+	ORK_ORK_API log_stream& operator<< (const bstring&);
+	ORK_ORK_API log_stream& operator<< (const wstring&);
+	
 	ORK_ORK_API log_stream& operator<< (void* val);
 
 	ORK_ORK_API log_stream& operator<< (std::streambuf* sb);
