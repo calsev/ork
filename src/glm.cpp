@@ -4,6 +4,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #define _USE_MATH_DEFINES//M_PI
 #include<cmath>
+#include<sstream>
 
 #include"ork/glm.hpp"
 

@@ -7,6 +7,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma warning(disable:4996) //Boost unsafe parameters
 #endif
 
+#include<mutex>
 #include<thread>
 #include<boost/random.hpp>
 

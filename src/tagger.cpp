@@ -56,7 +56,7 @@ void tagger::set_debug_root(const string&as_is_path, const string&to_be_path) {
 
 
 setup_hierarchy::setup_hierarchy(const string&setup_root, const string&as_is_path, const string&to_be_path) :_setup_directory(), _cached(false), _score(0), _setups() {
-	if(!ensure_directory(setup_root))ORK_THROW(ORK("Setup root could not be created: ") << setup_root);
+	if(!file::ensure_directory(setup_root))ORK_THROW(ORK("Setup root could not be created: ") << setup_root);
 	//if(!test_file(as_is_path))ORK_THROW(ORK("As-is file could not be found: ") << as_is_path);
 	//if(!test_file(to_be_path))ORK_THROW(ORK("To-Be file could not be found: ") << to_be_path);
 
@@ -84,7 +84,7 @@ struct setup_match {
 	setup_match(const string&exact_setups) :setups(exact_setups), setup_dir() {}
 	void operator()(const file::path&p) {
 		if(!setup_dir.empty())return;//Already found (this could be a superstring, so find might work)
-		if(!file::is_directory(p))return;//Just in case
+		if(!ext_file::is_directory(p))return;//Just in case
 		const string dir_name(p.stem().ORK_GEN_STR());
 		if(dir_name.find(setups) != string::npos)setup_dir = p;
 	}

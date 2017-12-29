@@ -4,6 +4,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<cstring>
 #include<cwchar>
+#include<sstream>
 #include"boost/algorithm/string.hpp"
 #include"ork/string_utils.hpp"
 

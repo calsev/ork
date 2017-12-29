@@ -8,6 +8,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma warning(disable : 4244) //Narrowing conversion (boost)
 #endif
 
+#include<fstream>
 #include<iostream>
 #include ORK_FILE_INCLUDE
 
