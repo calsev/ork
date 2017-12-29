@@ -8,8 +8,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	error This header can only be included from ork/ork.hpp!
 #endif
 
-#include"ork/detail/exception.hpp"
-
 
 namespace ork {
 

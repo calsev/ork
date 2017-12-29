@@ -2,7 +2,12 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#pragma once
+#ifdef ORK_EXCEPTION_HPP
+#	error This header can only be included from ork/ork.hpp!
+#endif
+
+#ifndef ORK_EXCEPTION_HPP
+#define ORK_EXCEPTION_HPP
 
 #ifndef ORK_ORK_HPP
 #	error This header can only be included from ork/ork.hpp!
@@ -61,3 +66,5 @@ Exceptions do not support unicode!
 #if ORK_MSC
 #pragma warning(pop)
 #endif
+
+#endif ORK_EXCEPTION_HPP
