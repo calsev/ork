@@ -9,6 +9,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+ORK_ORK_EXT(string) to_string(const bool val);
+ORK_ORK_EXT(bool) string2bool(const string&val);
+
+
 ORK_ORK_EXT(size_t) str_length(const char*const);
 ORK_ORK_EXT(size_t) str_length(const wchar_t*const);
 

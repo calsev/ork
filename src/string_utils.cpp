@@ -4,10 +4,30 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<cstring>
 #include<cwchar>
+#include"boost/algorithm/string.hpp"
 #include"ork/string_utils.hpp"
 
 
 namespace ork {
+
+
+string to_string(const bool val) {
+	return val ? ORK("true") : ORK("false");
+}
+bool string2bool(const string&val_) {
+	const string val = boost::to_lower_copy(val);
+	if (val == ORK("t"))return true;
+	if (val == ORK("true"))return true;
+	if (val == ORK("y"))return true;
+	if (val == ORK("yes"))return true;
+	if (val == ORK("1"))return true;
+	if (val == ORK("f"))return false;
+	if (val == ORK("false"))return false;
+	if (val == ORK("n"))return false;
+	if (val == ORK("no"))return false;
+	if (val == ORK("0"))return false;
+	ORK_THROW(ORK("Invalid bool value"));
+}
 
 
 size_t str_length(const char*const str) {
