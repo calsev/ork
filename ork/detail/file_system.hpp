@@ -2,7 +2,12 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#pragma once
+#ifdef ORK_FILE_SYSTEM_HPP
+#	error This header can only be included from ork/ork.hpp!
+#endif
+
+#ifndef ORK_FILE_SYSTEM_HPP
+#define ORK_FILE_SYSTEM_HPP
 
 #ifndef ORK_ORK_HPP
 #	error This header can only be included from ork/ork.hpp!
@@ -88,3 +93,5 @@ ORK_ORK_EXT(bool) ensure_file(const file::path&file);
 
 }//namespace file
 }//namespace ork
+
+#endif ORK_FILE_SYSTEM_HPP
