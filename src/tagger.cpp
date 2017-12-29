@@ -100,11 +100,11 @@ file::path setup_hierarchy::get_subdirectory(const string&exact_setups) {
 
 
 const std::vector<orientation>& setup_hierarchy::get_setups() {
-	return do_get_setups(get_subdirectory().remove_trailing_separator().filename().ORK_GEN_STR());
+	return do_get_setups(file::canonical_normalized_trimmed(get_subdirectory()).filename().ORK_GEN_STR());
 }
 
 const std::vector<orientation>& setup_hierarchy::get_setups(const string&exact_setups) {
-	return do_get_setups(get_subdirectory(exact_setups).remove_trailing_separator().filename().ORK_GEN_STR());
+	return do_get_setups(file::canonical_normalized_trimmed(get_subdirectory(exact_setups)).filename().ORK_GEN_STR());
 }
 
 

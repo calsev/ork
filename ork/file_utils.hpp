@@ -88,7 +88,7 @@ struct iterate_directory {
 	}
 	static void run(const file::path&dir, functor&f) {
 		typedef typename detail::search_typer<search_type>::type iter_t;
-		if(!test_directory(dir))ORK_FILE_OPEN_ERR(ORK("Error searching directory!"), dir);
+		if(!file::test_directory(dir))ORK_FILE_OPEN_ERR(ORK("Error searching directory!"), dir);
 		detail::directory_executer<functor, iter_t, sort_type>::run(dir, f);
 	}
 };

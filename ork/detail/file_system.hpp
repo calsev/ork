@@ -67,15 +67,18 @@ ORK_ORK_EXTERN std::array<uint8_t, 3>utf8_bom;
 ORK_ORK_EXTERN const char*const utf8_bom_str;
 
 
-ORK_ORK_EXT(bool) test_directory(const file::path&file_or_directory);
-ORK_ORK_EXT(bool) test_file(const file::path&file);
+ORK_ORK_EXT(path) canonical_normalized_trimmed(const path&);
+
+
+ORK_ORK_EXT(bool) test_directory(const path&);
+ORK_ORK_EXT(bool) test_file(const path&);
 
 //Create a directory, and all parent directories if these do not already exist.
 //Return true if the directory was created or if it already existed, otherwise false to indicate an error.
 //This function can handle absolute or relative path names.
 //The file version creates the parent directory.
-ORK_ORK_EXT(bool) ensure_directory(file::path file_or_directory);
-ORK_ORK_EXT(bool) ensure_file(const file::path&file);
+ORK_ORK_EXT(bool) ensure_directory(const path&);
+ORK_ORK_EXT(bool) ensure_file(const path&);
 
 
 #define ORK_FILE_OPEN_ERR(MSG,FILE_NAME)ORK_STMT(\

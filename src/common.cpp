@@ -144,19 +144,32 @@ std::ostream &operator << (std::ostream &stream, const backtrace &trace) {
 From file_system.hpp
 */
 
-std::array<uint8_t, 3>utf8_bom = {0xEF, 0xBB, 0xBF};
-std::array<uint8_t, 4>utf8_bom_ = {0xEF, 0xBB, 0xBF, 0x00};//For null termination
+namespace file {
+std::array<uint8_t, 3>utf8_bom = { 0xEF, 0xBB, 0xBF };
+std::array<uint8_t, 4>utf8_bom_ = { 0xEF, 0xBB, 0xBF, 0x00 };//For null termination
 const char*const utf8_bom_str = reinterpret_cast<char*>(utf8_bom_.data());//Reinterpret cast used to handle pos/neg chars
 
 
-bool test_directory(const file::path&file_or_directory) {
+path canonical_normalized_trimmed(const path&file) {
+	const path complete = ext_file::system_complete(file);
+	const path canonical = ext_file::canonical(complete);
+	string name(canonical.ORK_GEN_STR());
+	while(!name.empty() && name.back() == '/') {
+		name.pop_back();
+	}
+	return path(name);
+}
+
+
+bool test_directory(const path&file_or_directory) {
 	return ext_file::exists(file_or_directory) && ext_file::is_directory(file_or_directory);
 }
-bool test_file(const file::path&file) {
+bool test_file(const path&file) {
 	return ext_file::exists(file) && ext_file::is_regular_file(file);
 }
-bool ensure_directory(file::path file_or_directory) {
-	file_or_directory.make_preferred();//Remove remove_filename and remove_trailing_separator have problems with mixed slashes
+bool ensure_directory(const path&file_or_directory_) {
+	//Remove remove_filename and has problems with mixed slashes
+	path file_or_directory = canonical_normalized_trimmed(file_or_directory_);
 	if(file_or_directory.empty()) {
 		return true;
 	}
@@ -166,7 +179,7 @@ bool ensure_directory(file::path file_or_directory) {
 	if(file_or_directory.has_extension()) {//Hard to tell if a path would be a directory or file
 		file_or_directory.remove_filename();
 	}
-	file_or_directory.remove_trailing_separator();
+	file_or_directory = canonical_normalized_trimmed(file_or_directory);
 	if(file_or_directory.empty()) {
 		return true;//The path was a file in the current directory
 	}
@@ -175,20 +188,21 @@ bool ensure_directory(file::path file_or_directory) {
 	}
 	return ext_file::create_directories(file_or_directory);
 }
-bool ensure_file(const file::path&file) {
+bool ensure_file(const path&file) {
 	if(!ensure_directory(file))return false;
 	if(file.empty() || ext_file::exists(file))return true;
 	if(!ext_file::is_regular_file(file))return false;
 	return ext_file::create_directories(file);
 }
 
+}//namespace file
 
 /*
 From file_utils.hpp
 */
 
 bool discard_bom(bi_stream&fin) {
-	for(const uint8_t bom : utf8_bom) {
+	for(const uint8_t bom : file::utf8_bom) {
 		const uint8_t curr = static_cast<uint8_t>(fin.get());
 		if(curr != bom) {
 			fin.seekg(0);
@@ -200,7 +214,7 @@ bool discard_bom(bi_stream&fin) {
 
 
 bool top_subdirectory(const file::path&dir, file::path&p) {
-	if(!test_directory(dir))ORK_FILE_OPEN_ERR(ORK("Error searching directory!"), dir);
+	if(!file::test_directory(dir))ORK_FILE_OPEN_ERR(ORK("Error searching directory!"), dir);
 
 	//Create a list of the paths in the directory, and then sort it
 	std::vector<file::path>paths;
@@ -273,7 +287,7 @@ typedef boost::log::formatting_ostream formatting_ostream;
 
 
 boost::shared_ptr<o_stream>open_log(const file::path&file_name) {
-	if(!ensure_directory(file_name))ORK_THROW(ORK("Could not create directory : ") << file_name)
+	if(!file::ensure_directory(file_name))ORK_THROW(ORK("Could not create directory : ") << file_name)
 		of_stream* p_stream = new of_stream();
 	p_stream->open(file_name);//std::ios::app | std::ios::ate
 	if(p_stream->fail())ORK_THROW(ORK("Error opening log : ") << file_name)
