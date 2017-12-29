@@ -4,8 +4,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 
-#include"boost/filesystem.hpp"
 #include"ork/ork.hpp"
+#include ORK_FILE_INCLUDE
 
 
 namespace ork {
@@ -34,11 +34,11 @@ namespace detail {
 template<class T>struct search_typer;
 
 template<>struct search_typer<flat_search> {
-	typedef file::directory_iterator type;
+	typedef ext_file::directory_iterator type;
 };
 
 template<>struct search_typer<recursive_search> {
-	typedef file::recursive_directory_iterator type;
+	typedef ext_file::recursive_directory_iterator type;
 };
 
 }

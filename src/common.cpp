@@ -8,6 +8,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma warning(disable : 4244) //Narrowing conversion (boost)
 #endif
 
+#include<iostream>
+#include ORK_FILE_INCLUDE
+
 #include"boost/algorithm/string.hpp"
 #include"boost/core/null_deleter.hpp"
 #include"boost/log/expressions.hpp"

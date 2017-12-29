@@ -69,10 +69,5 @@ Auto linking, at least in Visual Studio
 #endif
 
 
-//Put this somewhere
-ORK_ORK_EXT(string) to_string(const bool val);
-ORK_ORK_EXT(bool) string2bool(string val);
-
-
 }//namespace ork
 #endif ORK_ORK_HPP
