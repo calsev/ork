@@ -199,25 +199,29 @@ public:
 	string_converter_type();
 	~string_converter_type();
 public:
-	ORK_ORK_API bstring to_bytes(const wchar_t s);
-	ORK_ORK_API bstring to_bytes(const wchar_t*s);
-	ORK_ORK_API bstring to_bytes(const wstring&s);
-	ORK_ORK_API bstring to_bytes(const wchar_t*first, const wchar_t*last);
+	ORK_ORK_API bstring wide2byte(const wchar_t s);
+	ORK_ORK_API bstring wide2byte(const wchar_t*s);
+	ORK_ORK_API bstring wide2byte(const wstring&s);
+	ORK_ORK_API bstring wide2byte(const wchar_t*first, const wchar_t*last);
 
-	ORK_ORK_API wstring from_bytes(const char s);
-	ORK_ORK_API wstring from_bytes(const char*s);
-	ORK_ORK_API wstring from_bytes(const bstring&s);
-	ORK_ORK_API wstring from_bytes(const char*first, const char*last);
+	ORK_ORK_API wstring byte2wide(const char s);
+	ORK_ORK_API wstring byte2wide(const char*s);
+	ORK_ORK_API wstring byte2wide(const bstring&s);
+	ORK_ORK_API wstring byte2wide(const char*first, const char*last);
 };
 ORK_ORK_EXT(string_converter_type&) g_string_converter();
 
 
 #if ORK_UNICODE
 #	define ORK_STR_2_BYTE(ORK_STRING) ork::g_string_converter().to_bytes(ORK_STRING)
+#	define ORK_STR_2_WIDE(ORK_STRING) ORK_STRING
 #	define ORK_BYTE_2_STR(ORK_STRING) ork::g_string_converter().from_bytes(ORK_STRING)
+#	define ORK_WIDE_2_STR(ORK_STRING) ORK_STRING
 #else
 #	define ORK_STR_2_BYTE(ORK_STRING) ORK_STRING
+#	define ORK_STR_2_WIDE(ORK_STRING) ork::g_string_converter().from_bytes(ORK_STRING)
 #	define ORK_BYTE_2_STR(ORK_STRING) ORK_STRING
+#	define ORK_WIDE_2_STR(ORK_STRING) ork::g_string_converter().to_bytes(ORK_STRING)
 #endif
 
 }//namespace ork

@@ -240,29 +240,29 @@ public:
 string_converter_type::string_converter_type() : _pimpl{ new impl{} } {}
 string_converter_type::~string_converter_type() {}
 
-bstring string_converter_type::to_bytes(const wchar_t s) {
+bstring string_converter_type::wide2byte(const wchar_t s) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(s);
 }
-bstring string_converter_type::to_bytes(const wchar_t*s) {
+bstring string_converter_type::wide2byte(const wchar_t*s) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(s);
 }
-bstring string_converter_type::to_bytes(const wstring&s) {
+bstring string_converter_type::wide2byte(const wstring&s) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(s);
 }
-bstring string_converter_type::to_bytes(const wchar_t*first, const wchar_t*last) {
+bstring string_converter_type::wide2byte(const wchar_t*first, const wchar_t*last) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(first, last);
 }
 
-wstring string_converter_type::from_bytes(const char s) {
+wstring string_converter_type::byte2wide(const char s) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(s);
 }
-wstring string_converter_type::from_bytes(const char*s) {
+wstring string_converter_type::byte2wide(const char*s) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(s);
 }
-wstring string_converter_type::from_bytes(const bstring&s) {
+wstring string_converter_type::byte2wide(const bstring&s) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(s);
 }
-wstring string_converter_type::from_bytes(const char*first, const char*last) {
+wstring string_converter_type::byte2wide(const char*first, const char*last) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(first, last);
 }
 
