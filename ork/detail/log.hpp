@@ -26,6 +26,12 @@ enum class log_channel {
 	  debug_trace//For now all error, debug, trace goes to one file
 	, output_data//For now, all program output goes to one file
 };
+const std::array<log_channel, 2>log_channels = {
+	  log_channel::debug_trace
+	, log_channel::output_data
+};
+const ork::string&to_string(const log_channel);
+log_channel string2log_channel(const ork::string&);
 
 
 enum class severity_level {
@@ -36,6 +42,16 @@ enum class severity_level {
 	, error
 	, fatal
 };
+const std::array<severity_level, 6>severity_levels = {
+	  severity_level::trace
+	, severity_level::debug
+	, severity_level::info
+	, severity_level::warning
+	, severity_level::error
+	, severity_level::fatal
+};
+const ork::string&to_string(const severity_level);
+severity_level string2severity_level(const ork::string&);
 
 
 class log_stream {

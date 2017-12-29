@@ -18,6 +18,76 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+const ork::string debug_trace(ORK("debug_trace"));
+const ork::string output_data(ORK("output_data"));
+
+const ork::string&to_string(const log_channel val) {
+	switch(val) {
+	case log_channel::debug_trace:
+		return debug_trace;
+	case log_channel::output_data:
+		return output_data;
+	};
+	ORK_UNREACHABLE
+}
+log_channel string2log_channel(const ork::string&str) {
+	if(str == output_data) {
+		return log_channel::output_data;
+	}
+	if(str == output_data) {
+		return log_channel::output_data;
+	}
+	ORK_THROW(ORK("Invalid log_channel: ") << str);
+}
+
+
+const ork::string trace(ORK("trace"));
+const ork::string debug(ORK("debug"));
+const ork::string info(ORK("info"));
+const ork::string warning(ORK("warning"));
+const ork::string error(ORK("error"));
+const ork::string fatal(ORK("fatal"));
+
+const ork::string&to_string(const severity_level val) {
+	switch(val) {
+	case severity_level::trace:
+		return trace;
+	case severity_level::debug:
+		return debug;
+	case severity_level::info:
+		return info;
+	case severity_level::warning:
+		return warning;
+	case severity_level::error:
+		return error;
+	case severity_level::fatal:
+		return fatal;
+	};
+	ORK_UNREACHABLE
+}
+severity_level string2severity_level(const ork::string&str) {
+	if(str == trace) {
+		return severity_level::trace;
+	}
+	if(str == debug) {
+		return severity_level::debug;
+	}
+	if(str == info) {
+		return severity_level::info;
+	}
+	if(str == warning) {
+		return severity_level::warning;
+	}
+	if(str == error) {
+		return severity_level::error;
+	}
+	if(str == fatal) {
+		return severity_level::fatal;
+	}
+	ORK_THROW(ORK("Invalid severity_level: ") << str);
+}
+
+
 struct log_stream::impl {
 public:
 	std::unique_ptr<o_stream>stream;
