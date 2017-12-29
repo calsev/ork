@@ -2,7 +2,12 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#pragma once
+#ifdef ORK_LOG_HPP
+#	error This header can only be included from ork/ork.hpp!
+#endif
+
+#ifndef ORK_LOG_HPP
+#define ORK_LOG_HPP
 
 #ifndef ORK_ORK_HPP
 #	error This header can only be included from ork/ork.hpp!
@@ -73,3 +78,5 @@ ORK_ORK_EXT(logger&) g_log();
 #define ORK_LOC_BLOCK ORK("\n -- ") << ORK_FLOC << ORK(":\n -- ") << ORK_FUNC  << ORK("\n")
 
 }//namespace ork
+
+#endif ORK_LOG_HPP

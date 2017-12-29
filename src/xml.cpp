@@ -2,6 +2,13 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
+#include<fstream>
+#include<iostream>
+#include<sstream>
+
+#include"ork/ork.hpp"
+#include ORK_FILE_INCLUDE
+
 #include"ork/geometry.hpp"
 #include"ork/xml.hpp"
 
@@ -23,7 +30,7 @@ namespace xml {
 void export_file(const string&filename, const exportable&object, const string&root_node_name) {
 	pugi::xml_document doc;
 	object.export_xml(doc.append_child(root_node_name.c_str()));
-	ork::ensure_directory(filename);
+	file::ensure_directory(filename);
 	ORK_FILE_WRITE(filename);
 	doc.save(fout);
 }
