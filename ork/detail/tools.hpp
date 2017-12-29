@@ -2,7 +2,12 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#pragma once
+#ifdef ORK_TOOLS_HPP
+#	error This header can only be included from ork/ork.hpp!
+#endif
+
+#ifndef ORK_TOOLS_HPP
+#define ORK_TOOLS_HPP
 
 #ifndef ORK_ORK_HPP
 #	error This header can only be included from ork/ork.hpp!
@@ -232,3 +237,5 @@ The second inserts no code.
 #define ORK_MOVE_ONLY_5(TYPE,M1,M2,M3,M4,M5)	ORK_NO_COPY_(TYPE) ORK_MOVE_5_(TYPE,M1,M2,M3,M4,M5,ORK_EMPTY_)
 
 }//namespace ork
+
+#endif ORK_TOOLS_HPP

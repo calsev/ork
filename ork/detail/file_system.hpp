@@ -11,7 +11,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<array>
 #include<fstream>
 #include<sstream>
-#include"ork/detail/tools.hpp"
 
 #if ORK_STL_HAS_FILE
 
