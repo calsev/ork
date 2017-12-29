@@ -13,7 +13,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<deque>
 #include<string>
 #include<ostream>
-#include"ork/detail/text.hpp"
 
 #if ORK_MSC
 #pragma warning(push)

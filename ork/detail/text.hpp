@@ -2,7 +2,12 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#pragma once
+#ifdef ORK_TEXT_HPP
+#	error This header can only be included from ork/ork.hpp!
+#endif
+
+#ifndef ORK_TEXT_HPP
+#define ORK_TEXT_HPP
 
 #ifndef ORK_ORK_HPP
 #	error This header can only be included from ork/ork.hpp!
@@ -216,3 +221,5 @@ ORK_ORK_EXT(string_converter_type&) g_string_converter();
 #endif
 
 }//namespace ork
+
+#endif ORK_TEXT_HPP

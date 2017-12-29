@@ -38,8 +38,6 @@ It is getting a bit silly, and we might want to instead just have projects targe
 From database.hpp
 */
 
-
-
 bstring uuid2string(const char*const value) {
 	b_string_stream stream;
 	stream << std::hex;
