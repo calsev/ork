@@ -14,10 +14,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 
-#include<exception>
 #include<deque>
-#include<string>
-#include<ostream>
+
 
 #if ORK_MSC
 #pragma warning(push)
