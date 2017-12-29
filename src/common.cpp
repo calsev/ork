@@ -10,9 +10,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include"boost/algorithm/string.hpp"
 #include"boost/core/null_deleter.hpp"
-#include"boost/filesystem/path.hpp"
-#include"boost/filesystem/fstream.hpp"
-#include"boost/filesystem.hpp"
 #include"boost/log/expressions.hpp"
 #include"boost/log/sinks/sync_frontend.hpp"
 #include"boost/log/sinks/text_ostream_backend.hpp"
@@ -151,10 +148,10 @@ const char*const utf8_bom_str = reinterpret_cast<char*>(utf8_bom_.data());//Rein
 
 
 bool test_directory(const file::path&file_or_directory) {
-	return file::exists(file_or_directory) && file::is_directory(file_or_directory);
+	return ext_file::exists(file_or_directory) && ext_file::is_directory(file_or_directory);
 }
 bool test_file(const file::path&file) {
-	return file::exists(file) && file::is_regular_file(file);
+	return ext_file::exists(file) && ext_file::is_regular_file(file);
 }
 bool ensure_directory(file::path file_or_directory) {
 	file_or_directory.make_preferred();//Remove remove_filename and remove_trailing_separator have problems with mixed slashes
@@ -169,18 +166,18 @@ bool ensure_directory(file::path file_or_directory) {
 	}
 	file_or_directory.remove_trailing_separator();
 	if(file_or_directory.empty()) {
-		return true;//The path ws a file in the current directory
+		return true;//The path was a file in the current directory
 	}
 	if(test_directory(file_or_directory)) {
 		return true;
 	}
-	return file::create_directories(file_or_directory);
+	return ext_file::create_directories(file_or_directory);
 }
 bool ensure_file(const file::path&file) {
 	if(!ensure_directory(file))return false;
-	if(file.empty() || file::exists(file))return true;
-	if(!file::is_regular_file(file))return false;
-	return file::create_directories(file);
+	if(file.empty() || ext_file::exists(file))return true;
+	if(!ext_file::is_regular_file(file))return false;
+	return ext_file::create_directories(file);
 }
 
 
@@ -205,11 +202,11 @@ bool top_subdirectory(const file::path&dir, file::path&p) {
 
 	//Create a list of the paths in the directory, and then sort it
 	std::vector<file::path>paths;
-	std::copy(file::directory_iterator(dir), file::directory_iterator(), std::back_inserter(paths));
+	std::copy(ext_file::directory_iterator(dir), ext_file::directory_iterator(), std::back_inserter(paths));
 	std::sort(paths.begin(), paths.end());
 
 	for(const file::path&curr_path : paths) {
-		if(file::is_directory(curr_path)) {
+		if(ext_file::is_directory(curr_path)) {
 			p = curr_path;
 			return true;
 		}
@@ -411,6 +408,50 @@ logger& g_log() {
 /*
 From text.hpp
 */
+
+
+struct string_converter_type::impl {
+public:
+	typedef std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>string_converter;
+	typedef std::mutex mutex_type;
+	typedef std::lock_guard<mutex_type>lock_type;
+public:
+	impl() {}
+public:
+	string_converter converter;
+	std::mutex mutex;
+};
+
+
+string_converter_type::string_converter_type() : _pimpl{ new impl{} } {}
+string_converter_type::~string_converter_type() {}
+
+bstring string_converter_type::to_bytes(const wchar_t s) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(s);
+}
+bstring string_converter_type::to_bytes(const wchar_t*s) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(s);
+}
+bstring string_converter_type::to_bytes(const wstring&s) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(s);
+}
+bstring string_converter_type::to_bytes(const wchar_t*first, const wchar_t*last) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.to_bytes(first, last);
+}
+
+wstring string_converter_type::from_bytes(const char s) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(s);
+}
+wstring string_converter_type::from_bytes(const char*s) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(s);
+}
+wstring string_converter_type::from_bytes(const bstring&s) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(s);
+}
+wstring string_converter_type::from_bytes(const char*first, const char*last) {
+	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(first, last);
+}
+
 
 string_converter_type&g_string_converter() {//From string_types.hpp
 	static string_converter_type s_convert;

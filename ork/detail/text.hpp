@@ -9,13 +9,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 
+#include<memory>
 #include<string>
-#include<sstream>
-#include<iostream>
-#include<codecvt>
-#include<mutex>
-
-
 #if !ORK_MSC
 #	include"boost/current_function.hpp"
 #endif
@@ -192,38 +187,22 @@ typedef std::istringstream bi_string_stream;
 
 class string_converter_type {//Just a thread-safe wrapper for std::wstring_convert
 private:
-	typedef std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>string_converter;
-	typedef std::mutex mutex_type;
-	typedef std::lock_guard<mutex_type>lock_type;
+	struct impl;
 private:
-	string_converter m_converter;
-	std::mutex m_mutex;
+	std::unique_ptr<impl>_pimpl;
 public:
-	ORK_ORK_API bstring to_bytes(const wchar_t s) {
-		lock_type lock(m_mutex); return m_converter.to_bytes(s);
-	}
-	ORK_ORK_API bstring to_bytes(const wchar_t*s) {
-		lock_type lock(m_mutex); return m_converter.to_bytes(s);
-	}
-	ORK_ORK_API bstring to_bytes(const wstring&s) {
-		lock_type lock(m_mutex); return m_converter.to_bytes(s);
-	}
-	ORK_ORK_API bstring to_bytes(const wchar_t*first, const wchar_t*last) {
-		lock_type lock(m_mutex); return m_converter.to_bytes(first, last);
-	}
+	string_converter_type();
+	~string_converter_type();
+public:
+	ORK_ORK_API bstring to_bytes(const wchar_t s);
+	ORK_ORK_API bstring to_bytes(const wchar_t*s);
+	ORK_ORK_API bstring to_bytes(const wstring&s);
+	ORK_ORK_API bstring to_bytes(const wchar_t*first, const wchar_t*last);
 
-	ORK_ORK_API wstring from_bytes(const char s) {
-		lock_type lock(m_mutex); return m_converter.from_bytes(s);
-	}
-	ORK_ORK_API wstring from_bytes(const char*s) {
-		lock_type lock(m_mutex); return m_converter.from_bytes(s);
-	}
-	ORK_ORK_API wstring from_bytes(const bstring&s) {
-		lock_type lock(m_mutex); return m_converter.from_bytes(s);
-	}
-	ORK_ORK_API wstring from_bytes(const char*first, const char*last) {
-		lock_type lock(m_mutex); return m_converter.from_bytes(first, last);
-	}
+	ORK_ORK_API wstring from_bytes(const char s);
+	ORK_ORK_API wstring from_bytes(const char*s);
+	ORK_ORK_API wstring from_bytes(const bstring&s);
+	ORK_ORK_API wstring from_bytes(const char*first, const char*last);
 };
 ORK_ORK_EXT(string_converter_type&) g_string_converter();
 
