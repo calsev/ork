@@ -17,6 +17,57 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 namespace ork {
 
+
+struct log_stream::impl {
+};
+
+log_stream::log_stream() : _pimpl {new impl()} {}
+log_stream::~log_stream() {}
+
+log_stream& log_stream::operator<< (bool val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (short val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (unsigned short val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (int val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (unsigned int val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (long val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (unsigned long val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (long long val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (unsigned long long val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (float val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (double val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (long double val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (void* val) {
+	return *this;
+}
+log_stream& log_stream::operator<< (std::streambuf* sb) {
+	return *this;
+}
+
+
 o_stream&operator<<(o_stream&strm, log_channel chan) {
 	static const char_t* strings[] = {
 		ORK("Debug/Trace")

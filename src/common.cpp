@@ -20,12 +20,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 namespace ork {
 
-/*
-This is the combined implementation file for the common library.
-We do it this way because the library is compiled for VS2012 also, and we want it to be easy to include in a project.
-It is getting a bit silly, and we might want to instead just have projects targeting different platforms.
-*/
-
 
 /*
 From database.hpp

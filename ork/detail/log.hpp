@@ -38,6 +38,33 @@ enum class severity_level {
 };
 
 
+class log_stream {
+private:
+	struct impl;
+private:
+	std::unique_ptr<impl>_pimpl;
+public:
+	ORK_ORK_API log_stream();
+	ORK_ORK_API ~log_stream();
+public:
+	ORK_ORK_API log_stream& operator<< (bool val);
+	ORK_ORK_API log_stream& operator<< (short val);
+	ORK_ORK_API log_stream& operator<< (unsigned short val);
+	ORK_ORK_API log_stream& operator<< (int val);
+	ORK_ORK_API log_stream& operator<< (unsigned int val);
+	ORK_ORK_API log_stream& operator<< (long val);
+	ORK_ORK_API log_stream& operator<< (unsigned long val);
+	ORK_ORK_API log_stream& operator<< (long long val);
+	ORK_ORK_API log_stream& operator<< (unsigned long long val);
+	ORK_ORK_API log_stream& operator<< (float val);
+	ORK_ORK_API log_stream& operator<< (double val);
+	ORK_ORK_API log_stream& operator<< (long double val);
+	ORK_ORK_API log_stream& operator<< (void* val);
+
+	ORK_ORK_API log_stream& operator<< (std::streambuf* sb);
+};
+
+
 class logger {
 public:
 #if ORK_UNICODE
