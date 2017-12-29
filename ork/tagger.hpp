@@ -39,23 +39,20 @@ public:
 //We use this class to generate setup paths so that downstream can use the exact same logic
 class setup_hierarchy {
 private:
-	string _setup_directory;
-	bool _cached;
-	unsigned _score;
-	std::vector<orientation>_setups;
+	struct impl;
+private:
+	std::unique_ptr<impl>_pimpl;
 public:
 	ORK_ORK_API setup_hierarchy(const string&setup_root, const string&as_is_path, const string&to_be_path);
 public:
-	ORK_INLINE const string&get_path() {
-		return _setup_directory;
-	}
+	ORK_ORK_API const string&get_path();
 	ORK_ORK_API file::path get_subdirectory();
 	ORK_ORK_API file::path get_subdirectory(const string&exact_setups);
 public:
 	ORK_ORK_API const std::vector<orientation>&get_setups();
 	ORK_ORK_API const std::vector<orientation>&get_setups(const string&exact_setups);
 private:
-	const std::vector<orientation>&do_get_setups(const string&setup_dir);
+	ORK_ORK_API const std::vector<orientation>&do_get_setups(const string&setup_dir);
 };
 
 }//namespace ork
