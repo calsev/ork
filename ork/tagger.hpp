@@ -4,10 +4,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 
-#include<atomic>
-#include<string>
-#include<mutex>
-#include"ork/orientation.hpp"
+#include"ork/ork.hpp"
 
 
 namespace ork {
@@ -16,16 +13,15 @@ namespace ork {
 //We might make a global environment with in the future, but for now we use a static to set the root directory
 class tagger {
 private:
-	static file::path _debug_root;//Global guarded by mutex
-	static std::mutex _mutex;
-	std::atomic<unsigned>_count;//Local static
-	const bool _number_folder;//Local static constant
-	const string _tag;//Local static constant
+	struct impl;
+private:
+	std::unique_ptr<impl>_pimpl;
 public:
 	ORK_ORK_API static string sub_tag(const string&tag, size_t&index);
 public:
-	ORK_INLINE explicit tagger(const string&tag) :_count(0), _number_folder(true), _tag(tag) {}
-	ORK_INLINE tagger(const string&tag, bool numbered_folders) :_count(0), _number_folder(numbered_folders), _tag(tag) {}
+	ORK_ORK_API explicit tagger(const string&tag);
+	ORK_ORK_API tagger(const string&tag, bool numbered_folders);
+	ORK_ORK_API ~tagger();
 	ORK_NON_COPYABLE(tagger)
 public:
 	ORK_ORK_API static void set_debug_root(const string&directory);
@@ -33,6 +29,9 @@ public:
 	ORK_ORK_API string operator()();//Fetch instance tag
 	ORK_ORK_API unsigned count();//The number of times this has been invoked
 };
+
+
+enum class orientation;
 
 
 //TODO: This is not reusable code, push down to project

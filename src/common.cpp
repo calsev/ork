@@ -8,11 +8,13 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma warning(disable : 4244) //Narrowing conversion (boost)
 #endif
 
-#include"boost/algorithm/string.hpp"
+#include<mutex>
 
 #include"ork/command_line.hpp"
 #include"ork/tagger.hpp"
 #include"ork/file_utils.hpp"
+
+#include"boost/algorithm/string.hpp"
 
 #define NOMINMAX
 #include"windows.h"

@@ -2,19 +2,64 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#include<string>
+#include<atomic>
+#include<mutex>
 #include<sstream>
+#include<string>
+
 #include"boost/lexical_cast.hpp"
 
 #include"ork/file_utils.hpp"
+#include"ork/orientation.hpp"
 #include"ork/tagger.hpp"
 
 
 namespace ork {
 
 
-file::path tagger::_debug_root(ORK("./debug"));
-std::mutex tagger::_mutex;
+class tagger_statics {
+private:
+	file::path _debug_root = { ORK("./debug") };//Global guarded by mutex
+	std::mutex _mutex = { };
+public:
+	file::path debug_root() {
+		std::lock_guard<std::mutex> lock(_mutex);
+		return _debug_root;
+	}
+	void set_debug_root(const file::path&directory) {
+		std::lock_guard<std::mutex> lock(_mutex);
+		_debug_root = directory;
+	}
+};
+tagger_statics&g_tagger_statics() {
+	static tagger_statics statics;
+	return statics;
+}
+
+
+struct tagger::impl {
+public:
+	std::atomic<unsigned>count;//Local static
+	const bool number_folder;//Local static constant
+	const string tag;//Local static constant
+public:
+	impl(const string&tag) 
+		: count(0)
+		, number_folder(true)
+		, tag(tag) 
+	{}
+	impl(const string&tag, const bool numbered_folders) 
+		: count(0)
+		, number_folder(numbered_folders)
+		, tag(tag) 
+	{}
+};
+
+
+tagger::tagger(const string&tag) : _pimpl{ new impl(tag) } {}
+tagger::tagger(const string&tag, bool numbered_folders) : _pimpl{ new impl(tag, numbered_folders) } {}
+tagger::~tagger() {}
+
 
 string tagger::sub_tag(const string&tag, size_t&index) {
 	string_stream stream;
@@ -24,34 +69,32 @@ string tagger::sub_tag(const string&tag, size_t&index) {
 
 string tagger::operator()() {
 	string_stream stream;
-	file::path p(_debug_root);
-	if(_number_folder) {
-		stream << _tag << ORK("_") << _count++ << ORK("/");
+	file::path p(g_tagger_statics().debug_root());
+	if(_pimpl->number_folder) {
+		stream << _pimpl->tag << ORK("_") << _pimpl->count++ << ORK("/");
 		p /= stream.str();
 		return p.ORK_GEN_STR();
 	}
 	else {
-		stream << _tag << ORK("/");
+		stream << _pimpl->tag << ORK("/");
 		p /= stream.str();
-		return p.ORK_GEN_STR() + boost::lexical_cast<string>(_count++) + ORK("_");
+		return p.ORK_GEN_STR() + boost::lexical_cast<string>(_pimpl->count++) + ORK("_");
 	}
 }
 
 unsigned tagger::count() {
-	return _count.load();
+	return _pimpl->count.load();
 }
 
 void tagger::set_debug_root(const string&directory) {
-	std::lock_guard<std::mutex> lock(_mutex);
-	_debug_root = directory;
+	g_tagger_statics().set_debug_root(directory);
 }
 
 void tagger::set_debug_root(const string&as_is_path, const string&to_be_path) {
 	file::path directory(ORK("./debug/"));
 	directory /= file::path(as_is_path).stem();
 	directory /= file::path(to_be_path).stem();
-	std::lock_guard<std::mutex> lock(_mutex);
-	_debug_root = directory.ORK_GEN_STR() + ORK("/");;
+	g_tagger_statics().set_debug_root(directory.ORK_GEN_STR() + ORK("/"));
 }
 
 
