@@ -14,15 +14,53 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/detail/exception.hpp"
 #include"ork/detail/tools.hpp"
 
+#if ORK_STL_HAS_FILE
+
+#define ORK_FILE_INCLUDE <filesystem>
+
+namespace std {
+namespace experimental {
+namespace filesystem {
+inline namespace v1 {
+class path;
+}//namespace v1
+}//namespace filesystem
+}//namespace experimental
+}//namespace std
 
 namespace ork {
+namespace ext_file = std::experimental::filesystem::v1;
+}//namespace ork
 
+#else
+
+//Some boost configuration here
+#define BOOST_SYSTEM_NO_DEPRECATED 1
+#define BOOST_FILESYSTEM_NO_DEPRECATED 1
+#define ORK_FILE_INCLUDE "boost/filesystem"
+
+namespace boost {
+namespace filesystem {
+class path;
+bool exists(const path&);
+}//namespace filesystem
+}//namespace boost
+
+namespace ork {
+namespace ext_file = boost:filesystem;
+}//namespace ork
+
+#endif
+
+
+namespace ork {
+namespace file {
+
+//Forward declaration to keep boost out of headers
+using path = ext_file::path;
 
 ORK_ORK_EXTERN std::array<uint8_t, 3>utf8_bom;
 ORK_ORK_EXTERN const char*const utf8_bom_str;
-
-//Forward declaration to keep boost out of headers
-class file::path;
 
 
 ORK_ORK_EXT(bool) test_directory(const file::path&file_or_directory);
@@ -50,4 +88,5 @@ ORK_ORK_EXT(bool) ensure_file(const file::path&file);
 	ORK_FILE_READ(FILE_NAME)\
 	fin.unsetf(std::ios::skipws);
 
+}//namespace file
 }//namespace ork

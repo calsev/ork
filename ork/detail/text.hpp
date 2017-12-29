@@ -35,24 +35,34 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 
-#if ORK_STL_HAS_FILE
-#   include<experimental/filesystem>
-	namespace ork {
-		namespace file = std::experimental::filesystem::v1;
-	}//namespace ork
-#else
-	//Some boost configuration here
-#   define BOOST_SYSTEM_NO_DEPRECATED 1
-#   define BOOST_FILESYSTEM_NO_DEPRECATED 1
-#   include"boost/filesystem/fstream.hpp"
-	namespace ork {
-		namespace file = boost::filesystem;
-	}//namespace ork
-#endif
-
-
 //Forward declaration to keep boost out of headers
-namespace file {
+#if ORK_STL_HAS_FILE
+
+#include<iosfwd>
+
+namespace ork {
+namespace detail {
+namespace fstream {
+
+using wofstream = std::wofstream;
+using wifstream = std::wifstream;
+using wfstream = std::wfstream;
+using ofstream = std::ofstream;
+using ifstream = std::ifstream;
+using fstream = std::fstream;
+
+}//namespace fstream
+}//namespace detail
+}//namespace ork
+
+#else
+
+//Some boost configuration here
+#define BOOST_SYSTEM_NO_DEPRECATED 1
+#define BOOST_FILESYSTEM_NO_DEPRECATED 1
+
+namespace boost {
+namespace filesystem {
 
 class wofstream;
 class wifstream;
@@ -61,7 +71,26 @@ class ofstream;
 class ifstream;
 class fstream;
 
-}//namespace file
+}//filesystem
+}//boost
+
+
+namespace ork {
+namespace detail {
+namespace fstream {
+
+using wofstream = boost::filesystem::wofstream;
+using wifstream = boost::filesystem::wifstream;
+using wfstream = boost::filesystem::wfstream;
+using ofstream = boost::filesystem::ofstream;
+using ifstream = boost::filesystem::ifstream;
+using fstream = boost::filesystem::fstream;
+
+}//namespace fstream
+}//namespace detail
+}//namespace ork
+
+#endif
 
 
 namespace ork {
@@ -147,15 +176,15 @@ typedef std::istringstream bi_string_stream;
 
 
 #if ORK_UNICODE
-	typedef file::wofstream of_stream;
-	typedef file::wifstream if_stream;
-	typedef file::wfstream f_stream;
+	typedef detail::fstream::wofstream of_stream;
+	typedef detail::fstream::wifstream if_stream;
+	typedef detail::fstream::wfstream f_stream;
 	#define ORK_GEN_STR generic_wstring
 	#define ORK_STRING wstring
 #else
-	typedef file::ofstream of_stream;
-	typedef file::ifstream if_stream;
-	typedef file::fstream f_stream;
+	typedef detail::fstream::ofstream of_stream;
+	typedef detail::fstream::ifstream if_stream;
+	typedef detail::fstream::fstream f_stream;
 	#define ORK_GEN_STR generic_string
 	#define ORK_STRING string
 #endif
