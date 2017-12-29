@@ -3,7 +3,9 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-#include"ork/glm.hpp"
+#include"ork/memory.hpp"
+#include"glm/fwd.hpp"
+
 
 namespace pugi {
 class xml_document;
@@ -36,19 +38,25 @@ ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&xml);//Just cr
 
 class vector : public exportable {
 private:
-	glm::dvec3 _data;
+	struct impl;
+	struct deleter {
+		void operator()(const impl*);
+		vector::impl operator()(const vector::impl&);
+	};
+private:
+	value_ptr<impl, deleter>_pimpl;
 public:
-	ORK_INLINE vector() : _data() {}
-	/*implicit*/ORK_INLINE vector(const glm::dvec3&vec) : _data(vec) {}
-	/*implicit*/ORK_INLINE vector(const GLM::dunit3&vec) : _data(vec.get()) {}
-	ORK_INLINE vector(const double x, const double y, const double z) : _data(x, y, z) {}
+	ORK_ORK_API vector();
+	ORK_ORK_API explicit vector(const glm::dvec3&vec);
+	ORK_ORK_API explicit vector(const GLM::dunit3&vec);
+	ORK_ORK_API vector(const double x, const double y, const double z);
+#if ORK_USE_PUGI
 	ORK_ORK_API explicit vector(pugi::xml_node &node);
+#endif
 public:
 	ORK_ORK_API vector&operator=(const glm::dvec3&);
 	ORK_ORK_API vector&operator=(const GLM::dunit3&);
 public:
-	ORK_ORK_API string as_string() const;
-
 	ORK_ORK_API double&x();
 	ORK_ORK_API const double&x()const;
 
@@ -62,16 +70,16 @@ public:
 	ORK_ORK_API const glm::dvec3&get()const;
 
 	ORK_ORK_API bool operator == (const vector &other) const;
-	ORK_INLINE bool operator != (const vector &other) const {
-		return !(*this == other);
-	}
+	ORK_ORK_API bool operator != (const vector &other) const;
+
+	ORK_ORK_API string as_string() const;
+#if ORK_USE_PUGI
 	ORK_ORK_API virtual void export_xml(pugi::xml_node &n) const;
+#endif
 };
 
 
-ORK_INLINE o_stream &operator << (o_stream&stream, const ork::xml::vector &vec) {
-	return stream << vec.as_string();
-}
+ORK_ORK_API o_stream &operator << (o_stream&stream, const ork::xml::vector &vec);
 
 
 #endif//ORK_USE_GLM
