@@ -213,15 +213,15 @@ ORK_ORK_EXT(string_converter_type&) g_string_converter();
 
 
 #if ORK_UNICODE
-#	define ORK_STR_2_BYTE(ORK_STRING) ork::g_string_converter().to_bytes(ORK_STRING)
+#	define ORK_STR_2_BYTE(ORK_STRING) ork::g_string_converter().wide2byte(ORK_STRING)
 #	define ORK_STR_2_WIDE(ORK_STRING) ORK_STRING
-#	define ORK_BYTE_2_STR(ORK_STRING) ork::g_string_converter().from_bytes(ORK_STRING)
+#	define ORK_BYTE_2_STR(ORK_STRING) ork::g_string_converter().byte2wide(ORK_STRING)
 #	define ORK_WIDE_2_STR(ORK_STRING) ORK_STRING
 #else
 #	define ORK_STR_2_BYTE(ORK_STRING) ORK_STRING
-#	define ORK_STR_2_WIDE(ORK_STRING) ork::g_string_converter().from_bytes(ORK_STRING)
+#	define ORK_STR_2_WIDE(ORK_STRING) ork::g_string_converter().byte2wide(ORK_STRING)
 #	define ORK_BYTE_2_STR(ORK_STRING) ORK_STRING
-#	define ORK_WIDE_2_STR(ORK_STRING) ork::g_string_converter().to_bytes(ORK_STRING)
+#	define ORK_WIDE_2_STR(ORK_STRING) ork::g_string_converter().wide2byte(ORK_STRING)
 #endif
 
 }//namespace ork

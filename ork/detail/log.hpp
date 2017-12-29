@@ -47,18 +47,18 @@ public:
 	ORK_ORK_API log_stream(std::unique_ptr<o_stream>&&);
 	ORK_ORK_API ~log_stream();
 public:
-	ORK_ORK_API log_stream& operator<< (bool val);
-	ORK_ORK_API log_stream& operator<< (short val);
-	ORK_ORK_API log_stream& operator<< (unsigned short val);
-	ORK_ORK_API log_stream& operator<< (int val);
-	ORK_ORK_API log_stream& operator<< (unsigned int val);
-	ORK_ORK_API log_stream& operator<< (long val);
-	ORK_ORK_API log_stream& operator<< (unsigned long val);
-	ORK_ORK_API log_stream& operator<< (long long val);
-	ORK_ORK_API log_stream& operator<< (unsigned long long val);
-	ORK_ORK_API log_stream& operator<< (float val);
-	ORK_ORK_API log_stream& operator<< (double val);
-	ORK_ORK_API log_stream& operator<< (long double val);
+	ORK_ORK_API log_stream& operator<< (const bool val);
+	ORK_ORK_API log_stream& operator<< (const short val);
+	ORK_ORK_API log_stream& operator<< (const unsigned short val);
+	ORK_ORK_API log_stream& operator<< (const int val);
+	ORK_ORK_API log_stream& operator<< (const unsigned int val);
+	ORK_ORK_API log_stream& operator<< (const long val);
+	ORK_ORK_API log_stream& operator<< (const unsigned long val);
+	ORK_ORK_API log_stream& operator<< (const long long val);
+	ORK_ORK_API log_stream& operator<< (const unsigned long long val);
+	ORK_ORK_API log_stream& operator<< (const float val);
+	ORK_ORK_API log_stream& operator<< (const double val);
+	ORK_ORK_API log_stream& operator<< (const long double val);
 
 	ORK_ORK_API log_stream& operator<< (const char);
 	ORK_ORK_API log_stream& operator<< (const wchar_t);
@@ -67,9 +67,9 @@ public:
 	ORK_ORK_API log_stream& operator<< (const bstring&);
 	ORK_ORK_API log_stream& operator<< (const wstring&);
 	
-	ORK_ORK_API log_stream& operator<< (void* val);
+	ORK_ORK_API log_stream& operator<< (const void* val);
 
-	ORK_ORK_API log_stream& operator<< (std::streambuf* sb);
+	ORK_ORK_API log_stream& operator<< (const std::streambuf* sb);
 
 	ORK_ORK_API log_stream& operator<< (std::ostream& (*pf)(std::ostream&));
 	ORK_ORK_API log_stream& operator<< (std::ios& (*pf)(std::ios&));

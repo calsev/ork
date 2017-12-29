@@ -46,6 +46,7 @@ LOG_STREAM_OPERATOR(float)
 LOG_STREAM_OPERATOR(double)
 LOG_STREAM_OPERATOR(long double)
 
+#undef LOG_STREAM_OPERATOR
 #define LOG_STREAM_OPERATOR(TYPE) \
 log_stream& log_stream::operator<< (const TYPE val) {\
 	*(_pimpl->stream) << ORK_BYTE_2_STR(val);\
@@ -56,6 +57,7 @@ LOG_STREAM_OPERATOR(char)
 LOG_STREAM_OPERATOR(char*)
 LOG_STREAM_OPERATOR(bstring&)
 
+#undef LOG_STREAM_OPERATOR
 #define LOG_STREAM_OPERATOR(TYPE) \
 log_stream& log_stream::operator<< (const TYPE val) {\
 	*(_pimpl->stream) << ORK_WIDE_2_STR(val);\
@@ -67,18 +69,23 @@ LOG_STREAM_OPERATOR(wchar_t*)
 LOG_STREAM_OPERATOR(wstring&)
 
 log_stream& log_stream::operator<< (const void* val) {
+	*(_pimpl->stream) << val;
 	return *this;
 }
 log_stream& log_stream::operator<< (const std::streambuf* sb) {
+	*(_pimpl->stream) << sb;
 	return *this;
 }
-log_stream& log_stream::operator<< (std::ostream& (const *pf)(std::ostream&)) {
+log_stream& log_stream::operator<< (std::ostream& (*pf)(std::ostream&)) {
+	*(_pimpl->stream) << pf;
 	return *this;
 }
-log_stream& log_stream::operator<< (std::ios& (const *pf)(std::ios&)) {
+log_stream& log_stream::operator<< (std::ios& (*pf)(std::ios&)) {
+	*(_pimpl->stream) << pf;
 	return *this;
 }
-log_stream& log_stream::operator<< (std::ios_base& (const *pf)(std::ios_base&)) {
+log_stream& log_stream::operator<< (std::ios_base& (*pf)(std::ios_base&)) {
+	*(_pimpl->stream) << pf;
 	return *this;
 }
 
