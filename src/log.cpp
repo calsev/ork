@@ -90,17 +90,15 @@ severity_level string2severity_level(const ork::string&str) {
 }
 
 
-//This is little more than a synchronous wrapper for an ostream
-template<class D>
-class log_sink {
+//This is little more than a synchronous wrapper around an o_stream
+class log_stream {
 public:
-	using stream_ptr = std::unique_ptr<o_stream, D>;
+	using stream_ptr = std::shared_ptr<o_stream>;
 private:
-	std::unique_ptr<o_stream, D>_stream;
+	stream_ptr _stream;
 	std::mutex _mutex;
 public:
-	log_sink(std::unique_ptr<o_stream, D>&&stream_) : _stream{ std::move(stream_) }, _mutex{ } {}
-	ORK_MOVE_ONLY(log_sink)
+	log_stream(stream_ptr&stream_) : _stream{stream_}, _mutex{} {}
 public:
 	void log(const string&message) {
 		std::lock_guard<std::mutex>lock(_mutex);
@@ -109,7 +107,24 @@ public:
 };
 
 
-std::unique_ptr<o_stream, default_deleter<o_stream>>open_file_log_stream(const file::path&file_name) {
+class log_sink {
+public:
+	using stream_ptr = std::shared_ptr<log_stream>;
+private:
+	std::vector<stream_ptr>_streams = {};
+public:
+	void insert(const stream_ptr&ptr) {
+		_streams.push_back(ptr);
+	}
+	void log(const string&message) {
+		for(auto&stream : _streams) {
+			stream->log(message);
+		}
+	}
+};
+
+
+std::shared_ptr<log_stream>open_file_log_stream(const file::path&file_name) {
 	if(!file::ensure_directory(file_name)) {
 		ORK_THROW(ORK("Could not create directory : ") << file_name.ORK_GEN_STR())
 	}
@@ -119,62 +134,55 @@ std::unique_ptr<o_stream, default_deleter<o_stream>>open_file_log_stream(const f
 		ORK_THROW(ORK("Error opening log : ") << file_name)
 	}
 	//p_stream->rdbuf()->pubsetbuf(0, 0);//Less performance, more likely to catch error messages
-	return std::unique_ptr<o_stream, default_deleter<o_stream>>(p_stream);
+	return std::shared_ptr<log_stream>(new log_stream(log_stream::stream_ptr(p_stream)));
 }
 
 
 //This is where our logging system falls short of a generic system; try to hide it somewhat in one place
 class log_multiplexer {
 private:
-	using local_sink = log_sink<default_deleter<o_stream>>;
-	using global_sink = log_sink<singleton_deleter<o_stream>>;
-	using global_ptr = std::unique_ptr<global_sink>;
-private:
-	std::array<global_ptr, severity_levels.size()>_severity_console_sinks;
-	local_sink _severity_file_sink;
-	global_sink _data_console_sink;
-	local_sink _data_file_sink;
+	std::array<log_sink, severity_levels.size()>_severity_sinks = {};
+	log_sink _data_sink = {};
 public:
-	log_multiplexer(const file::path&directory)
-		: _severity_console_sinks{ }
-		, _severity_file_sink{ open_file_log_stream(directory / ORK("trace.log")) }
-		, _data_console_sink{ global_sink::stream_ptr{ &ORK_COUT } }
-		, _data_file_sink{ open_file_log_stream(directory / ORK("output.log")) }
-	{
+	log_multiplexer(const file::path&root_directory){
+		auto lout = log_sink::stream_ptr{&ORK_CLOG, singleton_deleter<o_stream>()};
+		auto lerr = log_sink::stream_ptr{&ORK_CERR, singleton_deleter<o_stream>()};
+		auto flog = open_file_log_stream(root_directory / ORK("trace.log"));
+		auto fdata = open_file_log_stream(root_directory / ORK("output.log"));
+
 		for(const auto sv : severity_levels) {
+			auto sink = _severity_sinks[static_cast<size_t>(sv)];
 			if(sv < severity_level::error) {
-				_severity_console_sinks[static_cast<size_t>(sv)].reset(new global_sink{ global_sink::stream_ptr{ &ORK_COUT } });
+				sink.insert(lout);
 			}
 			else {
-				_severity_console_sinks[static_cast<size_t>(sv)].reset(new global_sink{ global_sink::stream_ptr{ &ORK_CERR } });
+				sink.insert(lerr);
 			}
-			
+			sink.insert(flog);
 		}
+		_data_sink.insert(lout);
+		_data_sink.insert(fdata);
 	}
 public:
-	void log(const log_channel channel, const severity_level severity, const string_stream&stream) {
+	void log(const log_channel channel, const severity_level severity, const o_string_stream&stream) {
+		const string message = stream.str();
 		switch(channel) {
 		case log_channel::debug_trace:
-			log_severity(severity, stream);
+			_severity_sinks[static_cast<size_t>(severity)].log(message);
 			break;
 		case log_channel::output_data:
-			log_data(stream);
+			_data_sink.log(stream.str());
 			break;
 		};
 		ORK_UNREACHABLE
 	}
-private:
-	void log_severity(const severity_level severity, const string_stream&stream) {
-		const string message = stream.str();
-		_severity_console_sinks[static_cast<size_t>(severity)]->log(message);
-		_severity_file_sink.log(message);
-	}
-	void log_data(const string_stream&stream) {
-		const string message = stream.str();
-		_data_console_sink.log(message);
-		_data_file_sink.log(stream.str());
-	}
 };
+
+
+log_multiplexer&g_log_multiplexer() {
+	static log_multiplexer it(g_ork_log->root_directory());
+	return it;
+}
 
 
 struct log_scope::impl {
