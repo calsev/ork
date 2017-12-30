@@ -99,8 +99,10 @@ template<typename T>
 ORK_INLINE ORK_CONSTEXPR T precision() {
 #if ORK_USE_ACIS
 	return (static_cast<epsilon_type<double>::type>(0x1) << 4) * std::numeric_limits<T>::epsilon();
-#else//OCC
+#elif ORK_USE_OCC
 	return (static_cast<epsilon_type<double>::type>(0x1) << 10) * std::numeric_limits<T>::epsilon();
+#else
+	return (static_cast<epsilon_type<double>::type>(0x1) << 8) * std::numeric_limits<T>::epsilon();
 #endif
 	
 }
