@@ -2,21 +2,59 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
+#include<algorithm>
 #include<cstring>
 #include<cwchar>
 #include<sstream>
-#include"boost/algorithm/string.hpp"
 #include"ork/string_utils.hpp"
 
 
 namespace ork {
 
 
+void to_lower(bstring&str) {
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+void to_lower(wstring&str) {
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+
+void to_upper(bstring&str) {
+	std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+}
+void to_upper(wstring&str) {
+	std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+}
+
+
+bstring to_lower_copy(const bstring&str) {
+	bstring retval(str);
+	std::transform(retval.begin(), retval.end(), retval.begin(), ::tolower);
+	return retval;
+}
+wstring to_lower_copy(const wstring&str) {
+	wstring retval(str);
+	std::transform(retval.begin(), retval.end(), retval.begin(), ::tolower);
+	return retval;
+}
+
+bstring to_upper_copy(const bstring&str) {
+	bstring retval(str);
+	std::transform(retval.begin(), retval.end(), retval.begin(), ::toupper);
+	return retval;
+}
+wstring to_upper_copy(const wstring&str) {
+	wstring retval(str);
+	std::transform(retval.begin(), retval.end(), retval.begin(), ::toupper);
+	return retval;
+}
+
+
 string to_string(const bool val) {
 	return val ? ORK("true") : ORK("false");
 }
 bool string2bool(const string&val_) {
-	const string val = boost::to_lower_copy(val);
+	const string val = to_lower_copy(val_);
 	if (val == ORK("t"))return true;
 	if (val == ORK("true"))return true;
 	if (val == ORK("y"))return true;
@@ -173,6 +211,9 @@ void encode_bytes(const size_t byte_index, std::array<unsigned char, 3>&buf3byte
 
 
 bstring encode(const unsigned char*str, const size_t size, const encoding enc) {
+	if(enc != encoding::base_64) {
+		ORK_THROW(ORK("A new encoding!"));
+	}
 	bstring retval;
 	size_t byte_index = 0;//Rolls over every 3
 	std::array<unsigned char, 3>buf3bytes = {0, 0, 0};//Holds the current bytes (3 per 4-character set)

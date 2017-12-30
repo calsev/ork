@@ -9,6 +9,17 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+ORK_ORK_EXT(void) to_lower(bstring&);
+ORK_ORK_EXT(void) to_lower(wstring&);
+ORK_ORK_EXT(void) to_upper(bstring&);
+ORK_ORK_EXT(void) to_upper(wstring&);
+
+ORK_ORK_EXT(bstring) to_lower_copy(const bstring&);
+ORK_ORK_EXT(wstring) to_lower_copy(const wstring&);
+ORK_ORK_EXT(bstring) to_upper_copy(const bstring&);
+ORK_ORK_EXT(wstring) to_upper_copy(const wstring&);
+
+
 ORK_ORK_EXT(string) to_string(const bool val);
 ORK_ORK_EXT(bool) string2bool(const string&val);
 
