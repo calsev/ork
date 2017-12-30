@@ -13,6 +13,8 @@ ORK_GLOBAL_LOG(ORK("../Logs"))
 using namespace ork;
 
 TEST_CASE("Strings are encoded", "[string]") {
-	const bstring test1{"Encode this 1!"};
-	REQUIRE(encode(reinterpret_cast<const unsigned char*>(test1.data()), test1.size(), encoding::base_64)=="RW5jb2RlIHRoaXMgMSE=");
+	const bstring test_1{"Encode this 1!"};
+	const bstring result_1{"RW5jb2RlIHRoaXMgMSE="};
+	REQUIRE(encode(reinterpret_cast<const unsigned char*>(test_1.data()), test_1.size(), encoding::base_64)== result_1);
+	REQUIRE(decode(result_1, encoding::base_64) == test_1);
 }
