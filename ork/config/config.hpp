@@ -38,4 +38,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	define ORK_USE_JSON 1
 #endif
 
+#ifndef ORK_USE_ACIS//Configures numerical stuff
+#   define ORK_USE_ACIS 0
+#endif
+
+#ifndef ORK_USE_OCC//Configures numerical stuff
+#   define ORK_USE_OCC 0
+#endif
+
 #endif ORK_CONFIG_HPP
