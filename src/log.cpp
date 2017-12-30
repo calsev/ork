@@ -108,6 +108,20 @@ public:
 };
 
 
+std::unique_ptr<o_stream, default_deleter<o_stream>>open_file_log_stream(const file::path&file_name) {
+	if(!file::ensure_directory(file_name)) {
+		ORK_THROW(ORK("Could not create directory : ") << file_name.ORK_GEN_STR())
+	}
+	of_stream* p_stream = new of_stream();
+	p_stream->open(file_name);//std::ios::app | std::ios::ate
+	if(p_stream->fail()) {
+		ORK_THROW(ORK("Error opening log : ") << file_name)
+	}
+	//p_stream->rdbuf()->pubsetbuf(0, 0);//Less performance, more likely to catch error messages
+	return std::unique_ptr<o_stream, default_deleter<o_stream>>(p_stream);
+}
+
+
 struct log_stream::impl {
 public:
 	std::unique_ptr<o_stream>stream;
@@ -227,16 +241,6 @@ typedef boost::log::wformatting_ostream formatting_ostream;
 #else
 typedef boost::log::formatting_ostream formatting_ostream;
 #endif
-
-
-boost::shared_ptr<o_stream>open_log(const file::path&file_name) {
-	if(!file::ensure_directory(file_name))ORK_THROW(ORK("Could not create directory : ") << file_name)
-		of_stream* p_stream = new of_stream();
-	p_stream->open(file_name);//std::ios::app | std::ios::ate
-	if(p_stream->fail())ORK_THROW(ORK("Error opening log : ") << file_name)
-		//p_stream->rdbuf()->pubsetbuf(0, 0);//Less performance, more likely to catch error messages
-		return boost::shared_ptr<o_stream>(p_stream);
-}
 
 
 void trace_formatter(const boost::log::record_view& rec, formatting_ostream& strm) {
