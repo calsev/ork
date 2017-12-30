@@ -179,6 +179,9 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/tagger.cpp"
 	"${3P_ORK_SRC_DIR}/src/xml.cpp"
 )
+set(ORK_TEST_SRCS
+	"${3P_ORK_SRC_DIR}/src/test/test_main.cpp"
+)
 
 foreach(head ${ORK_CONFIG_HDRS})
 	source_group("config" FILES "${head}")
@@ -190,12 +193,24 @@ endforeach()
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
 add_library(ork ${ORK_LINK_MODE} ${ORK_SRCS} ${ORK_PUBLIC_HDRS} ${ORK_PRIVATE_HDRS})
+if(ORK_BUILD_TESTS)
+	add_executable(ork_test ${ORK_TEST_SRCS})
+endif()
 
 if(ORK_USE_JSON)
 	target_link_libraries(ork PUBLIC jsoncpp)
 endif()
 if(ORK_USE_PUGI)
 	target_link_libraries(ork PUBLIC pugixml)
+endif()
+if(ORK_BUILD_TESTS)
+	target_link_libraries(ork_test PUBLIC ork)
+	if(ORK_USE_JSON)
+		target_link_libraries(ork_test PUBLIC jsoncpp)
+	endif()
+	if(ORK_USE_PUGI)
+		target_link_libraries(ork_test PUBLIC pugixml)
+	endif()
 endif()
 
 
@@ -206,14 +221,33 @@ target_include_directories(
 	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 	PUBLIC "${3P_BOOST_SRC_DIR}"
 )
+if(ORK_BUILD_TESTS)
+	target_include_directories(
+		ork_test
+		PUBLIC $<BUILD_INTERFACE:${3P_ORK_BIN_DIR}>#Order matters for config header
+		PUBLIC $<BUILD_INTERFACE:${3P_ORK_SRC_DIR}>
+		INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
+		PUBLIC "${3P_BOOST_SRC_DIR}"
+	)
+endif()
+	
 if(ORK_USE_GLM)
 	target_include_directories(
 		ork
 		PUBLIC "${3P_GLM_SRC_DIR}"
 	)
 endif()
+if(ORK_BUILD_TESTS)
+	if(ORK_USE_GLM)
+		target_include_directories(
+			ork_test
+			PUBLIC "${3P_GLM_SRC_DIR}"
+		)
+	endif()
+endif()
 
 
 install_bin(ork)
 install_header_dir("${3P_ORK_SRC_DIR}/ork" "${ORK_INSTALL_INC_DIR}/ork" "config")
 install_headers("${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_INSTALL_INC_DIR}/ork/config")
+#We do not install test executable

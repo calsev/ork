@@ -181,7 +181,7 @@ endif()
 
 ##Level 0
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
-detect_option_flag(ORK_BUILD_CATCH "Enable building Catch2" OFF)
+detect_option_flag(ORK_BUILD_CATCH "Enable building Catch2" ON)
 detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
 detect_option_flag(ORK_BUILD_GLM "Enable building GLM" OFF) #Not actually building but using
 detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
