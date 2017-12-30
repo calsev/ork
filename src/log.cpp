@@ -179,24 +179,24 @@ public:
 };
 
 
-log_multiplexer&g_log_multiplexer() {
-	static log_multiplexer it(g_ork_log->root_directory());
-	return it;
-}
-
-
 struct log_scope::impl {
 public:
-	o_string_stream stream;
+	std::shared_ptr<log_multiplexer>multiplexer;
 	log_channel channel;
 	severity_level severity;
+	o_string_stream stream;
 public:
-	impl(const log_channel lc, const severity_level sv) : stream{}, channel{ lc }, severity{sv} {}
+	impl(std::shared_ptr<log_multiplexer>&mp, const log_channel lc, const severity_level sv)
+		: multiplexer{mp}
+		, channel{lc}
+		, severity{sv}
+		, stream{}
+	{}
 };
 
 log_scope::log_scope(std::unique_ptr<impl>&&ptr) : _pimpl{ std::move(ptr) } {}
 log_scope::~log_scope() {
-	g_log_multiplexer().log(_pimpl->channel, _pimpl->severity, _pimpl->stream);
+	_pimpl->multiplexer->log(_pimpl->channel, _pimpl->severity, _pimpl->stream);
 }
 
 #define LOG_STREAM_OPERATOR(TYPE) \
