@@ -12,9 +12,9 @@ Types and utilities for text, files and logging
 
 #include"ork/config/config.hpp"
 #include"ork/detail/config_internal.hpp"
+#include"ork/detail/tools.hpp"
 #include"ork/detail/text.hpp"
 #include"ork/detail/exception.hpp"
-#include"ork/detail/tools.hpp"
 #include"ork/detail/file_system.hpp"
 #include"ork/detail/log.hpp"
 
