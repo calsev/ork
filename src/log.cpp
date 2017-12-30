@@ -156,7 +156,7 @@ std::shared_ptr<log_stream>open_file_log_stream(const file::path&file_name) {
 }
 
 
-//This is where our logging system falls short of a generic system; try to hide it somewhat in one place
+//This is where our logging system falls short of a generic filter system; try to hide it somewhat in one place
 class log_multiplexer {
 private:
 	std::array<log_sink, severity_levels.size()>_severity_sinks = {};
@@ -187,13 +187,19 @@ public:
 		const string message = stream.str();
 		switch(channel) {
 		case log_channel::debug_trace:
-			_severity_sinks[static_cast<size_t>(severity)].log(message);
+			log_severity(severity, message);
 			break;
 		case log_channel::output_data:
 			_data_sink.log(stream.str());
 			break;
 		};
 		ORK_UNREACHABLE
+	}
+private:
+	void log_severity(const severity_level severity, const string&message) {
+		if(ORK_DEBUG || severity > severity_level::debug) {
+			_severity_sinks[static_cast<size_t>(severity)].log(message);
+		}
 	}
 };
 
