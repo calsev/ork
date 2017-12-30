@@ -280,6 +280,7 @@ set_as_internal(3P_ORK_BIN_DIR "${3P_BIN_DIR}/ork")
 set_as_internal(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
 
 ##Level 2
+set_as_internal(3P_ORK_TEST_BIN_DIR "${3P_BIN_DIR}/ork_test")
 set_as_internal(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
 
 ##Level 3
