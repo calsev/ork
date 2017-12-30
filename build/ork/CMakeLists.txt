@@ -6,33 +6,33 @@ file(READ "${3P_ORK_SRC_DIR}/ork/ork.hpp" ORK_ORK_H)
 string(
 	REGEX MATCH
 	"#define ORK_VERSION_MAJOR [0-9]+"
-    ORK_VERSION_MAJOR "${ORK_ORK_H}"
+	ORK_VERSION_MAJOR "${ORK_ORK_H}"
 )
 string(
 	REGEX MATCH
 	"#define ORK_VERSION_MINOR [0-9]+"
-    ORK_VERSION_MINOR "${ORK_ORK_H}"
+	ORK_VERSION_MINOR "${ORK_ORK_H}"
 )
 string(
 	REGEX MATCH
 	"#define ORK_VERSION_PATCH [0-9]+"
-    ORK_VERSION_PATCH "${ORK_ORK_H}"
+	ORK_VERSION_PATCH "${ORK_ORK_H}"
 )
 
 string(
 	REGEX REPLACE
 	"#define ORK_VERSION_MAJOR ([0-9]+)" "\\1"
-    ORK_VERSION_MAJOR "${ORK_VERSION_MAJOR}"
+	ORK_VERSION_MAJOR "${ORK_VERSION_MAJOR}"
 )
 string(
 	REGEX REPLACE
 	"#define ORK_VERSION_MINOR ([0-9]+)" "\\1"
-    ORK_VERSION_MINOR "${ORK_VERSION_MINOR}"
+	ORK_VERSION_MINOR "${ORK_VERSION_MINOR}"
 )
 string(
 	REGEX REPLACE
 	"#define ORK_VERSION_PATCH ([0-9]+)" "\\1"
-    ORK_VERSION_PATCH "${ORK_VERSION_PATCH}"
+	ORK_VERSION_PATCH "${ORK_VERSION_PATCH}"
 )
 
 set(ORK_VERSION_STR "${ORK_VERSION_MAJOR}.${ORK_VERSION_MINOR}.${ORK_VERSION_PATCH}")
@@ -56,6 +56,23 @@ if(ORK_USE_PUGI AND NOT ORK_BUILD_PUGI)
 endif()
 
 
+get_compiler_name(COMPILER)
+if(COMPILER MATCHES "vc")
+	if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+		string(REGEX REPLACE "/W[0-4]" "/Wall" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+	elseif(NOT CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
+	endif()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4201") #nameless struct/union (GLM)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4464") #relative include path contains '..' (GLM)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4514") #unreferenced inline function has been removed
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4710") #function not inlined (the entire std lib)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4820") #Padding added to type
+elseif(COMPILER MATCHES "gcc")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -pedantic")
+else()
+	message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
+endif()
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
 
 
@@ -96,7 +113,7 @@ if(NOT ORK_USE_JSON)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_USE_JSON) 1" "\\1 0"
-        ORK_CONFIG_H "${ORK_CONFIG_H}"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
 if(NOT ORK_USE_PUGI)
@@ -151,7 +168,7 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/geometry.cpp"
 	"${3P_ORK_SRC_DIR}/src/glm.cpp"
 	"${3P_ORK_SRC_DIR}/src/html.cpp"
-    "${3P_ORK_SRC_DIR}/src/log.cpp"
+	"${3P_ORK_SRC_DIR}/src/log.cpp"
 	"${3P_ORK_SRC_DIR}/src/orientation.cpp"
 	"${3P_ORK_SRC_DIR}/src/string_utils.cpp"
 	"${3P_ORK_SRC_DIR}/src/tagger.cpp"
