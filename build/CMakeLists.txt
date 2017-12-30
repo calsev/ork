@@ -181,6 +181,7 @@ endif()
 
 ##Level 0
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
+detect_option_flag(ORK_BUILD_CATCH "Enable building Catch2" OFF)
 detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
 detect_option_flag(ORK_BUILD_GLM "Enable building GLM" OFF) #Not actually building but using
 detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
@@ -236,6 +237,7 @@ endif()
 
 ##Level 0
 find_3p_path(ORK_BUILD_BZ2 3P_BZ2_SRC_DIR "bz2" "bzip")
+find_3p_path(ORK_BUILD_CATCH 3P_CATCH_SRC_DIR "catch" "Catch2")
 find_3p_path(ORK_BUILD_JPEG 3P_JPEG_SRC_DIR "jpeg" "jpeg-turbo")
 find_3p_path(ORK_BUILD_GLM 3P_GLM_SRC_DIR "glm" "glm")
 find_3p_path(ORK_BUILD_HARFBUZZ 3P_HARFBUZZ_SRC_DIR "harfbuzz" "harfbuzz")
@@ -263,6 +265,7 @@ add_definitions(-DBOOST_ALL_DYN_LINK) #Link boost shared libs
 
 ##Level 0
 set_as_internal(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
+#Catch
 set_as_internal(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
 #GLM
 #harfbuzz
@@ -293,6 +296,7 @@ set_as_internal(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
 if(ORK_BUILD_BZ2)
 	add_subdirectory("./bz2" "${3P_BZ2_BIN_DIR}")
 endif()
+#Catch nothing to build
 if(ORK_BUILD_JPEG)
 	add_subdirectory("./jpeg" "${3P_JPEG_BIN_DIR}")
 endif()
