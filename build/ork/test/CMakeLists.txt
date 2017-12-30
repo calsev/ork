@@ -40,7 +40,7 @@ target_include_directories(
 	PUBLIC $<BUILD_INTERFACE:${3P_ORK_SRC_DIR}>
 	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 	PUBLIC "${3P_BOOST_SRC_DIR}"
-	PUBLIC "${3P_CATCH_SRC_DIR}/include"
+	PUBLIC "${3P_CATCH_SRC_DIR}/single_include"
 )
 if(ORK_USE_GLM)
 	target_include_directories(
