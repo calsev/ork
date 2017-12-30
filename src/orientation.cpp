@@ -4,11 +4,11 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<string>
 #include<sstream>
-#include"boost/algorithm/string/case_conv.hpp"
 #include"boost/tokenizer.hpp"
 
 #include"ork/glm.hpp"
 #include"ork/orientation.hpp"
+#include"ork/string_utils.hpp"
 
 
 namespace ork {
@@ -66,7 +66,7 @@ const char_t*orientation2string(orientation or ) {
 
 orientation string2orientation(const string&val) {
 	string upper = val;
-	boost::algorithm::to_upper(upper);
+	to_upper(upper);
 
 	const size_t num_strings = sizeof(oriention_strings) / sizeof(*oriention_strings);
 	LOOPI(num_strings) {
