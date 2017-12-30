@@ -31,6 +31,29 @@ No relational operators are offered, because these are a source of more bugs tha
 */
 
 
+template<typename T>
+struct default_deleter {
+	void operator()(const T*t) {
+		delete t;
+	}
+	T operator()(const T&t) {
+		return T(t);
+	}
+};
+
+
+//This allows smart interfaces over singleton implementations
+template<typename T>
+struct singleton_deleter {
+	void operator()(const T*t) {
+		//Do Nothing
+	}
+	T operator()(const T&t) {
+		return t;
+	}
+};
+
+
 template<class T, class D>
 class value_ptr {
 public:
