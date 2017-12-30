@@ -43,6 +43,7 @@ private:
 	std::unique_ptr<impl>_pimpl;
 public:
 	ORK_ORK_API setup_hierarchy(const string&setup_root, const string&as_is_path, const string&to_be_path);
+	ORK_MOVE_ONLY(setup_hierarchy)
 public:
 	ORK_ORK_API const string&get_path();
 	ORK_ORK_API file::path get_subdirectory();
