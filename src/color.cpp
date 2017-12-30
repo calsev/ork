@@ -5,10 +5,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<algorithm>
 #include<iomanip>
 #include<sstream>
-#include"ork/string_utils.hpp"
 
 #include"ork/color.hpp"
 #include"ork/distribution.hpp"
+#include"ork/string_utils.hpp"
 
 #if ORK_USE_GLM
 #include"glm/glm.hpp"
@@ -62,6 +62,7 @@ float value_or_lightness(const float min, const float max, const color_space cs)
 		return max;
 	case color_space::hsl:
 		return (max + min)*0.5f;
+	case color_space::rgb:
 	default:
 		ORK_THROW(ORK("Invalid color space"));
 	}
@@ -78,6 +79,7 @@ float calc_saturation(const float chroma, const float value_or_lightness, const 
 			return 0.f;
 		}
 		return chroma / (1.f - std::abs(2.f * value_or_lightness - 1.f));//(max - min)/(1 - |(max + min) - 1|)
+	case color_space::rgb:
 	default:
 		ORK_THROW(ORK("Invalid color space"));
 	}
@@ -322,8 +324,8 @@ std::vector<color4>contrast_array(const size_t size, const float luma) {
 	LOOPI(size) {
 		const float val = float(i) / float(size);//Size bars separate size + 1 spaces
 		const color4 hsl(normalized_hue(val), 1.f, luma, 1.f);
-		const color4 luma(normalized_luma(hsl, i & 0x1 ? bottom_luma : top_luma, color_space::hsl));
-		const color4 rgb(convert(luma, color_space::hsl, color_space::rgb));
+		const color4 luma_new(normalized_luma(hsl, i & 0x1 ? bottom_luma : top_luma, color_space::hsl));
+		const color4 rgb(convert(luma_new, color_space::hsl, color_space::rgb));
 		retval.push_back(rgb);
 	}
 	return std::move(retval);
