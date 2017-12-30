@@ -122,6 +122,60 @@ std::unique_ptr<o_stream, default_deleter<o_stream>>open_file_log_stream(const f
 }
 
 
+//This is where our logging system falls short of a generic system; try to hide it somewhat in one place
+class log_multiplexer {
+private:
+	using local_sink = log_sink<default_deleter<o_stream>>;
+	using global_sink = log_sink<singleton_deleter<o_stream>>;
+	using global_ptr = std::unique_ptr<global_sink>;
+private:
+	std::array<global_ptr, severity_levels.size()>_severity_console_sinks;
+	local_sink _severity_file_sink;
+	global_sink _data_console_sink;
+	local_sink _data_file_sink;
+public:
+	log_multiplexer(const file::path&directory)
+		: _severity_console_sinks{ }
+		, _severity_file_sink{ open_file_log_stream(directory / ORK("trace.log")) }
+		, _data_console_sink{ global_sink::stream_ptr{ &ORK_COUT } }
+		, _data_file_sink{ open_file_log_stream(directory / ORK("output.log")) }
+	{
+		for(const auto sv : severity_levels) {
+			if(sv < severity_level::error) {
+				_severity_console_sinks[static_cast<size_t>(sv)].reset(new global_sink{ global_sink::stream_ptr{ &ORK_COUT } });
+			}
+			else {
+				_severity_console_sinks[static_cast<size_t>(sv)].reset(new global_sink{ global_sink::stream_ptr{ &ORK_CERR } });
+			}
+			
+		}
+	}
+public:
+	void log(const log_channel channel, const severity_level severity, const string_stream&stream) {
+		switch(channel) {
+		case log_channel::debug_trace:
+			log_severity(severity, stream);
+			break;
+		case log_channel::output_data:
+			log_data(stream);
+			break;
+		};
+		ORK_UNREACHABLE
+	}
+private:
+	void log_severity(const severity_level severity, const string_stream&stream) {
+		const string message = stream.str();
+		_severity_console_sinks[static_cast<size_t>(severity)]->log(message);
+		_severity_file_sink.log(message);
+	}
+	void log_data(const string_stream&stream) {
+		const string message = stream.str();
+		_data_console_sink.log(message);
+		_data_file_sink.log(stream.str());
+	}
+};
+
+
 struct log_stream::impl {
 public:
 	std::unique_ptr<o_stream>stream;
@@ -191,20 +245,6 @@ log_stream& log_stream::operator<< (std::ios& (*pf)(std::ios&)) {
 log_stream& log_stream::operator<< (std::ios_base& (*pf)(std::ios_base&)) {
 	*(_pimpl->stream) << pf;
 	return *this;
-}
-
-
-o_stream&operator<<(o_stream&strm, log_channel chan) {
-	static const char_t* strings[] = {
-		  ORK("Debug/Trace")
-		, ORK("Output/Data")
-	};
-
-	const size_t index = static_cast<size_t>(chan);
-	if(index < sizeof(strings) / sizeof(*strings)) strm << strings[index];
-	else strm << index;
-
-	return strm;
 }
 
 
