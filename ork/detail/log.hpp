@@ -112,19 +112,17 @@ public:
 };
 
 
-//The logger is defined by the client so that the linker ensures the directory is set exactly once
-ORK_ORK_EXT(std::unique_ptr<logger>) make_global_log(const string&directory);
-#define ORK_GLOBAL_LOG(LOG_DIRECTORY) const std::unique_ptr<logger> g_ork_log = ork::make_global_log(LOG_DIRECTORY);
+ORK_ORK_EXT(int) make_global_log(const string&directory);
+ORK_ORK_EXT(logger&) get_global_log();
+#define ORK_GLOBAL_LOG(LOG_DIRECTORY) const int g_ork_log_val = ork::make_global_log(LOG_DIRECTORY);
 
 
-#define _ORK_LOG(CH, SV, UID) auto UID{g_ork_log->get_log_scope(ORK_FILEN, ORK_LINE, ORK_FUNC, log_channel::debug_trace, SV)}; UID
+#define _ORK_LOG(CH, SV, UID) auto UID{get_global_log().get_log_scope(ORK_FILEN, ORK_LINE, ORK_FUNC, log_channel::debug_trace, SV)}; UID
 #define ORK_LOG(SV) _ORK_LOG(log_channel::debug_trace, SV, ORK_UID(_ork_log_log_))
 #define ORK_LOUT _ORK_LOG(log_channel::output_data, severity_level::info, ORK_UID(_ork_log_out_)
 
 #define ORK_LOC_BLOCK ORK("\n -- ") << ORK_FLOC << ORK(":\n -- ") << ORK_FUNC  << ORK("\n")
 
 }//namespace ork
-
-extern std::unique_ptr<ork::logger> g_ork_log;
 
 #endif ORK_LOG_HPP

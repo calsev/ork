@@ -353,8 +353,15 @@ void logger::flush_all() {
 }
 
 
-std::unique_ptr<logger> make_global_log(const string&directory) {
-	return std::unique_ptr<logger>(new logger(directory));
+
+logger*_g_log = nullptr;
+int make_global_log(const string&directory) {
+	static logger log(directory);
+	_g_log = &log;
+	return 0;
+}
+logger& get_global_log() {
+	return *_g_log;
 }
 
 
