@@ -17,6 +17,9 @@ enum class orientation;
 namespace GLM {//Kind of deceiving, but whatever
 
 
+using glm_size_t = glm::dvec3::length_type;
+
+
 struct dunit3 {
 private:
 	glm::dvec3 _vec;
@@ -27,25 +30,22 @@ public:
 	ORK_INLINE const glm::dvec3&get()const {
 		return _vec;
 	}
-	ORK_INLINE double&operator[](const size_t index) {
-		return _vec[static_cast<unsigned>(index)];
+	ORK_INLINE double&operator[](const glm_size_t index) {
+		return _vec[index];
 	}
-	ORK_INLINE const double&operator[](const size_t index)const {
-		return _vec[static_cast<unsigned>(index)];
+	ORK_INLINE const double&operator[](const glm_size_t index)const {
+		return _vec[index];
 	}
 	ORK_INLINE double x()const { return _vec.x; }
 	ORK_INLINE double y()const { return _vec.y; }
 	ORK_INLINE double z()const { return _vec.z; }
-	ORK_INLINE const double&operator[](const unsigned index) const {//unsigned because glm uses int indices
-		return _vec[index];
-	}
 	ORK_INLINE dunit3 operator-()const {
 		return dunit3(-_vec);
 	}
-	ORK_INLINE unsigned size()const {//unsigned for consistency with glm
+	ORK_INLINE glm_size_t size()const {
 		return 3;
 	}
-	ORK_INLINE unsigned length()const {//For consistency with glm
+	ORK_INLINE glm_size_t length()const {
 		return 3;
 	}
 };
@@ -65,8 +65,8 @@ ORK_ORK_EXTERN const dunit3 pos_z;
 ORK_ORK_EXTERN const dunit3 neg_z;
 
 
-//GLM version of loops, needed because GLM uses length() and unsigned as the type
-#define LOOPVG(SERIES,INDEX)for(unsigned INDEX=0, limit##INDEX=SERIES.length(); INDEX!=limit##INDEX; ++INDEX)
+//glm version of loops, needed because glm types use length()
+#define LOOPVG(SERIES,INDEX)for(glm_size_t INDEX=0, limit##INDEX=SERIES.length(); INDEX!=limit##INDEX; ++INDEX)
 #define LOOPVIG(SERIES)LOOPVG(SERIES,i)
 #define LOOPVJG(SERIES)LOOPVG(SERIES,j)
 #define LOOPVKG(SERIES)LOOPVG(SERIES,k)
