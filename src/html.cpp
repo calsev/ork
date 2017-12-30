@@ -4,7 +4,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<string>
 #include<sstream>
-#include"boost/lexical_cast.hpp"
 #include"ork/html.hpp"
 
 namespace ork {
@@ -338,7 +337,7 @@ std::ostream& label::export_html(std::ostream&out)const {
 void table_element::export_html(const exportable*element, const size_t remain_col, std::ostream&out) {
 	if(element != nullptr) {
 		out << BORK("<td");
-		if(element->col_span)out << pair::export_html(BORK(" colspan"), boost::lexical_cast<bstring>(remain_col));
+		if(element->col_span)out << pair::export_html(BORK(" colspan"), std::to_string(remain_col));
 		if(!element->style.empty())out << pair::export_html(BORK(" class"), element->style);
 		out << BORK(">");
 		element->export_html(out);

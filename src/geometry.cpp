@@ -5,7 +5,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #define _USE_MATH_DEFINES//M_PI
 #include<cmath>
 #include<iomanip>
-#include"boost/lexical_cast.hpp"
+#include<sstream>
 #include"ork/geometry.hpp"
 #include"ork/glm.hpp"
 
@@ -46,7 +46,7 @@ double simple_angle(double angle) {
 #if ORK_USE_GLM
 string to_dimension(const double coord) {
 #if 1
-	return boost::lexical_cast<string>(coord);
+	return std::to_string(coord);
 #else
 	static const int max_precision = 16;
 	bool was_equal = false;

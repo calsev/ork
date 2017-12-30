@@ -7,8 +7,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<sstream>
 #include<string>
 
-#include"boost/lexical_cast.hpp"
-
 #include"ork/file_utils.hpp"
 #include"ork/orientation.hpp"
 #include"ork/tagger.hpp"
@@ -78,7 +76,7 @@ string tagger::operator()() {
 	else {
 		stream << _pimpl->tag << ORK("/");
 		p /= stream.str();
-		return p.ORK_GEN_STR() + boost::lexical_cast<string>(_pimpl->count++) + ORK("_");
+		return p.ORK_GEN_STR() + std::to_string(_pimpl->count++) + ORK("_");
 	}
 }
 
