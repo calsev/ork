@@ -6,6 +6,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<fstream>
 #include<iostream>
 #include<mutex>
+#include<sstream>
 
 #include"ork/memory.hpp"
 #include ORK_FILE_INCLUDE
@@ -176,19 +177,23 @@ private:
 };
 
 
-struct log_stream::impl {
+struct log_scope::impl {
 public:
-	std::unique_ptr<o_stream>stream;
+	o_string_stream stream;
+	log_channel channel;
+	severity_level severity;
 public:
-	impl(std::unique_ptr<o_stream>&&stream_) :stream{ std::move(stream_) } {}
+	impl(const log_channel lc, const severity_level sv) : stream{}, channel{ lc }, severity{sv} {}
 };
 
-log_stream::log_stream(std::unique_ptr<o_stream>&&stream) : _pimpl{ new impl{ std::move(stream) } } {}
-log_stream::~log_stream() {}
+log_scope::log_scope(std::unique_ptr<impl>&&ptr) : _pimpl{ std::move(ptr) } {}
+log_scope::~log_scope() {
+	g_log_multiplexer().log(_pimpl->channel, _pimpl->severity, _pimpl->stream);
+}
 
 #define LOG_STREAM_OPERATOR(TYPE) \
-log_stream& log_stream::operator<< (const TYPE val) {\
-	*(_pimpl->stream) << val;\
+log_scope& log_scope::operator<< (const TYPE val) {\
+	_pimpl->stream << val;\
 	return *this;\
 }
 LOG_STREAM_OPERATOR(bool)
@@ -206,8 +211,8 @@ LOG_STREAM_OPERATOR(long double)
 
 #undef LOG_STREAM_OPERATOR
 #define LOG_STREAM_OPERATOR(TYPE) \
-log_stream& log_stream::operator<< (const TYPE val) {\
-	*(_pimpl->stream) << ORK_BYTE_2_STR(val);\
+log_scope& log_scope::operator<< (const TYPE val) {\
+	_pimpl->stream << ORK_BYTE_2_STR(val);\
 	return *this;\
 }
 
@@ -217,8 +222,8 @@ LOG_STREAM_OPERATOR(bstring&)
 
 #undef LOG_STREAM_OPERATOR
 #define LOG_STREAM_OPERATOR(TYPE) \
-log_stream& log_stream::operator<< (const TYPE val) {\
-	*(_pimpl->stream) << ORK_WIDE_2_STR(val);\
+log_scope& log_scope::operator<< (const TYPE val) {\
+	_pimpl->stream << ORK_WIDE_2_STR(val);\
 	return *this;\
 }
 
@@ -226,24 +231,24 @@ LOG_STREAM_OPERATOR(wchar_t)
 LOG_STREAM_OPERATOR(wchar_t*)
 LOG_STREAM_OPERATOR(wstring&)
 
-log_stream& log_stream::operator<< (const void* val) {
-	*(_pimpl->stream) << val;
+log_scope& log_scope::operator<< (const void* val) {
+	_pimpl->stream << val;
 	return *this;
 }
-log_stream& log_stream::operator<< (const std::streambuf* sb) {
-	*(_pimpl->stream) << sb;
+log_scope& log_scope::operator<< (const std::streambuf* sb) {
+	_pimpl->stream << sb;
 	return *this;
 }
-log_stream& log_stream::operator<< (std::ostream& (*pf)(std::ostream&)) {
-	*(_pimpl->stream) << pf;
+log_scope& log_scope::operator<< (std::ostream& (*pf)(std::ostream&)) {
+	_pimpl->stream << pf;
 	return *this;
 }
-log_stream& log_stream::operator<< (std::ios& (*pf)(std::ios&)) {
-	*(_pimpl->stream) << pf;
+log_scope& log_scope::operator<< (std::ios& (*pf)(std::ios&)) {
+	_pimpl->stream << pf;
 	return *this;
 }
-log_stream& log_stream::operator<< (std::ios_base& (*pf)(std::ios_base&)) {
-	*(_pimpl->stream) << pf;
+log_scope& log_scope::operator<< (std::ios_base& (*pf)(std::ios_base&)) {
+	_pimpl->stream << pf;
 	return *this;
 }
 

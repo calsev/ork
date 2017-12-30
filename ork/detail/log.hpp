@@ -54,42 +54,43 @@ const ork::string&to_string(const severity_level);
 severity_level string2severity_level(const ork::string&);
 
 
-class log_stream {
+class log_scope {
 private:
 	struct impl;
 private:
 	std::unique_ptr<impl>_pimpl;
 public:
-	ORK_ORK_API log_stream(std::unique_ptr<o_stream>&&);
-	ORK_ORK_API ~log_stream();
+	ORK_ORK_API log_scope(std::unique_ptr<impl>&&);
+	ORK_ORK_API ~log_scope();
 public:
-	ORK_ORK_API log_stream& operator<< (const bool val);
-	ORK_ORK_API log_stream& operator<< (const short val);
-	ORK_ORK_API log_stream& operator<< (const unsigned short val);
-	ORK_ORK_API log_stream& operator<< (const int val);
-	ORK_ORK_API log_stream& operator<< (const unsigned int val);
-	ORK_ORK_API log_stream& operator<< (const long val);
-	ORK_ORK_API log_stream& operator<< (const unsigned long val);
-	ORK_ORK_API log_stream& operator<< (const long long val);
-	ORK_ORK_API log_stream& operator<< (const unsigned long long val);
-	ORK_ORK_API log_stream& operator<< (const float val);
-	ORK_ORK_API log_stream& operator<< (const double val);
-	ORK_ORK_API log_stream& operator<< (const long double val);
+	ORK_ORK_API log_scope& operator<< (const bool val);
+	ORK_ORK_API log_scope& operator<< (const short val);
+	ORK_ORK_API log_scope& operator<< (const unsigned short val);
+	ORK_ORK_API log_scope& operator<< (const int val);
+	ORK_ORK_API log_scope& operator<< (const unsigned int val);
+	ORK_ORK_API log_scope& operator<< (const long val);
+	ORK_ORK_API log_scope& operator<< (const unsigned long val);
+	ORK_ORK_API log_scope& operator<< (const long long val);
+	ORK_ORK_API log_scope& operator<< (const unsigned long long val);
+	ORK_ORK_API log_scope& operator<< (const float val);
+	ORK_ORK_API log_scope& operator<< (const double val);
+	ORK_ORK_API log_scope& operator<< (const long double val);
 
-	ORK_ORK_API log_stream& operator<< (const char);
-	ORK_ORK_API log_stream& operator<< (const wchar_t);
-	ORK_ORK_API log_stream& operator<< (const char*);
-	ORK_ORK_API log_stream& operator<< (const wchar_t*);
-	ORK_ORK_API log_stream& operator<< (const bstring&);
-	ORK_ORK_API log_stream& operator<< (const wstring&);
-	
-	ORK_ORK_API log_stream& operator<< (const void* val);
+	ORK_ORK_API log_scope& operator<< (const char);
+	ORK_ORK_API log_scope& operator<< (const char*);
+	ORK_ORK_API log_scope& operator<< (const bstring&);
 
-	ORK_ORK_API log_stream& operator<< (const std::streambuf* sb);
+	ORK_ORK_API log_scope& operator<< (const wchar_t);
+	ORK_ORK_API log_scope& operator<< (const wchar_t*);
+	ORK_ORK_API log_scope& operator<< (const wstring&);
 
-	ORK_ORK_API log_stream& operator<< (std::ostream& (*pf)(std::ostream&));
-	ORK_ORK_API log_stream& operator<< (std::ios& (*pf)(std::ios&));
-	ORK_ORK_API log_stream& operator<< (std::ios_base& (*pf)(std::ios_base&));
+	ORK_ORK_API log_scope& operator<< (const void* val);
+
+	ORK_ORK_API log_scope& operator<< (const std::streambuf* sb);
+
+	ORK_ORK_API log_scope& operator<< (std::ostream& (*pf)(std::ostream&));
+	ORK_ORK_API log_scope& operator<< (std::ios& (*pf)(std::ios&));
+	ORK_ORK_API log_scope& operator<< (std::ios_base& (*pf)(std::ios_base&));
 };
 
 
