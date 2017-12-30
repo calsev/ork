@@ -104,6 +104,9 @@ public:
 		std::lock_guard<std::mutex>lock(_mutex);
 		*_stream << message;
 	}
+	void flush() {
+		_stream->flush();
+	}
 };
 
 
@@ -112,6 +115,10 @@ public:
 	using stream_ptr = std::shared_ptr<log_stream>;
 private:
 	std::vector<stream_ptr>_streams = {};
+	bool _auto_flush = false;
+public:
+	log_sink() {}
+	log_sink(const bool auto_flush) : _auto_flush{auto_flush} {}
 public:
 	void insert(const stream_ptr&ptr) {
 		_streams.push_back(ptr);
@@ -119,6 +126,17 @@ public:
 	void log(const string&message) {
 		for(auto&stream : _streams) {
 			stream->log(message);
+			if(_auto_flush) {
+				stream->flush();
+			}
+		}
+	}
+	void set_auto_flush(const bool auto_flush) {
+		_auto_flush = auto_flush;
+	}
+	void flush() {
+		for(auto&stream : _streams) {
+			stream->flush();
 		}
 	}
 };
@@ -154,6 +172,7 @@ public:
 			auto sink = _severity_sinks[static_cast<size_t>(sv)];
 			if(sv < severity_level::error) {
 				sink.insert(lout);
+				sink.set_auto_flush(true);
 			}
 			else {
 				sink.insert(lerr);
