@@ -100,6 +100,7 @@ private:
 public:
 	ORK_ORK_API explicit logger(const file::path&log_file);
 	ORK_ORK_API ~logger();
+	ORK_NON_COPYABLE(logger)
 public:
 	ORK_ORK_API const file::path&root_directory();
 	ORK_ORK_API log_scope get_log_scope(
