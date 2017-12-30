@@ -152,18 +152,15 @@ typedef std::istringstream bi_string_stream;
 #define ORK_LINE ORK(ORK_STR(__LINE__))
 
 
+#define _ORK_UID2(PREFIX, LINE, COUNT) ORK_CAT3(PREFIX, LINE, COUNT)
+#define _ORK_UID1(PREFIX, LINE) _ORK_UID2(PREFIX, LINE, __COUNTER__)
+#define ORK_UID(PREFIX) _ORK_UID1(PREFIX, __LINE__)
+
+
 #if ORK_MSC
-#	ifdef __FUNCTION__
-#		define ORK_FUNC __FUNCTION__
-#	else
-#		define ORK_FUNC ORK("(unknown_function)")
-#	endif
+#   define ORK_FUNC __FUNCTION__
 #elif ORK_GCC
-#	ifdef __PRETTY_FUNCTION__
-#		define ORK_FUNC __PRETTY_FUNCTION__
-#	else
-#		define ORK_FUNC ORK("(unknown_function)")
-#	endif
+#   define ORK_FUNC __PRETTY_FUNCTION__
 #else
 #	error Compiler not supported
 #endif
