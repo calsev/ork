@@ -29,7 +29,8 @@ namespace xml {
 
 void export_file(const string&filename, const exportable&object, const string&root_node_name) {
 	pugi::xml_document doc;
-	object.export_xml(doc.append_child(root_node_name.c_str()));
+	pugi::xml_node root_node = doc.append_child(root_node_name.c_str());
+	object.export_xml(root_node);
 	file::ensure_directory(filename);
 	ORK_FILE_WRITE(filename);
 	doc.save(fout);
