@@ -248,6 +248,9 @@ void decode_bytes(const size_t byte_index, std::array<unsigned char, 4>&buf4char
 
 
 bstring decode(const bstring& str, const encoding enc) {
+	if(enc != encoding::base_64) {
+		ORK_THROW(ORK("Wow, a new encoding!"));
+	}
 	bstring retval;
 	size_t byte_index = 0;//Rolls over every 4
 	std::array<unsigned char, 4>buf4chars = {0, 0, 0, 0};//Holds the current chars
