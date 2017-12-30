@@ -16,9 +16,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include<memory>
 #include<string>
-#if !ORK_MSC
-#	include"boost/current_function.hpp"
-#endif
 
 
 #if defined UNICODE || defined _UNICODE//Avoid checking both everywhere
@@ -157,13 +154,13 @@ typedef std::istringstream bi_string_stream;
 
 #if ORK_MSC
 #	ifdef __FUNCTION__
-#		define ORK_FUNC __FUNCTION__ //__FUNCSIG__
+#		define ORK_FUNC __FUNCTION__
 #	else
 #		define ORK_FUNC ORK("(unknown_function)")
 #	endif
 #elif ORK_GCC
-#	ifdef BOOST_CURRENT_FUNCTION
-#		define ORK_FUNC BOOST_CURRENT_FUNCTION //__PRETTY_FUNCTION__
+#	ifdef __PRETTY_FUNCTION__
+#		define ORK_FUNC __PRETTY_FUNCTION__
 #	else
 #		define ORK_FUNC ORK("(unknown_function)")
 #	endif
