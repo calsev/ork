@@ -5,8 +5,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include<fstream>
 #include<iostream>
+#include<mutex>
 
-#include"ork/ork.hpp"
+#include"ork/memory.hpp"
 #include ORK_FILE_INCLUDE
 
 #include"boost/core/null_deleter.hpp"
@@ -86,6 +87,25 @@ severity_level string2severity_level(const ork::string&str) {
 	}
 	ORK_THROW(ORK("Invalid severity_level: ") << str);
 }
+
+
+//This is little more than a synchronous wrapper for an ostream
+template<class D>
+class log_sink {
+public:
+	using stream_ptr = std::unique_ptr<o_stream, D>;
+private:
+	std::unique_ptr<o_stream, D>_stream;
+	std::mutex _mutex;
+public:
+	log_sink(std::unique_ptr<o_stream, D>&&stream_) : _stream{ std::move(stream_) }, _mutex{ } {}
+	ORK_MOVE_ONLY(log_sink)
+public:
+	void log(const string&message) {
+		std::lock_guard<std::mutex>lock(_mutex);
+		*_stream << message;
+	}
+};
 
 
 struct log_stream::impl {
