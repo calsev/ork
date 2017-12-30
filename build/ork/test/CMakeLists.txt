@@ -4,6 +4,21 @@ project(ork_test CXX)
 set(VERSION "${ORK_VERSION_STR}")
 
 
+get_compiler_name(COMPILER)
+if(COMPILER MATCHES "vc")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4623") #default constructor was implicitly defined as deleted (catch)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4625") #copy constructor was implicitly defined as deleted (catch)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4626") #assignment operator was implicitly defined as deleted (catch)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4628") #digraphs not supported with -Ze (catch)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd5026") #move constructor was implicitly defined as deleted (catch)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd5027") #move assignment operator was implicitly defined as deleted (catch)
+elseif(COMPILER MATCHES "gcc")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+else()
+	message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
+endif()
+
+
 set(ORK_TEST_SRCS
 	"${3P_ORK_SRC_DIR}/src/test/test_main.cpp"
 )
