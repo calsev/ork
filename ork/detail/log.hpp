@@ -14,9 +14,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 #include<memory>
-#include"boost/log/sources/channel_logger.hpp"
-#include"boost/log/sources/severity_channel_logger.hpp"
-#include"boost/log/utility/manipulators/add_value.hpp"
 
 
 namespace ork {
@@ -55,13 +52,14 @@ severity_level string2severity_level(const ork::string&);
 
 
 class log_scope {
-private:
+public:
 	struct impl;
 private:
 	std::unique_ptr<impl>_pimpl;
 public:
 	ORK_ORK_API log_scope(std::unique_ptr<impl>&&);
 	ORK_ORK_API ~log_scope();
+	ORK_MOVE_ONLY(log_scope)
 public:
 	ORK_ORK_API log_scope& operator<< (const bool val);
 	ORK_ORK_API log_scope& operator<< (const short val);
@@ -95,44 +93,38 @@ public:
 
 
 class logger {
-public:
-#if ORK_UNICODE
-	typedef boost::log::sources::wchannel_logger_mt<log_channel> channel_source_type;
-	typedef boost::log::sources::wseverity_channel_logger<severity_level, log_channel> severity_channel_source_type;
-#else
-	typedef boost::log::sources::channel_logger_mt<log_channel> channel_source_type;
-	typedef boost::log::sources::severity_channel_logger<severity_level, log_channel> severity_channel_source_type;
-#endif
 private:
 	struct impl;
 private:
-	std::unique_ptr<impl>p_impl;
+	std::unique_ptr<impl>_pimpl;
 public:
 	ORK_ORK_API explicit logger(const file::path&log_file);
 	ORK_ORK_API ~logger();
 public:
-	ORK_ORK_API severity_channel_source_type& log();
-	ORK_ORK_API channel_source_type& lout();
+	ORK_ORK_API const file::path&root_directory();
+	ORK_ORK_API log_scope get_log_scope(
+		  const string&file
+		, const string&line
+		, const string&function
+		, const log_channel channel
+		, const severity_level severity);
 	ORK_ORK_API void flush_all();
 };
 
 
-//The logger must be terminated before main exits, so not a global!
-ORK_ORK_EXT(int) g_log(const string&directory);
-ORK_ORK_EXT(logger&) g_log();
-#define ORK_GLOBAL_LOG(LOG_DIRECTORY) const int g_log_val = ork::g_log(LOG_DIRECTORY);
+//The logger is defined by the client so that the linker ensures the directory is set exactly once
+ORK_ORK_EXT(std::unique_ptr<logger>) make_global_log(const string&directory);
+#define ORK_GLOBAL_LOG(LOG_DIRECTORY) const std::unique_ptr<logger> g_ork_log = ork::make_global_log(LOG_DIRECTORY);
 
 
-#define ORK_LOG_(LOG_,SV) BOOST_LOG_SEV(LOG_,SV)\
-	<< boost::log::add_value(BORK("Line"), ORK_LINE)\
-	<< boost::log::add_value(BORK("File"), ORK_FILEN)\
-	<< boost::log::add_value(BORK("Function"), ORK_FUNC)
-#define ORK_LOG(SV) ORK_LOG_(ork::g_log().log(),SV)
-#define ORK_LOUT BOOST_LOG(ork::g_log().lout())
-
+#define _ORK_LOG(CH, SV, UID) auto UID{g_ork_log->get_log_scope(ORK_FILEN, ORK_LINE, ORK_FUNC, log_channel::debug_trace, SV)}; UID
+#define ORK_LOG(SV) _ORK_LOG(log_channel::debug_trace, SV, ORK_UID(_ork_log_log_))
+#define ORK_LOUT _ORK_LOG(log_channel::output_data, severity_level::info, ORK_UID(_ork_log_out_)
 
 #define ORK_LOC_BLOCK ORK("\n -- ") << ORK_FLOC << ORK(":\n -- ") << ORK_FUNC  << ORK("\n")
 
 }//namespace ork
+
+extern std::unique_ptr<ork::logger> g_ork_log;
 
 #endif ORK_LOG_HPP
