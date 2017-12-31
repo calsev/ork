@@ -73,6 +73,8 @@ if(COMPILER MATCHES "vc")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4514") #unreferenced inline function has been removed
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4710") #function not inlined (the entire std lib)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4820") #Padding added to type
+	
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /wd4711") #Function selected for automatic inline expansion
 elseif(COMPILER MATCHES "gcc")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -pedantic")
 else()
