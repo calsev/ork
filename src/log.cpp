@@ -199,7 +199,8 @@ public:
 	}
 private:
 	void log_severity(const severity_level severity, const string&message) {
-		if(ORK_DEBUG || severity > severity_level::debug) {
+		const bool do_it = ORK_DEBUG || severity > severity_level::debug;
+		if(do_it) {//To avoid constant conditional expression
 			_severity_sinks[static_cast<size_t>(severity)].log(message);
 		}
 	}
