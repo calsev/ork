@@ -6,21 +6,22 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<thread>
 #include<vector>
 
-#include"ork/ork.hpp"
+#include"ork/distribution.hpp"
+
 #if ORK_MSC
 #pragma warning(push)
 #pragma warning(disable:4365) //Boost argument conversion
 #pragma warning(disable:4668) //Boost undefined macro
 #pragma warning(disable:5031) //Boost unmatched pragma push
 #endif
-
-#include"ork/distribution.hpp"
-
 #include<boost/random//discrete_distribution.hpp>
 #include<boost/random/taus88.hpp>
 #include<boost/random/triangle_distribution.hpp>
 #include<boost/random/uniform_01.hpp>
 #include<boost/random/uniform_int_distribution.hpp>
+#if ORK_MSC
+#pragma warning(pop)
+#endif
 
 
 namespace ork {
@@ -119,7 +120,3 @@ random&g_random() {
 
 
 }//namespace ork
-
-#if ORK_MSC
-#pragma warning(pop)
-#endif
