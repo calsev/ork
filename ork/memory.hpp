@@ -45,7 +45,7 @@ struct default_deleter {
 //This allows smart interfaces over singleton implementations
 template<typename T>
 struct singleton_deleter {
-	void operator()(const T*t) {
+	void operator()(const T*) {
 		//Do Nothing
 	}
 	T operator()(const T&t) {
