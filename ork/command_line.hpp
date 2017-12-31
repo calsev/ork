@@ -6,10 +6,21 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include"ork/ork.hpp"
 
-#include"boost/program_options/variables_map.hpp"
-#include"boost/program_options/options_description.hpp"
-
-namespace options = boost::program_options;
+#if ORK_MSC
+#pragma warning(push)
+#pragma warning(disable:4371) //Boost layout changed
+#pragma warning(disable:4619) //Boost disable non-existant warning
+#pragma warning(disable:4625) //Boost implicit copy consructor
+#pragma warning(disable:4626) //Boost implicit copy assignment
+#pragma warning(disable:4668) //Boost+Windows undefined macro
+#pragma warning(disable:5026) //Boost implicit move constructor
+#pragma warning(disable:5027) //Boost implicit move assignment
+#pragma warning(disable:5031) //Boost unmatched pragma push
+#endif
+#include"boost/program_options.hpp"
+#if ORK_MSC
+#pragma warning(pop)
+#endif
 
 
 #if ORK_UNICODE
@@ -25,6 +36,8 @@ typedef int(*main_func)(const int argc, const char*const argv[]);
 ORK_ORK_EXT(int) invoke_main(const std::vector<string>&args, main_func f);
 
 
+namespace options = boost::program_options;
+
 class command_handler {
 protected:
 private:
@@ -34,7 +47,7 @@ private:
 public:
 	ORK_ORK_API command_handler();
 	ORK_ORK_API virtual ~command_handler() {}
-	ORK_MOVE_ONLY(command_handler)
+	ORK_NON_COPYABLE(command_handler)
 public:
 	//Configures and parses command line, calling add_options and extract_option_value
 	ORK_ORK_API bool operator()(const int argc, const char_t*const argv[]);
