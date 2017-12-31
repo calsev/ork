@@ -220,13 +220,14 @@ public:
 		, severity{sv}
 		, stream{}
 	{}
+	~impl() {
+		multiplexer->log(channel, severity, stream);
+	}
 	ORK_MOVE_ONLY(impl)
 };
 
 log_scope::log_scope(std::unique_ptr<impl>&&ptr) : _pimpl{ std::move(ptr) } {}
-log_scope::~log_scope() {
-	_pimpl->multiplexer->log(_pimpl->channel, _pimpl->severity, _pimpl->stream);
-}
+log_scope::~log_scope() {}
 
 #define LOG_STREAM_OPERATOR(TYPE) \
 log_scope& log_scope::operator<< (const TYPE val) {\

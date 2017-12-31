@@ -118,7 +118,7 @@ ORK_ORK_EXT(logger&) get_global_log();
 #define ORK_GLOBAL_LOG(LOG_DIRECTORY) const int g_ork_log_val = ork::make_global_log(LOG_DIRECTORY);
 
 
-#define _ORK_LOG(CH, SV, UID) auto UID{get_global_log().get_log_scope(ORK_FILEN, ORK_LINE, ORK_FUNC, log_channel::debug_trace, SV)}; UID
+#define _ORK_LOG(CH, SV, UID) auto UID{get_global_log().get_log_scope(ORK_FILEN, ORK_LINE, ORK_FUNC, CH, SV)}; UID
 #define ORK_LOG(SV) _ORK_LOG(log_channel::debug_trace, SV, ORK_UID(_ork_log_log_))
 #define ORK_LOUT _ORK_LOG(log_channel::output_data, severity_level::info, ORK_UID(_ork_log_out_)
 
