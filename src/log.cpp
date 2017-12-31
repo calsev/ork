@@ -93,7 +93,8 @@ private:
 	stream_ptr _stream;
 	std::mutex _mutex;
 public:
-	log_stream(stream_ptr&stream_) : _stream{stream_}, _mutex{} {}
+	explicit log_stream(stream_ptr stream_) : _stream{stream_}, _mutex{} {}
+	ORK_NON_COPYABLE(log_stream)
 public:
 	void log(const string&message) {
 		std::lock_guard<std::mutex>lock(_mutex);
@@ -218,6 +219,7 @@ public:
 		, severity{sv}
 		, stream{}
 	{}
+	ORK_MOVE_ONLY(impl)
 };
 
 log_scope::log_scope(std::unique_ptr<impl>&&ptr) : _pimpl{ std::move(ptr) } {}
