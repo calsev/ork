@@ -18,7 +18,7 @@ bool discard_bom(bi_stream&fin);
 /*
 Below is implemented generic directory iteration.
 The only requirement on the functor is that following is a valid statement: functor(const path&);
-We use this syntactic interface to avoid including boost::function in this header.
+We use this syntactic interface to avoid including _boost_::function in this header.
 */
 
 

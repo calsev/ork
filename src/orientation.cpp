@@ -77,7 +77,7 @@ orientation string2orientation(const string&val) {
 }
 
 
-//Crappy little parser to get boost out of this compile unit
+//Crappy little parser to get _boost_ out of this compile unit
 using iter_t = string::const_iterator;
 void skip_whitespace(iter_t&it, const iter_t&end) {
 	while(it != end && (*it == ' ' || *it == ' ')) {//Whitespace can be space or tab
