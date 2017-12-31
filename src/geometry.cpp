@@ -178,7 +178,7 @@ rotated_view rotated(const view&v, const rotation_direction dir, const int rotat
 	index %= 4;
 	rotated_view retval(dir, rotations);
 	LOOPVI(v.dirs) {
-		retval.dirs[i] = v.dirs[index];
+		retval.dirs[i] = v.dirs[static_cast<size_t>(index)];
 		++index;
 		index %= 4;
 	}
