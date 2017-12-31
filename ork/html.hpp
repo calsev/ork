@@ -75,7 +75,6 @@ public:
 	unsigned level = 1;
 public:
 	heading(const bstring&style, const bstring&text, const unsigned level_) :string(style, text), level(level_) {}
-	heading(const bstring&style, const bstring&text, const unsigned level_, const unsigned pct_width) :string(style, text), level(level_) {}
 public:
 	virtual std::ostream& export_html(std::ostream&out)const override;
 };
