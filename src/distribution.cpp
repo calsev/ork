@@ -2,16 +2,24 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#if _MSC_VER
+#include"ork/ork.hpp"
+#if ORK_MSC
 #pragma warning(push)
-#pragma warning(disable:4996) //Boost unsafe parameters
+#pragma warning(disable:4365) //Boost argument conversion
+#pragma warning(disable:4668) //Boost undefined macro
+#pragma warning(disable:5031) //Boost unmatched pragma push
 #endif
 
 #include<mutex>
 #include<thread>
-#include<boost/random.hpp>
-
+#include<vector>
 #include"ork/distribution.hpp"
+
+#include<boost/random//discrete_distribution.hpp>
+#include<boost/random/taus88.hpp>
+#include<boost/random/triangle_distribution.hpp>
+#include<boost/random/uniform_01.hpp>
+#include<boost/random/uniform_int_distribution.hpp>
 
 
 namespace ork {
@@ -23,6 +31,7 @@ protected:
 	std::mutex _mutex;
 public:
 	impl() : _gen{}, _mutex{} {}
+	ORK_NON_COPYABLE(impl)
 public:
 	double uniform_prob() {
 		boost::random::uniform_01<>dist{};
