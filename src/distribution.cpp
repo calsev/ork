@@ -2,6 +2,10 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
+#include<mutex>
+#include<thread>
+#include<vector>
+
 #include"ork/ork.hpp"
 #if ORK_MSC
 #pragma warning(push)
@@ -10,9 +14,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma warning(disable:5031) //Boost unmatched pragma push
 #endif
 
-#include<mutex>
-#include<thread>
-#include<vector>
 #include"ork/distribution.hpp"
 
 #include<boost/random//discrete_distribution.hpp>

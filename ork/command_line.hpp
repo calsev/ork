@@ -34,6 +34,7 @@ private:
 public:
 	ORK_ORK_API command_handler();
 	ORK_ORK_API virtual ~command_handler() {}
+	ORK_MOVE_ONLY(command_handler)
 public:
 	//Configures and parses command line, calling add_options and extract_option_value
 	ORK_ORK_API bool operator()(const int argc, const char_t*const argv[]);
