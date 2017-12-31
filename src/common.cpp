@@ -3,27 +3,21 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<mutex>
+#include<sstream>
+#include<vector>
 
-#include"ork/ork.hpp"
-#if ORK_MSC
-#pragma warning(push)
-#pragma warning(disable:4371) //Boost layout changed
-#pragma warning(disable:4619) //Boost disable non-existant warning
-#pragma warning(disable:4625) //Boost implicit copy consructor
-#pragma warning(disable:4626) //Boost implicit copy assignment
-#pragma warning(disable:4668) //Boost+Windows undefined macro
-#pragma warning(disable:5026) //Boost implicit move constructor
-#pragma warning(disable:5027) //Boost implicit move assignment
-#pragma warning(disable:5031) //Boost unmatched pragma push
-#endif
-
-#include"ork/command_line.hpp"
 #include"ork/tagger.hpp"
 #include"ork/file_utils.hpp"
 
+#if ORK_MSC
+#pragma warning(push)
+#pragma warning(disable:4668) //Windows undefined macro
 #define NOMINMAX
 #include"windows.h"
 #include"DbgHelp.h"
+#pragma warning(pop)
+#endif
+
 
 namespace ork {
 
@@ -279,7 +273,3 @@ string_converter_type&g_string_converter() {//From string_types.hpp
 }
 
 }//namespace ork
-
-#if ORK_MSC
-#pragma warning(pop)
-#endif
