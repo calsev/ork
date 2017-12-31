@@ -12,40 +12,48 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+ORK_INLINE char to_lower_char(const char c) {
+	return static_cast<char>(::tolower(c));
+}
+ORK_INLINE char to_upper_char(const char c) {
+	return static_cast<char>(::toupper(c));
+}
+
+
 void to_lower(bstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+	std::transform(str.begin(), str.end(), str.begin(), to_lower_char);
 }
 void to_lower(wstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+	std::transform(str.begin(), str.end(), str.begin(), to_lower_char);
 }
 
 void to_upper(bstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+	std::transform(str.begin(), str.end(), str.begin(), to_upper_char);
 }
 void to_upper(wstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+	std::transform(str.begin(), str.end(), str.begin(), to_upper_char);
 }
 
 
 bstring to_lower_copy(const bstring&str) {
 	bstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), ::tolower);
+	std::transform(retval.begin(), retval.end(), retval.begin(), to_lower_char);
 	return retval;
 }
 wstring to_lower_copy(const wstring&str) {
 	wstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), ::tolower);
+	std::transform(retval.begin(), retval.end(), retval.begin(), to_lower_char);
 	return retval;
 }
 
 bstring to_upper_copy(const bstring&str) {
 	bstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), ::toupper);
+	std::transform(retval.begin(), retval.end(), retval.begin(), to_upper_char);
 	return retval;
 }
 wstring to_upper_copy(const wstring&str) {
 	wstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), ::toupper);
+	std::transform(retval.begin(), retval.end(), retval.begin(), to_upper_char);
 	return retval;
 }
 
