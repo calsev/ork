@@ -152,7 +152,7 @@ Due to byte expansion, 1 '=' indicates 2 bytes and 2 '=' indicates 1 byte.
 */
 const char fill_char = BORK('=');
 
-ORK_INLINE bool is_base64(const unsigned char c) {
+ORK_INLINE bool is_base64(const char c) {
 	return (isalnum(c) || (c == '+') || (c == '/'));
 }
 
@@ -246,11 +246,11 @@ void decode_bytes(const size_t byte_index, std::array<unsigned char, 4>&buf4char
 		buf4chars[i] = 0;//Pad the buffer with zeros
 	}
 	LOOPI(4) {//Decode the chars
-		buf4chars[i] = static_cast<unsigned char>(codes_64.find(buf4chars[i]));
+		buf4chars[i] = static_cast<unsigned char>(codes_64.find(static_cast<char>(buf4chars[i])));
 	}
 	const std::array<unsigned char, 3>buf3bytes = chars2bytes(buf4chars);
 	LOOPI(byte_index - 1) {//Copy non-padding bytes
-		retval += buf3bytes[i];
+		retval += static_cast<char>(buf3bytes[i]);
 	}
 }
 
@@ -264,7 +264,7 @@ bstring decode(const bstring& str, const encoding enc) {
 	std::array<unsigned char, 4>buf4chars = {0, 0, 0, 0};//Holds the current chars
 
 	for(size_t i = 0; i < str.size() && is_base64(str[i]); ++i) {
-		buf4chars[byte_index++] = str[i];
+		buf4chars[byte_index++] = static_cast<unsigned char>(str[i]);
 		if(byte_index == 4) {//Post decement, so we have a full set of 4 source chars
 			decode_bytes(byte_index, buf4chars, retval);
 			byte_index = 0;//Next 4 chars please
