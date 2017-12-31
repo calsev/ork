@@ -4,7 +4,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include<string>
 #include<sstream>
-#include"boost/tokenizer.hpp"
 
 #include"ork/glm.hpp"
 #include"ork/orientation.hpp"
@@ -78,14 +77,30 @@ orientation string2orientation(const string&val) {
 }
 
 
-std::vector<string>parse_orientation_strings(const string&line) {
+//Crappy little parser to get boost out of this compile unit
+using iter_t = string::const_iterator;
+void skip_whitespace(iter_t&it, const iter_t&end) {
+	while(it != end && (*it == ' ' || *it == ' ')) {//Whitespace can be space or tab
+		++it;
+	}
+}
+iter_t consume_token(iter_t begin, const iter_t&end) {
+	while(begin != end && *begin != ' ' && *begin != ' ') {//Whitespace can be space or tab
+		++begin;
+	}
+	return begin;
+}
+std::vector<string>parse_orientation_strings(const string&str) {
 	std::vector<string>retval;
-	//Build the orientations
-	typedef boost::tokenizer<boost::char_separator<char_t> > tokenizer;
-	boost::char_separator<char_t> delim(ORK(" \t"));//Whitespace can be space or tab
-	tokenizer tokens(line, delim);
-	for(const string&str : tokens) {
-		retval.push_back(str);
+	iter_t curr_pos{str.begin()};
+	const iter_t end{str.end()};
+	while(curr_pos != end) {
+		skip_whitespace(curr_pos, end);
+		const iter_t new_pos = consume_token(curr_pos, end);
+		if(new_pos != curr_pos) {
+			retval.emplace_back(curr_pos, new_pos);
+		}
+		curr_pos = new_pos;
 	}
 	return std::move(retval);
 }
