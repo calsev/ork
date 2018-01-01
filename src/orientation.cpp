@@ -13,8 +13,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-orientation operator-(orientation or ) {
-	switch(or ) {
+orientation operator-(const orientation o) {
+	switch(o) {
 	case orientation::pos_x:
 		return orientation::neg_x;
 	case orientation::neg_x:
@@ -32,7 +32,7 @@ orientation operator-(orientation or ) {
 }
 
 //These must be in the same order as the enum
-static const char_t* oriention_strings[] = {
+static const char_t*const oriention_strings[] = {
 	ORK("+X"),
 	ORK("-X"),
 	ORK("+Y"),
@@ -42,22 +42,22 @@ static const char_t* oriention_strings[] = {
 };
 
 
-o_stream&operator<<(o_stream&strm, orientation or ) {
-	strm << orientation2string(or );
+o_stream&operator<<(o_stream&strm, const orientation o) {
+	strm << orientation2string(o);
 	return strm;
 }
 
 
-i_stream&operator >> (i_stream&strm, orientation& or ) {
+i_stream&operator >> (i_stream&strm, orientation&o) {
 	string val;
 	strm >> val;
-	or = string2orientation(val);
+	o = string2orientation(val);
 	return strm;
 }
 
 
-const char_t*orientation2string(orientation or ) {
-	const size_t index = static_cast<size_t>(or );
+const char_t*orientation2string(const orientation o) {
+	const size_t index = static_cast<size_t>(o);
 	if(index < sizeof(oriention_strings) / sizeof(*oriention_strings)) return oriention_strings[index];
 	else ORK_THROW(ORK("Attempt to convert invalid orientation"));
 }
