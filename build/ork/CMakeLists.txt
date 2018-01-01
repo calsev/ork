@@ -62,6 +62,7 @@ endif()
 
 
 set_advanced_warnings()
+set_vector_architecture()
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
 
 

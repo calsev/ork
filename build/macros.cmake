@@ -219,6 +219,20 @@ macro(set_advanced_warnings)
 		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
 	endif()
 endmacro()
+
+
+macro(set_vector_architecture)
+	get_compiler_name(COMPILER)
+	if(COMPILER MATCHES "vc")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2") #VC does not support SSE in x64 builds anyway
+	elseif(COMPILER MATCHES "gcc")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
+	else()
+		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
+	endif()
+endmacro()
+
+
 #MSVC exception logic
 set(EH_STRINGS "EH{a|s}{c|r}?\-?")
 macro(enable_structured_exceptions)
