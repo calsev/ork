@@ -70,4 +70,4 @@ Auto linking, at least in Visual Studio
 
 
 }//namespace ork
-#endif ORK_ORK_HPP
+#endif//ORK_ORK_HPP

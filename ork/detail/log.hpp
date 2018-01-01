@@ -126,4 +126,4 @@ ORK_ORK_EXT(logger&) get_global_log();
 
 }//namespace ork
 
-#endif ORK_LOG_HPP
+#endif//ORK_LOG_HPP

@@ -98,4 +98,4 @@ ORK_ORK_EXT(bool) ensure_file(const path&);
 }//namespace file
 }//namespace ork
 
-#endif ORK_FILE_SYSTEM_HPP
+#endif//ORK_FILE_SYSTEM_HPP

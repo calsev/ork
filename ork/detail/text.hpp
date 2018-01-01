@@ -221,4 +221,4 @@ ORK_ORK_EXT(string_converter_type&) g_string_converter();
 
 }//namespace ork
 
-#endif ORK_TEXT_HPP
+#endif//ORK_TEXT_HPP

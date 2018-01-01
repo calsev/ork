@@ -238,4 +238,4 @@ The second inserts no code.
 
 }//namespace ork
 
-#endif ORK_TOOLS_HPP
+#endif//ORK_TOOLS_HPP

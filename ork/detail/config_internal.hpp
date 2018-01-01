@@ -161,4 +161,4 @@ Convenience macro for functions
 #	define ORK_INT(RETVAL) ORK_LOCAL RETVAL ORK_CALL
 #endif
 
-#endif ORK_CONFIG_INTERNAL_HPP
+#endif//ORK_CONFIG_INTERNAL_HPP

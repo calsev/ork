@@ -65,4 +65,4 @@ Exceptions do not support unicode!
 #pragma warning(pop)
 #endif
 
-#endif ORK_EXCEPTION_HPP
+#endif//ORK_EXCEPTION_HPP
