@@ -192,6 +192,33 @@ macro(get_compiler_name _var)
 	endif()
 endmacro()
 
+
+macro(set_advanced_warnings)
+	get_compiler_name(COMPILER)
+	if(COMPILER MATCHES "vc")
+		if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+			string(REGEX REPLACE "/W[0-4]" "/Wall" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+		elseif(NOT CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
+		endif()
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /sdl") #Security Development Lifecycle checks
+		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /RTCc") #Smaller type checks
+		add_definitions(-D_ALLOW_RTCc_IN_STL) #Acknowledge STL does not support this check
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:rvalueCast") #C++11 R-value cast check
+		
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4201") #nameless struct/union (GLM)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4464") #relative include path contains '..' (GLM)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4514") #unreferenced inline function has been removed
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4710") #function not inlined (the entire std lib)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4820") #Padding added to type
+		
+		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /wd4711") #Function selected for automatic inline expansion
+	elseif(COMPILER MATCHES "gcc")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -pedantic")
+	else()
+		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
+	endif()
+endmacro()
 #MSVC exception logic
 set(EH_STRINGS "EH{a|s}{c|r}?\-?")
 macro(enable_structured_exceptions)
