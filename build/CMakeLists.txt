@@ -2,7 +2,7 @@
 #All cache variables are set then hidden.
 #GUI mode is invoked to detect if any variables have been added in child projects.
 
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8 FATAL_ERROR) #Required for C++17
 set(CMAKE_SUPPRESS_REGENERATION ON) #Projects can be run on machines without CMake installed
 
 include("macros.cmake")
@@ -43,7 +43,7 @@ project(third_party)
 ##########
 
 #CMake is a bit behind on C++ versions
-set_as_internal(CMAKE_CXX_STANDARD "14")
+set_as_internal(CMAKE_CXX_STANDARD "17")
 set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
 set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
 

@@ -3,6 +3,7 @@ project(yaml CXX)
 
 set(VERSION 0.5.3)
 
+set_as_internal(CMAKE_CXX_STANDARD "14") # YAML has become dated
 if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4127") #Conditional expression is constant
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251") #Inconsistent DLL linkage
