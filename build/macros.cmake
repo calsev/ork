@@ -192,6 +192,21 @@ macro(get_compiler_name _var)
 	endif()
 endmacro()
 
+macro(disable_language_extensions _disable)
+	get_compiler_name(COMPILER)
+	if(COMPILER MATCHES "vc")
+		if(_disable)
+			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Za")
+			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Za")
+		else()
+			#/Ze is deprecated
+		endif()
+	elseif(COMPILER MATCHES "gcc")
+		message(FATAL_ERROR "TODO: Need to implement extensions for GCC")
+	else()
+		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
+	endif()
+endmacro()
 
 macro(set_advanced_warnings)
 	get_compiler_name(COMPILER)
@@ -201,7 +216,6 @@ macro(set_advanced_warnings)
 		elseif(NOT CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
 			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
 		endif()
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Za") #Disable VS extensions
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /sdl") #Security Development Lifecycle checks
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /RTCc") #Smaller type checks
 		add_definitions(-D_ALLOW_RTCc_IN_STL) #Acknowledge STL does not support this check
@@ -221,7 +235,6 @@ macro(set_advanced_warnings)
 	endif()
 endmacro()
 
-
 macro(set_vector_architecture)
 	get_compiler_name(COMPILER)
 	if(COMPILER MATCHES "vc")
@@ -232,7 +245,6 @@ macro(set_vector_architecture)
 		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
 	endif()
 endmacro()
-
 
 #MSVC exception logic
 set(EH_STRINGS "EH{a|s}{c|r}?\-?")

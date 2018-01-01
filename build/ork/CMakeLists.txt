@@ -63,6 +63,7 @@ endif()
 
 set_advanced_warnings()
 set_vector_architecture()
+disable_language_extensions(OFF)
 add_definitions(-DORK_BUILD_ORK) #Enable exports, disable self-linking
 
 
