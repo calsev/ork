@@ -68,6 +68,11 @@ if(COMPILER MATCHES "vc")
 	elseif(NOT CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
 	endif()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /sdl") #Security Development Lifecycle checks
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /RTCc") #Smaller type checks
+	add_definitions(-D_ALLOW_RTCc_IN_STL) #Acknowledge STL does not support this check
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:rvalueCast") #C++11 R-value cast check
+	
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4201") #nameless struct/union (GLM)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4464") #relative include path contains '..' (GLM)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4514") #unreferenced inline function has been removed
