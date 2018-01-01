@@ -201,6 +201,7 @@ macro(set_advanced_warnings)
 		elseif(NOT CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
 			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
 		endif()
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Za") #Disable VS extensions
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /sdl") #Security Development Lifecycle checks
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /RTCc") #Smaller type checks
 		add_definitions(-D_ALLOW_RTCc_IN_STL) #Acknowledge STL does not support this check
