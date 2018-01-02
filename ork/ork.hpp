@@ -23,8 +23,8 @@ namespace ork {
 
 
 #define ORK_VERSION_MAJOR 0
-#define ORK_VERSION_MINOR 1//2 digit
-#define ORK_VERSION_PATCH 1//2 digits
+#define ORK_VERSION_MINOR 2//2 digit
+#define ORK_VERSION_PATCH 0//2 digits
 #define ORK_VERSION (ORK_VERSION_MAJOR*10000 + ORK_VERSION_MINOR*100 + ORK_VERSION_PATCH)//1.0 is 10000
 
 

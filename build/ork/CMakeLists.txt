@@ -117,6 +117,7 @@ if(NOT ORK_USE_PUGI)
 		"(#	define ORK_USE_PUGI) 1" "\\1 0"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
+endif()
 if(NOT ORK_USE_YAML)
 	string(
 		REGEX REPLACE
