@@ -10,7 +10,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include ORK_FILE_INCLUDE
 
 #include"ork/geometry.hpp"
-#include"ork/xml.hpp"
+#include"ork/text_io.hpp"
 
 #if ORK_USE_PUGI
 #include"pugixml.hpp"

@@ -145,7 +145,7 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/parse.hpp"
 	"${3P_ORK_SRC_DIR}/ork/string_utils.hpp"
 	"${3P_ORK_SRC_DIR}/ork/tagger.hpp"
-	"${3P_ORK_SRC_DIR}/ork/xml.hpp"
+	"${3P_ORK_SRC_DIR}/ork/text_io.hpp"
 	"${ORK_CONFIG_HDRS}"
 	"${ORK_DETAIL_HDRS}"
 )
@@ -163,7 +163,7 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/orientation.cpp"
 	"${3P_ORK_SRC_DIR}/src/string_utils.cpp"
 	"${3P_ORK_SRC_DIR}/src/tagger.cpp"
-	"${3P_ORK_SRC_DIR}/src/xml.cpp"
+	"${3P_ORK_SRC_DIR}/src/text_io.cpp"
 )
 
 foreach(head ${ORK_CONFIG_HDRS})
