@@ -81,9 +81,9 @@ mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 append_debug_flag("-D_DEBUG -DDEBUG")
 append_release_flag("-D_NDEBUG -DNDEBUG")
-replace_or_append_release_flag_compilers("O([0-4]|x)" "O[0-3]" "Ox" "O3")
-replace_or_append_release_flag_compilers("Z(7|i|l)" "IMPOSSIBLE" "Zi" "")
-replace_or_append_release_flag_compilers("Ob[0-2]" "IMPOSSIBLE" "Ob2" "")
+replace_or_append_release_flag_compilers("/O([0-4]|x)" "-O[0-3]" "/Ox" "-O3")
+replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "")
+replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "")
 
 
 #Fast behavior is bad for CAD kernels
