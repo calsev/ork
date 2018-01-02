@@ -5,17 +5,7 @@ set(VERSION "${ORK_VERSION_STR}")
 
 
 get_compiler_name(COMPILER)
-if(COMPILER MATCHES "vc")
-	if(CMAKE_CXX_FLAGS MATCHES "/W([0-4]|all)")
-		string(REGEX REPLACE "/W([0-4]|all)" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-	else()
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-	endif()
-elseif(COMPILER MATCHES "gcc")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-else()
-	message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
-endif()
+replace_or_append_all_flag_compilers("/W([0-4]|all)" "IMPOSSIBLE" "/W4" "")
 
 
 set(ORK_TEST_SRCS
