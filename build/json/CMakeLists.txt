@@ -7,7 +7,7 @@ file(READ "${3P_JSON_SRC_DIR}/version" VERSION)
 add_definitions(-DJSON_DLL_BUILD)
 set(JSONCPP_USE_SECURE_MEMORY "0")
 if(MSVC)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4275") #DLL Export class inherits from non-DLL class (std::exception)
+	append_all_compiler_flag("/wd4275") #DLL Export class inherits from non-DLL class (std::exception)
 endif()
 
 parse_version(${VERSION} "JSONCPP_VERSION")
