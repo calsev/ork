@@ -39,8 +39,10 @@ void export_file(const string&filename, const Json::Value&root) {
 	file::ensure_directory(filename);
 	ORK_FILE_WRITE(filename);
 
-	Json::StyledWriter writer;
-	fout << writer.write(root);
+	Json::StreamWriterBuilder write_builder;
+	write_builder["indentation"] = "\t";
+	bstring document = Json::writeString(write_builder, root);
+	fout << document;
 }
 void export_file(const string&filename, const exportable&object) {
 	Json::Value root;
