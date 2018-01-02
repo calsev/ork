@@ -90,11 +90,19 @@ mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
 #Fast behavior is bad for CAD kernels
-if(MSVC)
-	detect_option_flag(ORK_FAST_FLOAT "Use fast floating point operations" OFF)
-	if(NOT ORK_FAST_FLOAT)
+detect_option_flag(ORK_FAST_FLOAT "Use fast floating point operations (Do not use in CAD applications)" OFF)
+get_compiler_name(COMPILER)
+if(ORK_FAST_FLOAT)
+	if(COMPILER MATCHES "vc")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:fast")
+	elseif(COMPILER MATCHES "gcc")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
+	else()
+		message(FATAL_ERROR "Error: Only MSVC and GCC supported")
+	endif()
+else()
+	if(COMPILER MATCHES "vc")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:precise")
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /fp:precise")
 	endif()
 endif()
 
