@@ -12,6 +12,17 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/geometry.hpp"
 #include"ork/text_io.hpp"
 
+#if ORK_USE_JSON
+#if ORK_MSC
+#pragma warning(push)
+#pragma warning(disable:4668) //Json undefined macro
+#endif
+#include"json/json.h"
+#if ORK_MSC
+#pragma warning(pop)
+#endif
+#endif
+
 #if ORK_USE_PUGI
 #include"pugixml.hpp"
 #endif
