@@ -27,12 +27,19 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"pugixml.hpp"
 #endif
 
-#if ORK_USE_JSON
+#if ORK_USE_YAML
 #if ORK_MSC
 #pragma warning(push)
-#pragma warning(disable:4668) //Json undefined macro
+#pragma warning(disable:4127) //conditional expression is constant
+#pragma warning(disable:4365) //signed/unsigned mismatch
+#pragma warning(disable:4571) //catch(...) semantics changed
+#pragma warning(disable:4625) //copy constructor was implicitly deleted
+#pragma warning(disable:4626) //copy assigment was implicitly deleted
+#pragma warning(disable:4668) //undefined preprocessor macro
+#pragma warning(disable:5026) //move constructor implicitly deleted
+#pragma warning(disable:5027) //move assignment implicitly deleted
 #endif
-#include"json/json.h"
+#include"yaml-cpp/yaml.h"
 #if ORK_MSC
 #pragma warning(pop)
 #endif
