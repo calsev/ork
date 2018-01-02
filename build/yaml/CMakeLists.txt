@@ -1,5 +1,5 @@
 
-project(yaml CXX)
+project(yamlcpp CXX)
 
 set(VERSION 0.5.3)
 
@@ -27,15 +27,15 @@ file(GLOB YAML_SRCS
 
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
-add_library(yaml SHARED ${YAML_PUBLIC_HDRS} ${YAML_PRIVATE_HDRS} ${YAML_SRCS})
+add_library(yamlcpp SHARED ${YAML_PUBLIC_HDRS} ${YAML_PRIVATE_HDRS} ${YAML_SRCS})
 
 target_include_directories(
-    yaml
+    yamlcpp
     PUBLIC $<BUILD_INTERFACE:${3P_YAML_SRC_DIR}/include>
     PUBLIC "${3P_BOOST_SRC_DIR}"
     PRIVATE $<BUILD_INTERFACE:${3P_YAML_SRC_DIR}/src>
     INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 )
 
-install_bin(yaml)
+install_bin(yamlcpp)
 install_header_dir("${3P_YAML_SRC_DIR}/include/yaml-cpp" "${ORK_INSTALL_INC_DIR}/yaml-cpp" "contrib")
