@@ -35,22 +35,27 @@ namespace json {
 #if ORK_USE_JSON
 
 
-void export_file(const string&filename, const Json::Value&root) {
-	file::ensure_directory(filename);
-	ORK_FILE_WRITE(filename);
+void export_file(const string&path_to_file, const Json::Value&root) {
+	file::ensure_directory(path_to_file);
+	ORK_FILE_WRITE(path_to_file);
 
 	Json::StreamWriterBuilder write_builder;
 	write_builder["indentation"] = "\t";
 	bstring document = Json::writeString(write_builder, root);
 	fout << document;
 }
-void export_file(const string&filename, const exportable&object) {
+void export_file(const string&path_to_file, const exportable&object) {
 	Json::Value root;
 	object.export_json(root);
-	export_file(filename, root);
+	export_file(path_to_file, root);
 }
 void load_and_parse(i_stream&fin, Json::Value&root) {
 	fin >> root;
+}
+Json::Value load_and_parse(i_stream&fin) {
+	Json::Value root;
+	fin >> root;
+	return std::move(root);
 }
 
 
@@ -65,11 +70,12 @@ namespace xml {
 
 
 void export_file(const string&filename, const exportable&object, const string&root_node_name) {
+void export_file(const string&path_to_file, const exportable&object, const string&root_node_name) {
 	pugi::xml_document doc;
 	pugi::xml_node root_node = doc.append_child(root_node_name.c_str());
 	object.export_xml(root_node);
-	file::ensure_directory(filename);
-	ORK_FILE_WRITE(filename);
+	file::ensure_directory(path_to_file);
+	ORK_FILE_WRITE(path_to_file);
 	doc.save(fout);
 }
 void load_and_parse(i_stream&fin, pugi::xml_document&xml) {

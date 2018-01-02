@@ -33,9 +33,10 @@ public:
 };
 
 
-ORK_ORK_EXT(void) export_file(const string&filename, const Json::Value&root);
-ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object);
+ORK_ORK_EXT(void) export_file(const string&path_to_file, const Json::Value&root);
+ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object);
 ORK_ORK_EXT(void) load_and_parse(i_stream&fin, Json::Value&root);
+ORK_ORK_EXT(Json::Value) load_and_parse(i_stream&fin);
 
 
 #endif//ORK_USE_JSON
@@ -56,8 +57,8 @@ public:
 };
 
 
-ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object, const string&root_node_name);
-ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&xml);//Just create a file with error checking
+ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object, const string&root_node_name);
+ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&root);//Just create a file with error checking
 
 
 #endif//ORK_USE_PUGI
