@@ -247,6 +247,11 @@ macro(replace_or_append_release_flag _regex_str _flag_str)
 	replace_or_append_compiler_flag(CMAKE_C_FLAGS_RELWITHDEBINFO ${_regex_str} ${_flag_str})
 endmacro()
 
+macro(replace_or_append_all_flag _regex_str _flag_str)
+	replace_or_append_compiler_flag(CMAKE_CXX_FLAGS ${_regex_str} ${_flag_str})
+	replace_or_append_compiler_flag(CMAKE_C_FLAGS ${_regex_str} ${_flag_str})
+endmacro()
+
 macro(replace_or_append_all_flag_compilers _vc_regex_str _gcc_regex_str _vc_flag_str _gcc_flag_str)
 	get_compiler_name(COMPILER)
 	if(COMPILER MATCHES "vc")
