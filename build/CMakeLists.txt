@@ -63,18 +63,17 @@ endif()
 
 
 mark_as_internal(CMAKE_CXX_FLAGS)
+mark_as_internal(CMAKE_CXX_FLAGS_DEBUG)
 mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
 mark_as_internal(CMAKE_CXX_FLAGS_RELEASE)
 mark_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
 
 mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
 
-
 mark_as_internal(CMAKE_C_FLAGS)
 mark_as_internal(CMAKE_C_FLAGS_DEBUG)
 mark_as_internal(CMAKE_C_FLAGS_MINSIZEREL)
-ensure_non_empty(CMAKE_C_FLAGS_RELEASE)
-set_as_internal(CMAKE_C_FLAGS_RELEASE "/MD")
+mark_as_internal(CMAKE_C_FLAGS_RELEASE)
 mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
