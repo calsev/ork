@@ -81,13 +81,14 @@ mark_as_internal(CMAKE_C_FLAGS)
 mark_as_internal(CMAKE_C_FLAGS_DEBUG)
 mark_as_internal(CMAKE_C_FLAGS_MINSIZEREL)
 ensure_non_empty(CMAKE_C_FLAGS_RELEASE)
-set_as_internal(CMAKE_C_FLAGS_RELEASE "/MD /Zi /Ox /Ob2 /DNDEBUG")
+set_as_internal(CMAKE_C_FLAGS_RELEASE "/MD /Zi /Ox /Ob2")
 mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
-append_debug_compiler_flag("-D_DEBUG")
+append_debug_compiler_flag("-D_DEBUG -DDEBUG")
+append_release_compiler_flag("-D_NDEBUG -DNDEBUG")
 
 
 #Fast behavior is bad for CAD kernels
