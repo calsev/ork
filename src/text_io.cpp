@@ -22,10 +22,38 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 
 namespace ork {
+namespace json {
+
+
+#if ORK_USE_JSON
+
+
+void export_file(const string&filename, const Json::Value&root) {
+	file::ensure_directory(filename);
+	ORK_FILE_WRITE(filename);
+
+	Json::StyledWriter writer;
+	fout << writer.write(root);
+}
+void export_file(const string&filename, const exportable&object) {
+	Json::Value root;
+	object.export_json(root);
+	export_file(filename, root);
+}
+void load_and_parse(i_stream&fin, Json::Value&root) {
+	fin >> root;
+}
+
+
+#endif//ORK_USE_JSON
+
+
+}//namespace json
 namespace xml {
 
 
 #if ORK_USE_PUGI
+
 
 void export_file(const string&filename, const exportable&object, const string&root_node_name) {
 	pugi::xml_document doc;
@@ -47,7 +75,11 @@ void load_and_parse(i_stream&fin, pugi::xml_document&xml) {
 	}
 }
 
-#endif
+
+#endif//ORK_USE_PUGI
+
+
+}//namespace xml
 
 
 #if ORK_USE_GLM
@@ -57,9 +89,9 @@ struct vector::impl {
 public:
 	glm::dvec3 data;
 public:
-	impl() : data{ } {}
-	explicit impl(const glm::dvec3&vec) : data{ vec } {}
-	impl(const double x, const double y, const double z) : data{ x, y, z } {}
+	impl() : data{} {}
+	explicit impl(const glm::dvec3&vec) : data{vec} {}
+	impl(const double x, const double y, const double z) : data{x, y, z} {}
 };
 
 
@@ -71,17 +103,10 @@ vector::impl vector::deleter::operator()(const vector::impl&val) {
 }
 
 
-vector::vector() : _pimpl{ new impl() } {}
-vector::vector(const glm::dvec3&vec) : _pimpl{ new impl(vec) } {}
-vector::vector(const GLM::dunit3&vec) : _pimpl{ new impl(vec.get()) } {}
-vector::vector(const double x, const double y, const double z) : _pimpl{ new impl(x, y, z) } {}
-#if ORK_USE_PUGI
-vector::vector(pugi::xml_node &node) {
-	_pimpl->data.x = node.attribute(ORK("x")).as_double();
-	_pimpl->data.y = node.attribute(ORK("y")).as_double();
-	_pimpl->data.z = node.attribute(ORK("z")).as_double();
-}
-#endif
+vector::vector() : _pimpl{new impl()} {}
+vector::vector(const glm::dvec3&vec) : _pimpl{new impl(vec)} {}
+vector::vector(const GLM::dunit3&vec) : _pimpl{new impl(vec.get())} {}
+vector::vector(const double x, const double y, const double z) : _pimpl{new impl(x, y, z)} {}
 
 
 vector&vector::operator=(const glm::dvec3&vec) {
@@ -138,6 +163,11 @@ string vector::as_string() const {
 	return stream.str();
 }
 #if ORK_USE_PUGI
+vector::vector(pugi::xml_node &node) {
+	_pimpl->data.x = node.attribute(ORK("x")).as_double();
+	_pimpl->data.y = node.attribute(ORK("y")).as_double();
+	_pimpl->data.z = node.attribute(ORK("z")).as_double();
+}
 void vector::export_xml(pugi::xml_node &node) const {
 	node.append_attribute(ORK("x")).set_value(to_dimension(_pimpl->data.x).c_str());
 	node.append_attribute(ORK("y")).set_value(to_dimension(_pimpl->data.y).c_str());
@@ -146,7 +176,7 @@ void vector::export_xml(pugi::xml_node &node) const {
 #endif
 
 
-o_stream &operator << (o_stream&stream, const ork::xml::vector &vec) {
+o_stream &operator << (o_stream&stream, const ork::vector &vec) {
 	return stream << vec.as_string();
 }
 
@@ -154,32 +184,4 @@ o_stream &operator << (o_stream&stream, const ork::xml::vector &vec) {
 #endif//ORK_USE_GLM
 
 
-}//namespace xml
-
-
-namespace json {
-
-
-#if ORK_USE_JSON
-
-void export_file(const string&filename, const Json::Value&root) {
-	ork::ensure_directory(filename);
-	ORK_FILE_WRITE(filename);
-
-	Json::StyledWriter writer;
-	fout << writer.write(root);
-}
-void export_file(const string&filename, const exportable&object) {
-	Json::Value root;
-	object.export_json(root);
-	export_file(filename, root);
-}
-void load_and_parse(i_stream&fin, Json::Value&root) {
-	fin >> root;
-}
-
-#endif
-
-
-}//namespace json
 }//namespace ork

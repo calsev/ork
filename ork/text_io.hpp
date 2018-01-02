@@ -7,17 +7,35 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"glm/fwd.hpp"
 
 
-namespace pugi {
-class xml_document;
-class xml_node;
-}
-
 namespace Json {
 class Value;
 }
 
 
+namespace pugi {
+class xml_document;
+class xml_node;
+}
+
+
 namespace ork {
+namespace json {
+
+
+class ORK_ORK_API exportable {
+public:
+	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+public:
+	virtual void export_json(Json::Value& v) const = 0;
+};
+
+
+ORK_ORK_EXT(void) export_file(const string&filename, const Json::Value&root);
+ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object);
+ORK_ORK_EXT(void) load_and_parse(i_stream&fin, Json::Value&root);
+
+
+}//namespace json
 namespace xml {
 
 
@@ -33,10 +51,17 @@ ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object, co
 ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&xml);//Just create a file with error checking
 
 
+}//namespace xml
+
+
 #if ORK_USE_GLM
 
 
-class vector : public exportable {
+class vector
+#if ORK_USE_PUGI
+	: public xml::exportable
+#endif
+{
 private:
 	struct impl;
 	struct deleter {
@@ -79,31 +104,10 @@ public:
 };
 
 
-ORK_ORK_API o_stream &operator << (o_stream&stream, const ork::xml::vector &vec);
+ORK_ORK_API o_stream &operator << (o_stream&stream, const ork::vector &vec);
 
 
 #endif//ORK_USE_GLM
 
 
-}//namespace xml
-
-
-//A bit rough here, but not enough for a new header yet
-namespace json {
-
-
-class ORK_ORK_API exportable {
-public:
-	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
-public:
-	virtual void export_json(Json::Value& v) const = 0;
-};
-
-
-ORK_ORK_EXT(void) export_file(const string&filename, const Json::Value&root);
-ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object);
-ORK_ORK_EXT(void) load_and_parse(i_stream&fin, Json::Value&root);
-
-
-}//namespace json
 }//namespace ork
