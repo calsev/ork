@@ -22,6 +22,9 @@ namespace ork {
 namespace json {
 
 
+#if ORK_USE_JSON
+
+
 class ORK_ORK_API exportable {
 public:
 	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
@@ -35,8 +38,14 @@ ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object);
 ORK_ORK_EXT(void) load_and_parse(i_stream&fin, Json::Value&root);
 
 
+#endif//ORK_USE_JSON
+
+
 }//namespace json
 namespace xml {
+
+
+#if ORK_USE_PUGI
 
 
 class ORK_ORK_API exportable {
@@ -49,6 +58,9 @@ public:
 
 ORK_ORK_EXT(void) export_file(const string&filename, const exportable&object, const string&root_node_name);
 ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&xml);//Just create a file with error checking
+
+
+#endif//ORK_USE_PUGI
 
 
 }//namespace xml
