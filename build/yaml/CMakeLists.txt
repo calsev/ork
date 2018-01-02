@@ -5,10 +5,10 @@ set(VERSION 0.5.3)
 
 set_as_internal(CMAKE_CXX_STANDARD "14") # YAML has become dated
 if(MSVC)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4127") #Conditional expression is constant
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251") #Inconsistent DLL linkage
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4267") #Narrowing conversion
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4355") #'this' used in base member initializer list
+	append_all_compiler_flag("/wd4127") #Conditional expression is constant
+	append_all_compiler_flag("/wd4251") #Inconsistent DLL linkage
+	append_all_compiler_flag("/wd4267") #Narrowing conversion
+	append_all_compiler_flag("/wd4355") #'this' used in base member initializer list
 endif()
 add_definitions(-DYAML_CPP_NO_CONTRIB)
 add_definitions(-DYAML_CPP_DLL)
