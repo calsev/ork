@@ -100,8 +100,23 @@ ORK_ORK_EXT(YAML::Node) load_and_parse(i_stream&fin);
 
 
 class vector
+#if ORK_USE_JSON || ORK_USE_PUGI || ORK_USE_YAML
+	: public
+#endif
+#if ORK_USE_JSON
+	json::exportable
+#endif
+#if ORK_USE_JSON && (ORK_USE_PUGI || ORK_USE_YAML)
+	,
+#endif
 #if ORK_USE_PUGI
-	: public xml::exportable
+	xml::exportable
+#endif
+#if ORK_USE_PUGI && ORK_USE_YAML
+	,
+#endif
+#if ORK_USE_YAML
+	yaml::exportable
 #endif
 {
 private:
@@ -117,8 +132,14 @@ public:
 	ORK_ORK_API explicit vector(const glm::dvec3&vec);
 	ORK_ORK_API explicit vector(const GLM::dunit3&vec);
 	ORK_ORK_API vector(const double x, const double y, const double z);
+#if ORK_USE_JSON
+	ORK_ORK_API explicit vector(Json::Value &node);
+#endif
 #if ORK_USE_PUGI
 	ORK_ORK_API explicit vector(pugi::xml_node &node);
+#endif
+#if ORK_USE_YAML
+	ORK_ORK_API explicit vector(YAML::Node &node);
 #endif
 public:
 	ORK_ORK_API vector&operator=(const glm::dvec3&);
@@ -140,8 +161,14 @@ public:
 	ORK_ORK_API bool operator != (const vector &other) const;
 
 	ORK_ORK_API string as_string() const;
+#if ORK_USE_JSON
+	ORK_ORK_API virtual void export_json(Json::Value &n) const;
+#endif
 #if ORK_USE_PUGI
 	ORK_ORK_API virtual void export_xml(pugi::xml_node &n) const;
+#endif
+#if ORK_USE_YAML
+	ORK_ORK_API virtual void export_yaml(YAML::Node &n) const;
 #endif
 };
 
