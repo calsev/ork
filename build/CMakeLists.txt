@@ -262,7 +262,7 @@ add_definitions(-DBOOST_ALL_DYN_LINK) #Link boost shared libs
 set_as_internal(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
 #Catch
 set_as_internal(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
-#GLM
+set_as_internal(3P_GLM_BIN_DIR "${3P_BIN_DIR}/glm")
 #harfbuzz
 set_as_internal(3P_JSON_BIN_DIR "${3P_BIN_DIR}/json")
 set_as_internal(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
@@ -296,7 +296,9 @@ endif()
 if(ORK_BUILD_JPEG)
 	add_subdirectory("./jpeg" "${3P_JPEG_BIN_DIR}")
 endif()
-#GLM nothing to build
+if(ORK_BUILD_GLM)
+	add_subdirectory("./glm" "${3P_GLM_BIN_DIR}")
+endif()
 #Harfbuzz under construction
 if(ORK_BUILD_JSON)
 	add_subdirectory("./json" "${3P_JSON_BIN_DIR}")
