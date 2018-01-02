@@ -347,14 +347,7 @@ macro(set_advanced_warnings)
 endmacro()
 
 macro(set_vector_architecture)
-	get_compiler_name(COMPILER)
-	if(COMPILER MATCHES "vc")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2") #VC does not support SSE in x64 builds anyway
-	elseif(COMPILER MATCHES "gcc")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
-	else()
-		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
-	endif()
+	replace_or_append_all_flag_compilers("/arch:[AVX|SSE][0-9]" "-m[avx|sse][0-9]" "/arch:AVX2" "-mavx2")
 endmacro()
 
 #MSVC exception logic
