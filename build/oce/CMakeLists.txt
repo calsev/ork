@@ -21,7 +21,7 @@ if(MSVC)
 endif()
 set(OCE_ENABLE_DEB_FLAG OFF)#Debug builds link debug OCC?
 if(OCE_ENABLE_DEB_FLAG)
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} OCCT_DEBUG=1")
+	append_debug_flag("OCCT_DEBUG=1")
 endif()
 
 
