@@ -322,11 +322,7 @@ endmacro()
 macro(set_advanced_warnings)
 	get_compiler_name(COMPILER)
 	if(COMPILER MATCHES "vc")
-		if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-			string(REGEX REPLACE "/W[0-4]" "/Wall" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-		elseif(NOT CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
-		endif()
+		replace_or_append_all_flag("/W[[0-4]|all]" "/Wall")
 		append_all_compiler_flag("/sdl") #Security Development Lifecycle checks
 		append_debug_flag("/RTCc") #Smaller type checks
 		add_definitions(-D_ALLOW_RTCc_IN_STL) #Acknowledge STL does not support this check
@@ -340,7 +336,7 @@ macro(set_advanced_warnings)
 		
 		append_release_flag("/wd4711") #Function selected for automatic inline expansion
 	elseif(COMPILER MATCHES "gcc")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -pedantic")
+		append_all_compiler_flag("-Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -pedantic")
 	else()
 		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
 	endif()
