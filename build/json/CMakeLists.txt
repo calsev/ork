@@ -4,6 +4,9 @@ project(jsoncpp CXX)
 file(READ "${3P_JSON_SRC_DIR}/version" VERSION)
 
 
+if(MSVC)
+	append_all_compiler_flag("/wd4996") #Deprecated
+endif()
 add_definitions(-DJSON_DLL_BUILD)
 set(JSONCPP_USE_SECURE_MEMORY "0")
 if(MSVC)
