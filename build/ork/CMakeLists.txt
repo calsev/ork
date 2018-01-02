@@ -184,6 +184,9 @@ endif()
 if(ORK_USE_PUGI)
 	target_link_libraries(ork PUBLIC pugixml)
 endif()
+if(ORK_USE_PUGI)
+	target_link_libraries(ork PUBLIC glm)
+endif()
 
 
 target_include_directories(
@@ -193,12 +196,6 @@ target_include_directories(
 	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
 	PUBLIC "${3P_BOOST_SRC_DIR}"
 )
-if(ORK_USE_GLM)
-	target_include_directories(
-		ork
-		PUBLIC "${3P_GLM_SRC_DIR}"
-	)
-endif()
 
 
 install_bin(ork)

@@ -22,6 +22,10 @@ endif()
 if(ORK_USE_PUGI)
 	target_link_libraries(ork_test PUBLIC pugixml)
 endif()
+if(ORK_USE_PUGI)
+	target_link_libraries(ork_test PUBLIC glm)
+endif()
+
 
 target_include_directories(
 	ork_test
@@ -31,12 +35,6 @@ target_include_directories(
 	PUBLIC "${3P_BOOST_SRC_DIR}"
 	PUBLIC "${3P_CATCH_SRC_DIR}/single_include"
 )
-if(ORK_USE_GLM)
-	target_include_directories(
-		ork_test
-		PUBLIC "${3P_GLM_SRC_DIR}"
-	)
-endif()
 
 
 #We do not install test executable
