@@ -47,6 +47,7 @@ detect_option_flag(ORK_BUILD_TESTS "Enable building test suite with Catch" ON)
 detect_option_flag(ORK_USE_GLM "Enable GLM usage" ON)
 detect_option_flag(ORK_USE_JSON "Enable JsonCPP usage" ON)
 detect_option_flag(ORK_USE_PUGI "Enable Pugi XML usage" ON)
+detect_option_flag(ORK_USE_YAML "Enable yaml-cpp usage" ON)
 if(ORK_BUILD_TESTS AND NOT ORK_BUILD_CATCH)
 	message(FATAL_ERROR "Ork building tests but Catch is not being built")
 endif()
@@ -58,6 +59,9 @@ if(ORK_USE_JSON AND NOT ORK_BUILD_JSON)
 endif()
 if(ORK_USE_PUGI AND NOT ORK_BUILD_PUGI)
 	message(FATAL_ERROR "Ork using Pugi but Pugi is not being built")
+endif()
+if(ORK_USE_YAML AND NOT ORK_BUILD_YAML)
+	message(FATAL_ERROR "Ork using YAML but YAML is not being built")
 endif()
 
 
@@ -111,6 +115,12 @@ if(NOT ORK_USE_PUGI)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_USE_PUGI) 1" "\\1 0"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
+	)
+if(NOT ORK_USE_YAML)
+	string(
+		REGEX REPLACE
+		"(#	define ORK_USE_YAML) 1" "\\1 0"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()

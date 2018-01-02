@@ -65,6 +65,13 @@ Auto linking, at least in Visual Studio
 #			pragma comment(lib,"jsoncpp")
 #		endif
 #	endif
+#	if ORK_USE_YAML
+#		if ORK_DEBUG
+#			pragma comment(lib,"yamlcppd")
+#		else
+#			pragma comment(lib,"yamlcpp")
+#		endif
+#	endif
 #endif
 #endif
 

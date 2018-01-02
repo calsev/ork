@@ -30,12 +30,16 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #	define ORK_USE_GLM 1
 #endif
 
+#ifndef ORK_USE_JSON//Optional dependency
+#	define ORK_USE_JSON 1
+#endif
+
 #ifndef ORK_USE_PUGI//Optional dependency
 #	define ORK_USE_PUGI 1
 #endif
 
-#ifndef ORK_USE_JSON//Optional dependency
-#	define ORK_USE_JSON 1
+#ifndef ORK_USE_YAML//Optional dependency
+#	define ORK_USE_YAML 1
 #endif
 
 #ifndef ORK_USE_ACIS//Configures numerical stuff
