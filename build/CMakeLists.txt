@@ -64,7 +64,7 @@ endif()
 
 mark_as_internal(CMAKE_CXX_FLAGS)
 mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
-append_string_internal(CMAKE_CXX_FLAGS_RELEASE "/Zi")
+mark_as_internal(CMAKE_CXX_FLAGS_RELEASE)
 mark_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
 
 mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
@@ -74,7 +74,7 @@ mark_as_internal(CMAKE_C_FLAGS)
 mark_as_internal(CMAKE_C_FLAGS_DEBUG)
 mark_as_internal(CMAKE_C_FLAGS_MINSIZEREL)
 ensure_non_empty(CMAKE_C_FLAGS_RELEASE)
-set_as_internal(CMAKE_C_FLAGS_RELEASE "/MD /Zi /Ob2")
+set_as_internal(CMAKE_C_FLAGS_RELEASE "/MD /Ob2")
 mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
@@ -83,6 +83,7 @@ mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 append_debug_flag("-D_DEBUG -DDEBUG")
 append_release_flag("-D_NDEBUG -DNDEBUG")
 replace_or_append_release_flag_compilers("O([0-4]|x)" "O[0-3]" "Ox" "O3")
+replace_or_append_release_flag_compilers("Z(7|i|l)" "IMPOSSIBLE" "Zi" "")
 
 
 #Fast behavior is bad for CAD kernels
