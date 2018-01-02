@@ -132,13 +132,13 @@ file(WRITE "${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_CONFIG_H}")
 set(ORK_CONFIG_HDRS
 	"${3P_ORK_BIN_DIR}/ork/config/config.hpp"
 )
-set(ORK_DETAIL_HDRS
-	"${3P_ORK_SRC_DIR}/ork/detail/config_internal.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/exception.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/file_system.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/log.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/text.hpp"
-	"${3P_ORK_SRC_DIR}/ork/detail/tools.hpp"
+set(ORK_CORE_HDRS
+	"${3P_ORK_SRC_DIR}/ork/core/config_internal.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/exception.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/file_system.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/log.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/text.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/tools.hpp"
 )
 set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/color.hpp"
@@ -157,8 +157,6 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/string_utils.hpp"
 	"${3P_ORK_SRC_DIR}/ork/tagger.hpp"
 	"${3P_ORK_SRC_DIR}/ork/text_io.hpp"
-	"${ORK_CONFIG_HDRS}"
-	"${ORK_DETAIL_HDRS}"
 )
 set(ORK_PRIVATE_HDRS
 )
@@ -177,16 +175,15 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/text_io.cpp"
 )
 
-foreach(head ${ORK_CONFIG_HDRS})
-	source_group("config" FILES "${head}")
-endforeach()
-foreach(head ${ORK_DETAIL_HDRS})
-	source_group("detail" FILES "${head}")
-endforeach()
+source_group("config" FILES ${ORK_CONFIG_HDRS})
+source_group("core" FILES ${ORK_CORE_HDRS})
+source_group("ork" FILES ${ORK_PUBLIC_HDRS})
+source_group("private" FILES ${ORK_PRIVATE_HDRS})
+source_group("src" FILES ${ORK_SRCS})
 
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
-add_library(ork ${ORK_LINK_MODE} ${ORK_SRCS} ${ORK_PUBLIC_HDRS} ${ORK_PRIVATE_HDRS})
+add_library(ork ${ORK_LINK_MODE} ${ORK_CONFIG_HDRS} ${ORK_CORE_HDRS} ${ORK_PUBLIC_HDRS} ${ORK_PRIVATE_HDRS} ${ORK_SRCS})
 
 
 if(ORK_USE_GLM)

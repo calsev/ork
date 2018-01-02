@@ -11,12 +11,12 @@ Types and utilities for text, files and logging
 */
 
 #include"ork/config/config.hpp"
-#include"ork/detail/config_internal.hpp"
-#include"ork/detail/tools.hpp"
-#include"ork/detail/text.hpp"
-#include"ork/detail/exception.hpp"
-#include"ork/detail/file_system.hpp"
-#include"ork/detail/log.hpp"
+#include"ork/core/config_internal.hpp"
+#include"ork/core/tools.hpp"
+#include"ork/core/text.hpp"
+#include"ork/core/exception.hpp"
+#include"ork/core/file_system.hpp"
+#include"ork/core/log.hpp"
 
 
 namespace ork {
