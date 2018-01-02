@@ -336,6 +336,17 @@ macro(set_vector_architecture)
 	replace_or_append_all_flag_compilers("/arch:[AVX|SSE][0-9]" "-m[avx|sse][0-9]" "/arch:AVX2" "-mavx2")
 endmacro()
 
+macro(set_source_listing)
+	get_compiler_name(COMPILER)
+	if(COMPILER MATCHES "vc")
+		replace_or_append_all_flag("/FA[c|s|u]" "/FAs")
+	elseif(COMPILER MATCHES "gcc")
+		message(FATAL_ERROR "TODO:  Implement source listing for GCC")
+	else()
+		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
+	endif()
+endmacro()
+
 #MSVC exception logic
 set(EH_STRINGS "EH{a|s}{c|r}?\-?")
 macro(enable_structured_exceptions)
