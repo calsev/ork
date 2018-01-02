@@ -21,6 +21,9 @@ class xml_node;
 namespace YAML {
 class Node;
 }
+#if ORK_USE_YAML//We compensate for lack of configuration header
+#define YAML_CPP_DLL 1
+#endif
 
 
 namespace ork {

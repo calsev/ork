@@ -31,6 +31,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #if ORK_MSC
 #pragma warning(push)
 #pragma warning(disable:4127) //conditional expression is constant
+#pragma warning(disable:4251) //needs to have dll-interface
 #pragma warning(disable:4365) //signed/unsigned mismatch
 #pragma warning(disable:4571) //catch(...) semantics changed
 #pragma warning(disable:4625) //copy constructor was implicitly deleted
