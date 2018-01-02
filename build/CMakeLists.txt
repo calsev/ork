@@ -61,18 +61,17 @@ else()
 	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
 endif()
 
-set(ORK_RELEASE_FLAGS "")
 
 mark_as_internal(CMAKE_CXX_FLAGS)
-append_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL ORK_RELEASE_FLAGS)
+mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
 ensure_non_empty(CMAKE_CXX_FLAGS_RELEASE)
 string(
 	REGEX REPLACE
 	"O[0-4]" "Ox"
 	CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}"
 )
-append_string_internal(CMAKE_CXX_FLAGS_RELEASE "/Zi ${ORK_RELEASE_FLAGS}")
-append_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO ORK_RELEASE_FLAGS)
+append_string_internal(CMAKE_CXX_FLAGS_RELEASE "/Zi")
+mark_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
 
 mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
 
