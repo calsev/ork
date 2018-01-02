@@ -12,12 +12,12 @@ add_definitions(-DHAVE_CONFIG_H)
 if(MSVC)
 	add_definitions(-DWNT -DCSFDB)
 	add_definitions("-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") #Narrowing conversion
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4302") #Truncation of pointer due to cast
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4311") #Truncation due to cast
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4312") #Unfortunate reinterpret casts
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4800") #Coercion to bool
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996") #Deprecated
+	append_all_compiler_flag("/wd4244") #Narrowing conversion
+	append_all_compiler_flag("/wd4302") #Truncation of pointer due to cast
+	append_all_compiler_flag("/wd4311") #Truncation due to cast
+	append_all_compiler_flag("/wd4312") #Unfortunate reinterpret casts
+	append_all_compiler_flag("/wd4800") #Coercion to bool
+	append_all_compiler_flag("/wd4996") #Deprecated
 endif()
 set(OCE_ENABLE_DEB_FLAG OFF)#Debug builds link debug OCC?
 if(OCE_ENABLE_DEB_FLAG)
