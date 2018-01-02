@@ -223,8 +223,22 @@ string vector::as_string() const {
 		<< ORK(", ") << to_dimension(_pimpl->data.z) << ORK(")");
 	return stream.str();
 }
+
+
+#if ORK_USE_JSON
+vector::vector(Json::Value &node) : vector{} {
+	_pimpl->data.x = node["x"].asDouble();
+	_pimpl->data.y = node["y"].asDouble();
+	_pimpl->data.z = node["z"].asDouble();
+}
+void vector::export_json(Json::Value &n) const {
+	n["x"] = _pimpl->data.x;
+	n["y"] = _pimpl->data.y;
+	n["z"] = _pimpl->data.z;
+}
+#endif
 #if ORK_USE_PUGI
-vector::vector(pugi::xml_node &node) {
+vector::vector(pugi::xml_node &node) : vector{} {
 	_pimpl->data.x = node.attribute(ORK("x")).as_double();
 	_pimpl->data.y = node.attribute(ORK("y")).as_double();
 	_pimpl->data.z = node.attribute(ORK("z")).as_double();
@@ -233,6 +247,18 @@ void vector::export_xml(pugi::xml_node &node) const {
 	node.append_attribute(ORK("x")).set_value(to_dimension(_pimpl->data.x).c_str());
 	node.append_attribute(ORK("y")).set_value(to_dimension(_pimpl->data.y).c_str());
 	node.append_attribute(ORK("z")).set_value(to_dimension(_pimpl->data.z).c_str());
+}
+#endif
+#if ORK_USE_YAML
+vector::vector(YAML::Node &node) : vector{} {
+	_pimpl->data.x = node["x"].as<double>();
+	_pimpl->data.y = node["y"].as<double>();
+	_pimpl->data.z = node["z"].as<double>();
+}
+void vector::export_yaml(YAML::Node &n) const {
+	n["x"] = _pimpl->data.x;
+	n["y"] = _pimpl->data.y;
+	n["z"] = _pimpl->data.z;
 }
 #endif
 
