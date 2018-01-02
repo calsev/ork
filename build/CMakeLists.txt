@@ -61,11 +61,9 @@ else()
 	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
 endif()
 
-set(ORK_DEBUG_FLAGS "-D_DEBUG")
 set(ORK_RELEASE_FLAGS "")
 
 mark_as_internal(CMAKE_CXX_FLAGS)
-append_as_internal(CMAKE_CXX_FLAGS_DEBUG ORK_DEBUG_FLAGS)
 append_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL ORK_RELEASE_FLAGS)
 ensure_non_empty(CMAKE_CXX_FLAGS_RELEASE)
 string(
@@ -87,6 +85,9 @@ set_as_internal(CMAKE_C_FLAGS_RELEASE "/MD /Zi /Ox /Ob2 /DNDEBUG")
 mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
+
+
+append_debug_compiler_flag("-D_DEBUG")
 
 
 #Fast behavior is bad for CAD kernels
