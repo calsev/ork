@@ -6,9 +6,9 @@ set(VERSION "2.7.0")
 add_definitions(-DFT2_BUILD_LIBRARY)
 if(MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4244") #Narrowing conversion
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4267") #Narrowing conversion
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4312") #Weird cast to void*
+	append_all_compiler_flag("/wd4244") #Narrowing conversion
+	append_all_compiler_flag("/wd4267") #Narrowing conversion
+	append_all_compiler_flag("/wd4312") #Weird cast to void*
 endif()
 
 
