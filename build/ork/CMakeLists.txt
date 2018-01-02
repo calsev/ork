@@ -189,14 +189,17 @@ link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
 add_library(ork ${ORK_LINK_MODE} ${ORK_SRCS} ${ORK_PUBLIC_HDRS} ${ORK_PRIVATE_HDRS})
 
 
+if(ORK_USE_GLM)
+	target_link_libraries(ork PUBLIC glm)
+endif()
 if(ORK_USE_JSON)
 	target_link_libraries(ork PUBLIC jsoncpp)
 endif()
 if(ORK_USE_PUGI)
 	target_link_libraries(ork PUBLIC pugixml)
 endif()
-if(ORK_USE_PUGI)
-	target_link_libraries(ork PUBLIC glm)
+if(ORK_USE_YAML)
+	target_link_libraries(ork PUBLIC yamlcpp)
 endif()
 
 
