@@ -212,7 +212,9 @@ macro(append_release_flag _flag)
 endmacro()
 
 macro(replace_or_append_compiler_flag _flags_var _regex_str _flag_str)
-	if(${_flags_var} MATCHES ${_regex_str})
+	if(_regex_str MATCHES "IMPOSIBLE")
+		#Useful for one-line compiler-specific options
+	elseif(${_flags_var} MATCHES ${_regex_str})
 		string(REGEX REPLACE ${_regex_str} ${_flag_str} ${_flags_var} "${${_flags_var}}")
 	else()
 		set(${_flags_var} "${${_flags_var}} ${_flag_str}")
