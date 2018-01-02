@@ -87,7 +87,6 @@ namespace xml {
 #if ORK_USE_PUGI
 
 
-void export_file(const string&filename, const exportable&object, const string&root_node_name) {
 void export_file(const string&path_to_file, const exportable&object, const string&root_node_name) {
 	pugi::xml_document doc;
 	pugi::xml_node root_node = doc.append_child(root_node_name.c_str());
@@ -113,6 +112,35 @@ void load_and_parse(i_stream&fin, pugi::xml_document&xml) {
 
 
 }//namespace xml
+namespace yaml {
+
+
+#if ORK_USE_YAML
+
+
+void export_file(const string&path_to_file, const YAML::Node&root) {
+	file::ensure_directory(path_to_file);
+	ORK_FILE_WRITE(path_to_file);
+	fout << root;
+}
+void export_file(const string&path_to_file, const exportable&object) {
+	YAML::Node root;
+	object.export_yaml(root);
+	export_file(path_to_file, root);
+}
+void load_and_parse(i_stream&fin, YAML::Node&root) {
+	root = YAML::Load(fin);
+}
+YAML::Node load_and_parse(i_stream&fin) {
+	YAML::Node root = YAML::Load(fin);
+	return std::move(root);
+}
+
+
+#endif//ORK_USE_YAML
+
+
+}//namespace yaml
 
 
 #if ORK_USE_GLM

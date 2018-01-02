@@ -18,6 +18,11 @@ class xml_node;
 }
 
 
+namespace YAML {
+class Node;
+}
+
+
 namespace ork {
 namespace json {
 
@@ -65,6 +70,30 @@ ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&root);//Just c
 
 
 }//namespace xml
+namespace yaml {
+
+
+#if ORK_USE_YAML
+
+
+class ORK_ORK_API exportable {
+public:
+	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+public:
+	virtual void export_yaml(YAML::Node& n) const = 0;
+};
+
+
+ORK_ORK_EXT(void) export_file(const string&path_to_file, const YAML::Node&root);
+ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object);
+ORK_ORK_EXT(void) load_and_parse(i_stream&fin, YAML::Node&root);
+ORK_ORK_EXT(YAML::Node) load_and_parse(i_stream&fin);
+
+
+#endif//ORK_USE_YAML
+
+
+}//namespace yaml
 
 
 #if ORK_USE_GLM
