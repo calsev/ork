@@ -8,12 +8,12 @@ add_definitions(-D_WIN32_WINNT=0x0600)
 add_definitions(-DUSE_WINTHREAD)
 
 if(MSVC)
-	set(CMAKE_CXX_FLAGS "/volatile:iso ${CMAKE_CXX_FLAGS}")
-	set(CMAKE_CXX_FLAGS "/wd4018 ${CMAKE_CXX_FLAGS}") #Compare sign mismatch
-	set(CMAKE_CXX_FLAGS "/wd4146 ${CMAKE_CXX_FLAGS}") #Negation of unsigned
-	set(CMAKE_CXX_FLAGS "/wd4244 ${CMAKE_CXX_FLAGS}") #Narrowing conversion
-	set(CMAKE_CXX_FLAGS "/wd4267 ${CMAKE_CXX_FLAGS}") #Narrowing conversion
-	set(CMAKE_CXX_FLAGS "/wd4800 ${CMAKE_CXX_FLAGS}") #Coercion to bool
+	append_all_compiler_flag("/volatile:iso")
+	append_all_compiler_flag("/wd4018") #Compare sign mismatch
+	append_all_compiler_flag("/wd4146") #Negation of unsigned
+	append_all_compiler_flag("/wd4244") #Narrowing conversion
+	append_all_compiler_flag("/wd4267") #Narrowing conversion
+	append_all_compiler_flag("/wd4800") #Coercion to bool
 endif()
 
 
