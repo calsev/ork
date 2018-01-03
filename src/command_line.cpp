@@ -89,12 +89,19 @@ bool command_handler::operator()(const int argc, const char_t*const argv[]) {
 }
 
 
+#if ORK_UNICODE
+using command_line_parser = options::basic_command_line_parser<wchar_t>;
+#else
+using command_line_parser = options::basic_command_line_parser<char>;
+#endif
+
+
 bool command_handler::operator()(const int argc, const char_t*const argv[], const bstring&positional_op) {
 	try {
 		call_add_options();
 		options::positional_options_description p;
 		p.add(positional_op.c_str(), -1);
-		options::basic_parsed_options<char_t>ops(options::command_line_parser(argc, argv).options(_desc).positional(p).run());
+		options::basic_parsed_options<char_t>ops(command_line_parser(argc, argv).options(_desc).positional(p).run());
 		return process_commands(ops);
 	}
 	COMMAND_CATCH
