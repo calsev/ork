@@ -85,15 +85,27 @@ ORK_ORK_EXT(bool) ensure_file(const path&);
 	ORK_THROW(MSG << ORK("\n -- Path: \"") << FILE_NAME << ORK("\""))\
 )
 
-#define ORK_FILE_READ(FILE_NAME)\
-	ork::if_stream fin(FILE_NAME);\
+#define ORK_FILE_READ_(FILE_NAME, STREAM_T)\
+	ork::STREAM_T fin(FILE_NAME);\
 	if(!fin)ORK_FILE_OPEN_ERR(ORK("Could not open input file!"), FILE_NAME)
-#define ORK_FILE_WRITE(FILE_NAME)\
-	ork::of_stream fout(FILE_NAME);\
+#define ORK_FILE_WRITE_(FILE_NAME, STREAM_T)\
+	ork::STREAM_T fout(FILE_NAME);\
 	if(!fout)ORK_FILE_OPEN_ERR(ORK("Could not open output file!"), FILE_NAME)
-#define ORK_FILE_PARSE(FILE_NAME)\
-	ORK_FILE_READ(FILE_NAME)\
+#define ORK_FILE_PARSE_(FILE_NAME, STREAM_T)\
+	ORK_FILE_READ_(FILE_NAME, STREAM_T)\
 	fin.unsetf(std::ios::skipws);
+
+#define ORK_FILE_READ(FILE_NAME) ORK_FILE_READ_(FILE_NAME, if_stream)
+#define ORK_FILE_WRITE(FILE_NAME) ORK_FILE_WRITE_(FILE_NAME, of_stream)
+#define ORK_FILE_PARSE(FILE_NAME) ORK_FILE_PARSE_(FILE_NAME, if_stream)
+
+#define ORK_FILE_READ_B(FILE_NAME) ORK_FILE_READ_(FILE_NAME, bif_stream)
+#define ORK_FILE_WRITE_B(FILE_NAME) ORK_FILE_WRITE_(FILE_NAME, bof_stream)
+#define ORK_FILE_PARSE_B(FILE_NAME) ORK_FILE_PARSE_(FILE_NAME, bif_stream)
+
+#define ORK_FILE_READ_W(FILE_NAME) ORK_FILE_READ_(FILE_NAME, wif_stream)
+#define ORK_FILE_WRITE_W(FILE_NAME) ORK_FILE_WRITE_(FILE_NAME, wof_stream)
+#define ORK_FILE_PARSE_W(FILE_NAME) ORK_FILE_PARSE_(FILE_NAME, wif_stream)
 
 }//namespace file
 }//namespace ork
