@@ -40,8 +40,8 @@ public:
 
 ORK_ORK_EXT(void) export_file(const string&path_to_file, const Json::Value&root);
 ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object);
-ORK_ORK_EXT(void) load_and_parse(i_stream&fin, Json::Value&root);
-ORK_ORK_EXT(Json::Value) load_and_parse(i_stream&fin);
+ORK_ORK_EXT(void) load_and_parse(bi_stream&fin, Json::Value&root);
+ORK_ORK_EXT(Json::Value) load_and_parse(bi_stream&fin);
 
 
 #endif//ORK_USE_JSON
@@ -86,8 +86,8 @@ public:
 
 ORK_ORK_EXT(void) export_file(const string&path_to_file, const YAML::Node&root);
 ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object);
-ORK_ORK_EXT(void) load_and_parse(i_stream&fin, YAML::Node&root);
-ORK_ORK_EXT(YAML::Node) load_and_parse(i_stream&fin);
+ORK_ORK_EXT(void) load_and_parse(bi_stream&fin, YAML::Node&root);
+ORK_ORK_EXT(YAML::Node) load_and_parse(bi_stream&fin);
 
 
 #endif//ORK_USE_YAML
