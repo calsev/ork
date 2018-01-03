@@ -182,6 +182,12 @@ typedef std::istringstream bi_string_stream;
 	#define ORK_GEN_STR generic_string
 	#define ORK_STRING string
 #endif
+typedef detail::fstream::wofstream wof_stream;
+typedef detail::fstream::wifstream wif_stream;
+typedef detail::fstream::wfstream wf_stream;
+typedef detail::fstream::ofstream bof_stream;
+typedef detail::fstream::ifstream bif_stream;
+typedef detail::fstream::fstream bf_stream;
 
 
 class string_converter_type {//Just a thread-safe wrapper for std::wstring_convert
