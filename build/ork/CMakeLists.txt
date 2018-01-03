@@ -157,6 +157,7 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/string_utils.hpp"
 	"${3P_ORK_SRC_DIR}/ork/tagger.hpp"
 	"${3P_ORK_SRC_DIR}/ork/text_io.hpp"
+	"${3P_ORK_SRC_DIR}/ork/text_serializable.hpp"
 )
 set(ORK_PRIVATE_HDRS
 	"${3P_ORK_SRC_DIR}/ork/private/text_includes.hpp"
@@ -174,6 +175,7 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/string_utils.cpp"
 	"${3P_ORK_SRC_DIR}/src/tagger.cpp"
 	"${3P_ORK_SRC_DIR}/src/text_io.cpp"
+	"${3P_ORK_SRC_DIR}/src/text_serializable.cpp"
 )
 
 source_group("config" FILES ${ORK_CONFIG_HDRS})
