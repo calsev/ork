@@ -9,6 +9,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include"ork/file_utils.hpp"
 #include"ork/orientation.hpp"
+#include"ork/string_utils.hpp"
 #include"ork/tagger.hpp"
 
 
@@ -80,7 +81,7 @@ string tagger::operator()() {
 	else {
 		stream << _pimpl->tag << ORK("/");
 		p /= stream.str();
-		return p.ORK_GEN_STR() + std::to_string(_pimpl->count++) + ORK("_");
+		return p.ORK_GEN_STR() + to_string(_pimpl->count++) + ORK("_");
 	}
 }
 
