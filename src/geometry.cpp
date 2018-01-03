@@ -8,6 +8,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<sstream>
 #include"ork/geometry.hpp"
 #include"ork/glm.hpp"
+#include"ork/string_utils.hpp"
 
 #if ORK_USE_GLM
 #include"glm/mat3x3.hpp"
@@ -46,7 +47,7 @@ double simple_angle(double angle) {
 #if ORK_USE_GLM
 string to_dimension(const double coord) {
 #if 1
-	return std::to_string(coord);
+	return to_string(coord);
 #else
 	static const int max_precision = 16;
 	bool was_equal = false;
