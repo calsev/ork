@@ -107,14 +107,14 @@ void vector::export_json(Json::Value &n) const {
 #endif
 #if ORK_USE_PUGI
 vector::vector(pugi::xml_node &node) : vector{} {
-	_pimpl->data.x = node.attribute(ORK("x")).as_double();
-	_pimpl->data.y = node.attribute(ORK("y")).as_double();
-	_pimpl->data.z = node.attribute(ORK("z")).as_double();
+	_pimpl->data.x = node.attribute(BORK("x")).as_double();
+	_pimpl->data.y = node.attribute(BORK("y")).as_double();
+	_pimpl->data.z = node.attribute(BORK("z")).as_double();
 }
 void vector::export_xml(pugi::xml_node &node) const {
-	node.append_attribute(ORK("x")).set_value(to_dimension(_pimpl->data.x).c_str());
-	node.append_attribute(ORK("y")).set_value(to_dimension(_pimpl->data.y).c_str());
-	node.append_attribute(ORK("z")).set_value(to_dimension(_pimpl->data.z).c_str());
+	node.append_attribute(BORK("x")).set_value(ORK_STR_2_BYTE(to_dimension(_pimpl->data.x)).c_str());
+	node.append_attribute(BORK("y")).set_value(ORK_STR_2_BYTE(to_dimension(_pimpl->data.y)).c_str());
+	node.append_attribute(BORK("z")).set_value(ORK_STR_2_BYTE(to_dimension(_pimpl->data.z)).c_str());
 }
 #endif
 #if ORK_USE_YAML
