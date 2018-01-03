@@ -77,6 +77,29 @@ bool string2bool(const string&val_) {
 }
 
 
+string to_string(const unsigned val) {
+#if ORK_UNICODE
+	return std::to_wstring(val);
+#else
+	return std::to_string(val);
+#endif
+}
+unsigned string2unsigned(const string&val) {
+	return std::stoul(val);
+}
+
+string to_string(const double val) {
+#if ORK_UNICODE
+	return std::to_wstring(val);
+#else
+	return std::to_string(val);
+#endif
+}
+double string2double(const string&val) {
+	return std::stod(val);
+}
+
+
 size_t str_length(const char*const str) {
 	if(str == nullptr) {
 		ORK_THROW(ORK("String length called for null string"));

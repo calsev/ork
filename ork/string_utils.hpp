@@ -23,6 +23,12 @@ ORK_ORK_EXT(wstring) to_upper_copy(const wstring&);
 ORK_ORK_EXT(string) to_string(const bool val);
 ORK_ORK_EXT(bool) string2bool(const string&val);
 
+ORK_ORK_EXT(string) to_string(const unsigned val);
+ORK_ORK_EXT(unsigned) string2unsigned(const string&val);
+
+ORK_ORK_EXT(string) to_string(const double val);
+ORK_ORK_EXT(double) string2double(const string&val);
+
 
 ORK_ORK_EXT(size_t) str_length(const char*const);
 ORK_ORK_EXT(size_t) str_length(const wchar_t*const);
