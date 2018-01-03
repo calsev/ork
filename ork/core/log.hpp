@@ -122,7 +122,7 @@ ORK_ORK_EXT(logger&) get_global_log();
 #define ORK_LOG(SV) _ORK_LOG(log_channel::debug_trace, SV, ORK_UID(_ork_log_log_))
 #define ORK_LOUT _ORK_LOG(log_channel::output_data, severity_level::info, ORK_UID(_ork_log_out_)
 
-#define ORK_LOC_BLOCK ORK("\n -- ") << ORK_FLOC << ORK(":\n -- ") << ORK_FUNC  << ORK("\n")
+#define ORK_LOC_BLOCK ORK("\n -- ") << ORK_FLOC_STREAM << ORK(":\n -- ") << ORK_FUNC  << ORK("\n")
 
 }//namespace ork
 

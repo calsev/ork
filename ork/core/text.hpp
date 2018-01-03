@@ -167,6 +167,7 @@ typedef std::istringstream bi_string_stream;
 
 
 #define ORK_FLOC ORK_CAT4(ORK_FILEN, ORK("("), ORK_LINE, ORK(")"))
+#define ORK_FLOC_STREAM ORK_FILEN << ORK("(") << ORK_LINE << ORK(")")
 
 
 #if ORK_UNICODE
