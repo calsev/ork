@@ -22,6 +22,9 @@ string(
 	REGEX REPLACE
 	"(#define HEADER_PUGICONFIG_HPP)"
 "\\1\n\n\
+#ifndef PUGIXML_BUILD_DLL\n\
+#   define PUGIXML_BUILD_DLL 0\n\
+#endif\n\
 #if PUGIXML_BUILD_DLL\n\
 #	define PUGIXML_API __declspec(dllexport)//Export public symbols\n\
 #else\n\
