@@ -173,6 +173,147 @@ public:
 };
 
 
+/*
+The std::unique_ptr provides a templated deleter and an array specialization.
+The std::shared_ptr takes a deleter object and provides a weak_ptr interface.
+This class is a mixture of the two, a shared pointer with a templated deleter.
+Thus every instance is guaranteed to use the same type of deleter.
+Neither an array specialization nor a weak_ptr interface is provided.
+*/
+template<typename T, typename D = std::default_delete<T>>
+class shared_ptr {
+public:
+	using element_type = T;
+	using deleter_type = D;
+	using pointer = typename std::remove_reference<D>::type::pointer;
+	template<typename TT, typename DD>friend class shared_ptr;
+private:
+	std::shared_ptr<element_type>_ptr;
+public:
+	ORK_CONSTEXPR shared_ptr() ORK_NO_EXCEPT : _ptr(nullptr, deleter_type()) {}
+	ORK_CONSTEXPR shared_ptr(std::nullptr_t) ORK_NO_EXCEPT : shared_ptr() {}
+	explicit shared_ptr(pointer ptr) ORK_NO_EXCEPT : _ptr(ptr, deleter_type()) {}
+	template<typename Y> explicit shared_ptr(Y*ptr) : _ptr(ptr, deleter_type()) {}
+
+	shared_ptr(const shared_ptr&ptr) ORK_NO_EXCEPT : _ptr(ptr._ptr) {}
+	template<typename Y> shared_ptr(const shared_ptr<Y>&ptr) ORK_NO_EXCEPT : _ptr(ptr._ptr) {}
+
+	shared_ptr(const shared_ptr&&ptr) ORK_NO_EXCEPT : _ptr(std::move(ptr._ptr)) {}
+	template<typename Y> shared_ptr(shared_ptr<Y>&&ptr) ORK_NO_EXCEPT : _ptr(std::move(ptr._ptr)) {}
+	template<typename Y> shared_ptr(std::unique_ptr<Y>&&ptr) : _ptr(std::move(ptr)) {}
+public:
+	ORK_INLINE shared_ptr& operator=(const shared_ptr&ptr) ORK_NO_EXCEPT {
+		_ptr = ptr._ptr;
+		return *this;
+	}
+	template<typename Y>ORK_INLINE shared_ptr& operator=(const shared_ptr<Y>&ptr) ORK_NO_EXCEPT {
+		_ptr = ptr._ptr;
+		return *this;
+	}
+	ORK_INLINE shared_ptr& operator=(shared_ptr&&ptr) ORK_NO_EXCEPT {
+		_ptr = std::move(ptr._ptr);
+		return *this;
+	}
+	template<typename Y>ORK_INLINE shared_ptr& operator=(shared_ptr<Y>&&ptr) {
+		_ptr = std::move(ptr._ptr);
+		return *this;
+	}
+	template<typename Y>ORK_INLINE shared_ptr& operator=(std::unique_ptr<Y>&&ptr) {
+		_ptr = std::move(ptr);
+		return *this;
+	}
+
+
+	ORK_INLINE void reset() ORK_NO_EXCEPT {
+		_ptr.reset(deleter_type());
+	}
+	template<typename Y>ORK_INLINE void reset(Y*ptr) {
+		_ptr.reset(ptr, deleter_type());
+	}
+	ORK_INLINE void swap(shared_ptr&ptr) ORK_NO_EXCEPT {
+		_ptr.swap(ptr);
+	}
+
+
+	ORK_INLINE element_type* get() const ORK_NO_EXCEPT {
+		return _ptr.get();
+	}
+	ORK_INLINE T& operator*() const ORK_NO_EXCEPT {
+		return *_ptr;
+	}
+	ORK_INLINE T* operator->() const ORK_NO_EXCEPT {
+		return _ptr.get();
+	}
+
+
+	ORK_INLINE long use_count() const ORK_NO_EXCEPT {
+		return _ptr.use_count();
+	}
+	ORK_INLINE bool unique() const ORK_NO_EXCEPT {
+		return _ptr.unique();
+	}
+	ORK_INLINE explicit operator bool()const ORK_NO_EXCEPT {
+		return static_cast<bool>(_ptr);
+	}
+};
+
+
+template <typename T, typename U>
+ORK_INLINE bool operator==(const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) ORK_NO_EXCEPT {
+	return lhs.get() == rhs.get();
+}
+template <typename T>ORK_INLINE bool operator==(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT {
+	return lhs.get() == nullptr;
+}
+template <typename T>bool operator==(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT {
+	return nullptr == rhs.get();
+}
+
+
+template <typename T>ORK_INLINE bool operator!=(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT {
+	return lhs.get() != nullptr;
+}
+template <typename T>ORK_INLINE bool operator!=(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT {
+	return nullptr != rhs.get();
+}
+
+
+template <typename T, typename U>
+ORK_INLINE bool operator<(const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) ORK_NO_EXCEPT {
+	return lhs.get() < rhs.get();
+}
+template <typename T>ORK_INLINE bool operator<(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT {
+	return lhs.get() < nullptr;
+}
+template <typename T>ORK_INLINE bool operator<(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT {
+	return nullptr < rhs.get();
+}
+
+template <typename T>ORK_INLINE bool operator<=(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT {
+	return lhs.get() <= nullptr;
+}
+template <typename T>ORK_INLINE bool operator<=(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT {
+	return nullptr <= rhs.get();
+}
+
+
+template <typename T>ORK_INLINE bool operator>(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT {
+	return lhs.get() > nullptr;
+}
+template <typename T>ORK_INLINE bool operator>(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT {
+	return nullptr > rhs.get();
+}
+
+
+template <typename T>ORK_INLINE bool operator>=(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT {
+	return lhs.get() >= nullptr;
+}
+template <typename T>ORK_INLINE bool operator>=(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT {
+	return nullptr >= rhs.get();
+}
+//TODO: Atomic stuff
+
+
 }//namespace ork
 
 
