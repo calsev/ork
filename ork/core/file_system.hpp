@@ -87,10 +87,14 @@ ORK_ORK_EXT(bool) ensure_file(const path&);
 
 #define ORK_FILE_READ_(FILE_NAME, STREAM_T)\
 	ork::STREAM_T fin(FILE_NAME);\
-	if(!fin)ORK_FILE_OPEN_ERR(ORK("Could not open input file!"), FILE_NAME)
+	if(!fin){\
+		ORK_FILE_OPEN_ERR(ORK("Could not open input file!"), FILE_NAME)\
+	}
 #define ORK_FILE_WRITE_(FILE_NAME, STREAM_T)\
 	ork::STREAM_T fout(FILE_NAME);\
-	if(!fout)ORK_FILE_OPEN_ERR(ORK("Could not open output file!"), FILE_NAME)
+	if(!fout){\
+		ORK_FILE_OPEN_ERR(ORK("Could not open output file!"), FILE_NAME)\
+	}
 #define ORK_FILE_PARSE_(FILE_NAME, STREAM_T)\
 	ORK_FILE_READ_(FILE_NAME, STREAM_T)\
 	fin.unsetf(std::ios::skipws);
