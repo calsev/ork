@@ -32,7 +32,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-typedef int(*main_func)(const int argc, const char*const argv[]);
+typedef int(*main_func)(const int argc, const char_t*const argv[]);
 ORK_ORK_EXT(int) invoke_main(const std::vector<string>&args, main_func f);
 
 
