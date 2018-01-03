@@ -158,9 +158,9 @@ typedef std::istringstream bi_string_stream;
 
 
 #if ORK_MSC
-#   define ORK_FUNC __FUNCTION__
+#   define ORK_FUNC ORK(ORK_STR(__FUNCTION__))
 #elif ORK_GCC
-#   define ORK_FUNC __PRETTY_FUNCTION__
+#   define ORK_FUNC ORK(ORK_STR(__PRETTY_FUNCTION__))
 #else
 #	error Compiler not supported
 #endif
