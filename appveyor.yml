@@ -6,29 +6,30 @@ clone_folder: c:\projects\ork
 environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      BOOST_URL: https://github.com/calsev/boost_1_66_0_vc_140_x64
+      BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_140_x64"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      BOOST_URL: https://github.com/calsev/boost_1_66_0_vc_141_x64
+      BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_141_x64"
 
 install:
-  - ps: git clone %BOOST_URL% c:\projects\boost
-  - ps: git clone https://github.com/g-truc/glm  c:\projects\glm
-  - ps: git clone https://github.com/nlohmann/json c:\projects\json
-  - ps: git clone https://github.com/zeux/pugixml c:\projects\pugi
-  - ps: git clone https://github.com/jbeder/yaml-cpp c:\projects\yaml
+  - ps: echo "Boost URL: %BOOST_URL%"
+  - ps: git clone %BOOST_URL% "c:\projects\boost"
+  - ps: git clone "https://github.com/g-truc/glm" "c:\projects\glm"
+  - ps: git clone "https://github.com/nlohmann/json" "c:\projects\json"
+  - ps: git clone "https://github.com/zeux/pugixml" "c:\projects\pugi"
+  - ps: git clone "https://github.com/jbeder/yaml-cpp" "c:\projects\yaml"
 
 before_build:
-  - ps: cd c:\projects\glm
+  - ps: cd "c:\projects\glm"
   - ps: git checkout 0.9.8.5
-  - ps: cd c:\projects\json
+  - ps: cd "c:\projects\json"
   - ps: git checkout v3.0.1
-  - ps: cd c:\projects\pugi
+  - ps: cd "c:\projects\pugi"
   - ps: git checkout v1.8.1
-  - ps: cd c:\projects\yaml
+  - ps: cd "c:\projects\yaml"
   - ps: git checkout version-0.5.3
-  - ps: mkdir c:\projects\ork_build
-  - ps: cd c:\projects\ork_build
-  - ps: cmake c:\projects\ork\test
+  - ps: mkdir "c:\projects\ork_build"
+  - ps: cd "c:\projects\ork_build"
+  - ps: cmake "c:\projects\ork\test"
   
 platform:
   - x64
