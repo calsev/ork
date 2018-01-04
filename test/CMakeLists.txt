@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.8 FATAL_ERROR) #Required for C++17
 
 project(ork_test)
 
-include("c:/projects/ork/build/macros.cmake")
+set(REPO_ROOT "c:/projects")
+
+include("${REPO_ROOT}/ork/build/macros.cmake")
 
 message("Ork build: $ENV{ORK_UNICODE}")
 if($ENV{ORK_UNICODE})
@@ -12,11 +14,11 @@ if($ENV{ORK_UNICODE})
 endif()
 
 set(ORK_EXTERNAL_BOOST ON)
-set_as_internal(ORK_3P_BOOST_SRC_DIR "c:/projects/$ENV{BOOST_FOLDER}")
+set_as_internal(ORK_3P_BOOST_SRC_DIR "${REPO_ROOT}/$ENV{BOOST_FOLDER}")
 
-set_as_internal(ORK_INSTALL_PREFIX "c:/projects/$ENV{TEST_FOLDER}")
+set_as_internal(ORK_INSTALL_PREFIX "${REPO_ROOT}/$ENV{TEST_FOLDER}")
 
-set_as_internal(ORK_3P_SOURCE_DIR "c:/projects")
+set_as_internal(ORK_3P_SOURCE_DIR "${REPO_ROOT}")
 
 set_as_internal(ORK_USE_GLM ON)
 set_as_internal(ORK_USE_JSON ON)
