@@ -14,3 +14,13 @@ install:
   - ps: git clone https://github.com/nlohmann/json c:\projects\json
   - ps: git clone https://github.com/zeux/pugixml c:\projects\pugi
   - ps: git clone https://github.com/jbeder/yaml-cpp c:\projects\yaml
+
+before_build:
+  - ps: cd c:\projects\glm
+  - ps: git checkout 0.9.8.5
+  - ps: cd c:\projects\json
+  - ps: git checkout v3.0.1
+  - ps: cd c:\projects\pugi
+  - ps: git checkout v1.8.1
+  - ps: cd c:\projects\yaml
+  - ps: git checkout version-0.5.3
