@@ -5,7 +5,7 @@ clone_folder: c:\projects\ork
 
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_140_x64"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_141_x64"
@@ -27,6 +27,7 @@ before_build:
   - cd "c:\projects\yaml"
   - git checkout release-0.5.3
   - mkdir "c:\projects\ork_build"
+  - mkdir "c:\projects\ork_test"
   - cd "c:\projects\ork_build"
   - cmake "c:\projects\ork\test"
   
