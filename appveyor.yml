@@ -11,7 +11,7 @@ environment:
       BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_141_x64"
 
 install:
-  - echo "Boost URL: %BOOST_URL%"
+  - echo Boost URL=%BOOST_URL%
   - git clone %BOOST_URL% "c:\projects\boost"
   - git clone "https://github.com/g-truc/glm" "c:\projects\glm"
   - git clone "https://github.com/nlohmann/json" "c:\projects\json"
