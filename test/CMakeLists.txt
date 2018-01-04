@@ -1,7 +1,9 @@
 
+cmake_minimum_required(VERSION 3.8 FATAL_ERROR) #Required for C++17
+
 project(ork_test)
 
-include("${CMAKE_CURRENT_SOURCE_DIR}/ork/build/macros.cmake")
+include("c:/projects/ork/build/macros.cmake")
 
 message("Ork build: $ENV{ORK_UNICODE}")
 if($ENV{ORK_UNICODE})
