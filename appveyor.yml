@@ -26,6 +26,9 @@ before_build:
   - ps: git checkout v1.8.1
   - ps: cd c:\projects\yaml
   - ps: git checkout version-0.5.3
+  - ps: mkdir c:\projects\ork_build
+  - ps: cd c:\projects\ork_build
+  - ps: cmake c:\projects\ork\test
   
 platform:
   - x64
