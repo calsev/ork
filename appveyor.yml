@@ -24,3 +24,10 @@ before_build:
   - ps: git checkout v1.8.1
   - ps: cd c:\projects\yaml
   - ps: git checkout version-0.5.3
+  
+platform:
+  - x64
+
+configuration:
+  - Debug
+  - Release
