@@ -1,35 +1,45 @@
 
 version: 0.2.{build}
 
-clone_folder: c:\projects\ork
+clone_folder: "c:/projects/ork"
+
+image: Visual Studio 2017
 
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_140_x64"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_141_x64"
+    - BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_140_x64"
+      BOOST_FOLDER: boost_vs_140
+      BUILD_FOLDER: ork_build_vs_140
+      TEST_FOLDER: ork_test_vs_140
+      ORK_UNICODE: OFF
+    - BOOST_URL: "https://github.com/calsev/boost_1_66_0_vc_141_x64"
+      BOOST_FOLDER: boost_vs_141
+      BUILD_FOLDER: ork_build_vs_141
+      TEST_FOLDER: ork_test_vs_141
+      ORK_UNICODE: ON
 
 install:
-  - git clone %BOOST_URL% "c:\projects\boost"
-  - git clone "https://github.com/g-truc/glm" "c:\projects\glm"
-  - git clone "https://github.com/nlohmann/json" "c:\projects\json"
-  - git clone "https://github.com/zeux/pugixml" "c:\projects\pugi"
-  - git clone "https://github.com/jbeder/yaml-cpp" "c:\projects\yaml"
+  - git clone %BOOST_URL% "c:/projects/%BOOST_FOLDER%"
+  - git clone "https://github.com/g-truc/glm" "c:/projects/glm"
+  - git clone "https://github.com/nlohmann/json" "c:/projects/json"
+  - git clone "https://github.com/zeux/pugixml" "c:/projects/pugi"
+  - git clone "https://github.com/jbeder/yaml-cpp" "c:/projects/yaml"
 
 before_build:
-  - cd "c:\projects\glm"
+  - cd "c:/projects/glm"
   - git checkout 0.9.8.5
-  - cd "c:\projects\json"
+  - cd "c:/projects/json"
   - git checkout v3.0.1
-  - cd "c:\projects\pugi"
+  - cd "c:/projects/pugi"
   - git checkout v1.8.1
-  - cd "c:\projects\yaml"
+  - cd "c:/projects/yaml"
   - git checkout release-0.5.3
-  - mkdir "c:\projects\ork_build"
-  - mkdir "c:\projects\ork_test"
-  - cd "c:\projects\ork_build"
-  - cmake "c:\projects\ork\test"
+  - mkdir "c:/projects/%BUILD_FOLDER%"
+  - mkdir "c:/projects/%TEST_FOLDER%"
+  - cd "c:/projects"
+  - dir
+  - cd "c:/projects/%BUILD_FOLDER%"
+  - cmake "c:/projects/ork/test"
   
 platform:
   - x64
