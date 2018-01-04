@@ -16,12 +16,15 @@ environment:
 
 install:
   - git clone "https://github.com/calsev/boost_1_66_0_vc_%VS_TOOLSET%_x64" "c:/projects/boost_%VS_TOOLSET%"
+  - git clone "https://github.com/catchorg/Catch2" "c:/projects/catch"
   - git clone "https://github.com/g-truc/glm" "c:/projects/glm"
   - git clone "https://github.com/nlohmann/json" "c:/projects/json"
   - git clone "https://github.com/zeux/pugixml" "c:/projects/pugi"
   - git clone "https://github.com/jbeder/yaml-cpp" "c:/projects/yaml"
 
 before_build:
+  - cd "c:/projects/catch"
+  - git checkout v1.9.7
   - cd "c:/projects/glm"
   - git checkout 0.9.8.5
   - cd "c:/projects/json"
@@ -30,13 +33,13 @@ before_build:
   - git checkout v1.8.1
   - cd "c:/projects/yaml"
   - git checkout release-0.5.3
-  - mkdir "c:/projects/ork_build_vs_%VS_TOOLSET%"
-  - mkdir "c:/projects/ork_test_vs_%VS_TOOLSET%"
+  - mkdir "c:/projects/ork_build_%VS_TOOLSET%"
+  - mkdir "c:/projects/ork_test_%VS_TOOLSET%"
   - cd "c:/projects"
   - dir
-  - cd "c:/projects/ork_build_vs_%VS_TOOLSET%"
+  - cd "c:/projects/ork_build_%VS_TOOLSET%"
   - cmake -G "Visual Studio %VS_VERSION% Win64" -T v%VS_TOOLSET% "c:/projects/ork/test"
-  
+
 platform:
   - x64
 
