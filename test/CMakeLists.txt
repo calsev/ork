@@ -7,16 +7,16 @@ set(REPO_ROOT "c:/projects")
 
 include("${REPO_ROOT}/ork/build/macros.cmake")
 
-message("Ork build: $ENV{ORK_UNICODE}")
+message("Ork build unicode: $ENV{ORK_UNICODE}")
 if($ENV{ORK_UNICODE})
   add_definitions(-DUNICODE)
   add_definitions(-D_UNICODE)
 endif()
 
 set(ORK_EXTERNAL_BOOST ON)
-set_as_internal(ORK_3P_BOOST_SRC_DIR "${REPO_ROOT}/$ENV{BOOST_FOLDER}")
+set_as_internal(ORK_3P_BOOST_SRC_DIR "${REPO_ROOT}/boost_$ENV{BOOST_FOLDER}")
 
-set_as_internal(ORK_INSTALL_PREFIX "${REPO_ROOT}/$ENV{TEST_FOLDER}")
+set_as_internal(ORK_INSTALL_PREFIX "${REPO_ROOT}/ork_test_vs_$ENV{VS_TOOLSET}")
 
 set_as_internal(ORK_3P_SOURCE_DIR "${REPO_ROOT}")
 
