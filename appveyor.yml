@@ -1,2 +1,16 @@
 
 version: 0.2.{build}
+
+image:
+  - Visual Studio 2015
+  - Visual Studio 2017
+
+clone_folder: c:\projects\ork
+
+install:
+  - ps: git clone https://github.com/calsev/boost_1_66_0_vc_140_x64  c:\projects\boost_vc_140
+  - ps: git clone https://github.com/calsev/boost_1_66_0_vc_140_x64  c:\projects\boost_vc_141
+  - ps: git clone https://github.com/g-truc/glm  c:\projects\glm
+  - ps: git clone https://github.com/nlohmann/json c:\projects\json
+  - ps: git clone https://github.com/zeux/pugixml c:\projects\pugi
+  - ps: git clone https://github.com/jbeder/yaml-cpp c:\projects\yaml
