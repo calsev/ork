@@ -23,6 +23,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"pugixml.hpp"
 #endif
 
+
+#if ORK_USE_YAML && ORK_MSC > 1900
+#pragma ORK_WARNING(YAML-cpp does not support VS 2017: disabling)
+#   undef ORK_USE_YAML
+#   define ORK_USE_YAML 0
+#endif
 #if ORK_USE_YAML
 #define YAML_CPP_DLL 1//We compensate for lack of configuration header
 #if ORK_MSC
