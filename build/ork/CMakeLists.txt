@@ -133,10 +133,13 @@ set(ORK_CONFIG_HDRS
 	"${3P_ORK_BIN_DIR}/ork/config/config.hpp"
 )
 set(ORK_CORE_HDRS
+	"${3P_ORK_SRC_DIR}/ork/core/boost_include.inl"
 	"${3P_ORK_SRC_DIR}/ork/core/config_internal.hpp"
 	"${3P_ORK_SRC_DIR}/ork/core/exception.hpp"
 	"${3P_ORK_SRC_DIR}/ork/core/file_system.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/includes.hpp"
 	"${3P_ORK_SRC_DIR}/ork/core/log.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/stl_include.inl"
 	"${3P_ORK_SRC_DIR}/ork/core/text.hpp"
 	"${3P_ORK_SRC_DIR}/ork/core/tools.hpp"
 )
