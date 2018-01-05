@@ -3,8 +3,9 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-#include<vector>
 #include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <vector>
+#include"ork/core/stl_include.inl"
 
 
 #if ORK_USE_GLM

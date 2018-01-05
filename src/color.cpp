@@ -2,15 +2,21 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#include<algorithm>
-#include<iomanip>
-#include<sstream>
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <algorithm>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <iomanip>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <sstream>
+#include"ork/core/stl_include.inl"
 
 #include"ork/color.hpp"
 #include"ork/distribution.hpp"
 #include"ork/string_utils.hpp"
 
+
 #if ORK_USE_GLM
+
 #include"glm/glm.hpp"
 #include"glm/vec3.hpp"
 #include"glm/gtx/compatibility.hpp"
