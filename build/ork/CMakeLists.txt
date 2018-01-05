@@ -43,13 +43,13 @@ detect_option_flag(ORK_BUILD_SHARED "Building shared library instead of static" 
 detect_option_flag(ORK_AUTO_LINK "Enable auto-linking in Visual Studio" ON)
 detect_option_flag(ORK_AUTO_LINK_3P "If auto-linking, also auto-link any built dependencies" ON)
 
-detect_option_flag(ORK_BUILD_TESTS "Enable building test suite with Catch" OFF)
+detect_option_flag(ORK_USE_BOOST "Enable Boost usage" OFF)
 detect_option_flag(ORK_USE_GLM "Enable GLM usage" OFF)
 detect_option_flag(ORK_USE_JSON "Enable JsonCPP usage" OFF)
 detect_option_flag(ORK_USE_PUGI "Enable Pugi XML usage" OFF)
 detect_option_flag(ORK_USE_YAML "Enable yaml-cpp usage" OFF)
-if(ORK_BUILD_TESTS AND NOT ORK_BUILD_CATCH)
-	message(FATAL_ERROR "Ork building tests but Catch is not being built")
+if(ORK_USE_BOOST AND NOT ORK_BUILD_BOOST)
+	message(FATAL_ERROR "Ork using Boost but Boost is not being built")
 endif()
 if(ORK_USE_GLM AND NOT ORK_BUILD_GLM)
 	message(FATAL_ERROR "Ork using GLM but GLM is not being built")
@@ -94,6 +94,13 @@ if(NOT ORK_AUTO_LINK_3P)
 	string(
 		REGEX REPLACE
 		"(#	define ORK_AUTO_LINK_3P) 1" "\\1 0"
+		ORK_CONFIG_H "${ORK_CONFIG_H}"
+	)
+endif()
+if(NOT ORK_USE_BOOST)
+	string(
+		REGEX REPLACE
+		"(#	define ORK_USE_BOOST) 1" "\\1 0"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
@@ -188,10 +195,15 @@ source_group("private" FILES ${ORK_PRIVATE_HDRS})
 source_group("src" FILES ${ORK_SRCS})
 
 
-link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
+if(ORK_USE_BOOST)
+	link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
+endif()
 add_library(ork ${ORK_LINK_MODE} ${ORK_CONFIG_HDRS} ${ORK_CORE_HDRS} ${ORK_PUBLIC_HDRS} ${ORK_PRIVATE_HDRS} ${ORK_SRCS})
 
 
+if(ORK_USE_BOOST)
+	target_link_libraries(ork PUBLIC boost)
+endif()
 if(ORK_USE_GLM)
 	target_link_libraries(ork PUBLIC glm)
 endif()
@@ -211,7 +223,6 @@ target_include_directories(
 	PUBLIC $<BUILD_INTERFACE:${3P_ORK_BIN_DIR}>#Order matters for config header
 	PUBLIC $<BUILD_INTERFACE:${3P_ORK_SRC_DIR}>
 	INTERFACE $<INSTALL_INTERFACE:${ORK_INSTALL_INC_DIR}>
-	PUBLIC "${3P_BOOST_SRC_DIR}"
 )
 
 
@@ -219,6 +230,3 @@ install_bin(ork)
 install_header_dir("${3P_ORK_SRC_DIR}/ork" "${ORK_INSTALL_INC_DIR}/ork" "config")
 install_headers("${3P_ORK_BIN_DIR}/ork/config/config.hpp" "${ORK_INSTALL_INC_DIR}/ork/config")
 
-if(ORK_BUILD_TESTS)
-	add_subdirectory("./test" "${3P_ORK_TEST_BIN_DIR}")
-endif()
