@@ -2,10 +2,16 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#include<algorithm>
-#include<cstring>
-#include<cwchar>
-#include<sstream>
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <algorithm>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <cstring>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <cwchar>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <sstream>
+#include"ork/core/stl_include.inl"
+
 #include"ork/string_utils.hpp"
 
 

@@ -2,6 +2,7 @@
 
 #if ORK_NEED_STL_SUPPRESS
 #pragma warning(push)
+#pragma warning(disable:4244) //conversion from 'wchar_t' to 'char'
 #pragma warning(disable:4365) //return' signed/unsigned mismatch
 #pragma warning(disable:4571) //catch(...) semantics changed for structured exceptions
 #pragma warning(disable:4625) //implicit copy constructor
