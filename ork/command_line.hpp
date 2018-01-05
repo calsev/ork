@@ -3,24 +3,10 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-
 #include"ork/ork.hpp"
 
-#if ORK_MSC
-#pragma warning(push)
-#pragma warning(disable:4371) //Boost layout changed
-#pragma warning(disable:4619) //Boost disable non-existant warning
-#pragma warning(disable:4625) //Boost implicit copy consructor
-#pragma warning(disable:4626) //Boost implicit copy assignment
-#pragma warning(disable:4668) //Boost+Windows undefined macro
-#pragma warning(disable:5026) //Boost implicit move constructor
-#pragma warning(disable:5027) //Boost implicit move assignment
-#pragma warning(disable:5031) //Boost unmatched pragma push
-#endif
-#include"boost/program_options.hpp"
-#if ORK_MSC
-#pragma warning(pop)
-#endif
+#define ORK_BOOST_INC_FILE "boost/program_options.hpp"
+#include"ork/core/boost_include.inl"
 
 
 #if ORK_UNICODE
