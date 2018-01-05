@@ -48,7 +48,6 @@ set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
 set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
 
 #Must be tested after project
-#This was causing problems with boost
 if(MSVC_VERSION)
 	if(${MSVC_VERSION} LESS 1800)
 		message(FATAL_ERROR "Error: Only Visual Studio 2013 and above are supported")
@@ -84,7 +83,6 @@ append_release_flag("-D_NDEBUG -DNDEBUG")
 replace_or_append_release_flag_compilers("/O([0-4]|x)" "-O[0-3]" "/Ox" "-O3")
 replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "")
 replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "")
-append_all_compiler_flag("-DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE") # Pops up every new release of a compiler
 
 
 #Fast behavior is bad for CAD kernels
@@ -170,16 +168,12 @@ set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_L
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
 
 
-detect_option_flag(ORK_EXTERNAL_BOOST "Use an external boost installation" OFF)
-if(ORK_EXTERNAL_BOOST)
-	detect_option_path(ORK_3P_BOOST_SRC_DIR "Path of external boost installation" "${CMAKE_SOURCE_DIR}/../lib/boost")
-endif()
-
 ##Level 0
+detect_option_flag(ORK_BUILD_BOOST "Enable building boost interface" OFF)
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
 detect_option_flag(ORK_BUILD_CATCH "Enable building Catch2" OFF)
 detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
-detect_option_flag(ORK_BUILD_GLM "Enable building GLM" OFF) #Not actually building but using
+detect_option_flag(ORK_BUILD_GLM "Enable building GLM interface" OFF) #Not actually building but using
 detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
 detect_option_flag(ORK_BUILD_JSON "Enable building jsoncpp" OFF)
 detect_option_flag(ORK_BUILD_PUGI "Enable building pugixml" OFF)
@@ -200,11 +194,6 @@ detect_option_flag(ORK_BUILD_OSG "Enable building OpenSceneGraph" OFF)
 
 
 detect_option_path(ORK_3P_SOURCE_DIR "Path of third-party directory (location of submodules)" "${CMAKE_CURRENT_SOURCE_DIR}/../..")
-if(ORK_EXTERNAL_BOOST)
-	set_as_internal(3P_BOOST_SRC_DIR "${ORK_3P_BOOST_SRC_DIR}")
-else()
-	find_3p_path(ON 3P_BOOST_SRC_DIR "boost" "boost")
-endif()
 
 
 if(ORK_BUILD_TBB)
@@ -232,6 +221,7 @@ endif()
 ##########
 
 ##Level 0
+find_3p_path(ORK_BUILD_BOOST 3P_BOOST_SRC_DIR "boost" "boost")
 find_3p_path(ORK_BUILD_BZ2 3P_BZ2_SRC_DIR "bz2" "bzip")
 find_3p_path(ORK_BUILD_CATCH 3P_CATCH_SRC_DIR "catch" "Catch2")
 find_3p_path(ORK_BUILD_JPEG 3P_JPEG_SRC_DIR "jpeg" "jpeg-turbo")
@@ -256,10 +246,20 @@ find_3p_path(ORK_BUILD_OSG 3P_OSG_SRC_DIR "osg" "openscenegraph")
 
 
 set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-detect_path(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib/x64" "${3P_BOOST_SRC_DIR}/lib")
-add_definitions(-DBOOST_ALL_DYN_LINK) #Link boost shared libs
+
+if(ORK_BUILD_BOOST)
+	# If CMake supported target_link_directories then interface libraries would be a snap
+	# As is stands, every target that uses boost must use link_directories to add this path
+	detect_path(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib" "${3P_BOOST_SRC_DIR}/lib/x64")
+	
+	# We go ahead and add these so we get some efficiency of scale for boost dependents
+	append_all_compiler_flag("-DBOOST_ALL_DYN_LINK") #Link boost shared libs
+	append_all_compiler_flag("-DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE") # Pops up every new release of a compiler
+endif()
+
 
 ##Level 0
+set_as_internal(3P_BOOST_BIN_DIR "${3P_BIN_DIR}/boost")
 set_as_internal(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
 #Catch
 set_as_internal(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
@@ -290,6 +290,9 @@ set_as_internal(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
 
 ##Level 0
 
+if(ORK_BUILD_BOOST)
+	add_subdirectory("./boost" "${3P_BOOST_BIN_DIR}")
+endif()
 if(ORK_BUILD_BZ2)
 	add_subdirectory("./bz2" "${3P_BZ2_BIN_DIR}")
 endif()
