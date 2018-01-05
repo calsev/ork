@@ -6,6 +6,7 @@ clone_folder: "c:/projects/ork"
 image: Visual Studio 2017
 
 environment:
+  REPO_ROOT: c:/projects
   matrix:
     - ORK_UNICODE: OFF
       VS_VERSION: 14 2015
@@ -28,17 +29,19 @@ before_build:
   - cd "c:/projects/glm"
   - git checkout 0.9.8.5
   - cd "c:/projects/json"
-  - git checkout v3.0.1
+  - git checkout 1.8.4
   - cd "c:/projects/pugi"
   - git checkout v1.8.1
   - cd "c:/projects/yaml"
   - git checkout release-0.5.3
-  - mkdir "c:/projects/ork_build_%VS_TOOLSET%"
-  - mkdir "c:/projects/ork_test_%VS_TOOLSET%"
-  - cd "c:/projects"
+  - set ORK_TEST_DIR=c:/projects/ork_test_%VS_TOOLSET%
+  - mkdir "%ORK_TEST_DIR%"
+  - mkdir "%ORK_TEST_DIR%/bin"
+  - mkdir "%ORK_TEST_DIR%/build"
+  - cd "%REPO_ROOT%"
   - dir
-  - cd "c:/projects/ork_build_%VS_TOOLSET%"
-  - cmake -G "Visual Studio %VS_VERSION% Win64" -T v%VS_TOOLSET% "c:/projects/ork/test"
+  - cd "%ORK_TEST_DIR%/build"
+  - cmake -G "Visual Studio %VS_VERSION% Win64" -T v%VS_TOOLSET% "%REPO_ROOT%/ork/test"
 
 platform:
   - x64
