@@ -88,7 +88,11 @@ macro(detect_path _var _val1 _val2)
 endmacro()
 
 macro(find_3p_path _build _var _val1 _val2)
-	if(${_build})
+	if(NOT ${_build})
+		# Do nothing
+	elseif(${_var})
+		# Allow override
+	else()
 		detect_path(${_var} "${ORK_3P_SOURCE_DIR}/${_val1}" "${ORK_3P_SOURCE_DIR}/${_val2}")
 	endif()
 endmacro()

@@ -20,7 +20,7 @@ set_as_internal(ORK_INSTALL_PREFIX "${REPO_ROOT}/ork_test_$ENV{VS_TOOLSET}")
 
 set_as_internal(ORK_3P_SOURCE_DIR "${REPO_ROOT}")
 
-set_as_internal(3P_BOOST_LIB_DIR "${REPO_ROOT}/boost_$ENV{VS_TOOLSET}/lib")
+set_as_internal(3P_BOOST_SRC_DIR "${REPO_ROOT}/boost_$ENV{VS_TOOLSET}")
 
 
 set_as_internal(ORK_USE_BOOST ON)
