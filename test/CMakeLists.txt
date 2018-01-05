@@ -64,5 +64,10 @@ add_executable(ork_test ${ORK_TEST_SRCS})
 
 target_link_libraries(ork_test PRIVATE ork)
 
+target_include_directories(
+	ork_test
+	PRIVATE $<BUILD_INTERFACE:${3P_CATCH_SRC_DIR}/single_include>
+)
+
 
 install_exe(ork_test)
