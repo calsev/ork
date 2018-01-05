@@ -3,10 +3,12 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-#include<array>
 #include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <array>
+#include"ork/core/stl_include.inl"
 
-#include"boost/circular_buffer.hpp"
+#define ORK_BOOST_INC_FILE "boost/circular_buffer.hpp"
+#include"ork/core/boost_include.inl"
 
 
 namespace ork {

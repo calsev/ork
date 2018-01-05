@@ -3,12 +3,18 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-#include<array>
-#include<vector>
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <array>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <vector>
+#include"ork/core/stl_include.inl"
+
 #include"ork/orientation.hpp"
 
+#if ORK_USE_GLM
 #include"glm/fwd.hpp"
 #include"glm/vec3.hpp"
+#endif
 
 
 namespace ork {
@@ -25,9 +31,9 @@ ORK_ORK_EXT(double) deg2rad(double deg);
 //Given an angle in Radians, return the equivalent angle on [0, 2*pi]
 ORK_ORK_EXT(double) simple_angle(double angle);
 
-#if ORK_USE_GLM
+
 ORK_ORK_EXT(string) to_dimension(const double coord);//Fixed point for export
-#endif
+
 
 enum class rotation_direction {
 	clockwise,
@@ -264,5 +270,5 @@ public:
 #endif//ORK_USE_GLM
 
 
-}//namespace glm
+}//namespace GLM
 }//namespace ork

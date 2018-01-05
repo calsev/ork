@@ -5,8 +5,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 #include"ork/ork.hpp"
 
-#include"boost/spirit/home/support/common_terminals.hpp"
-#include"boost/spirit/home/qi.hpp"
+#define ORK_BOOST_INC_FILE "boost/spirit/home/support/common_terminals.hpp"
+#include"ork/core/boost_include.inl"
+#define ORK_BOOST_INC_FILE "boost/spirit/home/qi.hpp"
+#include"ork/core/boost_include.inl"
 
 
 /*
