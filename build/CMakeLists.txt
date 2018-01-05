@@ -79,12 +79,12 @@ mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
-append_all_compiler_flag("-DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE") # Pops up every new release of a compiler
 append_debug_flag("-D_DEBUG -DDEBUG")
 append_release_flag("-D_NDEBUG -DNDEBUG")
 replace_or_append_release_flag_compilers("/O([0-4]|x)" "-O[0-3]" "/Ox" "-O3")
 replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "")
 replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "")
+append_all_compiler_flag("-DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE") # Pops up every new release of a compiler
 
 
 #Fast behavior is bad for CAD kernels
@@ -177,7 +177,7 @@ endif()
 
 ##Level 0
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
-detect_option_flag(ORK_BUILD_CATCH "Enable building Catch2" ON)
+detect_option_flag(ORK_BUILD_CATCH "Enable building Catch2" OFF)
 detect_option_flag(ORK_BUILD_JPEG "Enable building libjpeg" OFF)
 detect_option_flag(ORK_BUILD_GLM "Enable building GLM" OFF) #Not actually building but using
 detect_option_flag(ORK_BUILD_HARFBUZZ "Enable building harfbuzz" OFF)
@@ -188,7 +188,7 @@ detect_option_flag(ORK_BUILD_YAML "Enable building yaml-cpp" OFF)
 detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
 
 ##Level 1
-detect_option_flag(ORK_BUILD_ORK "Enable building ork" ON)
+detect_option_flag(ORK_BUILD_ORK "Enable building ork" OFF)
 detect_option_flag(ORK_BUILD_PNG "Enable building libpng" OFF)
 
 ##Level 2
