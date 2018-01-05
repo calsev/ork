@@ -2,7 +2,10 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#include<sstream>
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <sstream>
+#include"ork/core/stl_include.inl"
+
 #include"ork/geometry.hpp"
 #include"ork/private/text_includes.hpp"
 #include"ork/text_serializable.hpp"

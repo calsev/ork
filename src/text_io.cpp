@@ -2,9 +2,13 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#include<fstream>
-#include<iostream>
-#include<sstream>
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <fstream>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <iostream>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <sstream>
+#include"ork/core/stl_include.inl"
 
 #include"ork/glm.hpp"
 
