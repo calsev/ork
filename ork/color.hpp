@@ -6,7 +6,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<vector>
 #include"ork/ork.hpp"
 
+
 #if ORK_USE_GLM
+
 #include"glm/fwd.hpp"
 
 
