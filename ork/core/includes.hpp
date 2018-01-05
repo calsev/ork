@@ -28,11 +28,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #   define ORK_STL_INC_FILE <filesystem>
 #   include"ork/core/stl_include.inl"
 #else
-#   include"boost/filesystem"
-#endif
-
-#if ORK_MSC
-#pragma warning(pop)
+#   define ORK_BOOST_INC_FILE "boost/filesystem"
+#   include"ork/core/boost_include.inl"
 #endif
 
 
