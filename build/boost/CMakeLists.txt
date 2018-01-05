@@ -4,9 +4,7 @@ project(boost CXX)
 file(GLOB_RECURSE BOOST_INCLUDES "${3P_BOOST_SRC_DIR}/*.[h|hpp|inl]")
 
 
-add_library(boost INTERFACE
-	${BOOST_INCLUDES}
-)
+add_library(boost INTERFACE)
 
 
 target_include_directories(
