@@ -13,10 +13,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #define ORK_TEXT_HPP
 
 
-#include<memory>
-#include<string>
-
-
 #if defined UNICODE || defined _UNICODE//Avoid checking both everywhere
 #	define ORK_UNICODE 1
 #else
@@ -33,8 +29,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 //Forward declaration to keep boost out of headers
 #if ORK_STL_HAS_FILE
-
-#include<iosfwd>
 
 namespace ork {
 namespace detail {

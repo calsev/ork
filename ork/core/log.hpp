@@ -12,8 +12,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #ifndef ORK_LOG_HPP
 #define ORK_LOG_HPP
 
-#include<memory>
-
 
 namespace ork {
 

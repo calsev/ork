@@ -13,10 +13,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #define ORK_FILE_SYSTEM_HPP
 
 
-#include<array>
-#include<iosfwd>
-
-
 #if ORK_STL_HAS_FILE
 
 #define ORK_FILE_INCLUDE <filesystem>
