@@ -23,6 +23,7 @@ set_as_internal(ORK_3P_SOURCE_DIR "${REPO_ROOT}")
 set_as_internal(3P_BOOST_LIB_DIR "${REPO_ROOT}/boost_$ENV{VS_TOOLSET}/lib")
 
 
+set_as_internal(ORK_USE_BOOST ON)
 set_as_internal(ORK_USE_CATCH ON)
 set_as_internal(ORK_USE_GLM ON)
 set_as_internal(ORK_USE_JSON ON)
@@ -31,6 +32,7 @@ set_as_internal(ORK_USE_YAML ON)
 
 
 ##Level 0
+set_as_internal(ORK_BUILD_BOOST ON)
 set_as_internal(ORK_BUILD_CATCH ON)
 set_as_internal(ORK_BUILD_GLM ON)
 set_as_internal(ORK_BUILD_JSON ON)
