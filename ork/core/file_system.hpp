@@ -15,8 +15,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #if ORK_STL_HAS_FILE
 
-#define ORK_FILE_INCLUDE <filesystem>
-
 namespace std {
 namespace experimental {
 namespace filesystem {
@@ -36,7 +34,6 @@ namespace ext_file = std::experimental::filesystem::v1;
 //Some boost configuration here
 #define BOOST_SYSTEM_NO_DEPRECATED 1
 #define BOOST_FILESYSTEM_NO_DEPRECATED 1
-#define ORK_FILE_INCLUDE "boost/filesystem"
 
 namespace boost {
 namespace filesystem {

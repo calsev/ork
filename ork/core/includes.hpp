@@ -30,6 +30,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<memory>
 #include<string>
 
+#if ORK_STL_HAS_FILE
+#   include<filesystem>
+#else
+#   include"boost/filesystem"
+#endif
+
 #if ORK_MSC
 #pragma warning(pop)
 #endif

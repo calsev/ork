@@ -9,7 +9,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include<sstream>
 
 #include"ork/memory.hpp"
-#include ORK_FILE_INCLUDE
 
 
 namespace ork {
