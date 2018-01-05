@@ -152,8 +152,18 @@ typedef std::istringstream bi_string_stream;
 #endif
 
 
-#define ORK_FLOC ORK(ORK_CAT4(__FILE__, '(', ORK_STR(__LINE__), ')'))
 #define ORK_FLOC_STREAM ORK_FILEN << ORK("(") << ORK_LINE << ORK(")")
+
+
+#ifndef ORK_WARNING
+#	if ORK_MSC
+#		define ORK_WARNING(MSG) message(__FILE__ "(" ORK_STR(__LINE__) ") : Warning: " ORK_STR(MSG))
+#	elif ORK_GCC
+#		define ORK_WARNING(MSG) warning(ORK_STR(MSG))
+#   else
+#       error Compiler not supported
+#	endif
+#endif
 
 
 #if ORK_UNICODE
