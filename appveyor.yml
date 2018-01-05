@@ -19,7 +19,7 @@ install:
   - git clone "https://github.com/calsev/boost_1_66_0_vc_%VS_TOOLSET%_x64" "c:/projects/boost_%VS_TOOLSET%"
   - git clone "https://github.com/catchorg/Catch2" "c:/projects/catch"
   - git clone "https://github.com/g-truc/glm" "c:/projects/glm"
-  - git clone "https://github.com/nlohmann/json" "c:/projects/json"
+  - git clone "https://github.com/open-source-parsers/jsoncpp" "c:/projects/json"
   - git clone "https://github.com/zeux/pugixml" "c:/projects/pugi"
   - git clone "https://github.com/jbeder/yaml-cpp" "c:/projects/yaml"
 
