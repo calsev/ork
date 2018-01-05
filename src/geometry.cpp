@@ -2,10 +2,14 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#define _USE_MATH_DEFINES//M_PI
-#include<cmath>
-#include<iomanip>
-#include<sstream>
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <cmath>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <iomanip>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <sstream>
+#include"ork/core/stl_include.inl"
+
 #include"ork/geometry.hpp"
 #include"ork/glm.hpp"
 #include"ork/string_utils.hpp"
