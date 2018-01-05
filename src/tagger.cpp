@@ -2,10 +2,18 @@
 This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
-#include<atomic>
-#include<mutex>
-#include<sstream>
-#include<string>
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <atomic>
+#include"ork/core/stl_include.inl"
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <mutex>
+#include"ork/core/stl_include.inl"
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <sstream>
+#include"ork/core/stl_include.inl"
+#include"ork/ork.hpp"
+#define ORK_STL_INC_FILE <string>
+#include"ork/core/stl_include.inl"
 
 #include"ork/file_utils.hpp"
 #include"ork/orientation.hpp"
