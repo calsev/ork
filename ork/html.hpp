@@ -275,7 +275,7 @@ protected:
 	std::vector<row_type>_rows;
 public:
 	table(const bstring&style, const unsigned num_column) :_table_style(style), _num_column(num_column) {}
-	table(const bstring&style, const unsigned num_column, const unsigned pad, const unsigned space) :_table_style(style), _num_column(num_column), padding(pad), spacing(space) {}
+	table(const bstring&style, const unsigned num_column, const unsigned pad, const unsigned space) : padding(pad), spacing(space), _table_style(style), _num_column(num_column) {}
 	ORK_MOVE_ONLY_5(table, padding, spacing, _table_style, _num_column, _rows);
 public:
 	size_t num_column()const {
