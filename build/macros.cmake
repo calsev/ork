@@ -109,6 +109,15 @@ macro(parse_version _ver _prefix)
 	endif()
 endmacro()
 
+macro(install_exe _targ)
+	if(NOT SKIP_INSTALL_ALL)
+		install(
+			TARGETS ${_targ}
+			RUNTIME DESTINATION "${ORK_INSTALL_BIN_DIR}" COMPONENT Runtime
+		)
+	endif()
+endmacro()
+
 macro(install_bin _targ)
 	if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
 		install(
