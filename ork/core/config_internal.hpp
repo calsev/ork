@@ -168,5 +168,11 @@ Convenience macro for functions
 #   define ORK_STL_HAS_FILE 0
 #endif
 
+#if ORK_MSC > 1900//Things fell apart in VS 2017
+#   define ORK_NEED_STL_SUPPRESS 1
+#else
+#   define ORK_NEED_STL_SUPPRESS 0
+#endif
+
 
 #endif//ORK_CONFIG_INTERNAL_HPP
