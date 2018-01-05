@@ -79,6 +79,7 @@ mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
 
 
+append_all_compiler_flag("-DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE") # Pops up every new release of a compiler
 append_debug_flag("-D_DEBUG -DDEBUG")
 append_release_flag("-D_NDEBUG -DNDEBUG")
 replace_or_append_release_flag_compilers("/O([0-4]|x)" "-O[0-3]" "/Ox" "-O3")
