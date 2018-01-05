@@ -6,7 +6,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"ork/string_utils.hpp"
 
 #define CATCH_CONFIG_MAIN 1
-#include"catch.hpp"
+#include"ork/test/catch_include.hpp"
 
 ORK_GLOBAL_LOG(ORK("../Logs"))
 
