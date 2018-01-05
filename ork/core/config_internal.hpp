@@ -160,4 +160,13 @@ Convenience macro for functions
 #	define ORK_INT(RETVAL) ORK_LOCAL RETVAL ORK_CALL
 #endif
 
+
+//Switch for transition from boost to stl
+#if ORK_GCC || ORK_MSC >= 1900
+#   define ORK_STL_HAS_FILE 1
+#else
+#   define ORK_STL_HAS_FILE 0
+#endif
+
+
 #endif//ORK_CONFIG_INTERNAL_HPP

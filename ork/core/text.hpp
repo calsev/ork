@@ -20,13 +20,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #endif
 
 
-#if ORK_GCC || ORK_MSC >= 1900
-#   define ORK_STL_HAS_FILE 1
-#else
-#   define ORK_STL_HAS_FILE 0
-#endif
-
-
 //Forward declaration to keep boost out of headers
 #if ORK_STL_HAS_FILE
 
