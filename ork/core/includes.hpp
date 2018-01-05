@@ -13,25 +13,20 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #define ORK_INCLUDES_HPP
 
 
-#if ORK_MSC
-#pragma warning(push)
-#pragma warning(disable:4365) //return' signed/unsigned mismatch
-#pragma warning(disable:4571) //catch(...) semantics changed for structured exceptions
-#pragma warning(disable:4625) //implicit copy constructor
-#pragma warning(disable:4626) //implicit copy assignment
-#pragma warning(disable:4774) //format string argument is not a string literal
-#pragma warning(disable:5026) //implicit move constructor
-#pragma warning(disable:5027) //implicit move assignment
-#endif
-
-#include<array>
-#include<deque>
-#include<iosfwd>
-#include<memory>
-#include<string>
+#define ORK_STL_INC_FILE <array>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <deque>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <iosfwd>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <memory>
+#include"ork/core/stl_include.inl"
+#define ORK_STL_INC_FILE <string>
+#include"ork/core/stl_include.inl"
 
 #if ORK_STL_HAS_FILE
-#   include<filesystem>
+#   define ORK_STL_INC_FILE <filesystem>
+#   include"ork/core/stl_include.inl"
 #else
 #   include"boost/filesystem"
 #endif
