@@ -8,6 +8,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #if ORK_USE_JSON
 #if ORK_MSC
 #pragma warning(push)
+#pragma warning(disable:4625) //implicit copy constructor
 #pragma warning(disable:4668) //Json undefined macro
 #endif
 #include"json/reader.h"
@@ -30,6 +31,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma warning(disable:4251) //needs to have dll-interface
 #pragma warning(disable:4365) //signed/unsigned mismatch
 #pragma warning(disable:4571) //catch(...) semantics changed
+#pragma warning(disable:4619) //disable non-existant warning
 #pragma warning(disable:4625) //copy constructor was implicitly deleted
 #pragma warning(disable:4626) //copy assigment was implicitly deleted
 #pragma warning(disable:4668) //undefined preprocessor macro
