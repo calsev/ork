@@ -9,6 +9,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+#if ORK_USE_BOOST
 /*
 Class that generates some random distributions
 Thread safe
@@ -36,6 +37,7 @@ public:
 };
 
 ORK_ORK_EXT(random&) g_random();//Static because construction is expensive
+#endif
 
 
 template<typename T>

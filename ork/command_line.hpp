@@ -5,6 +5,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 #include"ork/ork.hpp"
 
+#if ORK_USE_BOOST
+
 #define ORK_BOOST_INC_FILE "boost/program_options.hpp"
 #include"ork/core/boost_include.inl"
 
@@ -54,3 +56,5 @@ private:
 
 
 }//namespace ork
+
+#endif//ORK_USE_BOOST

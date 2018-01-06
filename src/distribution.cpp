@@ -12,6 +12,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include"ork/distribution.hpp"
 
+#if ORK_USE_BOOST
+
 #define ORK_BOOST_INC_FILE "boost/random//discrete_distribution.hpp"
 #include"ork/core/boost_include.inl"
 #define ORK_BOOST_INC_FILE "boost/random/taus88.hpp"
@@ -72,7 +74,6 @@ public:
 	}
 };
 
-
 random::random() :_pimpl{new impl{}} {}
 random::~random() {}
 
@@ -120,3 +121,5 @@ random&g_random() {
 
 
 }//namespace ork
+
+#endif//ORK_USE_BOOST
