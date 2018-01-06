@@ -5,6 +5,7 @@
 #pragma warning(disable:4244) //conversion from 'wchar_t' to 'char'
 #pragma warning(disable:4365) //return' signed/unsigned mismatch
 #pragma warning(disable:4571) //catch(...) semantics changed for structured exceptions
+#pragma warning(disable:4623) //default constructor implicitly deleted
 #pragma warning(disable:4625) //implicit copy constructor
 #pragma warning(disable:4626) //implicit copy assignment
 #pragma warning(disable:4774) //format string argument is not a string literal
