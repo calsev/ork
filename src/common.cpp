@@ -228,6 +228,11 @@ bool top_subdirectory(const file::path&dir, file::path&p) {
 From text.hpp
 */
 
+#if ORK_MSC
+#   pragma warning(push)
+#   pragma warning(disable:4996) //<codecvt> deprecated but not replaced; expecting a replacement in C++ 20??
+#endif
+
 struct string_converter_type::impl {
 public:
 	typedef std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>string_converter;
@@ -270,6 +275,10 @@ wstring string_converter_type::byte2wide(const bstring&s) {
 wstring string_converter_type::byte2wide(const char*first, const char*last) {
 	impl::lock_type lock(_pimpl->mutex); return _pimpl->converter.from_bytes(first, last);
 }
+
+#if ORK_MSC
+#   pragma warning(pop)
+#endif
 
 
 string_converter_type&g_string_converter() {//From string_types.hpp
