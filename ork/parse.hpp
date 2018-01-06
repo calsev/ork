@@ -5,6 +5,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma once
 #include"ork/ork.hpp"
 
+#if ORK_USE_BOOST
+
 #define ORK_BOOST_INC_FILE "boost/spirit/home/support/common_terminals.hpp"
 #include"ork/core/boost_include.inl"
 #define ORK_BOOST_INC_FILE "boost/spirit/home/qi.hpp"
@@ -608,3 +610,5 @@ ORK_ORQ_NUMERIC(long double, qi::long_double);
 
 }//namespace orq
 }//namespace ork
+
+#endif//ORK_USE_BOOST

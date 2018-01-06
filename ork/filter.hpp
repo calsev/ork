@@ -7,6 +7,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #define ORK_STL_INC_FILE <array>
 #include"ork/core/stl_include.inl"
 
+#if ORK_USE_BOOST
+
 #define ORK_BOOST_INC_FILE "boost/circular_buffer.hpp"
 #include"ork/core/boost_include.inl"
 
@@ -365,3 +367,5 @@ template<>struct butterworth<8, 32> :public detail::ring<9> {
 };
 
 }//namespace ork
+
+#endif//ORK_USE_BOOST
