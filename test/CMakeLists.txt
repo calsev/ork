@@ -50,9 +50,13 @@ set(VERSION "${ORK_VERSION_STR}")
 replace_or_append_all_flag_compilers("/W([0-4]|all)" "IMPOSSIBLE" "/W4" "")
 
 
+set(ORK_TEST_HDRS
+	"${ORK_3P_SOURCE_DIR}/ork/ork/test/catch_include.hpp"
+)
 set(ORK_TEST_SRCS
 	"${ORK_3P_SOURCE_DIR}/ork/src/test/test_main.cpp"
 )
+source_group("inc" FILES ${ORK_TEST_HDRS})
 source_group("src" FILES ${ORK_TEST_SRCS})
 
 
@@ -63,7 +67,7 @@ append_all_compiler_flag("/wd4571") #catch(...) semantics changed for structured
 append_all_compiler_flag("/wd4623") #default constructor implicitly deleted
 
 link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
-add_executable(ork_test ${ORK_TEST_SRCS})
+add_executable(ork_test ${ORK_TEST_HDRS} ${ORK_TEST_SRCS})
 
 target_link_libraries(ork_test PRIVATE ork)
 
