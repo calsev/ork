@@ -18,49 +18,79 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-ORK_INLINE char to_lower_char(const char c) {
+ORK_INLINE char lower(const char c) {
 	return static_cast<char>(::tolower(c));
 }
-ORK_INLINE char to_upper_char(const char c) {
+ORK_INLINE wchar_t wlower(const wchar_t c) {
+	return static_cast<wchar_t>(::towlower(c));
+}
+
+
+ORK_INLINE char upper(const char c) {
 	return static_cast<char>(::toupper(c));
+}
+ORK_INLINE wchar_t wupper(const wchar_t c) {
+	return static_cast<wchar_t>(::towupper(c));
 }
 
 
 void to_lower(bstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), to_lower_char);
+	std::transform(str.begin(), str.end(), str.begin(), lower);
 }
 void to_lower(wstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), to_lower_char);
+	std::transform(str.begin(), str.end(), str.begin(), wlower);
 }
-
-void to_upper(bstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), to_upper_char);
-}
-void to_upper(wstring&str) {
-	std::transform(str.begin(), str.end(), str.begin(), to_upper_char);
-}
-
-
 bstring to_lower_copy(const bstring&str) {
 	bstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), to_lower_char);
+	to_lower(retval);
 	return retval;
 }
 wstring to_lower_copy(const wstring&str) {
 	wstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), to_lower_char);
+	to_lower(retval);
 	return retval;
 }
 
+
+void to_upper(bstring&str) {
+	std::transform(str.begin(), str.end(), str.begin(), upper);
+}
+void to_upper(wstring&str) {
+	std::transform(str.begin(), str.end(), str.begin(), wupper);
+}
 bstring to_upper_copy(const bstring&str) {
 	bstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), to_upper_char);
-	return retval;
+	to_upper(retval);
+	return std::move(retval);
 }
 wstring to_upper_copy(const wstring&str) {
 	wstring retval(str);
-	std::transform(retval.begin(), retval.end(), retval.begin(), to_upper_char);
-	return retval;
+	to_upper(retval);
+	return std::move(retval);
+}
+
+
+void to_sentence_case(bstring&str) {
+	to_lower(str);
+	if(!str.empty()) {
+		str[0] = upper(str[0]);
+	}
+}
+void to_sentence_case(wstring&str) {
+	to_lower(str);
+	if(!str.empty()) {
+		str[0] = wupper(str[0]);
+	}
+}
+bstring to_sentence_case_copy(const bstring&str) {
+	bstring retval(str);
+	to_sentence_case(retval);
+	return std::move(retval);
+}
+wstring to_sentence_case_copy(const wstring&str) {
+	wstring retval(str);
+	to_sentence_case(retval);
+	return std::move(retval);
 }
 
 

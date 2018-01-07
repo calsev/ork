@@ -11,15 +11,21 @@ namespace ork {
 
 ORK_ORK_EXT(void) to_lower(bstring&);
 ORK_ORK_EXT(void) to_lower(wstring&);
-ORK_ORK_EXT(void) to_upper(bstring&);
-ORK_ORK_EXT(void) to_upper(wstring&);
-
 ORK_ORK_EXT(bstring) to_lower_copy(const bstring&);
 ORK_ORK_EXT(wstring) to_lower_copy(const wstring&);
+
+ORK_ORK_EXT(void) to_upper(bstring&);
+ORK_ORK_EXT(void) to_upper(wstring&);
 ORK_ORK_EXT(bstring) to_upper_copy(const bstring&);
 ORK_ORK_EXT(wstring) to_upper_copy(const wstring&);
 
+ORK_ORK_EXT(void) to_sentence_case(bstring&);
+ORK_ORK_EXT(void) to_sentence_case(wstring&);
+ORK_ORK_EXT(bstring) to_sentence_case_copy(const bstring&);
+ORK_ORK_EXT(wstring) to_sentence_case_copy(const wstring&);
 
+
+//Conversions are being instantiated lazily
 ORK_ORK_EXT(string) to_string(const bool val);
 ORK_ORK_EXT(bool) string2bool(const string&val);
 
