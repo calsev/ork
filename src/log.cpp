@@ -97,6 +97,9 @@ private:
 	std::mutex _mutex;
 public:
 	explicit log_stream(stream_ptr stream_) : _stream{stream_}, _mutex{} {}
+	~log_stream() {
+		flush();
+	}
 	ORK_NON_COPYABLE(log_stream)
 public:
 	void log(const string&message) {
