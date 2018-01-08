@@ -191,8 +191,9 @@ public:
 		case log_channel::output_data:
 			_data_sink.log(stream.str());
 			break;
+		default:
+			ORK_UNREACHABLE
 		};
-		ORK_UNREACHABLE
 	}
 	void flush_all() {
 		for(auto&sink : _severity_sinks) {
