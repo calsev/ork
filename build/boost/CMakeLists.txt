@@ -14,4 +14,6 @@ target_include_directories(
 )
 
 
-install_header_dir("${3P_BOOST_SRC_DIR}/boost" "${ORK_INSTALL_INC_DIR}/boost" "*.[c|cpp]")
+if(NOT SKIP_INSTALL_BOOST_HEADERS)
+	install_header_dir("${3P_BOOST_SRC_DIR}/boost" "${ORK_INSTALL_INC_DIR}/boost" "*.[c|cpp]")
+endif()
