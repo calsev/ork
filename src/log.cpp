@@ -114,7 +114,7 @@ public:
 	using stream_ptr = std::shared_ptr<log_stream>;
 private:
 	std::vector<stream_ptr>_streams = {};
-	bool _auto_flush = false;
+	bool _auto_flush = true;
 public:
 	log_sink() {}
 	log_sink(const bool auto_flush) : _auto_flush{auto_flush} {}
