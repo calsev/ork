@@ -126,7 +126,7 @@ protected:
 	file::path _p;
 public:
 	directory_range(const file::path&p) : _p(p) {
-		if(!file::is_directory(p))ORK_THROW(ORK("Non-directory used to initialize directory_range: ") << p.ORK_GEN_STR());
+		if(!ext_file::is_directory(p))ORK_THROW(ORK("Non-directory used to initialize directory_range: ") << p.ORK_GEN_STR());
 	}
 
 	iterator begin() { return iterator(_p); }
