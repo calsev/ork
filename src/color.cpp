@@ -360,6 +360,14 @@ string to_hex(const color4&c, const color_space cs) {
 			<< std::setw(2) << short(rgb.r*255.f) << std::setw(2) << short(rgb.g*255.f) << std::setw(2) << short(rgb.b*255.f) << std::setw(2) << short(rgb.a*255.f);
 	return to_upper_copy(stream.str());
 }
+color4 from_hex(const string&c, const color_space cs) {
+	color4 retval{1.f};
+	const size_t limit_i = c.size() < 8 ? static_cast<size_t>(3) : static_cast<size_t>(4);
+	LOOPI(limit_i) {
+		retval[static_cast<color4::length_type>(i)] = static_cast<float>(std::stoul(c.substr(i * 2, 2), nullptr, 16) / 255.0);
+	}
+	return convert(retval, color_space::rgb, cs);
+}
 
 
 }//namespace ork

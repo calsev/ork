@@ -68,6 +68,7 @@ ORK_ORK_EXT(std::vector<color4>) grey_array(const size_t size, float min_luma, f
 
 
 ORK_ORK_EXT(string) to_hex(const color4&c, const color_space cs);
+ORK_ORK_EXT(color4) from_hex(const string&c, const color_space cs);
 
 
 }//namespace ork
