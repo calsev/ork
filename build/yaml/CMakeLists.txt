@@ -3,7 +3,8 @@ project(yamlcpp CXX)
 
 set(VERSION 0.5.3)
 
-set_as_internal(CMAKE_CXX_STANDARD "14") # YAML has become dated
+#YAML has become dated, but this pullutes dependencies
+#set_as_internal(CMAKE_CXX_STANDARD "14")
 if(MSVC)
 	append_all_compiler_flag("/wd4127") #Conditional expression is constant
 	append_all_compiler_flag("/wd4251") #Inconsistent DLL linkage
