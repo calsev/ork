@@ -14,6 +14,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #pragma warning(disable:4623) //default constructor implicitly deleted
 #pragma warning(disable:4625) //implicit copy constructor
 #pragma warning(disable:4626) //implicit copy assignment
+#pragma warning(disable:4996) //std::uncaught_exception() is deprecated
 #pragma warning(disable:5026) //implicit move constructor
 #pragma warning(disable:5027) //implicit move assignment
 #pragma warning(disable:5039) //pointer or reference to throwing function passed to extern C function
@@ -21,6 +22,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #include"catch.hpp"
 
-#if ORK_NEED_STL_SUPPRESS
+#if ORK_MSC
 #pragma warning(pop)
 #endif
