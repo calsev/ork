@@ -66,7 +66,7 @@ ORK_ORK_EXTERN const dunit3 neg_z;
 
 
 //glm version of loops, needed because glm types use length()
-#define LOOPVG(SERIES,INDEX)for(glm_size_t INDEX=0, limit##INDEX=SERIES.length(); INDEX!=limit##INDEX; ++INDEX)
+#define LOOPVG(SERIES,INDEX)for(ork::GLM::glm_size_t INDEX=0, limit##INDEX=SERIES.length(); INDEX!=limit##INDEX; ++INDEX)
 #define LOOPVIG(SERIES)LOOPVG(SERIES,i)
 #define LOOPVJG(SERIES)LOOPVG(SERIES,j)
 #define LOOPVKG(SERIES)LOOPVG(SERIES,k)
