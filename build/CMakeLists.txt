@@ -42,9 +42,7 @@ project(third_party)
 #Language Section
 ##########
 
-#CMake is a bit behind on C++ versions
-set_as_internal(CMAKE_CXX_STANDARD "17")
-set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
+set_latest_language_versions()
 set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
 
 #Must be tested after project
