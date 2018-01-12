@@ -3,12 +3,18 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #include"ork/color.hpp"
+#include"ork/glm.hpp"
 
 #include"ork/test/catch_include.hpp"
 
 #include"glm/vec4.hpp"
 
 using namespace ork;
+
+
+bool within_hex(const float v1, const float v2) {
+	return std::abs(v1 - v2) < 0.5 / 255.0;
+}
 
 
 TEST_CASE("Convention for hue", "[color]") {
@@ -21,6 +27,10 @@ TEST_CASE("RGB round trip to HEX", "[color]") {
 	const color4 d1{0.1, 0.2, 0.3, 0.4};
 	const string r1{ORK("1A334D66")};
 	const string to{to_hex(d1, color_space::rgb)};
+	const color4 from{from_hex(to, color_space::rgb)};
 	REQUIRE(to == r1);
+	LOOPVIG(d1) {
+		REQUIRE(within_hex(from[i], d1[i]));
+	}
 }
 }
