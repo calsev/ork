@@ -15,6 +15,25 @@ using namespace ork;
 bool within_hex(const float v1, const float v2) {
 	return std::abs(v1 - v2) < 0.5 / 255.0;
 }
+bool within_hex(const color4& v1, const color4& v2) {
+	LOOPVIG(v1) {
+		if(!within_hex(v1[i], v2[i])) {
+			return false;
+		}
+	}
+	return true;
+}
+bool within_3(const float v1, const float v2) {
+	return std::abs(v1 - v2) < 0.001;
+}
+bool within_3(const color4& v1, const color4& v2) {
+	LOOPVIG(v1) {
+		if(!within_3(v1[i], v2[i])) {
+			return false;
+		}
+	}
+	return true;
+}
 
 
 TEST_CASE("Convention for hue", "[color]") {
@@ -37,8 +56,5 @@ TEST_CASE("RGB round trip to HEX", "[color]") {
 	const string to{to_hex(d1, color_space::rgb)};
 	const color4 from{from_hex(to, color_space::rgb)};
 	REQUIRE(to == r1);
-	LOOPVIG(d1) {
-		REQUIRE(within_hex(from[i], d1[i]));
-	}
-}
+	REQUIRE(within_hex(from, d1));
 }
