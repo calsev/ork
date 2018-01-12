@@ -46,6 +46,9 @@ set(VERSION "${ORK_VERSION_STR}")
 
 # Catch is not up to the challenge of Wall
 replace_or_append_all_flag_compilers("/W([0-4]|all)" "IMPOSSIBLE" "/W4" "")
+if(MSVC)
+	append_all_compiler_flag("/wd4868") #compiler evaluation order in initializer list
+endif()
 
 
 set(ORK_TEST_HDRS
