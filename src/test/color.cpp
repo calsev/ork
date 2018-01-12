@@ -23,6 +23,14 @@ TEST_CASE("Convention for hue", "[color]") {
 	REQUIRE(truncate_hue(d1, color_space::rgb) == r1);
 }
 
+TEST_CASE("RGB Conversion", "[color]") {
+	const color4 rgb{0.2f, 0.3f, 0.4f, 0.5f};
+	const color4 r1{0.5850f, 0.3333f, 0.3000f, 0.5f};//HSL
+	const color4 r2{0.5850f, 0.5000f, 0.4000f, 0.5f};//HSV
+	const color4 c1{convert(rgb, color_space::rgb, color_space::hsl)};
+	const color4 c2{convert(rgb, color_space::rgb, color_space::hsv)};
+}
+
 TEST_CASE("RGB round trip to HEX", "[color]") {
 	const color4 d1{0.1, 0.2, 0.3, 0.4};
 	const string r1{ORK("1A334D66")};
