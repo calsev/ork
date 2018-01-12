@@ -353,11 +353,16 @@ std::vector<color4> grey_array(const size_t size, float min_luma, float max_luma
 }
 
 
+short round_hex(const float val) {
+	return static_cast<short>(val*255.0 + 0.5);
+}
+
+
 string to_hex(const color4&c, const color_space cs) {
 	const color4 rgb(convert(c, cs, color_space::rgb));
 	ork::o_string_stream stream;
 	stream	<< std::setfill(ORK('0')) << std::hex
-			<< std::setw(2) << short(rgb.r*255.f) << std::setw(2) << short(rgb.g*255.f) << std::setw(2) << short(rgb.b*255.f) << std::setw(2) << short(rgb.a*255.f);
+			<< std::setw(2) << round_hex(rgb.r) << std::setw(2) << round_hex(rgb.g) << std::setw(2) << round_hex(rgb.b) << std::setw(2) << round_hex(rgb.a);
 	return to_upper_copy(stream.str());
 }
 color4 from_hex(const string&c, const color_space cs) {
