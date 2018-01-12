@@ -28,7 +28,6 @@ set_as_internal(ORK_USE_CATCH ON)
 set_as_internal(ORK_USE_GLM ON)
 set_as_internal(ORK_USE_JSON ON)
 set_as_internal(ORK_USE_PUGI ON)
-set_as_internal(ORK_USE_YAML ON)
 
 
 ##Level 0
@@ -37,7 +36,6 @@ set_as_internal(ORK_BUILD_CATCH ON)
 set_as_internal(ORK_BUILD_GLM ON)
 set_as_internal(ORK_BUILD_JSON ON)
 set_as_internal(ORK_BUILD_PUGI ON)
-set_as_internal(ORK_BUILD_YAML ON)
 
 ##Level 1
 set_as_internal(ORK_BUILD_ORK ON)
