@@ -10,5 +10,10 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 using namespace ork;
 
-TEST_CASE("Grey round trip to hex", "[color]") {
+
+TEST_CASE("Convention for hue", "[color]") {
+	const color4 d1{0.f, 0.f, 0.f, 1.f};
+	const color4 r1{0.f, 0.f, 0.f, 1.f};
+	REQUIRE(truncate_hue(d1, color_space::rgb) == r1);
+}
 }
