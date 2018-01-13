@@ -26,8 +26,11 @@ typedef glm::vec4 color4;//we co-opt for hsv also
 
 //Convenience definitions
 ORK_ORK_EXT(const color4&) red(const color_space);
+ORK_ORK_EXT(const color4&) yellow(const color_space);
 ORK_ORK_EXT(const color4&) green(const color_space);
+ORK_ORK_EXT(const color4&) cyan(const color_space);
 ORK_ORK_EXT(const color4&) blue(const color_space);
+ORK_ORK_EXT(const color4&) magenta(const color_space);
 ORK_ORK_EXT(const color4&) white(const color_space);
 ORK_ORK_EXT(const color4&) black(const color_space);
 

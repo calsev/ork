@@ -213,22 +213,31 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 
 namespace rgb {
 const color4 red = {1.0, 0.0, 0.0, 1.0};
+const color4 yellow = {1.0, 1.0, 0.0, 1.0};
 const color4 green = {0.0, 1.0, 0.0, 1.0};
+const color4 cyan = {0.0, 1.0, 1.0, 1.0};
 const color4 blue = {0.0, 0.0, 1.0, 1.0};
+const color4 magenta = {1.0, 0.0, 1.0, 1.0};
 const color4 white = {1.0, 1.0, 1.0, 1.0};
 const color4 black = {0.0, 0.0, 0.0, 1.0};
 }
 namespace hsv {
 const color4 red = {0.0, 1.0, 1.0, 1.0};
+const color4 yellow = {0.5 / 3.0, 1.0, 1.0, 1.0};
 const color4 green = {1.0 / 3.0, 1.0, 1.0, 1.0};
+const color4 cyan = {1.5 / 3.0, 1.0, 1.0, 1.0};
 const color4 blue = {2.0 / 3.0, 1.0, 1.0, 1.0};
+const color4 magenta = {2.5 / 3.0, 1.0, 1.0, 1.0};
 const color4 white = {0.0, 0.0, 1.0, 1.0};
 const color4 black = {0.0, 0.0, 0.0, 1.0};
 }
 namespace hsl {
 const color4 red = {0.0, 1.0, 0.5, 1.0};
+const color4 yellow = {0.5 / 3.0, 1.0, 0.5, 1.0};
 const color4 green = {1.0 / 3.0, 1.0, 0.5, 1.0};
+const color4 cyan = {1.5 / 3.0, 1.0, 0.5, 1.0};
 const color4 blue = {2.0 / 3.0, 1.0, 0.5, 1.0};
+const color4 magenta = {2.5 / 3.0, 1.0, 0.5, 1.0};
 const color4 white = {0.0, 0.0, 1.0, 1.0};
 const color4 black = {0.0, 0.0, 0.0, 1.0};
 }
@@ -246,8 +255,11 @@ const color4& COLOR(const color_space cs) {\
 	ORK_UNREACHABLE\
 }
 ORK_COLOR_FUNC(red)
-ORK_COLOR_FUNC(blue)
+ORK_COLOR_FUNC(yellow)
 ORK_COLOR_FUNC(green)
+ORK_COLOR_FUNC(cyan)
+ORK_COLOR_FUNC(blue)
+ORK_COLOR_FUNC(magenta)
 ORK_COLOR_FUNC(white)
 ORK_COLOR_FUNC(black)
 
