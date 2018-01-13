@@ -54,46 +54,94 @@ TEST_CASE("Convention for hue", "[color]") {
 }
 
 
+#define CONVERSIONS(CS1, CS2)\
+const color4 red_r{convert(red(color_space::CS1), color_space::CS1, color_space::CS2)};\
+const color4 yellow_r{convert(yellow(color_space::CS1), color_space::CS1, color_space::CS2)};\
+const color4 green_r{convert(green(color_space::CS1), color_space::CS1, color_space::CS2)};\
+const color4 cyan_r{convert(cyan(color_space::CS1), color_space::CS1, color_space::CS2)};\
+const color4 blue_r{convert(blue(color_space::CS1), color_space::CS1, color_space::CS2)};\
+const color4 magenta_r{convert(magenta(color_space::CS1), color_space::CS1, color_space::CS2)};\
+const color4 white_r{convert(white(color_space::CS1), color_space::CS1, color_space::CS2)};\
+const color4 black_r{convert(black(color_space::CS1), color_space::CS1, color_space::CS2)};
+
+
 TEST_CASE("RGB To HSL", "[color]") {
-	const color4 red_r{convert(red(color_space::rgb), color_space::rgb, color_space::hsl)};
-	const color4 green_r{convert(green(color_space::rgb), color_space::rgb, color_space::hsl)};
-	const color4 blue_r{convert(blue(color_space::rgb), color_space::rgb, color_space::hsl)};
-	const color4 white_r{convert(white(color_space::rgb), color_space::rgb, color_space::hsl)};
-	const color4 black_r{convert(black(color_space::rgb), color_space::rgb, color_space::hsl)};
+	CONVERSIONS(rgb, hsl)
 
 	REQUIRE(within_5(red_r, red(color_space::hsl)));
+	REQUIRE(within_5(yellow_r, yellow(color_space::hsl)));
 	REQUIRE(within_5(green_r, green(color_space::hsl)));
+	REQUIRE(within_5(cyan_r, cyan(color_space::hsl)));
 	REQUIRE(within_5(blue_r, blue(color_space::hsl)));
+	REQUIRE(within_5(magenta_r, magenta(color_space::hsl)));
 	REQUIRE(within_5(white_r, white(color_space::hsl)));
 	REQUIRE(within_5(black_r, black(color_space::hsl)));
+
 }
 
 TEST_CASE("RGB To HSV", "[color]") {
-	const color4 red_r{convert(red(color_space::rgb), color_space::rgb, color_space::hsv)};
-	const color4 green_r{convert(green(color_space::rgb), color_space::rgb, color_space::hsv)};
-	const color4 blue_r{convert(blue(color_space::rgb), color_space::rgb, color_space::hsv)};
-	const color4 white_r{convert(white(color_space::rgb), color_space::rgb, color_space::hsv)};
-	const color4 black_r{convert(black(color_space::rgb), color_space::rgb, color_space::hsv)};
+	CONVERSIONS(rgb, hsv)
 
 	REQUIRE(within_5(red_r, red(color_space::hsv)));
+	REQUIRE(within_5(yellow_r, yellow(color_space::hsv)));
 	REQUIRE(within_5(green_r, green(color_space::hsv)));
+	REQUIRE(within_5(cyan_r, cyan(color_space::hsv)));
 	REQUIRE(within_5(blue_r, blue(color_space::hsv)));
+	REQUIRE(within_5(magenta_r, magenta(color_space::hsv)));
 	REQUIRE(within_5(white_r, white(color_space::hsv)));
 	REQUIRE(within_5(black_r, black(color_space::hsv)));
 }
 
 TEST_CASE("HSL To RGB", "[color]") {
-	const color4 red_r{convert(red(color_space::hsl), color_space::hsl, color_space::rgb)};
-	const color4 green_r{convert(green(color_space::hsl), color_space::hsl, color_space::rgb)};
-	const color4 blue_r{convert(blue(color_space::hsl), color_space::hsl, color_space::rgb)};
-	const color4 white_r{convert(white(color_space::hsl), color_space::hsl, color_space::rgb)};
-	const color4 black_r{convert(black(color_space::hsl), color_space::hsl, color_space::rgb)};
+	CONVERSIONS(hsl, rgb)
 
 	REQUIRE(within_5(red_r, red(color_space::rgb)));
+	REQUIRE(within_5(yellow_r, yellow(color_space::rgb)));
 	REQUIRE(within_5(green_r, green(color_space::rgb)));
+	REQUIRE(within_5(cyan_r, cyan(color_space::rgb)));
 	REQUIRE(within_5(blue_r, blue(color_space::rgb)));
+	REQUIRE(within_5(magenta_r, magenta(color_space::rgb)));
 	REQUIRE(within_5(white_r, white(color_space::rgb)));
 	REQUIRE(within_5(black_r, black(color_space::rgb)));
+}
+
+TEST_CASE("HSL To HSV", "[color]") {
+	CONVERSIONS(hsl, hsv)
+
+	REQUIRE(within_5(red_r, red(color_space::hsv)));
+	REQUIRE(within_5(yellow_r, yellow(color_space::hsv)));
+	REQUIRE(within_5(green_r, green(color_space::hsv)));
+	REQUIRE(within_5(cyan_r, cyan(color_space::hsv)));
+	REQUIRE(within_5(blue_r, blue(color_space::hsv)));
+	REQUIRE(within_5(magenta_r, magenta(color_space::hsv)));
+	REQUIRE(within_5(white_r, white(color_space::hsv)));
+	REQUIRE(within_5(black_r, black(color_space::hsv)));
+}
+
+TEST_CASE("HSV To RGB", "[color]") {
+	CONVERSIONS(hsv, rgb)
+
+	REQUIRE(within_5(red_r, red(color_space::rgb)));
+	REQUIRE(within_5(yellow_r, yellow(color_space::rgb)));
+	REQUIRE(within_5(green_r, green(color_space::rgb)));
+	REQUIRE(within_5(cyan_r, cyan(color_space::rgb)));
+	REQUIRE(within_5(blue_r, blue(color_space::rgb)));
+	REQUIRE(within_5(magenta_r, magenta(color_space::rgb)));
+	REQUIRE(within_5(white_r, white(color_space::rgb)));
+	REQUIRE(within_5(black_r, black(color_space::rgb)));
+}
+
+TEST_CASE("HSV To HSL", "[color]") {
+	CONVERSIONS(hsv, hsl)
+
+	REQUIRE(within_5(red_r, red(color_space::hsl)));
+	REQUIRE(within_5(yellow_r, yellow(color_space::hsl)));
+	REQUIRE(within_5(green_r, green(color_space::hsl)));
+	REQUIRE(within_5(cyan_r, cyan(color_space::hsl)));
+	REQUIRE(within_5(blue_r, blue(color_space::hsl)));
+	REQUIRE(within_5(magenta_r, magenta(color_space::hsl)));
+	REQUIRE(within_5(white_r, white(color_space::hsl)));
+	REQUIRE(within_5(black_r, black(color_space::hsl)));
 }
 
 TEST_CASE("RGB round trip to HEX", "[color]") {
