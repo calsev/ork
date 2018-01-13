@@ -72,8 +72,26 @@ TEST_CASE("RGB To HSL", "[color]") {
 	REQUIRE(within_5(blue_hsl_e, blue_hsl_r));
 	REQUIRE(within_5(white_hsl_e, white_hsl_r));
 	REQUIRE(within_5(black_hsl_e, black_hsl_r));
-	const color4 c1{convert(rgb, color_space::rgb, color_space::hsl)};
-	const color4 c2{convert(rgb, color_space::rgb, color_space::hsv)};
+}
+
+TEST_CASE("RGB To HSV", "[color]") {
+	const color4 red_hsv_e{0.0, 1.0, 1.0, 1.0};
+	const color4 green_hsv_e{1.0 / 3.0, 1.0, 1.0, 1.0};
+	const color4 blue_hsv_e{2.0 / 3.0, 1.0, 1.0, 1.0};
+	const color4 white_hsv_e{0.0, 0.0, 1.0, 1.0};
+	const color4 black_hsv_e{0.0, 0.0, 0.0, 1.0};
+
+	const color4 red_hsv_r{convert(red, color_space::rgb, color_space::hsv)};
+	const color4 green_hsv_r{convert(green, color_space::rgb, color_space::hsv)};
+	const color4 blue_hsv_r{convert(blue, color_space::rgb, color_space::hsv)};
+	const color4 white_hsv_r{convert(white, color_space::rgb, color_space::hsv)};
+	const color4 black_hsv_r{convert(black, color_space::rgb, color_space::hsv)};
+
+	REQUIRE(within_5(red_hsv_e, red_hsv_r));
+	REQUIRE(within_5(green_hsv_e, green_hsv_r));
+	REQUIRE(within_5(blue_hsv_e, blue_hsv_r));
+	REQUIRE(within_5(white_hsv_e, white_hsv_r));
+	REQUIRE(within_5(black_hsv_e, black_hsv_r));
 }
 
 TEST_CASE("RGB round trip to HEX", "[color]") {
