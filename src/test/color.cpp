@@ -82,6 +82,20 @@ TEST_CASE("RGB To HSV", "[color]") {
 	REQUIRE(within_5(black_r, black(color_space::hsv)));
 }
 
+TEST_CASE("HSL To RGB", "[color]") {
+	const color4 red_r{convert(red(color_space::hsl), color_space::hsl, color_space::rgb)};
+	const color4 green_r{convert(green(color_space::hsl), color_space::hsl, color_space::rgb)};
+	const color4 blue_r{convert(blue(color_space::hsl), color_space::hsl, color_space::rgb)};
+	const color4 white_r{convert(white(color_space::hsl), color_space::hsl, color_space::rgb)};
+	const color4 black_r{convert(black(color_space::hsl), color_space::hsl, color_space::rgb)};
+
+	REQUIRE(within_5(red_r, red(color_space::rgb)));
+	REQUIRE(within_5(green_r, green(color_space::rgb)));
+	REQUIRE(within_5(blue_r, blue(color_space::rgb)));
+	REQUIRE(within_5(white_r, white(color_space::rgb)));
+	REQUIRE(within_5(black_r, black(color_space::rgb)));
+}
+
 TEST_CASE("RGB round trip to HEX", "[color]") {
 	const color4 d1{0.1, 0.2, 0.3, 0.4};
 	const string r1{ORK("1A334D66")};
