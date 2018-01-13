@@ -211,11 +211,45 @@ color4 convert(const color4&c, const color_space from_space, const color_space t
 }
 
 
-ORK_ORK_API const color4 red = {1., 0., 0., 1.};
-ORK_ORK_API const color4 green = {0., 1., 0., 1.};
-ORK_ORK_API const color4 blue = {0., 0., 1., 1.};
-ORK_ORK_API const color4 white = {1., 1., 1., 1.};
-ORK_ORK_API const color4 black = {0., 0., 0., 1.};
+namespace rgb {
+const color4 red = {1.0, 0.0, 0.0, 1.0};
+const color4 green = {0.0, 1.0, 0.0, 1.0};
+const color4 blue = {0.0, 0.0, 1.0, 1.0};
+const color4 white = {1.0, 1.0, 1.0, 1.0};
+const color4 black = {0.0, 0.0, 0.0, 1.0};
+}
+namespace hsv {
+const color4 red = {0.0, 1.0, 1.0, 1.0};
+const color4 green = {1.0 / 3.0, 1.0, 1.0, 1.0};
+const color4 blue = {2.0 / 3.0, 1.0, 1.0, 1.0};
+const color4 white = {0.0, 0.0, 1.0, 1.0};
+const color4 black = {0.0, 0.0, 0.0, 1.0};
+}
+namespace hsl {
+const color4 red = {0.0, 1.0, 0.5, 1.0};
+const color4 green = {1.0 / 3.0, 1.0, 0.5, 1.0};
+const color4 blue = {2.0 / 3.0, 1.0, 0.5, 1.0};
+const color4 white = {0.0, 0.0, 1.0, 1.0};
+const color4 black = {0.0, 0.0, 0.0, 1.0};
+}
+
+#define ORK_COLOR_FUNC(COLOR) \
+const color4& COLOR(const color_space cs) {\
+	switch(cs) {\
+		case color_space::rgb:\
+			return rgb::COLOR;\
+		case color_space::hsv:\
+			return hsv::COLOR;\
+		case color_space::hsl:\
+			return hsl::COLOR;\
+	}\
+	ORK_UNREACHABLE\
+}
+ORK_COLOR_FUNC(red)
+ORK_COLOR_FUNC(blue)
+ORK_COLOR_FUNC(green)
+ORK_COLOR_FUNC(white)
+ORK_COLOR_FUNC(black)
 
 
 color4 normalized_lightness(const color4&c, const float lightness, const color_space cs) {
@@ -248,7 +282,7 @@ color4 normalized_luma(const color4&c, const float lum, const color_space cs) {
 	*/
 	color4 rgb(convert(c, cs, color_space::rgb));
 	if(rgb.r <= 0.f && rgb.g <= 0.f && rgb.b <= 0.f) {
-		return convert(white*lum, color_space::rgb, cs);
+		return white(cs)*lum;
 	}
 	float curr_luma = luma(rgb);
 	while(std::abs(lum - curr_luma) > 0.02) {//Arbitrary magic number
@@ -299,7 +333,7 @@ float normalized_hue(const float hue) {//hue is defined on [0, 1]
 
 color4 normalized_red_green(const float weight) {
 	const float alpha = std::pow(std::max(0.f, std::min(1.f, weight)), 1.3f);
-	return (1.f - alpha)*red + alpha*green;
+	return (1.f - alpha)*red(color_space::rgb) + alpha*green(color_space::rgb);
 }
 
 
@@ -338,11 +372,23 @@ std::vector<color4>contrast_array(const size_t size, const float luma) {
 }
 std::vector<color4> grey_array(const size_t size, float min_luma, float max_luma) {
 	if(size == 1) {
-		return std::vector<color4> {glm::lerp(black, white, (min_luma + max_luma) / 2.f)};
+		return std::vector<color4> {glm::lerp(
+			black(color_space::rgb),
+			white(color_space::rgb),
+			(min_luma + max_luma) / 2.f
+		)};
 	}
 
-	const color4 dark(glm::lerp(black, white, min_luma));
-	const color4 light(glm::lerp(black, white, max_luma));
+	const color4 dark(glm::lerp(
+		black(color_space::rgb),
+		white(color_space::rgb),
+		min_luma
+	));
+	const color4 light(glm::lerp(
+		black(color_space::rgb),
+		white(color_space::rgb),
+		max_luma
+	));
 
 	std::vector<color4>retval;
 	LOOPI(size) {

@@ -24,12 +24,12 @@ enum class color_space {
 
 typedef glm::vec4 color4;//we co-opt for hsv also
 
-//Convenience definitions, in RGB
-ORK_ORK_API extern const color4 red;
-ORK_ORK_API extern const color4 green;
-ORK_ORK_API extern const color4 blue;
-ORK_ORK_API extern const color4 white;
-ORK_ORK_API extern const color4 black;
+//Convenience definitions
+ORK_ORK_EXT(const color4&) red(const color_space);
+ORK_ORK_EXT(const color4&) green(const color_space);
+ORK_ORK_EXT(const color4&) blue(const color_space);
+ORK_ORK_EXT(const color4&) white(const color_space);
+ORK_ORK_EXT(const color4&) black(const color_space);
 
 
 ORK_ORK_EXT(color4) truncate_hue(const color4&c, const color_space cs);//Convention for hue when rgb=0,0,0
