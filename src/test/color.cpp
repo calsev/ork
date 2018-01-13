@@ -152,3 +152,47 @@ TEST_CASE("RGB round trip to HEX", "[color]") {
 	REQUIRE(to == r1);
 	REQUIRE(within_hex(from, d1));
 }
+
+#define TO_HEX(COLOR, SPACE) const ork::string ORK_CAT(COLOR,_r){to_hex(COLOR(color_space::SPACE), color_space::SPACE)}
+
+TEST_CASE("HSL to HEX", "[color]") {
+	TO_HEX(red, hsl);
+	TO_HEX(yellow, hsl);
+	TO_HEX(green, hsl);
+	TO_HEX(cyan, hsl);
+	TO_HEX(blue, hsl);
+	TO_HEX(magenta, hsl);
+	TO_HEX(white, hsl);
+	TO_HEX(black, hsl);
+
+	REQUIRE(red_r == ORK("FF0000FF"));
+	REQUIRE(yellow_r == ORK("FFFF00FF"));
+	REQUIRE(green_r == ORK("00FF00FF"));
+	REQUIRE(cyan_r == ORK("00FFFFFF"));
+	REQUIRE(blue_r == ORK("0000FFFF"));
+	REQUIRE(magenta_r == ORK("FF00FFFF"));
+	REQUIRE(white_r == ORK("FFFFFFFF"));
+	REQUIRE(black_r == ORK("000000FF"));
+}
+
+#define FROM_HEX(COLOR, STR, SPACE) const color4 ORK_CAT(COLOR,_r){from_hex(ORK(STR), color_space::SPACE)}
+
+TEST_CASE("HEX to HSL", "[color]") {
+	FROM_HEX(red, "FF0000FF", hsl);
+	FROM_HEX(yellow, "FFFF00FF", hsl);
+	FROM_HEX(green, "00FF00FF", hsl);
+	FROM_HEX(cyan, "00FFFFFF", hsl);
+	FROM_HEX(blue, "0000FFFF", hsl);
+	FROM_HEX(magenta, "FF00FFFF", hsl);
+	FROM_HEX(white, "FFFFFFFF", hsl);
+	FROM_HEX(black, "000000FF", hsl);
+
+	REQUIRE(red_r == red(color_space::hsl));
+	REQUIRE(yellow_r == yellow(color_space::hsl));
+	REQUIRE(green_r == green(color_space::hsl));
+	REQUIRE(cyan_r == cyan(color_space::hsl));
+	REQUIRE(blue_r == blue(color_space::hsl));
+	REQUIRE(magenta_r == magenta(color_space::hsl));
+	REQUIRE(white_r == white(color_space::hsl));
+	REQUIRE(black_r == black(color_space::hsl));
+}
