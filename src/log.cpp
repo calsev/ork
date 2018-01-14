@@ -117,7 +117,7 @@ public:
 	using stream_ptr = std::shared_ptr<log_stream>;
 private:
 	std::vector<stream_ptr>_streams = {};
-	bool _auto_flush = true;
+	bool _auto_flush = false;
 public:
 	log_sink() {}
 	log_sink(const bool auto_flush) : _auto_flush{auto_flush} {}
@@ -174,10 +174,10 @@ public:
 			auto sink = _severity_sinks[static_cast<size_t>(sv)];
 			if(sv < severity_level::error) {
 				sink.insert(lout);
-				sink.set_auto_flush(true);
 			}
 			else {
 				sink.insert(lerr);
+				sink.set_auto_flush(true);
 			}
 			sink.insert(flog);
 		}
