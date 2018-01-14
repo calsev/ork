@@ -348,13 +348,13 @@ log_scope logger::get_log_scope(
 {
 	const file::path fullpath(file_);
 	string file(fullpath.filename().ORK_GEN_STR());
-	file.resize(28, ORK(' '));
+	file.resize(24, ORK(' '));
 
 	string line(line_);
 	line.resize(4, ORK(' '));
 
 	string function(function_);
-	function.resize(40, ORK(' '));
+	function.resize(48, ORK(' '));
 
 	std::unique_ptr<log_scope::impl> ls_impl(new log_scope::impl(_pimpl->multiplexer, channel, severity));
 	log_scope scope(std::move(ls_impl));
