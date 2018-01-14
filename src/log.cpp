@@ -88,22 +88,23 @@ severity_level string2severity_level(const ork::string&str) {
 }
 
 
-//This is little more than a synchronous wrapper around an o_stream
+/*
+This is little more than a wrapper around an o_stream
+Access is serialized by message_guard
+*/
 class log_stream {
 public:
 	using stream_ptr = std::shared_ptr<o_stream>;
 private:
 	stream_ptr _stream;
-	std::mutex _mutex;
 public:
-	explicit log_stream(stream_ptr stream_) : _stream{stream_}, _mutex{} {}
+	explicit log_stream(stream_ptr stream_) : _stream{stream_} {}
 	~log_stream() {
 		flush();
 	}
 	ORK_NON_COPYABLE(log_stream)
 public:
 	void log(const string&message) {
-		std::lock_guard<std::mutex>lock(_mutex);
 		*_stream << message << ORK('\n');
 	}
 	void flush() {
