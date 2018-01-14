@@ -220,6 +220,40 @@ private:
 };
 
 
+class message_guard {
+private:
+	ork::string _message = {};
+	int _stage = 0;
+	mutable std::mutex _mutex = {};
+public:
+	ORK_NON_COPYABLE(message_guard)
+public:
+	// This should be called to check if the message is ready to be cleared
+	bool done() const {
+		std::scoped_lock<std::mutex> lock(_mutex);
+		return _stage > 0;
+	}
+	// This should be called once to complete the message
+	void log(const o_string_stream&stream) {
+		std::scoped_lock<std::mutex> lock(_mutex);
+		if(_stage != 0) {
+			ORK_THROW(ORK("Message pump called in wrong order"));
+		}
+		_message = stream.str();
+		_stage = 1;
+	}
+	// This should be called once after completion
+	std::string clear_message() {
+		std::scoped_lock<std::mutex> lock(_mutex);
+		if(_stage != 1) {
+			ORK_THROW(ORK("Message pump called in wrong order"));
+		}
+		_stage = 2;
+		return std::move(_message);
+	}
+};
+
+
 struct log_scope::impl {
 public:
 	std::shared_ptr<log_multiplexer>multiplexer;
