@@ -159,75 +159,28 @@ std::shared_ptr<log_stream>open_file_log_stream(const file::path&file_name) {
 }
 
 
-//This is where our logging system falls short of a generic filter system; try to hide it somewhat in one place
-class log_multiplexer {
-private:
-	using sink_ptr = std::unique_ptr<log_sink>;
-private:
-	std::vector<sink_ptr> _severity_sinks = {};
-	log_sink _data_sink = {};
-public:
-	log_multiplexer(const file::path&root_directory){
-		auto lout = log_sink::stream_ptr{new log_stream{log_stream::stream_ptr{&ORK_CLOG, singleton_deleter<o_stream>()}}};
-		auto lerr = log_sink::stream_ptr{new log_stream{log_stream::stream_ptr{&ORK_CERR, singleton_deleter<o_stream>()}}};
-		auto flog = open_file_log_stream(root_directory / ORK("trace.log"));
-		auto fdata = open_file_log_stream(root_directory / ORK("output.log"));
-
-		for(const auto sv : severity_levels) {
-			sink_ptr sink{};
-			if(sv < severity_level::error) {
-				sink.reset(new log_sink{false});
-				sink->insert(lout);
-			}
-			else {
-				sink.reset(new log_sink{true});
-				sink->insert(lerr);
-			}
-			sink->insert(flog);
-			_severity_sinks.emplace_back(std::move(sink));
-		}
-		_data_sink.insert(lout);
-		_data_sink.insert(fdata);
-	}
-	ORK_NON_COPYABLE(log_multiplexer)
-public:
-	void log(const log_channel channel, const severity_level severity, const o_string_stream&stream) {
-		const string message = stream.str();
-		switch(channel) {
-		case log_channel::debug_trace:
-			log_severity(severity, message);
-			break;
-		case log_channel::output_data:
-			_data_sink.log(stream.str());
-			break;
-		default:
-			ORK_UNREACHABLE
-		};
-	}
-	void flush_all() {
-		for(auto&sink : _severity_sinks) {
-			sink->flush();
-		}
-		_data_sink.flush();
-	}
-private:
-	void log_severity(const severity_level severity, const string&message) {
-		const bool do_it = ORK_DEBUG || severity > severity_level::debug;
-		if ORK_CONSTEXPR(do_it || true) {
-			_severity_sinks[static_cast<size_t>(severity)]->log(message);
-		}
-	}
-};
-
-
 class message_guard {
 private:
 	ork::string _message = {};
 	int _stage = 0;
 	mutable std::mutex _mutex = {};
+	log_channel _channel;
+	severity_level _severity;
 public:
+	message_guard(
+		const log_channel lc,
+		const severity_level sv)
+		: _channel{lc}
+		, _severity{sv} {}
 	ORK_NON_COPYABLE(message_guard)
 public:
+	log_channel channel() const {
+		return _channel;
+	}
+	severity_level severity() const {
+		return _severity;
+	}
+
 	// This should be called to check if the message is ready to be cleared
 	bool done() const {
 		std::scoped_lock<std::mutex> lock(_mutex);
@@ -252,23 +205,109 @@ public:
 		return std::move(_message);
 	}
 };
+using guard_ptr = std::shared_ptr<message_guard>;
+
+
+//This is where our logging system falls short of a generic filter system; try to hide it somewhat in one place
+class log_multiplexer {
+private:
+	using sink_ptr = std::unique_ptr<log_sink>;
+private:
+	std::vector<sink_ptr> _severity_sinks = {};
+	log_sink _data_sink = {};
+	std::vector<guard_ptr>_messages = {};
+	size_t _message_index = 0;
+	std::mutex _mutex = {};
+public:
+	log_multiplexer(const file::path&root_directory) {
+		auto lout = log_sink::stream_ptr{new log_stream{log_stream::stream_ptr{&ORK_CLOG, singleton_deleter<o_stream>()}}};
+		auto lerr = log_sink::stream_ptr{new log_stream{log_stream::stream_ptr{&ORK_CERR, singleton_deleter<o_stream>()}}};
+		auto flog = open_file_log_stream(root_directory / ORK("trace.log"));
+		auto fdata = open_file_log_stream(root_directory / ORK("output.log"));
+
+		for(const auto sv : severity_levels) {
+			sink_ptr sink{};
+			if(sv < severity_level::error) {
+				sink.reset(new log_sink{false});
+				sink->insert(lout);
+			}
+			else {
+				sink.reset(new log_sink{true});
+				sink->insert(lerr);
+			}
+			sink->insert(flog);
+			_severity_sinks.emplace_back(std::move(sink));
+		}
+		_data_sink.insert(lout);
+		_data_sink.insert(fdata);
+	}
+	ORK_NON_COPYABLE(log_multiplexer)
+public:
+	guard_ptr get_message_guard(
+		const log_channel lc,
+		const severity_level sv
+	) {
+		std::scoped_lock<std::mutex> lock{_mutex};
+		_messages.emplace_back(new message_guard{lc, sv});
+		return _messages.back();
+	}
+	void on_scope_exit() {
+		std::scoped_lock<std::mutex> lock{_mutex};
+		while(_message_index < _messages.size() - 1 && _messages[_message_index]->done()) {
+			log(*_messages[_message_index]);
+			++_message_index;
+		}
+	}
+	void flush_all() {
+		std::scoped_lock<std::mutex> lock{_mutex};
+		for(auto&sink : _severity_sinks) {
+			sink->flush();
+		}
+		_data_sink.flush();
+	}
+private:
+	void log(message_guard& message) {
+		const string msg{message.clear_message()};
+		switch(message.channel()) {
+			case log_channel::debug_trace:
+				log_severity(message.severity(), msg);
+				break;
+			case log_channel::output_data:
+				_data_sink.log(msg);
+				break;
+			default:
+				ORK_UNREACHABLE
+		};
+	}
+	void log_severity(
+		const severity_level severity,
+		const string&message
+	) {
+		const bool do_it = ORK_DEBUG || severity > severity_level::debug;
+		if ORK_CONSTEXPR(do_it || true) {
+			_severity_sinks[static_cast<size_t>(severity)]->log(message);
+		}
+	}
+};
 
 
 struct log_scope::impl {
 public:
+	std::shared_ptr<message_guard>guard;
 	std::shared_ptr<log_multiplexer>multiplexer;
-	log_channel channel;
-	severity_level severity;
 	o_string_stream stream;
 public:
-	impl(std::shared_ptr<log_multiplexer>&mp, const log_channel lc, const severity_level sv)
-		: multiplexer{mp}
-		, channel{lc}
-		, severity{sv}
+	impl(
+		const std::shared_ptr<message_guard>&mg,
+		const std::shared_ptr<log_multiplexer>&mp
+	)
+		: guard{mg}
+		, multiplexer{mp}
 		, stream{}
 	{}
 	~impl() {
-		multiplexer->log(channel, severity, stream);
+		guard->log(stream);
+		multiplexer->on_scope_exit();
 	}
 	ORK_MOVE_ONLY(impl)
 };
@@ -390,7 +429,8 @@ log_scope logger::get_log_scope(
 	string function(function_);
 	function.resize(48, ORK(' '));
 
-	std::unique_ptr<log_scope::impl> ls_impl(new log_scope::impl(_pimpl->multiplexer, channel, severity));
+	guard_ptr guard{_pimpl->multiplexer->get_message_guard(channel, severity)};
+	std::unique_ptr<log_scope::impl> ls_impl(new log_scope::impl(guard, _pimpl->multiplexer));
 	log_scope scope(std::move(ls_impl));
 	//Output formatted context first
 	scope << ORK("[") << to_formatted_string(severity) << ORK("]:") << file << ORK("(") << line << ORK("):") << function << ORK("-- ");
