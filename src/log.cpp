@@ -104,7 +104,7 @@ public:
 public:
 	void log(const string&message) {
 		std::lock_guard<std::mutex>lock(_mutex);
-		*_stream << message;
+		*_stream << message << ORK('\n');
 	}
 	void flush() {
 		_stream->flush();
