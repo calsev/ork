@@ -121,6 +121,7 @@ private:
 public:
 	log_sink() {}
 	log_sink(const bool auto_flush) : _auto_flush{auto_flush} {}
+	ORK_NON_COPYABLE(log_sink)
 public:
 	void insert(const stream_ptr&ptr) {
 		_streams.push_back(ptr);
@@ -161,7 +162,9 @@ std::shared_ptr<log_stream>open_file_log_stream(const file::path&file_name) {
 //This is where our logging system falls short of a generic filter system; try to hide it somewhat in one place
 class log_multiplexer {
 private:
-	std::array<log_sink, severity_levels.size()>_severity_sinks = {};
+	using sink_ptr = std::unique_ptr<log_sink>;
+private:
+	std::vector<sink_ptr> _severity_sinks = {};
 	log_sink _data_sink = {};
 public:
 	log_multiplexer(const file::path&root_directory){
@@ -171,19 +174,22 @@ public:
 		auto fdata = open_file_log_stream(root_directory / ORK("output.log"));
 
 		for(const auto sv : severity_levels) {
-			auto sink = _severity_sinks[static_cast<size_t>(sv)];
+			sink_ptr sink{};
 			if(sv < severity_level::error) {
-				sink.insert(lout);
+				sink.reset(new log_sink{false});
+				sink->insert(lout);
 			}
 			else {
-				sink.insert(lerr);
-				sink.set_auto_flush(true);
+				sink.reset(new log_sink{true});
+				sink->insert(lerr);
 			}
-			sink.insert(flog);
+			sink->insert(flog);
+			_severity_sinks.emplace_back(std::move(sink));
 		}
 		_data_sink.insert(lout);
 		_data_sink.insert(fdata);
 	}
+	ORK_NON_COPYABLE(log_multiplexer)
 public:
 	void log(const log_channel channel, const severity_level severity, const o_string_stream&stream) {
 		const string message = stream.str();
@@ -200,7 +206,7 @@ public:
 	}
 	void flush_all() {
 		for(auto&sink : _severity_sinks) {
-			sink.flush();
+			sink->flush();
 		}
 		_data_sink.flush();
 	}
@@ -208,7 +214,7 @@ private:
 	void log_severity(const severity_level severity, const string&message) {
 		const bool do_it = ORK_DEBUG || severity > severity_level::debug;
 		if ORK_CONSTEXPR(do_it || true) {
-			_severity_sinks[static_cast<size_t>(severity)].log(message);
+			_severity_sinks[static_cast<size_t>(severity)]->log(message);
 		}
 	}
 };
