@@ -25,34 +25,39 @@ ORK_ORK_EXT(bstring) to_sentence_case_copy(const bstring&);
 ORK_ORK_EXT(wstring) to_sentence_case_copy(const wstring&);
 
 
+//There is no default implementation
+template<typename T> ORK_INLINE T from_string(const bstring&str);
+template<typename T> ORK_INLINE T from_string(const wstring&str);
+
+#define ORK_STRING_CONVERSION(TYPE)\
+ORK_ORK_EXT(string) to_string(const TYPE);\
+ORK_ORK_EXT(bstring) to_bstring(const TYPE);\
+ORK_ORK_EXT(wstring) to_wstring(const TYPE);\
+ORK_ORK_EXT(TYPE) ORK_CAT(to_, TYPE)(const bstring&);\
+ORK_ORK_EXT(TYPE) ORK_CAT(to_, TYPE)(const wstring&);\
+template<> ORK_INLINE TYPE from_string<TYPE>(const bstring&str) {\
+\
+	return ORK_CAT(to_, TYPE)(str);\
+}\
+template<> ORK_INLINE TYPE from_string<TYPE>(const wstring&str) {\
+\
+	return ORK_CAT(to_, TYPE)(str);\
+}
+
 //Conversions are being instantiated lazily
-ORK_ORK_EXT(string) to_string(const bool val);
-ORK_ORK_EXT(bool) string2bool(const string&val);
-
-ORK_ORK_EXT(string) to_string(const unsigned val);
-ORK_ORK_EXT(unsigned) string2unsigned(const string&val);
-
-ORK_ORK_EXT(string) to_string(const double val);
-ORK_ORK_EXT(double) string2double(const string&val);
+ORK_STRING_CONVERSION(bool);
+ORK_STRING_CONVERSION(int);
+ORK_STRING_CONVERSION(unsigned);
+ORK_STRING_CONVERSION(size_t);
+ORK_STRING_CONVERSION(float);
+ORK_STRING_CONVERSION(double);
 
 
 ORK_ORK_EXT(size_t) str_length(const char*const);
 ORK_ORK_EXT(size_t) str_length(const wchar_t*const);
 
-
 ORK_ORK_EXT(bool) str_equal(const char*const, const char*const);
 ORK_ORK_EXT(bool) str_equal(const wchar_t*const, const wchar_t*const);
-
-
-ORK_ORK_EXT(double) to_double(const char*const);
-ORK_ORK_EXT(double) to_double(const wchar_t*const);
-ORK_ORK_EXT(double) to_double(const bstring&);
-ORK_ORK_EXT(double) to_double(const wstring&);
-
-ORK_ORK_EXT(float) to_float(const char*const);
-ORK_ORK_EXT(float) to_float(const wchar_t*const);
-ORK_ORK_EXT(float) to_float(const bstring&);
-ORK_ORK_EXT(float) to_float(const wstring&);
 
 
 enum class encoding {

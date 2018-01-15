@@ -97,43 +97,86 @@ wstring to_sentence_case_copy(const wstring&str) {
 string to_string(const bool val) {
 	return val ? ORK("true") : ORK("false");
 }
-bool string2bool(const string&val_) {
-	const string val = to_lower_copy(val_);
-	if (val == ORK("t"))return true;
-	if (val == ORK("true"))return true;
-	if (val == ORK("y"))return true;
-	if (val == ORK("yes"))return true;
-	if (val == ORK("1"))return true;
-	if (val == ORK("f"))return false;
-	if (val == ORK("false"))return false;
-	if (val == ORK("n"))return false;
-	if (val == ORK("no"))return false;
-	if (val == ORK("0"))return false;
-	ORK_THROW(ORK("Invalid bool value"));
+bstring to_bstring(const bool val) {
+	return val ? BORK("true") : BORK("false");
+}
+wstring to_wstring(const bool val) {
+	return val ? WORK("true") : WORK("false");
 }
 
+#define ORK_TO_BOOL(STRING) \
+bool to_bool(const STRING&val_) {\
+	const STRING val{to_lower_copy(val_)};\
+	if(val == ORK_BOOL_STR("t")) {\
+		return true;\
+	}\
+	if(val == ORK_BOOL_STR("true")) {\
+		return true;\
+	}\
+	if(val == ORK_BOOL_STR("y")) {\
+		return true;\
+	}\
+	if(val == ORK_BOOL_STR("yes")) {\
+		return true;\
+	}\
+	if(val == ORK_BOOL_STR("1")) {\
+		return true;\
+	}\
+	if(val == ORK_BOOL_STR("f")) {\
+		return false;\
+	}\
+	if(val == ORK_BOOL_STR("false")) {\
+		return false;\
+	}\
+	if(val == ORK_BOOL_STR("n")) {\
+		return false;\
+	}\
+	if(val == ORK_BOOL_STR("no")) {\
+		return false;\
+	}\
+	if(val == ORK_BOOL_STR("0")) {\
+		return false;\
+	}\
+	ORK_THROW(ORK("Invalid bool value"));\
+}
 
-string to_string(const unsigned val) {
+#define ORK_BOOL_STR(STR) BORK(STR)
+ORK_TO_BOOL(bstring)
+#undef ORK_BOOL_STR
+#define ORK_BOOL_STR(STR) WORK(STR)
+ORK_TO_BOOL(wstring)
+
+
 #if ORK_UNICODE
-	return std::to_wstring(val);
+#   define ORK_STR_FUNC(BFUNC, WFUNC) WFUNC
 #else
-	return std::to_string(val);
+#   define ORK_STR_FUNC(BFUNC, WFUNC) BFUNC
 #endif
-}
-unsigned string2unsigned(const string&val) {
-	return std::stoul(val);
+
+
+#define ORK_STRING_CONVERSION_DEF(TYPE, TO_B, TO_W, SB, SW)\
+string to_string(const TYPE val) {\
+	return ORK_STR_FUNC(TO_B, TO_W)(val);\
+}\
+bstring to_bstring(const TYPE val) {\
+	return TO_B(val);\
+}\
+wstring to_wstring(const TYPE val) {\
+	return TO_W(val);\
+}\
+TYPE ORK_CAT(to_, TYPE)(const bstring& val) {\
+	return SB(val);\
+}\
+TYPE ORK_CAT(to_, TYPE)(const wstring& val) {\
+	return SW(val);\
 }
 
-string to_string(const double val) {
-#if ORK_UNICODE
-	return std::to_wstring(val);
-#else
-	return std::to_string(val);
-#endif
-}
-double string2double(const string&val) {
-	return std::stod(val);
-}
+//We could provide wcsto versions for pointers
+ORK_STRING_CONVERSION_DEF(int, std::to_string, std::to_wstring, std::stoi, std::stoi);
+ORK_STRING_CONVERSION_DEF(unsigned, std::to_string, std::to_wstring, std::stoul, std::stoul);
+ORK_STRING_CONVERSION_DEF(size_t, std::to_string, std::to_wstring, std::stoull, std::stoull);
+ORK_STRING_CONVERSION_DEF(float, std::to_string, std::to_wstring, std::stof, std::stof);
+ORK_STRING_CONVERSION_DEF(double, std::to_string, std::to_wstring, std::stod, std::stod);
 
 
 size_t str_length(const char*const str) {
@@ -161,35 +204,6 @@ bool str_equal(const wchar_t*const lhs, const wchar_t*const rhs) {
 		ORK_THROW(ORK("String length called for null string"));
 	}
 	return std::wcscmp(lhs, rhs) == 0;
-}
-
-
-double to_double(const char*const str) {
-	return std::strtod(str, nullptr);
-}
-double to_double(const wchar_t*const str) {
-	return std::wcstod(str, nullptr);
-}
-double to_double(const bstring&str) {
-	return std::strtod(str.c_str(), nullptr);
-}
-double to_double(const wstring&str) {
-	return std::wcstod(str.c_str(), nullptr);
-}
-
-
-//We could also static cast double versions
-float to_float(const char*const str) {
-	return std::strtof(str, nullptr);
-}
-float to_float(const wchar_t*const str) {
-	return std::wcstof(str, nullptr);
-}
-float to_float(const bstring&str) {
-	return std::strtof(str.c_str(), nullptr);
-}
-float to_float(const wstring&str) {
-	return std::wcstof(str.c_str(), nullptr);
 }
 
 
