@@ -63,7 +63,7 @@ Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
 
 
 #ifndef ORK_CONSTEXPR
-#	if ORK_GCC || ORK_MSC > 1800//2015
+#	if ORK_GCC || ORK_MSC > 1900//2015
 #		define ORK_CONSTEXPR constexpr
 #	else
 #		define ORK_CONSTEXPR 
