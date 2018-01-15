@@ -152,7 +152,7 @@ typedef std::istringstream bi_string_stream;
 #	error Compiler not supported
 #endif
 
-#define ORK_FUNC ORK(ORK_FUNC_)
+#define ORK_FUNC ORK(ORK_STR(ORK_FUNC_))
 
 
 #define ORK_FLOC_STREAM ORK_FILEN << ORK("(") << ORK_LINE << ORK(")")
