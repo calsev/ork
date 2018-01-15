@@ -8,20 +8,26 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include"glm/fwd.hpp"
 
 
+#if ORK_USE_JSON
 namespace Json {
 class Value;
 }
+#endif
 
 
+#if ORK_USE_PUGI
 namespace pugi {
 class xml_document;
 class xml_node;
 }
+#endif
 
 
+#if ORK_USE_YAML
 namespace YAML {
 class Node;
 }
+#endif
 
 
 namespace ork {
