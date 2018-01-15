@@ -131,7 +131,8 @@ typedef std::ostream bo_stream;
 typedef std::istream bi_stream;
 typedef std::ostringstream bo_string_stream;
 typedef std::istringstream bi_string_stream;
-#define BORK(X) X//Byte Text, so that searches can identify unhandled unicode
+#define WORK(X) ORK_WIDEN(X)//Wide text, so that searches can identify unhandled unicode
+#define BORK(X) X//Byte text, so that searches can identify unhandled unicode
 
 
 #define ORK_FILEN ORK(__FILE__)
