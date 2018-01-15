@@ -428,13 +428,13 @@ log_scope logger::get_log_scope(
 	line.resize(4, ORK(' '));
 
 	string function(function_);
-	function.resize(48, ORK(' '));
+	function.resize(40, ORK(' '));
 
 	guard_ptr guard{_pimpl->multiplexer->get_message_guard(channel, severity)};
 	std::unique_ptr<log_scope::impl> ls_impl(new log_scope::impl(guard, _pimpl->multiplexer));
 	log_scope scope(std::move(ls_impl));
 	//Output formatted context first
-	scope << ORK("[") << to_formatted_string(severity) << ORK("]:") << file << ORK("(") << line << ORK("):") << function << ORK("-- ");
+	scope << ORK("[") << to_formatted_string(severity) << ORK("] : ") << file << ORK("(") << line << ORK(") : ") << function << ORK("-- ");
 
 	//Finally, return the stream to the client
 	return std::move(scope);
