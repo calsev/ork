@@ -184,12 +184,12 @@ public:
 
 	// This should be called to check if the message is ready to be cleared
 	bool done() const {
-		std::scoped_lock<std::mutex> lock(_mutex);
+		std::lock_guard<std::mutex> lock(_mutex);
 		return _stage > 0;
 	}
 	// This should be called once to complete the message
 	void log(const o_string_stream&stream) {
-		std::scoped_lock<std::mutex> lock(_mutex);
+		std::lock_guard<std::mutex> lock(_mutex);
 		if(_stage != 0) {
 			ORK_THROW(ORK("Message pump called in wrong order"));
 		}
@@ -197,8 +197,8 @@ public:
 		_stage = 1;
 	}
 	// This should be called once after completion
-	std::string clear_message() {
-		std::scoped_lock<std::mutex> lock(_mutex);
+	ork::string clear_message() {
+		std::lock_guard<std::mutex> lock(_mutex);
 		if(_stage != 1) {
 			ORK_THROW(ORK("Message pump called in wrong order"));
 		}
@@ -248,19 +248,19 @@ public:
 		const log_channel lc,
 		const severity_level sv
 	) {
-		std::scoped_lock<std::mutex> lock{_mutex};
+		std::lock_guard<std::mutex> lock{_mutex};
 		_messages.emplace_back(new message_guard{lc, sv});
 		return _messages.back();
 	}
 	void on_scope_exit() {
-		std::scoped_lock<std::mutex> lock{_mutex};
+		std::lock_guard<std::mutex> lock{_mutex};
 		while(_message_index < _messages.size() - 1 && _messages[_message_index]->done()) {
 			log(*_messages[_message_index]);
 			++_message_index;
 		}
 	}
 	void flush_all() {
-		std::scoped_lock<std::mutex> lock{_mutex};
+		std::lock_guard<std::mutex> lock{_mutex};
 		for(auto&sink : _severity_sinks) {
 			sink->flush();
 		}
@@ -284,10 +284,10 @@ private:
 		const severity_level severity,
 		const string&message
 	) {
-		const bool do_it = ORK_DEBUG || severity > severity_level::debug;
-		if ORK_CONSTEXPR(do_it || true) {
+		//const bool do_it = ORK_DEBUG || severity > severity_level::debug;
+		//if ORK_CONSTEXPR(do_it || true) {
 			_severity_sinks[static_cast<size_t>(severity)]->log(message);
-		}
+		//}
 	}
 };
 
