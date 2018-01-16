@@ -29,18 +29,17 @@ ORK_ORK_EXT(wstring) to_sentence_case_copy(const wstring&);
 template<typename T> ORK_INLINE T from_string(const bstring&str);
 template<typename T> ORK_INLINE T from_string(const wstring&str);
 
+#define ORK_STRING_CONV_ARG(TYPE) TYPE
 #define ORK_STRING_CONVERSION(TYPE)\
-ORK_ORK_EXT(string) to_string(const TYPE);\
-ORK_ORK_EXT(bstring) to_bstring(const TYPE);\
-ORK_ORK_EXT(wstring) to_wstring(const TYPE);\
+ORK_ORK_EXT(string) to_string(const ORK_STRING_CONV_ARG(TYPE));\
+ORK_ORK_EXT(bstring) to_bstring(const ORK_STRING_CONV_ARG(TYPE));\
+ORK_ORK_EXT(wstring) to_wstring(const ORK_STRING_CONV_ARG(TYPE));\
 ORK_ORK_EXT(TYPE) ORK_CAT(to_, TYPE)(const bstring&);\
 ORK_ORK_EXT(TYPE) ORK_CAT(to_, TYPE)(const wstring&);\
 template<> ORK_INLINE TYPE from_string<TYPE>(const bstring&str) {\
-\
 	return ORK_CAT(to_, TYPE)(str);\
 }\
 template<> ORK_INLINE TYPE from_string<TYPE>(const wstring&str) {\
-\
 	return ORK_CAT(to_, TYPE)(str);\
 }
 
@@ -51,6 +50,13 @@ ORK_STRING_CONVERSION(unsigned);
 ORK_STRING_CONVERSION(size_t);
 ORK_STRING_CONVERSION(float);
 ORK_STRING_CONVERSION(double);
+
+
+#undef ORK_STRING_CONV_ARG
+#define ORK_STRING_CONV_ARG(TYPE) TYPE&
+
+ORK_STRING_CONVERSION(bstring);
+ORK_STRING_CONVERSION(wstring);
 
 
 ORK_ORK_EXT(size_t) str_length(const char*const);

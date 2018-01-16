@@ -154,14 +154,16 @@ ORK_TO_BOOL(wstring)
 #endif
 
 
+#undef ORK_STRING_CONV_ARG
+#define ORK_STRING_CONV_ARG(TYPE) TYPE
 #define ORK_STRING_CONVERSION_DEF(TYPE, TO_B, TO_W, SB, SW)\
-string to_string(const TYPE val) {\
+string to_string(const ORK_STRING_CONV_ARG(TYPE) val) {\
 	return ORK_STR_FUNC(TO_B, TO_W)(val);\
 }\
-bstring to_bstring(const TYPE val) {\
+bstring to_bstring(const ORK_STRING_CONV_ARG(TYPE) val) {\
 	return TO_B(val);\
 }\
-wstring to_wstring(const TYPE val) {\
+wstring to_wstring(const ORK_STRING_CONV_ARG(TYPE) val) {\
 	return TO_W(val);\
 }\
 TYPE ORK_CAT(to_, TYPE)(const bstring& val) {\
@@ -177,6 +179,26 @@ ORK_STRING_CONVERSION_DEF(unsigned, std::to_string, std::to_wstring, std::stoul,
 ORK_STRING_CONVERSION_DEF(size_t, std::to_string, std::to_wstring, std::stoull, std::stoull);
 ORK_STRING_CONVERSION_DEF(float, std::to_string, std::to_wstring, std::stof, std::stof);
 ORK_STRING_CONVERSION_DEF(double, std::to_string, std::to_wstring, std::stod, std::stod);
+
+string to_string(const bstring& val) {
+	return ORK_BYTE_2_STR(val);
+}
+bstring to_bstring(const bstring& val) {
+	return val;
+}
+wstring to_wstring(const bstring& val) {
+	return ork::g_string_converter().byte2wide(val);
+}
+
+string to_string(const wstring& val) {
+	return ORK_WIDE_2_STR(val);
+}
+bstring to_bstring(const wstring& val) {
+	return ork::g_string_converter().wide2byte(val);
+}
+wstring to_wstring(const wstring& val) {
+	return val;
+}
 
 
 size_t str_length(const char*const str) {

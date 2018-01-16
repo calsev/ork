@@ -16,6 +16,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+#define ORK_EMPTY /**/
+
+
 //Make the code execute as one statement; used because it could be more exotic(per-platform) in the future.
 #define ORK_STMT(CODE) {CODE} //do{CODE}while(false);
 
