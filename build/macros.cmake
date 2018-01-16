@@ -338,6 +338,7 @@ macro(set_advanced_warnings)
 	get_compiler_name(COMPILER)
 	if(COMPILER MATCHES "vc")
 		replace_or_append_all_flag("/W[[0-4]|all]" "/Wall")
+		replace_or_append_all_flag("/WX\-?" "/WX")
 		append_all_compiler_flag("/sdl") #Security Development Lifecycle checks
 		append_debug_flag("/RTCc") #Smaller type checks
 		add_definitions(-D_ALLOW_RTCc_IN_STL) #Acknowledge STL does not support this check
@@ -351,7 +352,7 @@ macro(set_advanced_warnings)
 		
 		append_release_flag("/wd4711") #Function selected for automatic inline expansion
 	elseif(COMPILER MATCHES "gcc")
-		append_all_compiler_flag("-Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -pedantic")
+		append_all_compiler_flag("-Wall -Wextra -Werror -Wshadow -Wconversion -Wsign-conversion -pedantic")
 	else()
 		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
 	endif()
