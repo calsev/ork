@@ -176,13 +176,13 @@ typedef std::istringstream bi_string_stream;
 	typedef detail::fstream::wifstream if_stream;
 	typedef detail::fstream::wfstream f_stream;
 	#define ORK_GEN_STR generic_wstring
-	#define ORK_STRING wstring
+	#define ORK_STRING ork::wstring
 #else
 	typedef detail::fstream::ofstream of_stream;
 	typedef detail::fstream::ifstream if_stream;
 	typedef detail::fstream::fstream f_stream;
 	#define ORK_GEN_STR generic_string
-	#define ORK_STRING string
+	#define ORK_STRING ork::bstring
 #endif
 typedef detail::fstream::wofstream wof_stream;
 typedef detail::fstream::wifstream wif_stream;
