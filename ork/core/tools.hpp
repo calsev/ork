@@ -380,14 +380,6 @@ const ork::ORK_CAT(PRE, string)& ORK_CAT(to_, PRE, string)(const ENUM val) {\
 })
 
 
-#if ORK_UNICODE
-#   define ORK_STRING_ wstring
-#else
-#   define ORK_STRING_ bstring
-#endif
-#define ORK_STRING ORK_STRING_
-
-
 #define ORK_ENUM_DEF(ENUM, ...) \
 ORK_STRING_LIST(b, BORK, __VA_ARGS__) \
 ORK_STRING_LIST(w, WORK, __VA_ARGS__) \
