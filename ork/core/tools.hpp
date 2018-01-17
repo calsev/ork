@@ -393,7 +393,7 @@ ENUM ORK_CAT(to_, ENUM)(const ork::bstring&);\
 ENUM ORK_CAT(to_, ENUM)(const ork::wstring&);
 
 
-#define ORK_ENUM_2_STR(ENUM, PRE, ...) ORK_EVAL( \
+#define ORK_ENUM_2_STR_(ENUM, PRE, ...) ORK_EVAL( \
 const ork::ORK_CAT(PRE, string)& ORK_CAT(to_, PRE, string)(const ENUM val) {\
 	switch(val) {\
 		ORK_CASE_LIST(ENUM, PRE, __VA_ARGS__)\
@@ -411,8 +411,8 @@ ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)() {\
 };\
 ORK_STRING_LIST(b, BORK, __VA_ARGS__) \
 ORK_STRING_LIST(w, WORK, __VA_ARGS__) \
-ORK_ENUM_2_STR(ENUM, b, __VA_ARGS__) \
-ORK_ENUM_2_STR(ENUM, w, __VA_ARGS__) \
+ORK_ENUM_2_STR_(ENUM, b, __VA_ARGS__) \
+ORK_ENUM_2_STR_(ENUM, w, __VA_ARGS__) \
 const ork::string& to_string(const grid_visibility_mode val) { \
 	return ORK_CAT(to_, ORK_STRING)(val); \
 }
