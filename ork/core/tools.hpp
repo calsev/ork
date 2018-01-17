@@ -235,16 +235,16 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_EVAL(...) __VA_ARGS__
 
 
-#define ORK_GET_ARG_00(A0, ...) A0
-#define ORK_GET_ARG_01(A0, A1, ...) A1
-#define ORK_GET_ARG_02(A0, A1, A2, ...) A2
-#define ORK_GET_ARG_03(A0, A1, A2, A3, ...) A3
-#define ORK_GET_ARG_04(A0, A1, A2, A3, A4, ...) A4
-#define ORK_GET_ARG_05(A0, A1, A2, A3, A4, A5, ...) A5
-#define ORK_GET_ARG_06(A0, A1, A2, A3, A4, A5, A6, ...) A6
-#define ORK_GET_ARG_07(A0, A1, A2, A3, A4, A5, A6, A7, ...) A7
-#define ORK_GET_ARG_08(A0, A1, A2, A3, A4, A5, A6, A7, A8, ...) A8
-#define ORK_GET_ARG_09(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, ...) A9
+#define ORK_GET_ARG_00_(A0, ...) A0
+#define ORK_GET_ARG_01_(A0, A1, ...) A1
+#define ORK_GET_ARG_02_(A0, A1, A2, ...) A2
+#define ORK_GET_ARG_03_(A0, A1, A2, A3, ...) A3
+#define ORK_GET_ARG_04_(A0, A1, A2, A3, A4, ...) A4
+#define ORK_GET_ARG_05_(A0, A1, A2, A3, A4, A5, ...) A5
+#define ORK_GET_ARG_06_(A0, A1, A2, A3, A4, A5, A6, ...) A6
+#define ORK_GET_ARG_07_(A0, A1, A2, A3, A4, A5, A6, A7, ...) A7
+#define ORK_GET_ARG_08_(A0, A1, A2, A3, A4, A5, A6, A7, A8, ...) A8
+#define ORK_GET_ARG_09_(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, ...) A9
 
 
 #define ORK_CALL_EACH_00(CALL)
@@ -259,7 +259,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_CALL_EACH_09(CALL, ARG, ...) THING(ARG) ORK_EVAL(ORK_CALL_EACH_08(THING, __VA_ARGS__))
 
 #define ORK_CALL_EACH(CALL, ...) ORK_EVAL( \
-	ORK_GET_ARG_9( \
+	ORK_GET_ARG_9_( \
 		__VA_ARGS__, ORK_CALL_EACH_09, ORK_CALL_EACH_08, ORK_CALL_EACH_07, ORK_CALL_EACH_06, ORK_CALL_EACH_05, \
 		ORK_CALL_EACH_04, ORK_CALL_EACH_03, ORK_CALL_EACH_02, ORK_CALL_EACH_01, ORK_CALL_EACH_00) \
 	(THING, __VA_ARGS__))
@@ -277,7 +277,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_LIST_09(PRE, DELIM, ARG, ...) PRE ARG DELIM ORK_EVAL(ORK_LIST_08(PRE, DELIM, __VA_ARGS__))
 
 #define ORK_LIST(PRE, DELIM, ...) ORK_EVAL( \
-	ORK_GET_ARG_09( \
+	ORK_GET_ARG_09_( \
 		__VA_ARGS__, ORK_LIST_09, ORK_LIST_08, ORK_LIST_07, ORK_LIST_06, ORK_LIST_05, \
 		ORK_LIST_04, ORK_LIST_03, ORK_LIST_02, ORK_LIST_01, ORK_LIST_00) \
 	(PRE, DELIM, __VA_ARGS__))
@@ -295,7 +295,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_COMMA_LIST_09(PRE, ARG, ...) PRE ARG, ORK_EVAL(ORK_COMMA_LIST_08(PRE, __VA_ARGS__))
 
 #define ORK_COMMA_LIST(PRE, ...) ORK_EVAL(\
-	ORK_GET_ARG_09( \
+	ORK_GET_ARG_09_( \
 		__VA_ARGS__, ORK_COMMA_LIST_09, ORK_COMMA_LIST_08, ORK_COMMA_LIST_07, ORK_COMMA_LIST_06, ORK_COMMA_LIST_05,	\
 		ORK_COMMA_LIST_04, ORK_COMMA_LIST_03, ORK_COMMA_LIST_02, ORK_COMMA_LIST_01, ORK_COMMA_LIST_00) \
 	(PRE, __VA_ARGS__))
@@ -313,7 +313,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_COUNT_09(A1, A2, A3, A4, A5, A6, A7, A8, A9, ...) 9
 
 #define ORK_COUNT_ARGS(...) ORK_EVAL( \
-	ORK_GET_ARG_09( \
+	ORK_GET_ARG_09_( \
 		__VA_ARGS__, ORK_COUNT_09, ORK_COUNT_08, ORK_COUNT_07, ORK_COUNT_06, ORK_COUNT_05, \
 		ORK_COUNT_04, ORK_COUNT_03, ORK_COUNT_02, ORK_COUNT_01, ORK_COUNT_00) \
 	(__VA_ARGS__))
@@ -332,7 +332,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_STRING_LIST_09(PRE, STR, ARG, ...) ORK_EVAL(ORK_MAKE_STRING(PRE, STR, ARG) ORK_STRING_LIST_08(PRE, STR, __VA_ARGS__))
 
 #define ORK_STRING_LIST(PRE, STR, ...) ORK_EVAL(\
-	ORK_GET_ARG_09( \
+	ORK_GET_ARG_09_( \
 		__VA_ARGS__, ORK_STRING_LIST_09, ORK_STRING_LIST_08, ORK_STRING_LIST_07, ORK_STRING_LIST_06, ORK_STRING_LIST_05,	\
 		ORK_STRING_LIST_04, ORK_STRING_LIST_03, ORK_STRING_LIST_02, ORK_STRING_LIST_01, ORK_STRING_LIST_00) \
 	(PRE, STR, __VA_ARGS__))
@@ -351,7 +351,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_CASE_LIST_09(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_MAKE_CASE(ENUM, PRE, ARG) ORK_CASE_LIST_08(ENUM, PRE, __VA_ARGS__))
 
 #define ORK_CASE_LIST(ENUM, PRE, ...) ORK_EVAL(\
-	ORK_GET_ARG_09( \
+	ORK_GET_ARG_09_( \
 		__VA_ARGS__, ORK_CASE_LIST_09, ORK_CASE_LIST_08, ORK_CASE_LIST_07, ORK_CASE_LIST_06, ORK_CASE_LIST_05,	\
 		ORK_CASE_LIST_04, ORK_CASE_LIST_03, ORK_CASE_LIST_02, ORK_CASE_LIST_01, ORK_CASE_LIST_00) \
 	(ENUM, PRE, __VA_ARGS__))
