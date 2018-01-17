@@ -13,13 +13,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #define ORK_TEXT_HPP
 
 
-#if defined UNICODE || defined _UNICODE//Avoid checking both everywhere
-#	define ORK_UNICODE 1
-#else
-#	define ORK_UNICODE 0
-#endif
-
-
 //Forward declaration to keep boost out of headers
 #if ORK_STL_HAS_FILE
 

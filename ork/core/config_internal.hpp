@@ -161,6 +161,13 @@ Convenience macro for functions
 #endif
 
 
+#if defined UNICODE || defined _UNICODE//Avoid checking both everywhere
+#	define ORK_UNICODE 1
+#else
+#	define ORK_UNICODE 0
+#endif
+
+
 //Switch for transition from boost to stl
 #if ORK_GCC || ORK_MSC >= 1900
 #   define ORK_STL_HAS_FILE 1
