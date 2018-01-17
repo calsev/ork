@@ -379,13 +379,13 @@ Begin enum section: defining enums with an iterable container and string convers
 	(ENUM, PRE, __VA_ARGS__))
 
 
+#define ORK_ENUM_SET_(ENUM, ...) const std::array<ENUM, ORK_COUNT_ARGS(__VA_ARGS__)>
+
 #define ORK_ENUM_DECL(ENUM, ...)\
 enum class ENUM {\
 	ORK_COMMA_LIST(ORK_EMPTY, __VA_ARGS__)\
 };\
-const std::array<ENUM, ORK_COUNT_ARGS(__VA_ARGS__)>ENUM##s = {\
-	ORK_COMMA_LIST(ENUM::, __VA_ARGS__)\
-};\
+extern ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)();\
 const ork::string& to_string(const ENUM);\
 const ork::bstring& to_bstring(const ENUM);\
 const ork::wstring& to_wstring(const ENUM);\
@@ -403,6 +403,12 @@ const ork::ORK_CAT(PRE, string)& ORK_CAT(to_, PRE, string)(const ENUM val) {\
 
 
 #define ORK_ENUM_DEF(ENUM, ...) \
+ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)() {\
+	static ORK_ENUM_SET_(ENUM, __VA_ARGS__) val = {{\
+		ORK_COMMA_LIST(ENUM::, __VA_ARGS__)\
+	}};\
+	return val;\
+};\
 ORK_STRING_LIST(b, BORK, __VA_ARGS__) \
 ORK_STRING_LIST(w, WORK, __VA_ARGS__) \
 ORK_ENUM_2_STR(ENUM, b, __VA_ARGS__) \
