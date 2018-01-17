@@ -442,10 +442,17 @@ const ork::ORK_CAT(PRE, string)& ORK_CAT(to_, PRE, string)(const ENUM val) {\
 })
 
 
-#define ORK_STR_2_ENUM_(ENUM, PRE, ...) ORK_EVAL(\
+#if ORK_UNICODE
+#   define ORK_SAME_STR_ wstring
+#else
+#   define ORK_SAME_STR_ bstring
+#endif
+
+
+#define ORK_STR_2_ENUM_(ENUM, PRE, CONV, ...) ORK_EVAL(\
 ENUM ORK_CAT(to_, ENUM)(const ork::ORK_CAT(PRE, string)& str) { \
 	ORK_STR_2_ENUM_LIST(ENUM, PRE, __VA_ARGS__) \
-	ORK_THROW(ORK("Invalid ") << ORK_STR(ENUM) << ORK(": ") << str);\
+	ORK_THROW(ORK("Invalid ") << ORK_STR(ENUM) << ORK(": ") << CONV(str));\
 })
 
 
@@ -460,11 +467,11 @@ ORK_STRING_LIST(b, BORK, __VA_ARGS__) \
 ORK_STRING_LIST(w, WORK, __VA_ARGS__) \
 ORK_ENUM_2_STR_(ENUM, b, __VA_ARGS__) \
 ORK_ENUM_2_STR_(ENUM, w, __VA_ARGS__) \
-const ork::string& to_string(const grid_visibility_mode val) { \
-	return ORK_CAT(to_, ORK_STRING)(val); \
+const ork::string& to_string(const ENUM val) { \
+	return ORK_CAT(to_, ORK_SAME_STR_)(val); \
 } \
-ORK_STR_2_ENUM_(ENUM, b, __VA_ARGS__)\
-ORK_STR_2_ENUM_(ENUM, w, __VA_ARGS__)
+ORK_STR_2_ENUM_(ENUM, b, ORK_BYTE_2_STR, __VA_ARGS__)\
+ORK_STR_2_ENUM_(ENUM, w, ORK_WIDE_2_STR, __VA_ARGS__)
 
 
 }//namespace ork
