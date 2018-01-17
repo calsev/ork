@@ -407,7 +407,7 @@ if(str == ORK_CAT(PRE, ARG)) {\
 enum class ENUM {\
 	ORK_COMMA_LIST(ORK_EMPTY, __VA_ARGS__)\
 };\
-extern ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)();\
+ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)();\
 const ork::string& to_string(const ENUM);\
 const ork::bstring& to_bstring(const ENUM);\
 const ork::wstring& to_wstring(const ENUM);\
@@ -424,6 +424,13 @@ const ork::ORK_CAT(PRE, string)& ORK_CAT(to_, PRE, string)(const ENUM val) {\
 })
 
 
+#define ORK_STR_2_ENUM_(ENUM, PRE, ...) ORK_EVAL(\
+ENUM ORK_CAT(to_, ENUM)(const ork::ORK_CAT(PRE, string)& str) { \
+	ORK_STR_2_ENUM_LIST(ENUM, PRE, __VA_ARGS__) \
+	ORK_THROW(ORK("Invalid ") << ORK_STR(ENUM) << ORK(": ") << str);\
+})
+
+
 #define ORK_ENUM_DEF(ENUM, ...) \
 ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)() {\
 	static ORK_ENUM_SET_(ENUM, __VA_ARGS__) val = {{\
@@ -437,8 +444,9 @@ ORK_ENUM_2_STR_(ENUM, b, __VA_ARGS__) \
 ORK_ENUM_2_STR_(ENUM, w, __VA_ARGS__) \
 const ork::string& to_string(const grid_visibility_mode val) { \
 	return ORK_CAT(to_, ORK_STRING)(val); \
-}
-// TODO: The functions
+} \
+ORK_STR_2_ENUM_(ENUM, b, __VA_ARGS__)\
+ORK_STR_2_ENUM_(ENUM, w, __VA_ARGS__)
 
 
 }//namespace ork
