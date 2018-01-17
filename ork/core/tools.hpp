@@ -323,16 +323,16 @@ Begin enum section: defining enums with an iterable container and string convers
 	(PRE, __VA_ARGS__))
 
 
-#define ORK_COUNT_00(...) 0
-#define ORK_COUNT_01(A1, ...) 1
-#define ORK_COUNT_02(A1, A2, ...) 2
-#define ORK_COUNT_03(A1, A2, A3, ...) 3
-#define ORK_COUNT_04(A1, A2, A3, A4, ...) 4
-#define ORK_COUNT_05(A1, A2, A3, A4, A5, ...) 5
-#define ORK_COUNT_06(A1, A2, A3, A4, A5, A6, ...) 6
-#define ORK_COUNT_07(A1, A2, A3, A4, A5, A6, A7, ...) 7
-#define ORK_COUNT_08(A1, A2, A3, A4, A5, A6, A7, A8, ...) 8
-#define ORK_COUNT_09(A1, A2, A3, A4, A5, A6, A7, A8, A9, ...) 9
+#define ORK_COUNT_00() 0
+#define ORK_COUNT_01(A1) 1
+#define ORK_COUNT_02(A1, A2) 2
+#define ORK_COUNT_03(A1, A2, A3) 3
+#define ORK_COUNT_04(A1, A2, A3, A4) 4
+#define ORK_COUNT_05(A1, A2, A3, A4, A5) 5
+#define ORK_COUNT_06(A1, A2, A3, A4, A5, A6) 6
+#define ORK_COUNT_07(A1, A2, A3, A4, A5, A6, A7) 7
+#define ORK_COUNT_08(A1, A2, A3, A4, A5, A6, A7, A8) 8
+#define ORK_COUNT_09(A1, A2, A3, A4, A5, A6, A7, A8, A9) 9
 
 #define ORK_COUNT_ARGS(...) ORK_EVAL( \
 	ORK_GET_ARG_09_( \
