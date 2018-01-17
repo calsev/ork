@@ -251,11 +251,22 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_GET_ARG_09_(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, ...) A9
 
 
-#define ORK_CAT_(X,Y) X##Y
-#define ORK_CAT(X,Y) ORK_CAT_(X,Y)
-#define ORK_CAT3(X,Y,Z) ORK_CAT(X,ORK_CAT(Y,Z))
-#define ORK_CAT4(W,X,Y,Z) ORK_CAT(W,ORK_CAT3(X,Y,Z))
-#define ORK_CAT5(V,W,X,Y,Z) ORK_CAT(V,ORK_CAT4(W,X,Y,Z))
+#define ORK_CAT_00_()
+#define ORK_CAT_01_(A1) A1
+#define ORK_CAT_02_(A1, A2) A1##A2
+#define ORK_CAT_03_(A1, A2, A3) A1##A2##A3
+#define ORK_CAT_04_(A1, A2, A3, A4) A1##A2##A3##A4
+#define ORK_CAT_05_(A1, A2, A3, A4, A5) A1##A2##A3##A4##A5
+#define ORK_CAT_06_(A1, A2, A3, A4, A5, A6) A1##A2##A3##A4##A5##A6
+#define ORK_CAT_07_(A1, A2, A3, A4, A5, A6, A7) A1##A2##A3##A4##A5##A6##A7
+#define ORK_CAT_08_(A1, A2, A3, A4, A5, A6, A7, A8) A1##A2##A3##A4##A5##A6##A7##A8
+#define ORK_CAT_09_(A1, A2, A3, A4, A5, A6, A7, A8, A9) A1##A2##A3##A4##A5##A6##A7##A8##A9
+
+#define ORK_CAT(...) ORK_EVAL( \
+	ORK_GET_ARG_09_( \
+		__VA_ARGS__, ORK_CAT_09_, ORK_CAT_08_, ORK_CAT_07_, ORK_CAT_06_, ORK_CAT_05_, \
+		ORK_CAT_04_, ORK_CAT_03_, ORK_CAT_02_, ORK_CAT_01_, ORK_CAT_00_) \
+	(__VA_ARGS__))
 
 
 #define ORK_CALL_EACH_00(CALL)
@@ -270,7 +281,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_CALL_EACH_09(CALL, ARG, ...) THING(ARG) ORK_EVAL(ORK_CALL_EACH_08(THING, __VA_ARGS__))
 
 #define ORK_CALL_EACH(CALL, ...) ORK_EVAL( \
-	ORK_GET_ARG_9_( \
+	ORK_GET_ARG_09_( \
 		__VA_ARGS__, ORK_CALL_EACH_09, ORK_CALL_EACH_08, ORK_CALL_EACH_07, ORK_CALL_EACH_06, ORK_CALL_EACH_05, \
 		ORK_CALL_EACH_04, ORK_CALL_EACH_03, ORK_CALL_EACH_02, ORK_CALL_EACH_01, ORK_CALL_EACH_00) \
 	(THING, __VA_ARGS__))
