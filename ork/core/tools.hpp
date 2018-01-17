@@ -235,6 +235,10 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_EVAL(...) __VA_ARGS__
 
 
+#define ORK_STR_(X) #X
+#define ORK_STR(X) ORK_STR_(X)
+
+
 #define ORK_GET_ARG_00_(A0, ...) A0
 #define ORK_GET_ARG_01_(A0, A1, ...) A1
 #define ORK_GET_ARG_02_(A0, A1, A2, ...) A2
@@ -245,6 +249,13 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_GET_ARG_07_(A0, A1, A2, A3, A4, A5, A6, A7, ...) A7
 #define ORK_GET_ARG_08_(A0, A1, A2, A3, A4, A5, A6, A7, A8, ...) A8
 #define ORK_GET_ARG_09_(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, ...) A9
+
+
+#define ORK_CAT_(X,Y) X##Y
+#define ORK_CAT(X,Y) ORK_CAT_(X,Y)
+#define ORK_CAT3(X,Y,Z) ORK_CAT(X,ORK_CAT(Y,Z))
+#define ORK_CAT4(W,X,Y,Z) ORK_CAT(W,ORK_CAT3(X,Y,Z))
+#define ORK_CAT5(V,W,X,Y,Z) ORK_CAT(V,ORK_CAT4(W,X,Y,Z))
 
 
 #define ORK_CALL_EACH_00(CALL)
