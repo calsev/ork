@@ -4,9 +4,9 @@ sudo apt-get install -y g++
 sudo apt-get install -y ninja-build
 
 cd ../..
-REPO_ROOT=`pwd`
+export REPO_ROOT=`pwd`
 cd "$( dirname "${BASH_SOURCE[0]}" )"
-ORK_UNICODE='ON'
+export ORK_UNICODE='ON'
 
 if [ ! -d "$REPO_ROOT/ork_test" ]; then
   mkdir "$REPO_ROOT/ork_test"
