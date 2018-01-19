@@ -46,13 +46,12 @@ set_latest_language_versions()
 set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
 
 #Must be tested after project
-if(MSVC_VERSION)
-	if(${MSVC_VERSION} LESS 1800)
+get_compiler_name(COMPILER)
+if(${COMPILER} MATCHES "vc")
+	if(NOT COMPLILER MATCHES "vc1[2-9]")
 		message(FATAL_ERROR "Error: Only Visual Studio 2013 and above are supported")
 	endif()
-elseif(NOT CMAKE_C_COMPILER_ID)
-	message(FATAL_ERROR "Compiler not found")
-elseif(${CMAKE_C_COMPILER_ID} MATCHES GNU)
+elseif(${COMPILER} MATCHES "gcc|gxx")
 	# All recent versions of GCC are OK
 else()
 	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
