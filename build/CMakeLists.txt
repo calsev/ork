@@ -52,7 +52,7 @@ if(MSVC_VERSION)
 	endif()
 elseif(NOT CMAKE_C_COMPILER_ID)
 	message(FATAL_ERROR "Compiler not found")
-elseif(${CMAKE_C_COMPILER_ID} EQUAL GNU)
+elseif(${CMAKE_C_COMPILER_ID} MATCHES GNU)
 	# All recent versions of GCC are OK
 else()
 	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
