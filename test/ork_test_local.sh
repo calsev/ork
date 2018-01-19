@@ -1,4 +1,8 @@
 
+# Why not when it is so easy
+sudo apt-get install -y g++
+sudo apt-get install -y ninja-build
+
 cd ../..
 REPO_ROOT=`pwd`
 cd "$( dirname "${BASH_SOURCE[0]}" )"
@@ -15,7 +19,7 @@ if [ ! -d "$REPO_ROOT/ork_test/build" ]; then
 fi
 
 cd "$REPO_ROOT/ork_test/build"
-
+cmake -G 'CodeLite - Ninja' "$REPO_ROOT/ork/test"
 
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
