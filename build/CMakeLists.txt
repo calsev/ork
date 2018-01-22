@@ -148,6 +148,8 @@ set(3P_FT2_BUILD_DIR "${3P_BUILD_DIR}/ft2")
 set(3P_OCE_BUILD_DIR "${3P_BUILD_DIR}/oce")
 set(3P_OSG_BUILD_DIR "${3P_BUILD_DIR}/osg")
 
+set(3P_CLEANUP_BUILD_DIR "${3P_BUILD_DIR}/cleanup")
+
 
 set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 ##Level 0
@@ -171,6 +173,8 @@ set(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
 ##Level 3
 set(3P_OCE_BIN_DIR "${3P_BIN_DIR}/oce")
 set(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
+
+set(3P_CLEANUP_BIN_DIR "${3P_BIN_DIR}/cleanup")
 
 
 ##########
@@ -238,4 +242,4 @@ if(ORK_BUILD_OSG)
 	add_subdirectory("${3P_OSG_BUILD_DIR}" "${3P_OSG_BIN_DIR}")
 endif()
 
-add_subdirectory("./cleanup" "${3P_BIN_DIR}/cleanup")#Must be a subdirectory to guarantee order
+add_subdirectory("${3P_CLEANUP_BUILD_DIR}" "${3P_CLEANUP_BIN_DIR}")#Must be a subdirectory to guarantee order
