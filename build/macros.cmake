@@ -228,7 +228,7 @@ macro(ork_install_config)
 	else()
 		detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
 	endif()
-	set(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
+	set_as_internal(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
 
 	detect_option(ORK_INSTALL_BIN_SUFFIX "Subdirectory for installation of executables and shared libraries" bin)
 	detect_option(ORK_INSTALL_INC_SUFFIX "Subdirectory for installation of headers" inc)
@@ -547,9 +547,9 @@ macro(ork_post_project_config)
 	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELEASE)
 	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO)
 
-	set(CMAKE_SKIP_INSTALL_RPATH ON)
-	set(CMAKE_SKIP_RPATH ON)
-	set(CMAKE_VERBOSE_MAKEFILE OFF)
+	set_as_internal(CMAKE_SKIP_INSTALL_RPATH ON)
+	set_as_internal(CMAKE_SKIP_RPATH ON)
+	set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
 	
 	set(CMAKE_DEBUG_POSTFIX "d")
 	
