@@ -411,6 +411,7 @@ macro(set_advanced_warnings)
 		append_all_compiler_flag("/wd4201") #nameless struct/union (GLM)
 		append_all_compiler_flag("/wd4464") #relative include path contains '..' (GLM)
 		append_all_compiler_flag("/wd4514") #unreferenced inline function has been removed
+		append_all_compiler_flag("/wd4571") #catch(...) semantics changed
 		append_all_compiler_flag("/wd4710") #function not inlined (the entire std lib)
 		append_all_compiler_flag("/wd4820") #Padding added to type
 		
