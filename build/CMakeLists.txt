@@ -3,38 +3,9 @@
 #GUI mode is invoked to detect if any variables have been added in child projects.
 
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR) #Required for C++17
-set(CMAKE_SUPPRESS_REGENERATION ON) #Projects can be run on machines without CMake installed
 
 include("macros.cmake")
-
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_as_internal(ORK_USE_SOLUTION_FOLDERS ON)
-
-
-if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-  message(FATAL_ERROR "Prevented in-tree built. Call cmake from outside source tree.")
-endif()
-
-
-if(NOT ${CMAKE_SIZEOF_VOID_P} EQUAL 8)
-	message(FATAL_ERROR "Error: Only x64 targets are supported")
-endif()
-
-
-#Used for concatenating to avoid repeats
-if(NOT ORK_CMAKE_RAN_INTERNAL)
-	set(ORK_CMAKE_RUN_ONCE ON)
-else()
-	set(ORK_CMAKE_RUN_ONCE OFF)
-endif()
-set_as_internal(ORK_CMAKE_RAN_INTERNAL ON)
-
-
-#Must be set before PROJECT to hide
-set(CMAKE_CONFIGURATION_TYPES Debug Release)
-mark_as_internal(CMAKE_CONFIGURATION_TYPES)
-
-
+ork_pre_project_config()
 project(third_party)
 
 
