@@ -421,16 +421,19 @@ if(str == ORK_CAT(PRE, ARG)) {\
 
 #define ORK_ENUM_SET_(ENUM, ...) const std::array<ENUM, ORK_COUNT_ARGS(__VA_ARGS__)>
 
-#define ORK_ENUM_DECL(ENUM, ...)\
+#define ORK_ENUM_DECL_(API, ENUM, ...)\
 enum class ENUM {\
 	ORK_COMMA_LIST(ORK_EMPTY, __VA_ARGS__)\
 };\
-ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)();\
-const ork::string& to_string(const ENUM);\
-const ork::bstring& to_bstring(const ENUM);\
-const ork::wstring& to_wstring(const ENUM);\
-ENUM ORK_CAT(to_, ENUM)(const ork::bstring&);\
-ENUM ORK_CAT(to_, ENUM)(const ork::wstring&);
+API(ORK_ENUM_SET_(ENUM, __VA_ARGS__)&) ORK_CAT(ENUM, _set)();\
+API(const ork::string&) to_string(const ENUM);\
+API(const ork::bstring&) to_bstring(const ENUM);\
+API(const ork::wstring&) to_wstring(const ENUM);\
+API(ENUM) ORK_CAT(to_, ENUM)(const ork::bstring&);\
+API(ENUM) ORK_CAT(to_, ENUM)(const ork::wstring&);
+
+#define ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_EXT, ENUM, __VA_ARGS__)
+#define ORK_ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_ORK_EXT, ENUM, __VA_ARGS__)
 
 
 #define ORK_ENUM_2_STR_(ENUM, PRE, ...) ORK_EVAL( \
