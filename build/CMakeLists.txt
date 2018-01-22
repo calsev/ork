@@ -125,7 +125,7 @@ if(ORK_BUILD_BOOST)
 endif()
 
 
-set_as_internal(3P_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(3P_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 ##Level 0
 set(3P_BOOST_BUILD_DIR "${3P_BUILD_DIR}/boost")
 set(3P_BZ2_BUILD_DIR "${3P_BUILD_DIR}/bz2")
@@ -151,7 +151,7 @@ set(3P_OSG_BUILD_DIR "${3P_BUILD_DIR}/osg")
 set(3P_CLEANUP_BUILD_DIR "${3P_BUILD_DIR}/cleanup")
 
 
-set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+set(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 ##Level 0
 set(3P_BOOST_BIN_DIR "${3P_BIN_DIR}/boost")
 set(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
