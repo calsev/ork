@@ -128,29 +128,29 @@ endif()
 
 
 ##Level 0
-set_as_internal(3P_BOOST_BIN_DIR "${3P_BIN_DIR}/boost")
-set_as_internal(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
+set(3P_BOOST_BIN_DIR "${3P_BIN_DIR}/boost")
+set(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
 #Catch
-set_as_internal(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
-set_as_internal(3P_GLM_BIN_DIR "${3P_BIN_DIR}/glm")
+set(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
+set(3P_GLM_BIN_DIR "${3P_BIN_DIR}/glm")
 #harfbuzz
-set_as_internal(3P_JSON_BIN_DIR "${3P_BIN_DIR}/json")
-set_as_internal(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
-set_as_internal(3P_TBB_BIN_DIR "${3P_BIN_DIR}/tbb")
-set_as_internal(3P_YAML_BIN_DIR "${3P_BIN_DIR}/yaml")
-set_as_internal(3P_ZLIB_BIN_DIR "${3P_BIN_DIR}/zlib")
+set(3P_JSON_BIN_DIR "${3P_BIN_DIR}/json")
+set(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
+set(3P_TBB_BIN_DIR "${3P_BIN_DIR}/tbb")
+set(3P_YAML_BIN_DIR "${3P_BIN_DIR}/yaml")
+set(3P_ZLIB_BIN_DIR "${3P_BIN_DIR}/zlib")
 
 ##Level 1
-set_as_internal(3P_ORK_BIN_DIR "${3P_BIN_DIR}/ork")
-set_as_internal(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
+set(3P_ORK_BIN_DIR "${3P_BIN_DIR}/ork")
+set(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
 
 ##Level 2
-set_as_internal(3P_ORK_TEST_BIN_DIR "${3P_BIN_DIR}/ork_test")
-set_as_internal(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
+set(3P_ORK_TEST_BIN_DIR "${3P_BIN_DIR}/ork_test")
+set(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
 
 ##Level 3
-set_as_internal(3P_OCE_BIN_DIR "${3P_BIN_DIR}/oce")
-set_as_internal(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
+set(3P_OCE_BIN_DIR "${3P_BIN_DIR}/oce")
+set(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
 
 
 ##########
