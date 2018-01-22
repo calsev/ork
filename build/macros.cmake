@@ -439,7 +439,8 @@ macro(ork_language_config)
 		message(FATAL_ERROR "Error: Only MSVC and GCC supported")
 	endif()
 
-
+	#explicit enable is required to avoid errors
+	enable_language(CXX)
 	mark_as_internal(CMAKE_CXX_FLAGS)
 	mark_as_internal(CMAKE_CXX_FLAGS_DEBUG)
 	mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
@@ -448,6 +449,7 @@ macro(ork_language_config)
 
 	mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
 
+	enable_language(C)
 	mark_as_internal(CMAKE_C_FLAGS)
 	mark_as_internal(CMAKE_C_FLAGS_DEBUG)
 	mark_as_internal(CMAKE_C_FLAGS_MINSIZEREL)
@@ -455,7 +457,14 @@ macro(ork_language_config)
 	mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 
 	mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
-
+	
+	enable_language(ASM_MASM)
+	mark_as_internal(CMAKE_ASM_MASM_COMPILER)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_DEBUG)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_MINSIZEREL)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELEASE)
+	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO)
 
 	append_debug_flag("-D_DEBUG -DDEBUG")
 	append_release_flag("-D_NDEBUG -DNDEBUG")
@@ -463,11 +472,9 @@ macro(ork_language_config)
 	replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "")
 	replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "")
 
-
 	#Fast behavior is bad for CAD kernels
 	detect_option_flag(ORK_FAST_FLOAT "Use fast floating point operations (Do not use in CAD applications)" OFF)
 	enable_fast_floating_point(ORK_FAST_FLOAT)
-
 
 	mark_as_internal(CMAKE_RC_COMPILER)
 	mark_as_internal(CMAKE_RC_FLAGS)
@@ -509,7 +516,6 @@ macro(ork_language_config)
 	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL)
 	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELEASE)
 	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO)
-
 
 	set(CMAKE_SKIP_INSTALL_RPATH ON)
 	set(CMAKE_SKIP_RPATH ON)

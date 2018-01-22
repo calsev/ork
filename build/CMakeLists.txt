@@ -72,20 +72,6 @@ endif()
 
 
 ##########
-#Assembly requires explicit enable
-##########
-if(ORK_BUILD_TBB)
-	enable_language(ASM_MASM)
-	mark_as_internal(CMAKE_ASM_MASM_COMPILER)
-	mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
-	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_DEBUG)
-	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_MINSIZEREL)
-	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELEASE)
-	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO)
-endif()
-
-
-##########
 #Paths Section
 ##########
 
