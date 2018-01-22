@@ -38,6 +38,8 @@ detect_option_flag(ORK_BUILD_ZLIB "Enable building zlib" OFF)
 ##Level 1
 detect_option_flag(ORK_BUILD_ORK "Enable building ork" OFF)
 detect_option_flag(ORK_BUILD_PNG "Enable building libpng" OFF)
+detect_option_flag(ORK_BUILD_TBB_MALLOC "Build TBB malloc library" OFF)
+detect_option_flag(ORK_BUILD_TBB_MALLOC_PROXY "Build TBB malloc proxy library" OFF)
 
 ##Level 2
 detect_option_flag(ORK_BUILD_FT2 "Enable building freetype" OFF)
@@ -45,11 +47,6 @@ detect_option_flag(ORK_BUILD_FT2 "Enable building freetype" OFF)
 ##Level 3
 detect_option_flag(ORK_BUILD_OCE "Enable building OpenCascade" OFF)
 detect_option_flag(ORK_BUILD_OSG "Enable building OpenSceneGraph" OFF)
-
-if(ORK_BUILD_TBB)
-	detect_option_flag(ORK_BUILD_TBB_MALLOC "Build TBB malloc library" ON)
-	detect_option_flag(ORK_BUILD_TBB_MALLOC_PROXY "Build TBB malloc proxy library" ON)
-endif()
 
 
 ##########
@@ -191,6 +188,16 @@ if(ORK_BUILD_PNG)
 		message(FATAL_ERROR "libpng requires zlib but zlib is not configured to build")
 	endif()
 	add_subdirectory("${3P_PNG_BUILD_DIR}" "${3P_PNG_BIN_DIR}")
+endif()
+if(ORK_BUILD_TBB_MALLOC)
+	if(NOT ORK_BUILD_TBB)
+		message(FATAL_ERROR "TBB Malloc requires TBB but TBB is not configured to build")
+	endif()
+endif()
+if(ORK_BUILD_TBB_MALLOC_PROXY)
+	if(NOT ORK_BUILD_TBB)
+		message(FATAL_ERROR "TBB Malloc Proxy requires TBB but TBB is not configured to build")
+	endif()
 endif()
 
 ##Level 2
