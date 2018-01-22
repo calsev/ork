@@ -460,7 +460,7 @@ macro(ork_post_project_config)
 	#Must be tested after project
 	get_compiler_name(COMPILER)
 	if(${COMPILER} MATCHES "vc")
-		if(NOT COMPLILER MATCHES "vc1[2-9]")
+		if(NOT ${COMPLILER} MATCHES "vc1[2-9]")
 			message(FATAL_ERROR "Error: Only Visual Studio 2013 and above are supported")
 		endif()
 	elseif(${COMPILER} MATCHES "gcc|gxx")
