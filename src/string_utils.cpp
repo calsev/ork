@@ -171,6 +171,12 @@ TYPE ORK_CAT(to_, TYPE)(const bstring& val) {\
 }\
 TYPE ORK_CAT(to_, TYPE)(const wstring& val) {\
 	return SW(val);\
+}\
+template<> TYPE from_string<TYPE>(const bstring&str) {\
+	return ORK_CAT(to_, TYPE)(str);\
+}\
+template<> TYPE from_string<TYPE>(const wstring&str) {\
+	return ORK_CAT(to_, TYPE)(str);\
 }
 
 //We could provide wcsto versions for pointers
@@ -189,6 +195,12 @@ bstring to_bstring(const bstring& val) {
 wstring to_wstring(const bstring& val) {
 	return ork::g_string_converter().byte2wide(val);
 }
+template<> bstring from_string<bstring>(const bstring&str) {
+	return str;
+}
+template<> bstring from_string<bstring>(const wstring&str) {
+	return g_string_converter().wide2byte(str);
+}
 
 string to_string(const wstring& val) {
 	return ORK_WIDE_2_STR(val);
@@ -198,6 +210,12 @@ bstring to_bstring(const wstring& val) {
 }
 wstring to_wstring(const wstring& val) {
 	return val;
+}
+template<> wstring from_string<wstring>(const bstring&str) {
+	return ork::g_string_converter().byte2wide(str);
+}
+template<> wstring from_string<wstring>(const wstring&str) {
+	return str;
 }
 
 

@@ -36,12 +36,8 @@ ORK_ORK_EXT(bstring) to_bstring(const ORK_STRING_CONV_ARG(TYPE));\
 ORK_ORK_EXT(wstring) to_wstring(const ORK_STRING_CONV_ARG(TYPE));\
 ORK_ORK_EXT(TYPE) ORK_CAT(to_, TYPE)(const bstring&);\
 ORK_ORK_EXT(TYPE) ORK_CAT(to_, TYPE)(const wstring&);\
-template<> ORK_INLINE TYPE from_string<TYPE>(const bstring&str) {\
-	return ORK_CAT(to_, TYPE)(str);\
-}\
-template<> ORK_INLINE TYPE from_string<TYPE>(const wstring&str) {\
-	return ORK_CAT(to_, TYPE)(str);\
-}
+template<> ORK_ORK_EXT(TYPE) from_string<TYPE>(const bstring&str);\
+template<> ORK_ORK_EXT(TYPE) from_string<TYPE>(const wstring&str);
 
 //Conversions are being instantiated lazily
 ORK_STRING_CONVERSION(bool);
