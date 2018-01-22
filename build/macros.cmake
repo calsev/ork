@@ -53,6 +53,9 @@ macro(mark_empty_internal _var)
 	set(${_var} "" CACHE INTERNAL "" FORCE)
 endmacro()
 
+####################
+#Global section
+####################
 
 macro(ork_pre_project_config)
 	set(CMAKE_SUPPRESS_REGENERATION OFF) #Projects can be run on machines without CMake installed
@@ -83,7 +86,6 @@ macro(ork_pre_project_config)
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
 	mark_as_internal(CMAKE_CONFIGURATION_TYPES)
 endmacro()
-
 
 ####################
 #Option section
@@ -415,6 +417,103 @@ macro(enable_synchronous_exceptions)
 endmacro()
 macro(enable_only_cxx_exceptions)
 	replace_or_append_all_flag_compilers(${EH_STRINGS} "IMPOSSIBLE" "/EHsc" "")
+endmacro()
+
+####################
+#Language section
+####################
+
+macro(ork_language_config)
+	set_latest_language_versions()
+	set(CMAKE_CXX_EXTENSIONS OFF)
+
+	#Must be tested after project
+	get_compiler_name(COMPILER)
+	if(${COMPILER} MATCHES "vc")
+		if(NOT COMPLILER MATCHES "vc1[2-9]")
+			message(FATAL_ERROR "Error: Only Visual Studio 2013 and above are supported")
+		endif()
+	elseif(${COMPILER} MATCHES "gcc|gxx")
+		# All recent versions of GCC are OK
+	else()
+		message(FATAL_ERROR "Error: Only MSVC and GCC supported")
+	endif()
+
+
+	mark_as_internal(CMAKE_CXX_FLAGS)
+	mark_as_internal(CMAKE_CXX_FLAGS_DEBUG)
+	mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
+	mark_as_internal(CMAKE_CXX_FLAGS_RELEASE)
+	mark_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+
+	mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
+
+	mark_as_internal(CMAKE_C_FLAGS)
+	mark_as_internal(CMAKE_C_FLAGS_DEBUG)
+	mark_as_internal(CMAKE_C_FLAGS_MINSIZEREL)
+	mark_as_internal(CMAKE_C_FLAGS_RELEASE)
+	mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
+
+	mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
+
+
+	append_debug_flag("-D_DEBUG -DDEBUG")
+	append_release_flag("-D_NDEBUG -DNDEBUG")
+	replace_or_append_release_flag_compilers("/O([0-4]|x)" "-O[0-3]" "/Ox" "-O3")
+	replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "")
+	replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "")
+
+
+	#Fast behavior is bad for CAD kernels
+	detect_option_flag(ORK_FAST_FLOAT "Use fast floating point operations (Do not use in CAD applications)" OFF)
+	enable_fast_floating_point(ORK_FAST_FLOAT)
+
+
+	mark_as_internal(CMAKE_RC_COMPILER)
+	mark_as_internal(CMAKE_RC_FLAGS)
+	if(CMAKE_RC_FLAGS_DEBUG)#Not always defined
+		mark_as_internal(CMAKE_RC_FLAGS_DEBUG)
+	else()
+		mark_empty_internal(CMAKE_RC_FLAGS_DEBUG)
+	endif()
+	mark_empty_internal(CMAKE_RC_FLAGS_MINSIZEREL)
+	mark_empty_internal(CMAKE_RC_FLAGS_RELEASE)
+	mark_empty_internal(CMAKE_RC_FLAGS_RELWITHDEBINFO)
+
+
+	mark_as_internal(CMAKE_LINKER)
+
+	mark_as_internal(CMAKE_EXE_LINKER_FLAGS)
+	mark_as_internal(CMAKE_EXE_LINKER_FLAGS_DEBUG)
+	mark_as_internal(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL)
+	ensure_non_empty(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
+	set_as_internal(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
+	mark_as_internal(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
+
+	mark_as_internal(CMAKE_MODULE_LINKER_FLAGS)
+	mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_DEBUG)
+	mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL)
+	ensure_non_empty(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
+	set_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO}")
+	mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
+
+	mark_as_internal(CMAKE_SHARED_LINKER_FLAGS)
+	mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_DEBUG)
+	mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL)
+	ensure_non_empty(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
+	set_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO}")
+	mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
+
+	mark_as_internal(CMAKE_STATIC_LINKER_FLAGS)
+	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_DEBUG)
+	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL)
+	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELEASE)
+	mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO)
+
+
+	set(CMAKE_SKIP_INSTALL_RPATH ON)
+	set(CMAKE_SKIP_RPATH ON)
+	set(CMAKE_VERBOSE_MAKEFILE OFF)
 endmacro()
 
 ####################

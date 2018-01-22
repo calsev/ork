@@ -5,111 +5,12 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR) #Required for C++17
 
 include("macros.cmake")
-ork_pre_project_config()
 project(third_party)
-
-
-##########
-#Language Section
-##########
-
-set_latest_language_versions()
-set_as_internal(CMAKE_CXX_EXTENSIONS OFF)
-
-#Must be tested after project
-get_compiler_name(COMPILER)
-if(${COMPILER} MATCHES "vc")
-	if(NOT COMPLILER MATCHES "vc1[2-9]")
-		message(FATAL_ERROR "Error: Only Visual Studio 2013 and above are supported")
-	endif()
-elseif(${COMPILER} MATCHES "gcc|gxx")
-	# All recent versions of GCC are OK
-else()
-	message(FATAL_ERROR "Error: Only MSVC and GCC supported")
-endif()
-
-
-mark_as_internal(CMAKE_CXX_FLAGS)
-mark_as_internal(CMAKE_CXX_FLAGS_DEBUG)
-mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
-mark_as_internal(CMAKE_CXX_FLAGS_RELEASE)
-mark_as_internal(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
-
-mark_as_internal(CMAKE_C_FLAGS)
-mark_as_internal(CMAKE_C_FLAGS_DEBUG)
-mark_as_internal(CMAKE_C_FLAGS_MINSIZEREL)
-mark_as_internal(CMAKE_C_FLAGS_RELEASE)
-mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
-
-
-append_debug_flag("-D_DEBUG -DDEBUG")
-append_release_flag("-D_NDEBUG -DNDEBUG")
-replace_or_append_release_flag_compilers("/O([0-4]|x)" "-O[0-3]" "/Ox" "-O3")
-replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "")
-replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "")
-
-
-#Fast behavior is bad for CAD kernels
-detect_option_flag(ORK_FAST_FLOAT "Use fast floating point operations (Do not use in CAD applications)" OFF)
-enable_fast_floating_point(ORK_FAST_FLOAT)
-
-
-mark_as_internal(CMAKE_RC_COMPILER)
-mark_as_internal(CMAKE_RC_FLAGS)
-if(CMAKE_RC_FLAGS_DEBUG)#Not always defined
-	mark_as_internal(CMAKE_RC_FLAGS_DEBUG)
-else()
-	mark_empty_internal(CMAKE_RC_FLAGS_DEBUG)
-endif()
-mark_empty_internal(CMAKE_RC_FLAGS_MINSIZEREL)
-mark_empty_internal(CMAKE_RC_FLAGS_RELEASE)
-mark_empty_internal(CMAKE_RC_FLAGS_RELWITHDEBINFO)
-
-
-mark_as_internal(CMAKE_LINKER)
-
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS)
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS_DEBUG)
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL)
-ensure_non_empty(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
-set_as_internal(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
-mark_as_internal(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS)
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_DEBUG)
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL)
-ensure_non_empty(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
-set_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO}")
-mark_as_internal(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS)
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_DEBUG)
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL)
-ensure_non_empty(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
-set_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO}")
-mark_as_internal(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO)
-
-mark_as_internal(CMAKE_STATIC_LINKER_FLAGS)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_DEBUG)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELEASE)
-mark_empty_internal(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO)
-
-
-set_as_internal(CMAKE_SKIP_INSTALL_RPATH ON)
-set_as_internal(CMAKE_SKIP_RPATH ON)
-set_as_internal(CMAKE_VERBOSE_MAKEFILE OFF)
 
 
 ##########
 #Options Section
 ##########
-
-set_as_internal(CMAKE_DEBUG_POSTFIX "d")
 
 if(DEFINED ORK_INSTALL_PREFIX AND ORK_INSTALL_PREFIX) #We set this previously
 	file(TO_CMAKE_PATH "${ORK_INSTALL_PREFIX}" ORK_INSTALL_PREFIX)
@@ -129,11 +30,11 @@ set_as_internal(ORK_INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_LIB_SUF
 
 
 #Build output, not that it is usually used without installing
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
 
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
 
 
 ##Level 0
