@@ -114,8 +114,6 @@ find_3p_path(ORK_BUILD_OCE 3P_OCE_SRC_DIR "oce" "occt")
 find_3p_path(ORK_BUILD_OSG 3P_OSG_SRC_DIR "osg" "openscenegraph")
 
 
-set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-
 if(ORK_BUILD_BOOST)
 	# If CMake supported target_link_directories then interface libraries would be a snap
 	# As is stands, every target that uses boost must use link_directories to add this path
@@ -127,6 +125,31 @@ if(ORK_BUILD_BOOST)
 endif()
 
 
+set_as_internal(3P_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+##Level 0
+set(3P_BOOST_BUILD_DIR "${3P_BUILD_DIR}/boost")
+set(3P_BZ2_BUILD_DIR "${3P_BUILD_DIR}/bz2")
+#Catch
+set(3P_JPEG_BUILD_DIR "${3P_BUILD_DIR}/jpeg")
+set(3P_GLM_BUILD_DIR "${3P_BUILD_DIR}/glm")
+#harfbuzz
+set(3P_JSON_BUILD_DIR "${3P_BUILD_DIR}/json")
+set(3P_PUGI_BUILD_DIR "${3P_BUILD_DIR}/pugi")
+set(3P_TBB_BUILD_DIR "${3P_BUILD_DIR}/tbb")
+set(3P_YAML_BUILD_DIR "${3P_BUILD_DIR}/yaml")
+set(3P_ZLIB_BUILD_DIR "${3P_BUILD_DIR}/zlib")
+##Level 1
+set(3P_ORK_BUILD_DIR "${3P_BUILD_DIR}/ork")
+set(3P_PNG_BUILD_DIR "${3P_BUILD_DIR}/png")
+##Level 2
+set(3P_ORK_TEST_BUILD_DIR "${3P_BUILD_DIR}/ork_test")
+set(3P_FT2_BUILD_DIR "${3P_BUILD_DIR}/ft2")
+##Level 3
+set(3P_OCE_BUILD_DIR "${3P_BUILD_DIR}/oce")
+set(3P_OSG_BUILD_DIR "${3P_BUILD_DIR}/osg")
+
+
+set_as_internal(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 ##Level 0
 set(3P_BOOST_BIN_DIR "${3P_BIN_DIR}/boost")
 set(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
@@ -139,15 +162,12 @@ set(3P_PUGI_BIN_DIR "${3P_BIN_DIR}/pugi")
 set(3P_TBB_BIN_DIR "${3P_BIN_DIR}/tbb")
 set(3P_YAML_BIN_DIR "${3P_BIN_DIR}/yaml")
 set(3P_ZLIB_BIN_DIR "${3P_BIN_DIR}/zlib")
-
 ##Level 1
 set(3P_ORK_BIN_DIR "${3P_BIN_DIR}/ork")
 set(3P_PNG_BIN_DIR "${3P_BIN_DIR}/png")
-
 ##Level 2
 set(3P_ORK_TEST_BIN_DIR "${3P_BIN_DIR}/ork_test")
 set(3P_FT2_BIN_DIR "${3P_BIN_DIR}/ft2")
-
 ##Level 3
 set(3P_OCE_BIN_DIR "${3P_BIN_DIR}/oce")
 set(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
@@ -160,45 +180,45 @@ set(3P_OSG_BIN_DIR "${3P_BIN_DIR}/osg")
 ##Level 0
 
 if(ORK_BUILD_BOOST)
-	add_subdirectory("./boost" "${3P_BOOST_BIN_DIR}")
+	add_subdirectory("${3P_BOOST_BUILD_DIR}" "${3P_BOOST_BIN_DIR}")
 endif()
 if(ORK_BUILD_BZ2)
-	add_subdirectory("./bz2" "${3P_BZ2_BIN_DIR}")
+	add_subdirectory("${3P_BZ2_BUILD_DIR}" "${3P_BZ2_BIN_DIR}")
 endif()
 #Catch nothing to build
 if(ORK_BUILD_JPEG)
-	add_subdirectory("./jpeg" "${3P_JPEG_BIN_DIR}")
+	add_subdirectory("${3P_JPEG_BUILD_DIR}" "${3P_JPEG_BIN_DIR}")
 endif()
 if(ORK_BUILD_GLM)
-	add_subdirectory("./glm" "${3P_GLM_BIN_DIR}")
+	add_subdirectory("${3P_GLM_BUILD_DIR}" "${3P_GLM_BIN_DIR}")
 endif()
 #Harfbuzz under construction
 if(ORK_BUILD_JSON)
-	add_subdirectory("./json" "${3P_JSON_BIN_DIR}")
+	add_subdirectory("${3P_JSON_BUILD_DIR}" "${3P_JSON_BIN_DIR}")
 endif()
 if(ORK_BUILD_PUGI)
-	add_subdirectory("./pugi" "${3P_PUGI_BIN_DIR}")
+	add_subdirectory("${3P_PUGI_BUILD_DIR}" "${3P_PUGI_BIN_DIR}")
 endif()
 if(ORK_BUILD_TBB)
-	add_subdirectory("./tbb" "${3P_TBB_BIN_DIR}")
+	add_subdirectory("${3P_TBB_BUILD_DIR}" "${3P_TBB_BIN_DIR}")
 endif()
 if(ORK_BUILD_YAML)
-	add_subdirectory("./yaml" "${3P_YAML_BIN_DIR}")
+	add_subdirectory("${3P_YAML_BUILD_DIR}" "${3P_YAML_BIN_DIR}")
 endif()
 if(ORK_BUILD_ZLIB)
-	add_subdirectory("./zlib" "${3P_ZLIB_BIN_DIR}")
+	add_subdirectory("${3P_ZLIB_BUILD_DIR}" "${3P_ZLIB_BIN_DIR}")
 endif()
 
 ##Level 1
 
 if(ORK_BUILD_ORK)
-	add_subdirectory("./ork" "${3P_ORK_BIN_DIR}")
+	add_subdirectory("${3P_ORK_BUILD_DIR}" "${3P_ORK_BIN_DIR}")
 endif()
 if(ORK_BUILD_PNG)
 	if(NOT ORK_BUILD_ZLIB)
 		message(FATAL_ERROR "libpng requires zlib but zlib is not configured to build")
 	endif()
-	add_subdirectory("./png" "${3P_PNG_BIN_DIR}")
+	add_subdirectory("${3P_PNG_BUILD_DIR}" "${3P_PNG_BIN_DIR}")
 endif()
 
 ##Level 2
@@ -207,15 +227,15 @@ if(ORK_BUILD_FT2)
 	if(NOT ORK_BUILD_PNG)
 		message(FATAL_ERROR "freetype requires libpng but libpng is not configured to build")
 	endif()
-	add_subdirectory("./ft2" "${3P_FT2_BIN_DIR}")
+	add_subdirectory("${3P_FT2_BUILD_DIR}" "${3P_FT2_BIN_DIR}")
 endif()
 
 ##Level 3
 if(ORK_BUILD_OCE)
-	add_subdirectory("./oce" "${3P_OCE_BIN_DIR}")
+	add_subdirectory("${3P_OCE_BUILD_DIR}" "${3P_OCE_BIN_DIR}")
 endif()
 if(ORK_BUILD_OSG)
-	add_subdirectory("./osg" "${3P_OSG_BIN_DIR}")
+	add_subdirectory("${3P_OSG_BUILD_DIR}" "${3P_OSG_BIN_DIR}")
 endif()
 
 add_subdirectory("./cleanup" "${3P_BIN_DIR}/cleanup")#Must be a subdirectory to guarantee order
