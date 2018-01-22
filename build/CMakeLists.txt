@@ -61,10 +61,6 @@ detect_option_flag(ORK_BUILD_FT2 "Enable building freetype" OFF)
 detect_option_flag(ORK_BUILD_OCE "Enable building OpenCascade" OFF)
 detect_option_flag(ORK_BUILD_OSG "Enable building OpenSceneGraph" OFF)
 
-
-detect_option_path(ORK_3P_SOURCE_DIR "Path of third-party directory (location of submodules)" "${CMAKE_CURRENT_SOURCE_DIR}/../..")
-
-
 if(ORK_BUILD_TBB)
 	detect_option_flag(ORK_BUILD_TBB_MALLOC "Build TBB malloc library" ON)
 	detect_option_flag(ORK_BUILD_TBB_MALLOC_PROXY "Build TBB malloc proxy library" ON)
@@ -74,6 +70,7 @@ endif()
 ##########
 #Paths Section
 ##########
+detect_option_path(ORK_3P_SOURCE_DIR "Path of third-party directory (location of submodules)" "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 
 ##Level 0
 find_3p_path(ORK_BUILD_BOOST 3P_BOOST_SRC_DIR "boost" "boost")
