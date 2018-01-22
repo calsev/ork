@@ -12,31 +12,6 @@ project(third_party)
 #Options Section
 ##########
 
-if(DEFINED ORK_INSTALL_PREFIX AND ORK_INSTALL_PREFIX) #We set this previously
-	file(TO_CMAKE_PATH "${ORK_INSTALL_PREFIX}" ORK_INSTALL_PREFIX)
-elseif(DEFINED CMAKE_INSTALL_PREFIX AND CMAKE_INSTALL_PREFIX)
-	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_INSTALL_PREFIX}")
-else()
-	detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
-endif()
-set(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
-
-detect_option(ORK_INSTALL_BIN_SUFFIX "Subdirectory for installation of executables and shared libraries" bin)
-detect_option(ORK_INSTALL_INC_SUFFIX "Subdirectory for installation of headers" inc)
-detect_option(ORK_INSTALL_LIB_SUFFIX "Subdirectory for installation of static libraries and archives" lib)
-set(ORK_INSTALL_BIN_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_BIN_SUFFIX}")
-set(ORK_INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_INC_SUFFIX}")
-set(ORK_INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_LIB_SUFFIX}")
-
-
-#Build output, not that it is usually used without installing
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
-
-
 ##Level 0
 detect_option_flag(ORK_BUILD_BOOST "Enable building boost interface" OFF)
 detect_option_flag(ORK_BUILD_BZ2 "Enable building bzip" OFF)
@@ -218,6 +193,7 @@ if(ORK_BUILD_FT2)
 endif()
 
 ##Level 3
+
 if(ORK_BUILD_OCE)
 	add_subdirectory("${3P_OCE_BUILD_DIR}" "${3P_OCE_BIN_DIR}")
 endif()

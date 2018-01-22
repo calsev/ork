@@ -218,6 +218,32 @@ macro(install_file_or_directory _file_or_dir _dest)
 	endif()
 endmacro()
 
+macro(ork_install_config)
+	if(DEFINED ORK_INSTALL_PREFIX AND ORK_INSTALL_PREFIX) #We set this previously
+		file(TO_CMAKE_PATH "${ORK_INSTALL_PREFIX}" ORK_INSTALL_PREFIX)
+	elseif(DEFINED CMAKE_INSTALL_PREFIX AND CMAKE_INSTALL_PREFIX)
+		detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_INSTALL_PREFIX}")
+	else()
+		detect_option_path(ORK_INSTALL_PREFIX "Path of install directory" "${CMAKE_SOURCE_DIR}/../bin")
+	endif()
+	set(CMAKE_INSTALL_PREFIX "${ORK_INSTALL_PREFIX}")
+
+	detect_option(ORK_INSTALL_BIN_SUFFIX "Subdirectory for installation of executables and shared libraries" bin)
+	detect_option(ORK_INSTALL_INC_SUFFIX "Subdirectory for installation of headers" inc)
+	detect_option(ORK_INSTALL_LIB_SUFFIX "Subdirectory for installation of static libraries and archives" lib)
+	set(ORK_INSTALL_BIN_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_BIN_SUFFIX}")
+	set(ORK_INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_INC_SUFFIX}")
+	set(ORK_INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_LIB_SUFFIX}")
+
+
+	#Build output, not that it is usually used without installing
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
+
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
+endmacro()
+
 ####################
 #Compiler section
 ####################
