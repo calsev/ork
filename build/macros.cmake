@@ -85,6 +85,8 @@ macro(ork_pre_project_config)
 	#Must be set before PROJECT to hide
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
 	mark_as_internal(CMAKE_CONFIGURATION_TYPES)
+	
+	set(ORK_PRE_PROJECT_CONFIGURED ON)
 endmacro()
 
 ####################
@@ -242,6 +244,8 @@ macro(ork_install_config)
 
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
+	
+	set(ORK_INSTALL_CONFIGURED ON)
 endmacro()
 
 ####################
@@ -449,7 +453,7 @@ endmacro()
 #Language section
 ####################
 
-macro(ork_language_config)
+macro(ork_post_project_config)
 	set_latest_language_versions()
 	set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -548,6 +552,8 @@ macro(ork_language_config)
 	set(CMAKE_VERBOSE_MAKEFILE OFF)
 	
 	set(CMAKE_DEBUG_POSTFIX "d")
+	
+	set(ORK_POST_PROJECT_CONFIGURED ON)
 endmacro()
 
 ####################

@@ -5,6 +5,16 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR) #Required for C++17
 
 include("macros.cmake")
+
+if(NOT ORK_PRE_PROJECT_CONFIGURED)
+	message(FATAL_ERROR "Must run pre-project configure macro before the top-level project is defined")
+endif()
+if(NOT ORK_POST_PROJECT_CONFIGURED)
+	message(FATAL_ERROR "Must run post-project configure macro after the top-level project is defined")
+endif()
+if(NOT ORK_INSTALL_CONFIGURED)
+	message(FATAL_ERROR "Must run install configure macro after all install directories are defined")
+endif()
 project(third_party)
 
 
