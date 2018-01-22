@@ -60,7 +60,7 @@ endmacro()
 macro(ork_pre_project_config)
 	set(CMAKE_SUPPRESS_REGENERATION OFF) #Projects can be run on machines without CMake installed
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-	set_as_internal(ORK_USE_SOLUTION_FOLDERS ON)
+	set(ORK_USE_SOLUTION_FOLDERS ON)
 
 
 	if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -113,9 +113,9 @@ endmacro()
 
 macro(detect_path _var _val1 _val2)
 	if(EXISTS "${_val1}")
-		set_as_internal(${_var} "${_val1}")
+		set(${_var} "${_val1}")
 	elseif(EXISTS "${_val2}")
-		set_as_internal(${_var} "${_val2}")
+		set(${_var} "${_val2}")
 	else()
 		message(FATAL_ERROR "Cannot find path ${_val1} or ${_val2}")
 	endif()
@@ -340,8 +340,8 @@ macro(replace_or_append_debug_flag_compilers _vc_regex_str _gcc_regex_str _vc_fl
 endmacro()
 
 macro(set_latest_language_versions)
-	set_as_internal(CMAKE_CXX_STANDARD 17)
-	set_as_internal(CMAKE_CXX_STANDARD_REQUIRED ON)
+	set(CMAKE_CXX_STANDARD 17)
+	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endmacro()
 
 macro(enable_fast_floating_point _enable)
@@ -514,6 +514,8 @@ macro(ork_language_config)
 	set(CMAKE_SKIP_INSTALL_RPATH ON)
 	set(CMAKE_SKIP_RPATH ON)
 	set(CMAKE_VERBOSE_MAKEFILE OFF)
+	
+	set(CMAKE_DEBUG_POSTFIX "d")
 endmacro()
 
 ####################
