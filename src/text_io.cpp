@@ -77,6 +77,44 @@ void load_and_parse(i_stream&fin, pugi::xml_document&xml) {
 		ORK_LOG(ork::severity_level::trace) << ORK("XML parse success");
 	}
 }
+void load_and_parse_permissive(const ork::file::path& path_to_file, const ork::bstring&root_tag, ork::xml::serializable& obj) {
+	if(!ork::ext_file::is_regular_file(path_to_file)) {
+		ORK_LOG(ork::severity_level::error) << ORK("Could not find XML file: ") << path_to_file.ORK_GEN_STR();
+	}
+	else {
+		ORK_LOG(ork::severity_level::trace) << ORK("Loading XML file: ") << path_to_file.ORK_GEN_STR();
+
+		pugi::xml_document doc{};
+		try {
+			ORK_FILE_READ(path_to_file);
+			ork::xml::load_and_parse(fin, doc);
+		}
+		catch(ork::exception&e) {
+			ORK_LOG(ork::severity_level::error) << ORK("Exception loading XML file: ") << e.what();
+		}
+		catch(...) {
+			ORK_LOG(ork::severity_level::error) << ORK("Something happened while loading XML file");
+		}
+
+		ORK_LOG(ork::severity_level::trace) << ORK("Parsing XML");
+		auto root_node{doc.child(root_tag.c_str())};
+		if(!root_node) {
+			ORK_LOG(ork::severity_level::error) << ORK("Root node not found: ") << ORK_BYTE_2_STR(root_tag);
+		}
+		else {
+			ORK_LOG(ork::severity_level::trace) << ORK("Parsing XML object");
+			try {
+				obj.from_xml(root_node);
+			}
+			catch(ork::exception&e) {
+				ORK_LOG(ork::severity_level::error) << ORK("Exception parsing XML file: ") << e.what();
+			}
+			catch(...) {
+				ORK_LOG(ork::severity_level::error) << ORK("Something happened while parsing XML file");
+			}
+		}
+	}
+}
 
 
 #endif//ORK_USE_PUGI

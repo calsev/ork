@@ -89,6 +89,7 @@ public:
 
 ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object, const string&root_node_name);
 ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&root);//Just create a file with error checking
+ORK_ORK_EXT(void) load_and_parse_permissive(const ork::file::path& path_to_file, const ork::bstring&root_tag, ork::xml::serializable& obj);
 
 
 #endif//ORK_USE_PUGI
