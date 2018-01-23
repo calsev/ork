@@ -39,9 +39,18 @@ namespace json {
 
 class ORK_ORK_API exportable {
 public:
-	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+	virtual ~exportable() {}
 public:
 	virtual void export_json(Json::Value& v) const = 0;
+};
+
+
+class ORK_ORK_API serializable {
+public:
+	virtual ~serializable() {}
+public:
+	virtual void to_json(Json::Value& v) const = 0;
+	virtual void from_json(const Json::Value& v) = 0;
 };
 
 
@@ -63,9 +72,18 @@ namespace xml {
 
 class ORK_ORK_API exportable {
 public:
-	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+	virtual ~exportable() {}
 public:
 	virtual void export_xml(pugi::xml_node &n) const = 0;
+};
+
+
+class ORK_ORK_API serializable {
+public:
+	virtual ~serializable() {}
+public:
+	virtual void to_xml(pugi::xml_node& v) const = 0;
+	virtual void from_xml(const pugi::xml_node& v) = 0;
 };
 
 
@@ -85,9 +103,18 @@ namespace yaml {
 
 class ORK_ORK_API exportable {
 public:
-	virtual ~exportable() {}//To support polymorphic hierarchies of nodes
+	virtual ~exportable() {}
 public:
 	virtual void export_yaml(YAML::Node& n) const = 0;
+};
+
+
+class ORK_ORK_API serializable {
+public:
+	virtual ~serializable() {}
+public:
+	virtual void to_yaml(YAML::Node& v) const = 0;
+	virtual void from_yaml(const YAML::Node& v) = 0;
 };
 
 
