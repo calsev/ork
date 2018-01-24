@@ -94,7 +94,7 @@ set(3P_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 ##Level 0
 set(3P_BOOST_BUILD_DIR "${3P_BUILD_DIR}/boost")
 set(3P_BZ2_BUILD_DIR "${3P_BUILD_DIR}/bz2")
-#Catch
+set(3P_CATCH_BUILD_DIR "${3P_BUILD_DIR}/catch")
 set(3P_JPEG_BUILD_DIR "${3P_BUILD_DIR}/jpeg")
 set(3P_GLM_BUILD_DIR "${3P_BUILD_DIR}/glm")
 #harfbuzz
@@ -120,7 +120,7 @@ set(3P_BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 ##Level 0
 set(3P_BOOST_BIN_DIR "${3P_BIN_DIR}/boost")
 set(3P_BZ2_BIN_DIR "${3P_BIN_DIR}/bz2")
-#Catch
+set(3P_CATCH_BIN_DIR "${3P_BIN_DIR}/catch")
 set(3P_JPEG_BIN_DIR "${3P_BIN_DIR}/jpeg")
 set(3P_GLM_BIN_DIR "${3P_BIN_DIR}/glm")
 #harfbuzz
@@ -154,7 +154,9 @@ endif()
 if(ORK_BUILD_BZ2)
 	add_subdirectory("${3P_BZ2_BUILD_DIR}" "${3P_BZ2_BIN_DIR}")
 endif()
-#Catch nothing to build
+if(ORK_BUILD_CATCH)
+	add_subdirectory("${3P_CATCH_BUILD_DIR}" "${3P_CATCH_BIN_DIR}")
+endif()
 if(ORK_BUILD_JPEG)
 	add_subdirectory("${3P_JPEG_BUILD_DIR}" "${3P_JPEG_BIN_DIR}")
 endif()
