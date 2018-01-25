@@ -430,14 +430,17 @@ API(const ork::string&) to_string(const ENUM);\
 API(const ork::bstring&) to_bstring(const ENUM);\
 API(const ork::wstring&) to_wstring(const ENUM);\
 API(ENUM) ORK_CAT(to_, ENUM)(const ork::bstring&);\
-API(ENUM) ORK_CAT(to_, ENUM)(const ork::wstring&);
+API(ENUM) ORK_CAT(to_, ENUM)(const ork::wstring&);\
+template<> API(ENUM) from_string<ENUM>(const bstring&str); \
+template<> API(ENUM) from_string<ENUM>(const wstring&str);
+
 
 #define ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_EXT, ENUM, __VA_ARGS__)
 #define ORK_ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_ORK_EXT, ENUM, __VA_ARGS__)
 
 
-#define ORK_ENUM_2_STR_(ENUM, PRE, ...) ORK_EVAL( \
-const ork::ORK_CAT(PRE, string)& ORK_CAT(to_, PRE, string)(const ENUM val) {\
+#define ORK_ENUM_2_STR_(API, ENUM, PRE, ...) ORK_EVAL( \
+API(const ork::ORK_CAT(PRE, string)&) ORK_CAT(to_, PRE, string)(const ENUM val) {\
 	switch(val) {\
 		ORK_CASE_LIST(ENUM, PRE, __VA_ARGS__)\
 	};\
@@ -452,15 +455,18 @@ const ork::ORK_CAT(PRE, string)& ORK_CAT(to_, PRE, string)(const ENUM val) {\
 #endif
 
 
-#define ORK_STR_2_ENUM_(ENUM, PRE, CONV, ...) ORK_EVAL(\
-ENUM ORK_CAT(to_, ENUM)(const ork::ORK_CAT(PRE, string)& str) { \
+#define ORK_STR_2_ENUM_(API, ENUM, PRE, CONV, ...) ORK_EVAL(\
+API(ENUM) ORK_CAT(to_, ENUM)(const ork::ORK_CAT(PRE, string)& str) { \
 	ORK_STR_2_ENUM_LIST(ENUM, PRE, __VA_ARGS__) \
 	ORK_THROW(ORK("Invalid ") << ORK_STR(ENUM) << ORK(": ") << CONV(str));\
+}\
+template<> API(ENUM) from_string<ENUM>(const ork::ORK_CAT(PRE, string)& str) {\
+	return ORK_CAT(to_, ENUM)(str);\
 })
 
 
-#define ORK_ENUM_DEF(ENUM, ...) \
-ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)() {\
+#define ORK_ENUM_DEF_(API, ENUM, ...) \
+API(ORK_ENUM_SET_(ENUM, __VA_ARGS__)&) ORK_CAT(ENUM, _set)() {\
 	static ORK_ENUM_SET_(ENUM, __VA_ARGS__) val = {{\
 		ORK_COMMA_LIST(ENUM::, __VA_ARGS__)\
 	}};\
@@ -468,13 +474,16 @@ ORK_ENUM_SET_(ENUM, __VA_ARGS__)& ORK_CAT(ENUM, _set)() {\
 };\
 ORK_STRING_LIST(b, BORK, __VA_ARGS__) \
 ORK_STRING_LIST(w, WORK, __VA_ARGS__) \
-ORK_ENUM_2_STR_(ENUM, b, __VA_ARGS__) \
-ORK_ENUM_2_STR_(ENUM, w, __VA_ARGS__) \
-const ork::string& to_string(const ENUM val) { \
+ORK_ENUM_2_STR_(API, ENUM, b, __VA_ARGS__) \
+ORK_ENUM_2_STR_(API, ENUM, w, __VA_ARGS__) \
+API(const ork::string&) to_string(const ENUM val) { \
 	return ORK_CAT(to_, ORK_SAME_STR_)(val); \
 } \
-ORK_STR_2_ENUM_(ENUM, b, ORK_BYTE_2_STR, __VA_ARGS__)\
-ORK_STR_2_ENUM_(ENUM, w, ORK_WIDE_2_STR, __VA_ARGS__)
+ORK_STR_2_ENUM_(API, ENUM, b, ORK_BYTE_2_STR, __VA_ARGS__)\
+ORK_STR_2_ENUM_(API, ENUM, w, ORK_WIDE_2_STR, __VA_ARGS__)
+
+#define ORK_ENUM_DEF(ENUM, ...) ORK_ENUM_DEF_(ORK_EXT, ENUM, __VA_ARGS__)
+#define ORK_ORK_ENUM_DEF(ENUM, ...) ORK_ENUM_DEF_(ORK_ORK_EXT, ENUM, __VA_ARGS__)
 
 
 }//namespace ork
