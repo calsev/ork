@@ -63,6 +63,7 @@ source_group("src" FILES ${ORK_TEST_SRCS})
 
 
 add_executable(ork_test ${ORK_TEST_HDRS} ${ORK_TEST_SRCS})
+set_target_properties(ork_test PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${ORK_INSTALL_PREFIX}/bin")
 
 target_link_libraries(ork_test PRIVATE ork)
 
