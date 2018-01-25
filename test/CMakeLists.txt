@@ -1,25 +1,22 @@
 
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR) #Required for C++17
 
-project(ork_test CXX)
-
 set(REPO_ROOT "$ENV{REPO_ROOT}")
-
 include("${REPO_ROOT}/ork/build/macros.cmake")
+
+
+ork_pre_project_config()
+project(ork_test CXX)
+ork_post_project_config()
+
 
 set(SKIP_INSTALL_HEADERS ON)
 set(SKIP_INSTALL_LIBRARIES ON)
 
-message("Ork build unicode: $ENV{ORK_UNICODE}")
-if($ENV{ORK_UNICODE})
-  add_definitions(-DUNICODE)
-  add_definitions(-D_UNICODE)
-endif()
-
 set_as_internal(ORK_INSTALL_PREFIX "${REPO_ROOT}/ork_test_$ENV{VS_TOOLSET}")
+ork_install_config()
 
 set_as_internal(ORK_3P_SOURCE_DIR "${REPO_ROOT}")
-
 set_as_internal(3P_BOOST_SRC_DIR "${REPO_ROOT}/boost_$ENV{VS_TOOLSET}")
 
 
@@ -40,9 +37,14 @@ set_as_internal(ORK_BUILD_PUGI ON)
 ##Level 1
 set_as_internal(ORK_BUILD_ORK ON)
 
-add_subdirectory("${ORK_3P_SOURCE_DIR}/ork/build" "3p")
 
-set(VERSION "${ORK_VERSION_STR}")
+message("Ork build unicode: $ENV{ORK_UNICODE}")
+if($ENV{ORK_UNICODE})
+  add_definitions(-DUNICODE)
+  add_definitions(-D_UNICODE)
+endif()
+
+add_subdirectory("${ORK_3P_SOURCE_DIR}/ork/build" "3p")
 
 
 set_advanced_warnings()
@@ -60,15 +62,9 @@ source_group("inc" FILES ${ORK_TEST_HDRS})
 source_group("src" FILES ${ORK_TEST_SRCS})
 
 
-link_directories("${3P_BOOST_LIB_DIR}") #Must be before target
 add_executable(ork_test ${ORK_TEST_HDRS} ${ORK_TEST_SRCS})
 
 target_link_libraries(ork_test PRIVATE ork)
-
-target_include_directories(
-	ork_test
-	PRIVATE $<BUILD_INTERFACE:${3P_CATCH_SRC_DIR}/single_include>
-)
 
 
 install_exe(ork_test)
