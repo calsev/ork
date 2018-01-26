@@ -34,7 +34,14 @@ TEST_CASE("Macro Generation", "[non_test]") {
     }
 
     fout << BORK("\n");
-    fout << BORK("#define ORK_DESCENDING_ ");
+    fout << BORK("#define ORK_ARG_N_(");
+    LOOPI(macro_max) {
+        fout << BORK('A') << i + 1 << BORK(", ");
+    }
+    fout << BORK("...) A") << macro_max << BORK('\n');
+
+    fout << BORK("\n");
+    fout << BORK("#define ORK_DESCENDING_N_ ");
     LOOPRI(macro_max) {
         fout << i << (i > 0 ? BORK(", ") : BORK(""));
     }
