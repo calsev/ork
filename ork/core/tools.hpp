@@ -380,24 +380,6 @@ Begin enum section: defining enums with an iterable container and string convers
 	(PRE, __VA_ARGS__))
 
 
-#define ORK_COUNT_ARGS_00_() 0
-#define ORK_COUNT_ARGS_01_(A1) 1
-#define ORK_COUNT_ARGS_02_(A1, A2) 2
-#define ORK_COUNT_ARGS_03_(A1, A2, A3) 3
-#define ORK_COUNT_ARGS_04_(A1, A2, A3, A4) 4
-#define ORK_COUNT_ARGS_05_(A1, A2, A3, A4, A5) 5
-#define ORK_COUNT_ARGS_06_(A1, A2, A3, A4, A5, A6) 6
-#define ORK_COUNT_ARGS_07_(A1, A2, A3, A4, A5, A6, A7) 7
-#define ORK_COUNT_ARGS_08_(A1, A2, A3, A4, A5, A6, A7, A8) 8
-#define ORK_COUNT_ARGS_09_(A1, A2, A3, A4, A5, A6, A7, A8, A9) 9
-
-#define ORK_COUNT_ARGS(...) ORK_EVAL( \
-	ORK_GET_ARG_09_( \
-		__VA_ARGS__, ORK_COUNT_ARGS_09_, ORK_COUNT_ARGS_08_, ORK_COUNT_ARGS_07_, ORK_COUNT_ARGS_06_, ORK_COUNT_ARGS_05_, \
-		ORK_COUNT_ARGS_04_, ORK_COUNT_ARGS_03_, ORK_COUNT_ARGS_02_, ORK_COUNT_ARGS_01_, ORK_COUNT_ARGS_00_) \
-	(__VA_ARGS__))
-
-
 #define ORK_MAKE_STRING_(PRE, STR, ARG) ORK_EVAL(const ork::ORK_CAT(PRE, string) ORK_CAT(PRE, ARG){STR(ORK_STR(ARG))};)
 #define ORK_STRING_LIST_00_(PRE, STR)
 #define ORK_STRING_LIST_01_(PRE, STR, ARG) ORK_EVAL(ORK_MAKE_STRING_(PRE, STR, ARG))
