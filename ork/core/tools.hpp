@@ -168,8 +168,13 @@ Basic macros section; the building blocks
 #define ORK_NOT(X) ORK_CHECK_1_(ORK_CAT(ORK_NOT_, X, _))
 
 // Transforms everything but 0 to 1
-#define ORK_BOOL(C) ORK_NOT(ORK_NOT(C))
+#define ORK_BOOL(X) ORK_NOT(ORK_NOT(X))
+
+// If ... Else construct
 #define ORK_IF(C) ORK_IF_(ORK_BOOL(C))
+#define ORK_DISCARD(...)
+//Conditional evaluation; trivial else clause
+#define ORK_WHEN(C) ORK_IF(C)(ORK_EVAL, ORK_DISCARD)
 
 
 /*

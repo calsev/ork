@@ -95,24 +95,27 @@ TEST_CASE("Macro Test", "[pp_meta]")
     REQUIRE(ORK_IS_PAREN(P()) == 1);
     REQUIRE(ORK_IS_PAREN(NP()) == 0);
 
-	REQUIRE(ORK_NOT(0) == 1);
-	REQUIRE(ORK_NOT(1) == 0);
-	REQUIRE(ORK_NOT(F()) == 1);
-	REQUIRE(ORK_NOT(T()) == 0);
+    REQUIRE(ORK_NOT(0) == 1);
+    REQUIRE(ORK_NOT(1) == 0);
+    REQUIRE(ORK_NOT(F()) == 1);
+    REQUIRE(ORK_NOT(T()) == 0);
 
-	REQUIRE(ORK_BOOL(0) == 0);
-	REQUIRE(ORK_BOOL(1) == 1);
-	REQUIRE(ORK_BOOL(a) == 1);
-	static const char a = 'a';
-	static const char b = 'b';
+    REQUIRE(ORK_BOOL(0) == 0);
+    REQUIRE(ORK_BOOL(1) == 1);
+    REQUIRE(ORK_BOOL(a) == 1);
+    static const char a = 'a';
+    static const char b = 'b';
 #define A() a
 #define B() b
-	REQUIRE(ORK_BOOL(F()) == 0);
-	REQUIRE(ORK_BOOL(T()) == 1);
-	REQUIRE(ORK_BOOL(A()) == 1);
+    REQUIRE(ORK_BOOL(F()) == 0);
+    REQUIRE(ORK_BOOL(T()) == 1);
+    REQUIRE(ORK_BOOL(A()) == 1);
 
-	REQUIRE(ORK_IF(0)(a, b) == b);
-	REQUIRE(ORK_IF(1)(a, b) == a);
-	REQUIRE(ORK_IF(a)(a, b) == a);
-	REQUIRE(ORK_IF(B())(a, b) == a);
+    REQUIRE(ORK_IF(0)(a, b) == b);
+    REQUIRE(ORK_IF(1)(a, b) == a);
+    REQUIRE(ORK_IF(a)(a, b) == a);
+    REQUIRE(ORK_IF(B())(a, b) == a);
+
+	REQUIRE(1 ORK_WHEN(0)(+ 1) == 1);
+	REQUIRE(1 ORK_WHEN(1)(+ 1) == 2);
 }
