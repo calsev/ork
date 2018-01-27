@@ -156,6 +156,13 @@ Basic macros section; the building blocks
 #define ORK_CHECK_1_(...) ORK_EVAL(ORK_GET_ARG_01_(__VA_ARGS__, 0, 0))
 #define ORK_APPEND_1_(...) ORK_EVAL(__VA_ARGS__, 1)
 
+// If called, returns two arguments
+#define ORK_IS_PAREN_() ORK_APPEND_1_(~)
+// Parentheses after a macro name call that macro, otherwise the name is just another token:
+// If X is parentheses, will generate two arguments: ~, 1
+// Else, will generate one argument: ORK_IS_PAREN_ X
+#define ORK_IS_PAREN(X) ORK_CHECK_1_(ORK_IS_PAREN_ X)
+
 
 /*
 Copy and move semantics

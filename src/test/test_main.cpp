@@ -72,7 +72,6 @@ TEST_CASE("Macro Map", "[pp_meta]")
     REQUIRE(ORK_IF_(T())(4, 5) == 4);
     REQUIRE(ORK_IF_(F())(4, 5) == 5);
 
-
     REQUIRE(ORK_CHECK_1_() == 0);
     REQUIRE(ORK_CHECK_1_(1) == 0);
     REQUIRE(ORK_CHECK_1_(1, 2) == 2);
@@ -88,4 +87,11 @@ TEST_CASE("Macro Map", "[pp_meta]")
     REQUIRE(ORK_CHECK_1_(ORK_APPEND_1_(1, 2)) == 2);
     REQUIRE(ORK_CHECK_1_(ORK_APPEND_1_(A1())) == 1);
     REQUIRE(ORK_CHECK_1_(ORK_APPEND_1_(A2())) == 2);
+
+    REQUIRE(ORK_IS_PAREN(()) == 1);
+    REQUIRE(ORK_IS_PAREN(~) == 0);
+#define P() ()
+#define NP() ~
+    REQUIRE(ORK_IS_PAREN(P()) == 1);
+    REQUIRE(ORK_IS_PAREN(NP()) == 0);
 }
