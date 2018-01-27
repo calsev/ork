@@ -94,4 +94,9 @@ TEST_CASE("Macro Map", "[pp_meta]")
 #define NP() ~
     REQUIRE(ORK_IS_PAREN(P()) == 1);
     REQUIRE(ORK_IS_PAREN(NP()) == 0);
+
+	REQUIRE(ORK_NOT(0) == 1);
+	REQUIRE(ORK_NOT(1) == 0);
+	REQUIRE(ORK_NOT(F()) == 1);
+	REQUIRE(ORK_NOT(T()) == 0);
 }

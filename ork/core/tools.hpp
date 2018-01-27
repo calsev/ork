@@ -163,6 +163,10 @@ Basic macros section; the building blocks
 // Else, will generate one argument: ORK_IS_PAREN_ X
 #define ORK_IS_PAREN(X) ORK_CHECK_1_(ORK_IS_PAREN_ X)
 
+#define ORK_NOT_0_ ORK_APPEND_1_(~)
+//Returns 1 for 0, 0 for everything else
+#define ORK_NOT(X) ORK_CHECK_1_(ORK_CAT(ORK_NOT_, X, _))
+
 
 /*
 Copy and move semantics
