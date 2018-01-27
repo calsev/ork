@@ -63,4 +63,12 @@ TEST_CASE("Macro Generation", "[pp_meta]")
     const int arg_3 = ORK_NUM_ARG(a, b, c);
     REQUIRE(arg_3 == 3);
 }
+TEST_CASE("Macro Map", "[pp_meta]")
+{
+	REQUIRE(ORK_IF_(1)(4, 5) == 4);
+	REQUIRE(ORK_IF_(0)(4, 5) == 5);
+#define T() 1
+#define F() 0
+	REQUIRE(ORK_IF_(T())(4, 5) == 4);
+	REQUIRE(ORK_IF_(F())(4, 5) == 5);
 }
