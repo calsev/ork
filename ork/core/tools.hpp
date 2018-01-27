@@ -167,6 +167,10 @@ Basic macros section; the building blocks
 //Returns 1 for 0, 0 for everything else
 #define ORK_NOT(X) ORK_CHECK_1_(ORK_CAT(ORK_NOT_, X, _))
 
+// Transforms everything but 0 to 1
+#define ORK_BOOL(C) ORK_NOT(ORK_NOT(C))
+#define ORK_IF(C) ORK_IF_(ORK_BOOL(C))
+
 
 /*
 Copy and move semantics

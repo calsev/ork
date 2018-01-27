@@ -63,7 +63,7 @@ TEST_CASE("Macro Generation", "[pp_meta]")
     const int arg_3 = ORK_NUM_ARG(a, b, c);
     REQUIRE(arg_3 == 3);
 }
-TEST_CASE("Macro Map", "[pp_meta]")
+TEST_CASE("Macro Test", "[pp_meta]")
 {
     REQUIRE(ORK_IF_(1)(4, 5) == 4);
     REQUIRE(ORK_IF_(0)(4, 5) == 5);
@@ -99,4 +99,20 @@ TEST_CASE("Macro Map", "[pp_meta]")
 	REQUIRE(ORK_NOT(1) == 0);
 	REQUIRE(ORK_NOT(F()) == 1);
 	REQUIRE(ORK_NOT(T()) == 0);
+
+	REQUIRE(ORK_BOOL(0) == 0);
+	REQUIRE(ORK_BOOL(1) == 1);
+	REQUIRE(ORK_BOOL(a) == 1);
+	static const char a = 'a';
+	static const char b = 'b';
+#define A() a
+#define B() b
+	REQUIRE(ORK_BOOL(F()) == 0);
+	REQUIRE(ORK_BOOL(T()) == 1);
+	REQUIRE(ORK_BOOL(A()) == 1);
+
+	REQUIRE(ORK_IF(0)(a, b) == b);
+	REQUIRE(ORK_IF(1)(a, b) == a);
+	REQUIRE(ORK_IF(a)(a, b) == a);
+	REQUIRE(ORK_IF(B())(a, b) == a);
 }
