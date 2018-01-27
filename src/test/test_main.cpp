@@ -116,6 +116,23 @@ TEST_CASE("Macro Test", "[pp_meta]")
     REQUIRE(ORK_IF(a)(a, b) == a);
     REQUIRE(ORK_IF(B())(a, b) == a);
 
-	REQUIRE(1 ORK_WHEN(0)(+ 1) == 1);
-	REQUIRE(1 ORK_WHEN(1)(+ 1) == 2);
+    REQUIRE(1 ORK_WHEN(0)(+1) == 1);
+    REQUIRE(1 ORK_WHEN(1)(+1) == 2);
+
+    // clang-format off
+#define ORK_SQUARE(A, I) A*A
+#define ORK_ADD(A, B, I) A + B
+    // clang-format on
+
+    const ork::bstring square_list{ORK_STR(ORK_MAP(ORK_SQUARE, ORK_ADD, 1, 2))};
+    REQUIRE(square_list == BORK("1*1 + 2*2"));
+    int val = ORK_MAP(ORK_SQUARE, ORK_ADD, 1, 2);
+    REQUIRE(val == 5);
+
+    // clang-format off
+#define CALL(ARG, I) my--ARG
+#define STITCH(X, Y, I) (X + Y)
+    // clang-format on
+    const ork::bstring assoc_list{ORK_STR(ORK_MAP(CALL, STITCH, a, b, c))};
+    REQUIRE(assoc_list == BORK("(my--a + (my--b + my--c))"));
 }

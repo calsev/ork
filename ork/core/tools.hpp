@@ -177,6 +177,35 @@ Basic macros section; the building blocks
 #define ORK_WHEN(C) ORK_IF(C)(ORK_EVAL, ORK_DISCARD)
 
 
+#define ORK_EMPTY_()
+#define ORK_DEFER_(X) X ORK_EMPTY_()
+// Go two contexts deeper, to avoid macro expansion
+#define ORK_CONTEXT_(...) __VA_ARGS__ ORK_DEFER_(ORK_EMPTY_)()
+
+// Support max depth/length of 256
+#define ORK_FLAT_3_(...) \
+    ORK_EVAL(ORK_EVAL(ORK_EVAL(ORK_EVAL(__VA_ARGS__)))) // 2^2
+#define ORK_FLAT_2_(...) \
+    ORK_FLAT_3_(ORK_FLAT_3_(ORK_FLAT_3_(ORK_FLAT_3_(__VA_ARGS__)))) // 2^4
+#define ORK_FLAT_1_(...) \
+    ORK_FLAT_2_(ORK_FLAT_2_(ORK_FLAT_2_(ORK_FLAT_2_(__VA_ARGS__)))) // 2^6
+#define ORK_FLAT(...) \
+    ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(__VA_ARGS__)))) // 2^8
+
+
+#define ORK_MAP_3_() ORK_MAP_2_
+// This macro intentionally does not evaluate to avoid direct recursion
+#define ORK_MAP_2_(CALL, STITCH, I, ARG, PEEK, ...) \
+    ORK_IF(ORK_IS_PAREN(PEEK)) \
+    (CALL(ARG, (I)), \
+     STITCH(CALL(ARG, I), ORK_CONTEXT_(ORK_MAP_3_)()(CALL, STITCH, (I + 1), PEEK, __VA_ARGS__), (I)))
+
+// The end-of-list marker, '()',  will call a macro
+// Empty at the end to maintain compliant call when macro called.
+#define ORK_MAP(CALL, STITCH, ...) \
+    ORK_FLAT(ORK_MAP_2_(CALL, STITCH, 0, __VA_ARGS__, (), 0))
+
+
 /*
 Copy and move semantics
 */
