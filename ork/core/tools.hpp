@@ -152,6 +152,10 @@ Basic macros section; the building blocks
 #define ORK_IF_1_(T, ...) T
 #define ORK_IF_(C) ORK_EVAL(ORK_CAT(ORK_IF_, C, _))
 
+// If passed < 2 arguments, expands to 0, otherwise argument 2
+#define ORK_CHECK_1_(...) ORK_EVAL(ORK_GET_ARG_01_(__VA_ARGS__, 0, 0))
+#define ORK_APPEND_1_(...) ORK_EVAL(__VA_ARGS__, 1)
+
 
 /*
 Copy and move semantics

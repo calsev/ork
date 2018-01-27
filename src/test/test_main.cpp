@@ -65,10 +65,27 @@ TEST_CASE("Macro Generation", "[pp_meta]")
 }
 TEST_CASE("Macro Map", "[pp_meta]")
 {
-	REQUIRE(ORK_IF_(1)(4, 5) == 4);
-	REQUIRE(ORK_IF_(0)(4, 5) == 5);
+    REQUIRE(ORK_IF_(1)(4, 5) == 4);
+    REQUIRE(ORK_IF_(0)(4, 5) == 5);
 #define T() 1
 #define F() 0
-	REQUIRE(ORK_IF_(T())(4, 5) == 4);
-	REQUIRE(ORK_IF_(F())(4, 5) == 5);
+    REQUIRE(ORK_IF_(T())(4, 5) == 4);
+    REQUIRE(ORK_IF_(F())(4, 5) == 5);
+
+
+    REQUIRE(ORK_CHECK_1_() == 0);
+    REQUIRE(ORK_CHECK_1_(1) == 0);
+    REQUIRE(ORK_CHECK_1_(1, 2) == 2);
+    REQUIRE(ORK_CHECK_1_(1, 2, 3) == 2);
+#define A1() 1
+#define A2() 1, 2
+#define A3() 1, 2, 3
+    REQUIRE(ORK_CHECK_1_(A1()) == 0);
+    REQUIRE(ORK_CHECK_1_(A2()) == 2);
+    REQUIRE(ORK_CHECK_1_(A3()) == 2);
+
+    REQUIRE(ORK_CHECK_1_(ORK_APPEND_1_(1)) == 1);
+    REQUIRE(ORK_CHECK_1_(ORK_APPEND_1_(1, 2)) == 2);
+    REQUIRE(ORK_CHECK_1_(ORK_APPEND_1_(A1())) == 1);
+    REQUIRE(ORK_CHECK_1_(ORK_APPEND_1_(A2())) == 2);
 }
