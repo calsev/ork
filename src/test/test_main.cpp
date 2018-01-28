@@ -12,6 +12,7 @@ ORK_GLOBAL_LOG(ORK("../Logs"))
 
 using namespace ork;
 
+
 TEST_CASE("Strings are encoded", "[string]")
 {
     const bstring test_1{BORK("Encode this 1!")};
@@ -69,7 +70,9 @@ TEST_CASE("Macro Generation", "[pp_meta]")
         fout << BORK("#define ORK_DEC_") << i + 1 << BORK(" ") << i << BORK('\n');
     }
 }
-TEST_CASE("Macro Test", "[pp_meta]")
+
+
+TEST_CASE("MAP Macro Test", "[pp_meta]")
 {
     REQUIRE(ORK_IF_(1)(4, 5) == 4);
     REQUIRE(ORK_IF_(0)(4, 5) == 5);
@@ -141,4 +144,13 @@ TEST_CASE("Macro Test", "[pp_meta]")
     // clang-format on
     const ork::bstring assoc_list{ORK_STR(ORK_MAP(CALL, STITCH, a, b, c))};
     REQUIRE(assoc_list == BORK("(my--a--0 *0* (my--b--1 *1* my--c--2))"));
+}
+
+
+TEST_CASE("Macro Test", "[pp_meta]") {
+	const int arg_1 = ORK_NUM_ARG(a);
+	REQUIRE(arg_1 == 1);
+
+	const int arg_3 = ORK_NUM_ARG(a, b, c);
+	REQUIRE(arg_3 == 3);
 }
