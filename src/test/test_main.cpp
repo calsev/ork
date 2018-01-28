@@ -138,9 +138,9 @@ TEST_CASE("Macro Test", "[pp_meta]")
     REQUIRE(val == 5);
 
     // clang-format off
-#define CALL(ARG, I) my--ARG
-#define STITCH(X, Y, I) (X + Y)
+#define CALL(ARG, I) my--ARG--I
+#define STITCH(X, Y, I) (X *I* Y)
     // clang-format on
     const ork::bstring assoc_list{ORK_STR(ORK_MAP(CALL, STITCH, a, b, c))};
-    REQUIRE(assoc_list == BORK("(my--a + (my--b + my--c))"));
+    REQUIRE(assoc_list == BORK("(my--a--0 *0* (my--b--1 *1* my--c--2))"));
 }

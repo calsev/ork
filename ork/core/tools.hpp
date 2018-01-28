@@ -186,11 +186,23 @@ Basic macros section; the building blocks
 // This macro intentionally does not evaluate to avoid direct recursion
 #define ORK_MAP_2_(CALL, STITCH, I, ARG, PEEK, ...) \
     ORK_IF(ORK_IS_PAREN(PEEK)) \
-    (CALL(ARG, (I)), \
-     STITCH(CALL(ARG, I), ORK_CONTEXT_(ORK_MAP_3_)()(CALL, STITCH, (I + 1), PEEK, __VA_ARGS__), (I)))
+    (CALL(ARG, I), \
+     STITCH(CALL(ARG, I), ORK_CONTEXT_(ORK_MAP_3_)()(CALL, STITCH, ORK_CAT(ORK_INC_, I), PEEK, __VA_ARGS__), I))
 
 // The end-of-list marker, '()',  will call a macro
 // Empty at the end to maintain compliant call when macro called.
+/*
+MAP is the basis of most high-level variadic macros.
+
+CALL is invoked as CALL(ARG, I), where I is the iteration number. Example:
+#define CALL(ARG, I) my--ARG--I
+
+STITCH is invoked as STITCH(CALL(ARG, I), CONS, I) and is therefore right
+associative.  Example: #define STITCH(X, Y, I) (X *I* Y)
+
+Completing the example:
+ORK_MAP(CALL, STITCH, a, b, c) -> (my--a--0 *0* (my--b--1 *1* my--c--2))
+*/
 #define ORK_MAP(CALL, STITCH, ...) \
     ORK_FLAT(ORK_MAP_2_(CALL, STITCH, 0, __VA_ARGS__, (), 0))
 
