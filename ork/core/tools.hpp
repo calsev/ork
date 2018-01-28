@@ -364,7 +364,7 @@ if(str == ORK_CAT(PRE, ARG)) {\
 	(ENUM, PRE, __VA_ARGS__))
 
 
-#define ORK_ENUM_SET_(ENUM, ...) const std::array<ENUM, ORK_COUNT_ARGS(__VA_ARGS__)>
+#define ORK_ENUM_SET_(ENUM, ...) const std::array<ENUM, ORK_NUM_ARG(__VA_ARGS__)>
 
 #define ORK_ENUM_DECL_(API, ENUM, ...)\
 enum class ENUM {\
