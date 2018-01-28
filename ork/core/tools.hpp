@@ -131,7 +131,7 @@ Basic macros section; the building blocks
 #define ORK_CAT_09_(A1, A2, A3, A4, A5, A6, A7, A8, A9) A1##A2##A3##A4##A5##A6##A7##A8##A9
 
 #define ORK_CAT(...) ORK_EVAL( \
-	ORK_GET_ARG_09_( \
+	ORK_ARG_9( \
 		__VA_ARGS__, ORK_CAT_09_, ORK_CAT_08_, ORK_CAT_07_, ORK_CAT_06_, ORK_CAT_05_, \
 		ORK_CAT_04_, ORK_CAT_03_, ORK_CAT_02_, ORK_CAT_01_, ORK_CAT_00_) \
 	(__VA_ARGS__))
@@ -142,7 +142,7 @@ Basic macros section; the building blocks
 #define ORK_IF_(C) ORK_CAT(ORK_IF_, C, _)
 
 // If passed < 2 arguments, expands to 0, otherwise argument 2
-#define ORK_CHECK_1_(...) ORK_EVAL(ORK_GET_ARG_01_(__VA_ARGS__, 0, 0))
+#define ORK_CHECK_1_(...) ORK_EVAL(ORK_ARG_1(__VA_ARGS__, 0, 0))
 #define ORK_APPEND_1_(...) ORK_EVAL(__VA_ARGS__, 1)
 
 // If called, returns two arguments
@@ -277,7 +277,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_LIST_09_(PRE, DELIM, ARG, ...) PRE ARG DELIM ORK_EVAL(ORK_LIST_08_(PRE, DELIM, __VA_ARGS__))
 
 #define ORK_LIST(PRE, DELIM, ...) ORK_EVAL( \
-	ORK_GET_ARG_09_( \
+	ORK_ARG_9( \
 		__VA_ARGS__, ORK_LIST_09_, ORK_LIST_08_, ORK_LIST_07_, ORK_LIST_06_, ORK_LIST_05_, \
 		ORK_LIST_04_, ORK_LIST_03_, ORK_LIST_02_, ORK_LIST_01_, ORK_LIST_00_) \
 	(PRE, DELIM, __VA_ARGS__))
@@ -295,7 +295,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_COMMA_LIST_09_(PRE, ARG, ...) PRE ARG, ORK_EVAL(ORK_COMMA_LIST_08_(PRE, __VA_ARGS__))
 
 #define ORK_COMMA_LIST(PRE, ...) ORK_EVAL(\
-	ORK_GET_ARG_09_( \
+	ORK_ARG_9( \
 		__VA_ARGS__, ORK_COMMA_LIST_09_, ORK_COMMA_LIST_08_, ORK_COMMA_LIST_07_, ORK_COMMA_LIST_06_, ORK_COMMA_LIST_05_,	\
 		ORK_COMMA_LIST_04_, ORK_COMMA_LIST_03_, ORK_COMMA_LIST_02_, ORK_COMMA_LIST_01_, ORK_COMMA_LIST_00_) \
 	(PRE, __VA_ARGS__))
@@ -314,7 +314,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_STRING_LIST_09_(PRE, STR, ARG, ...) ORK_EVAL(ORK_MAKE_STRING_(PRE, STR, ARG) ORK_STRING_LIST_08_(PRE, STR, __VA_ARGS__))
 
 #define ORK_STRING_LIST(PRE, STR, ...) ORK_EVAL(\
-	ORK_GET_ARG_09_( \
+	ORK_ARG_9( \
 		__VA_ARGS__, ORK_STRING_LIST_09_, ORK_STRING_LIST_08_, ORK_STRING_LIST_07_, ORK_STRING_LIST_06_, ORK_STRING_LIST_05_,	\
 		ORK_STRING_LIST_04_, ORK_STRING_LIST_03_, ORK_STRING_LIST_02_, ORK_STRING_LIST_01_, ORK_STRING_LIST_00_) \
 	(PRE, STR, __VA_ARGS__))
@@ -333,7 +333,7 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_CASE_LIST_09_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_MAKE_CASE_(ENUM, PRE, ARG) ORK_CASE_LIST_08_(ENUM, PRE, __VA_ARGS__))
 
 #define ORK_CASE_LIST(ENUM, PRE, ...) ORK_EVAL(\
-	ORK_GET_ARG_09_( \
+	ORK_ARG_9( \
 		__VA_ARGS__, ORK_CASE_LIST_09_, ORK_CASE_LIST_08_, ORK_CASE_LIST_07_, ORK_CASE_LIST_06_, ORK_CASE_LIST_05_,	\
 		ORK_CASE_LIST_04_, ORK_CASE_LIST_03_, ORK_CASE_LIST_02_, ORK_CASE_LIST_01_, ORK_CASE_LIST_00_) \
 	(ENUM, PRE, __VA_ARGS__))
@@ -355,7 +355,7 @@ if(str == ORK_CAT(PRE, ARG)) {\
 #define ORK_STR_2_ENUM_LIST_09_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_08_(ENUM, PRE, __VA_ARGS__))
 
 #define ORK_STR_2_ENUM_LIST(ENUM, PRE, ...) ORK_EVAL(\
-	ORK_GET_ARG_09_( \
+	ORK_ARG_9( \
 		__VA_ARGS__, ORK_STR_2_ENUM_LIST_09_, ORK_STR_2_ENUM_LIST_08_, ORK_STR_2_ENUM_LIST_07_, ORK_STR_2_ENUM_LIST_06_, ORK_STR_2_ENUM_LIST_05_,	\
 		ORK_STR_2_ENUM_LIST_04_, ORK_STR_2_ENUM_LIST_03_, ORK_STR_2_ENUM_LIST_02_, ORK_STR_2_ENUM_LIST_01_, ORK_STR_2_ENUM_LIST_00_) \
 	(ENUM, PRE, __VA_ARGS__))

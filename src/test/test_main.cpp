@@ -34,8 +34,8 @@ TEST_CASE("Macro Generation", "[pp_meta]")
 
     LOOPI(macro_max)
     {
-        fout << BORK("#define ORK_GET_ARG_")
-             << (i / 10 > 0 ? BORK("") : BORK("0")) << i << BORK("_(");
+        fout << BORK("#define ORK_ARG_")
+             << i << BORK("_(");
         LOOPJ(i + 1)
         {
             fout << BORK('A') << j << BORK(", ");
