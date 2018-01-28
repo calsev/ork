@@ -182,27 +182,31 @@ Basic macros section; the building blocks
 
 #define ORK_MAP_3_() ORK_MAP_2_
 // This macro intentionally does not evaluate to avoid direct recursion
-#define ORK_MAP_2_(CALL, STITCH, I, ARG, PEEK, ...) \
+#define ORK_MAP_2_(CALL, STITCH, DATA, I, ARG, PEEK, ...) \
     ORK_IF(ORK_IS_PAREN(PEEK)) \
-    (CALL(ARG, I), \
-     STITCH(CALL(ARG, I), ORK_CONTEXT_(ORK_MAP_3_)()(CALL, STITCH, ORK_CAT(ORK_INC_, I), PEEK, __VA_ARGS__), I))
+    (CALL(DATA, I, ARG), \
+     STITCH(DATA, I, CALL(DATA, I, ARG), ORK_CONTEXT_(ORK_MAP_3_)()(CALL, STITCH, DATA, ORK_CAT(ORK_INC_, I), PEEK, __VA_ARGS__)))
 
 // The end-of-list marker, '()',  will call a macro
 // Empty at the end to maintain compliant call when macro called.
 /*
 MAP is the basis of most high-level variadic macros.
 
-CALL is invoked as CALL(ARG, I), where I is the iteration number. Example:
-#define CALL(ARG, I) my--ARG--I
+DATA is passed to every call, and can be a macro
 
-STITCH is invoked as STITCH(CALL(ARG, I), CONS, I) and is therefore right
-associative.  Example: #define STITCH(X, Y, I) (X *I* Y)
+I is the iteration number
+
+CALL is invoked as CALL(DATA, I, ARG). Example:
+#define CALL(DATA, I, ARG) DATA--ARG--I
+
+STITCH is invoked as STITCH(DATA, I, HEAD, TAIL) and is right
+associative.  Example: #define STITCH(DATA, I, X, Y) (X *DATA-I* Y)
 
 Completing the example:
-ORK_MAP(CALL, STITCH, a, b, c) -> (my--a--0 *0* (my--b--1 *1* my--c--2))
+ORK_MAP(CALL, STITCH, my, a, b, c) -> (my--a--0 *my-0* (my--b--1 *my-1* my--c--2))
 */
-#define ORK_MAP(CALL, STITCH, ...) \
-    ORK_FLAT(ORK_MAP_2_(CALL, STITCH, 0, __VA_ARGS__, (), 0))
+#define ORK_MAP(CALL, STITCH, DATA, ...) \
+    ORK_FLAT(ORK_MAP_2_(CALL, STITCH, DATA, 0, __VA_ARGS__, (), 0))
 
 
 /*
@@ -249,6 +253,16 @@ Begin enum section: defining enums with an iterable container and string convers
 
 #define ORK_NUM_ARG_(...) ORK_EVAL(ORK_ARG_N_(__VA_ARGS__))
 #define ORK_NUM_ARG(...) ORK_EVAL(ORK_NUM_ARG_(__VA_ARGS__, ORK_DESCENDING_N_))
+
+
+// Common CALL paradigms
+#define ORK_IDENTITY(DATA, I, ARG) ARG
+#define ORK_PREFIX(DATA, I, ARG) DATA ARG
+#define ORK_POSTFIX(DATA, I, ARG) ARG DATA
+
+// Common STITCH paradigms
+#define ORK_COMMA(DATA, I, X, Y) X, Y
+#define ORK_SEMI_COLON(DATA, I, X, Y) X; Y
 
 
 #define ORK_LIST_00_(PRE, DELIM)

@@ -129,21 +129,21 @@ TEST_CASE("MAP Macro Test", "[pp_meta]")
     REQUIRE(1 ORK_WHEN(1)(+1) == 2);
 
     // clang-format off
-#define ORK_SQUARE(A, I) A*A
-#define ORK_ADD(A, B, I) A + B
+#define ORK_SQUARE(DATA, I, A) A*A
+#define ORK_ADD(DATA, I, A, B) A + B
     // clang-format on
 
-    const ork::bstring square_list{ORK_STR(ORK_MAP(ORK_SQUARE, ORK_ADD, 1, 2))};
+    const ork::bstring square_list{ORK_STR(ORK_MAP(ORK_SQUARE, ORK_ADD, data, 1, 2))};
     REQUIRE(square_list == BORK("1*1 + 2*2"));
-    int val = ORK_MAP(ORK_SQUARE, ORK_ADD, 1, 2);
+    int val = ORK_MAP(ORK_SQUARE, ORK_ADD, data, 1, 2);
     REQUIRE(val == 5);
 
     // clang-format off
-#define CALL(ARG, I) my--ARG--I
-#define STITCH(X, Y, I) (X *I* Y)
+#define CALL(DATA, I, ARG) DATA--ARG--I
+#define STITCH(DATA, I, X, Y) (X *DATA-I* Y)
     // clang-format on
-    const ork::bstring assoc_list{ORK_STR(ORK_MAP(CALL, STITCH, a, b, c))};
-    REQUIRE(assoc_list == BORK("(my--a--0 *0* (my--b--1 *1* my--c--2))"));
+    const ork::bstring assoc_list{ORK_STR(ORK_MAP(CALL, STITCH, my, a, b, c))};
+    REQUIRE(assoc_list == BORK("(my--a--0 *my-0* (my--b--1 *my-1* my--c--2))"));
 }
 
 
