@@ -165,7 +165,6 @@ Basic macros section; the building blocks
 //Conditional evaluation; trivial else clause
 #define ORK_WHEN(C) ORK_IF(C)(ORK_EVAL, ORK_DISCARD)
 
-
 #define ORK_EMPTY_()
 #define ORK_DEFER_(X) X ORK_EMPTY_()
 // Go two contexts deeper, to avoid macro expansion
@@ -179,6 +178,9 @@ Basic macros section; the building blocks
 #define ORK_FLAT(...) \
     ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(__VA_ARGS__)))) // 2^6
 
+#define ORK_PHX_(...) ORK_EVAL(ORK_PHX_ __VA_ARGS__)
+#define ORK_SKIP_ORK_PHX_
+#define ORK_UNPAREN(...) ORK_FLAT(ORK_CAT(ORK_SKIP_, ORK_PHX_ __VA_ARGS__))
 
 #define ORK_MAP_3_() ORK_MAP_2_
 // This macro intentionally does not evaluate to avoid direct recursion

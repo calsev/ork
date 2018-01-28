@@ -127,6 +127,11 @@ TEST_CASE("MAP Macro Test", "[pp_meta]")
     REQUIRE(1 ORK_WHEN(0)(+1) == 1);
     REQUIRE(1 ORK_WHEN(1)(+1) == 2);
 
+	REQUIRE(ORK_UNPAREN(a) == a);
+	REQUIRE(ORK_UNPAREN(A()) == a);
+	REQUIRE(ORK_UNPAREN((a)) == a);
+	REQUIRE(ORK_STR(ORK_UNPAREN((a))) == bstring("a"));
+
     // clang-format off
 #define ORK_SQUARE(DATA, I, A) A*A
 #define ORK_ADD(DATA, I, A, B) A + B
