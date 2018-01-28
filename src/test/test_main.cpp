@@ -34,8 +34,7 @@ TEST_CASE("Macro Generation", "[pp_meta]")
 
     LOOPI(macro_max)
     {
-        fout << BORK("#define ORK_ARG_")
-             << i << BORK("_(");
+        fout << BORK("#define ORK_ARG_") << i << BORK("(");
         LOOPJ(i + 1)
         {
             fout << BORK('A') << j << BORK(", ");
@@ -147,10 +146,11 @@ TEST_CASE("MAP Macro Test", "[pp_meta]")
 }
 
 
-TEST_CASE("Macro Test", "[pp_meta]") {
-	const int arg_1 = ORK_NUM_ARG(a);
-	REQUIRE(arg_1 == 1);
+TEST_CASE("Macro Test", "[pp_meta]")
+{
+    const int arg_1 = ORK_NUM_ARG(a);
+    REQUIRE(arg_1 == 1);
 
-	const int arg_3 = ORK_NUM_ARG(a, b, c);
-	REQUIRE(arg_3 == 3);
+    const int arg_3 = ORK_NUM_ARG(a, b, c);
+    REQUIRE(arg_3 == 3);
 }
