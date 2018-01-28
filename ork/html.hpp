@@ -276,7 +276,7 @@ protected:
 public:
 	table(const bstring&style, const unsigned num_column) :_table_style(style), _num_column(num_column) {}
 	table(const bstring&style, const unsigned num_column, const unsigned pad, const unsigned space) : padding(pad), spacing(space), _table_style(style), _num_column(num_column) {}
-	ORK_MOVE_ONLY_5(table, padding, spacing, _table_style, _num_column, _rows);
+	ORK_MOVE_ONLY(table);
 public:
 	size_t num_column()const {
 		return _num_column;
@@ -298,7 +298,7 @@ public:
 	std::vector<ptr_type>elements;
 public:
 	div(const bstring&div_style) :exportable(div_style) {}
-	ORK_MOVE_ONLY_1(div, elements);
+	ORK_MOVE_ONLY(div);
 public:
 	virtual std::ostream& export_html(std::ostream&out)const override;
 };
@@ -309,7 +309,7 @@ public:
 	std::vector<div>divs;
 public:
 	body() {}
-	ORK_MOVE_ONLY_1(body, divs);
+	ORK_MOVE_ONLY(body);
 public:
 	virtual std::ostream& export_html(std::ostream&out)const override;
 };
@@ -322,7 +322,7 @@ public:
 public:
 	document() {}
 	document(const header&head_, html::body&&body_) :head(head_), body(std::move(body_)) {}
-	ORK_MOVE_ONLY_2(document, head, body);
+	ORK_MOVE_ONLY(document);
 public:
 	virtual std::ostream& export_html(std::ostream&out)const override;
 };
