@@ -152,6 +152,9 @@ Basic macros section; the building blocks
 //Expand arguments, used mostly because of MSC
 #define ORK_EVAL(...) __VA_ARGS__
 
+#define ORK_STR_(X) #X
+#define ORK_STR(X) ORK_STR_(X)
+
 //These basic dumb macros are used to generate variadic macros
 #define ORK_CAT_00_()
 #define ORK_CAT_01_(A1) A1
@@ -247,12 +250,8 @@ ORK_MAP(CALL, STITCH, DATA, a, b, c) -> (One--a--Two *One, Two, 0* (One--b--Two 
 
 
 /*
-Begin enum section: defining enums with an iterable container and string conversions in two lines
+Convenience definitions for variadic macros
 */
-
-#define ORK_STR_(X) #X
-#define ORK_STR(X) ORK_STR_(X)
-
 
 #define ORK_NUM_ARG_(...) ORK_EVAL(ORK_ARG_N_(__VA_ARGS__))
 #define ORK_NUM_ARG(...) ORK_EVAL(ORK_NUM_ARG_(__VA_ARGS__, ORK_DESCENDING_N_))
@@ -267,6 +266,11 @@ Begin enum section: defining enums with an iterable container and string convers
 #define ORK_COMMA(DATA, I, X, Y) X, Y
 #define ORK_SEMI_COLON(DATA, I, X, Y) X; Y
 #define ORK_SPACE(DATA, I, X, Y) X Y
+
+
+/*
+Begin enum section: defining enums with an iterable container and string conversions in two lines
+*/
 
 
 #define ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) \
