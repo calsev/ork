@@ -194,18 +194,19 @@ Basic macros section; the building blocks
 /*
 MAP is the basis of most high-level variadic macros.
 
-DATA is passed to every call, and can be a macro
+DATA is passed to every call, and can be a tuple.  Example:
+#define DATA (One, Two)
 
 I is the iteration number
 
 CALL is invoked as CALL(DATA, I, ARG). Example:
-#define CALL(DATA, I, ARG) DATA--ARG--I
+#define CALL(DATA, I, ARG) ORK_ARG_0 D--ARG--ORK_ARG_1 D
 
 STITCH is invoked as STITCH(DATA, I, HEAD, TAIL) and is right
-associative.  Example: #define STITCH(DATA, I, X, Y) (X *DATA-I* Y)
+associative.  Example: #define STITCH(DATA, I, X, Y) (X *ORK_EVAL D, I* Y)
 
 Completing the example:
-ORK_MAP(CALL, STITCH, my, a, b, c) -> (my--a--0 *my-0* (my--b--1 *my-1* my--c--2))
+ORK_MAP(CALL, STITCH, DATA, a, b, c) -> (One--a--Two *One, Two, 0* (One--b--Two *One, Two, 1* One--c--Two))
 */
 #define ORK_MAP(CALL, STITCH, DATA, ...) \
     ORK_FLAT(ORK_MAP_2_(CALL, STITCH, DATA, 0, __VA_ARGS__, (), 0))

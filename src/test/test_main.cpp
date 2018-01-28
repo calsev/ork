@@ -150,14 +150,23 @@ TEST_CASE("MAP Macro Test", "[pp_meta]")
     REQUIRE(assoc_list == BORK("(my--a--0 *my-0* (my--b--1 *my-1* my--c--2))"));
 
     // clang-format off
-#define DATA() One, Two
+#define DATA (One, Two)
 #undef CALL
 #define CALL(D, I, ARG) I--ARG--I
 #undef STITCH
-#define STITCH(D, I, X, Y) (X *D(), I* Y)
+#define STITCH(D, I, X, Y) (X *D, I* Y)
     // clang-format on
     const ork::bstring expand_list{ORK_STR(ORK_MAP(CALL, STITCH, DATA, a, b, c))};
-    REQUIRE(expand_list == BORK("(0--a--0 *One, Two, 0* (1--b--1 *One, Two, 1* 2--c--2))"));
+    REQUIRE(expand_list == BORK("(0--a--0 *(One, Two), 0* (1--b--1 *(One, Two), 1* 2--c--2))"));
+
+	// clang-format off
+#undef CALL
+#define CALL(D, I, ARG) ORK_ARG_0 D--ARG--ORK_ARG_1 D
+#undef STITCH
+#define STITCH(D, I, X, Y) (X *ORK_EVAL D, I* Y)
+	// clang-format on
+	const ork::bstring expand_call_list{ORK_STR(ORK_MAP(CALL, STITCH, DATA, a, b, c))};
+	REQUIRE(expand_call_list == BORK("(One--a--Two *One, Two, 0* (One--b--Two *One, Two, 1* One--c--Two))"));
 }
 
 
