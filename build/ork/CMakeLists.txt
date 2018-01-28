@@ -149,6 +149,7 @@ set(ORK_CORE_HDRS
 	"${3P_ORK_SRC_DIR}/ork/core/stl_include.inl"
 	"${3P_ORK_SRC_DIR}/ork/core/text.hpp"
 	"${3P_ORK_SRC_DIR}/ork/core/tools.hpp"
+	"${3P_ORK_SRC_DIR}/ork/core/tools_generated.hpp"
 )
 set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/color.hpp"

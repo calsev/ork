@@ -13,6 +13,7 @@ Types and utilities for text, files and logging
 #include"ork/config/config.hpp"
 #include"ork/core/config_internal.hpp"
 #include"ork/core/includes.hpp"
+#include"ork/core/tools_generated.hpp"
 #include"ork/core/tools.hpp"
 #include"ork/core/text.hpp"
 #include"ork/core/exception.hpp"
