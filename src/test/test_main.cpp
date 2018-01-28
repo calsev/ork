@@ -143,6 +143,16 @@ TEST_CASE("MAP Macro Test", "[pp_meta]")
     // clang-format on
     const ork::bstring assoc_list{ORK_STR(ORK_MAP(CALL, STITCH, my, a, b, c))};
     REQUIRE(assoc_list == BORK("(my--a--0 *my-0* (my--b--1 *my-1* my--c--2))"));
+
+    // clang-format off
+#define DATA() One, Two
+#undef CALL
+#define CALL(D, I, ARG) I--ARG--I
+#undef STITCH
+#define STITCH(D, I, X, Y) (X *D(), I* Y)
+    // clang-format on
+    const ork::bstring expand_list{ORK_STR(ORK_MAP(CALL, STITCH, DATA, a, b, c))};
+    REQUIRE(expand_list == BORK("(0--a--0 *One, Two, 0* (1--b--1 *One, Two, 1* 2--c--2))"));
 }
 
 
