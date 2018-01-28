@@ -28,10 +28,10 @@ TEST_CASE("Strings are encoded", "[string]")
 // We to avoid a second project to generate code
 TEST_CASE("Macro Generation", "[pp_meta]")
 {
-    static const size_t dumb_macro_max = 40;
+    static const size_t macro_max = 64;
     ORK_FILE_WRITE_B(ORK("generated.cpp"));
 
-    LOOPI(dumb_macro_max)
+    LOOPI(macro_max)
     {
         fout << BORK("#define ORK_GET_ARG_")
              << (i / 10 > 0 ? BORK("") : BORK("0")) << i << BORK("_(");
@@ -44,28 +44,26 @@ TEST_CASE("Macro Generation", "[pp_meta]")
 
     fout << BORK("\n");
     fout << BORK("#define ORK_ARG_N_(");
-    LOOPI(dumb_macro_max + 1)
+    LOOPI(macro_max + 1)
     {
         fout << BORK('A') << i + 1 << BORK(", ");
     }
-    fout << BORK("...) A") << dumb_macro_max + 1 << BORK('\n');
+    fout << BORK("...) A") << macro_max + 1 << BORK('\n');
 
     fout << BORK("\n");
     fout << BORK("#define ORK_DESCENDING_N_ ");
-    LOOPRI(dumb_macro_max + 1)
+    LOOPRI(macro_max + 1)
     {
         fout << i << (i > 0 ? BORK(", ") : BORK(""));
     }
 
-    static const size_t macro_max = 256;
-
-	fout << BORK("\n\n");
+    fout << BORK("\n\n");
     LOOPI(macro_max)
     {
         fout << BORK("#define ORK_INC_") << i << BORK(" ") << i + 1 << BORK('\n');
     }
 
-	fout << BORK("\n");
+    fout << BORK("\n");
     LOOPI(macro_max)
     {
         fout << BORK("#define ORK_DEC_") << i + 1 << BORK(" ") << i << BORK('\n');

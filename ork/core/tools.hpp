@@ -171,15 +171,13 @@ Basic macros section; the building blocks
 // Go two contexts deeper, to avoid macro expansion
 #define ORK_CONTEXT_(...) __VA_ARGS__ ORK_DEFER_(ORK_EMPTY_)()
 
-// Support max depth/length of 256
-#define ORK_FLAT_3_(...) \
-    ORK_EVAL(ORK_EVAL(ORK_EVAL(ORK_EVAL(__VA_ARGS__)))) // 2^2
+// Support max depth/length of 64
 #define ORK_FLAT_2_(...) \
-    ORK_FLAT_3_(ORK_FLAT_3_(ORK_FLAT_3_(ORK_FLAT_3_(__VA_ARGS__)))) // 2^4
+    ORK_EVAL(ORK_EVAL(ORK_EVAL(ORK_EVAL(__VA_ARGS__)))) // 2^2
 #define ORK_FLAT_1_(...) \
-    ORK_FLAT_2_(ORK_FLAT_2_(ORK_FLAT_2_(ORK_FLAT_2_(__VA_ARGS__)))) // 2^6
+    ORK_FLAT_2_(ORK_FLAT_2_(ORK_FLAT_2_(ORK_FLAT_2_(__VA_ARGS__)))) // 2^4
 #define ORK_FLAT(...) \
-    ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(__VA_ARGS__)))) // 2^8
+    ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(ORK_FLAT_1_(__VA_ARGS__)))) // 2^6
 
 
 #define ORK_MAP_3_() ORK_MAP_2_
