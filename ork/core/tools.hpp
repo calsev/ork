@@ -83,6 +83,40 @@ Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
 #define ORK_UNREACHABLE ORK_THROW(ORK("Unreachable"));
 
 
+/*
+Copy and move semantics
+*/
+
+#define ORK_COPY_(TYPE)\
+	TYPE(const TYPE&)=default;\
+	TYPE&operator=(const TYPE&)=default;
+
+#if ORK_GCC || ORK_MSC > 1800//VS 2015 or later
+#define ORK_NO_COPY_(TYPE)\
+			TYPE(const TYPE&)=delete;\
+			TYPE&operator=(const TYPE&)=delete;
+#define ORK_NO_MOVE_(TYPE)\
+			TYPE(TYPE&&)=delete;\
+			TYPE&operator=(TYPE&&)=delete;
+#define ORK_MOVE_(TYPE)\
+		TYPE(TYPE&&)=default;\
+		TYPE&operator=(TYPE&&)=default;
+#else
+#define ORK_NO_COPY_(TYPE)\
+			private:\
+				TYPE(const TYPE&);\
+				TYPE&operator=(const TYPE&);
+#define ORK_NO_MOVE_(TYPE) ORK_EMPTY
+#define ORK_MOVE_(TYPE) ORK_EMPTY
+#endif
+
+#define ORK_NON_COPYABLE(TYPE) ORK_NO_COPY_(TYPE) ORK_NO_MOVE_(TYPE)
+#if ORK_GCC || ORK_MSC > 1800//VS 2015 or later
+#	define ORK_MOVE_ONLY(TYPE) ORK_NO_COPY_(TYPE) ORK_MOVE_(TYPE)
+#	define ORK_MOVEABLE(TYPE) ORK_COPY_(TYPE) ORK_MOVE_(TYPE)
+#endif
+
+
 /***
 Begin Looping section.
 Macros to simplify basic loops.
@@ -210,40 +244,6 @@ ORK_MAP(CALL, STITCH, DATA, a, b, c) -> (One--a--Two *One, Two, 0* (One--b--Two 
 */
 #define ORK_MAP(CALL, STITCH, DATA, ...) \
     ORK_FLAT(ORK_MAP_2_(CALL, STITCH, DATA, 0, __VA_ARGS__, (), 0))
-
-
-/*
-Copy and move semantics
-*/
-
-#define ORK_COPY_(TYPE)\
-	TYPE(const TYPE&)=default;\
-	TYPE&operator=(const TYPE&)=default;
-
-#if ORK_GCC || ORK_MSC > 1800//VS 2015 or later
-	#define ORK_NO_COPY_(TYPE)\
-			TYPE(const TYPE&)=delete;\
-			TYPE&operator=(const TYPE&)=delete;
-	#define ORK_NO_MOVE_(TYPE)\
-			TYPE(TYPE&&)=delete;\
-			TYPE&operator=(TYPE&&)=delete;
-	#define ORK_MOVE_(TYPE)\
-		TYPE(TYPE&&)=default;\
-		TYPE&operator=(TYPE&&)=default;
-#else
-	#define ORK_NO_COPY_(TYPE)\
-			private:\
-				TYPE(const TYPE&);\
-				TYPE&operator=(const TYPE&);
-	#define ORK_NO_MOVE_(TYPE) ORK_EMPTY
-	#define ORK_MOVE_(TYPE) ORK_EMPTY
-#endif
-
-#define ORK_NON_COPYABLE(TYPE) ORK_NO_COPY_(TYPE) ORK_NO_MOVE_(TYPE)
-#if ORK_GCC || ORK_MSC > 1800//VS 2015 or later
-#	define ORK_MOVE_ONLY(TYPE) ORK_NO_COPY_(TYPE) ORK_MOVE_(TYPE)
-#	define ORK_MOVEABLE(TYPE) ORK_COPY_(TYPE) ORK_MOVE_(TYPE)
-#endif
 
 
 /*
