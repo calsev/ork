@@ -272,29 +272,6 @@ Convenience definitions for variadic macros
 Begin enum section: defining enums with an iterable container and string conversions in two lines
 */
 
-
-#define ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) \
-if(str == ORK_CAT(PRE, ARG)) {\
-	return ENUM::ARG;\
-}
-#define ORK_STR_2_ENUM_LIST_00_(ENUM, PRE)
-#define ORK_STR_2_ENUM_LIST_01_(ENUM, PRE, ARG) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG))
-#define ORK_STR_2_ENUM_LIST_02_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_01_(ENUM, PRE, __VA_ARGS__))
-#define ORK_STR_2_ENUM_LIST_03_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_02_(ENUM, PRE, __VA_ARGS__))
-#define ORK_STR_2_ENUM_LIST_04_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_03_(ENUM, PRE, __VA_ARGS__))
-#define ORK_STR_2_ENUM_LIST_05_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_04_(ENUM, PRE, __VA_ARGS__))
-#define ORK_STR_2_ENUM_LIST_06_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_05_(ENUM, PRE, __VA_ARGS__))
-#define ORK_STR_2_ENUM_LIST_07_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_06_(ENUM, PRE, __VA_ARGS__))
-#define ORK_STR_2_ENUM_LIST_08_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_07_(ENUM, PRE, __VA_ARGS__))
-#define ORK_STR_2_ENUM_LIST_09_(ENUM, PRE, ARG, ...) ORK_EVAL(ORK_STR_2_ENUM_IF_(ENUM, PRE, ARG) ORK_STR_2_ENUM_LIST_08_(ENUM, PRE, __VA_ARGS__))
-
-#define ORK_STR_2_ENUM_LIST(ENUM, PRE, ...) ORK_EVAL(\
-	ORK_ARG_9( \
-		__VA_ARGS__, ORK_STR_2_ENUM_LIST_09_, ORK_STR_2_ENUM_LIST_08_, ORK_STR_2_ENUM_LIST_07_, ORK_STR_2_ENUM_LIST_06_, ORK_STR_2_ENUM_LIST_05_,	\
-		ORK_STR_2_ENUM_LIST_04_, ORK_STR_2_ENUM_LIST_03_, ORK_STR_2_ENUM_LIST_02_, ORK_STR_2_ENUM_LIST_01_, ORK_STR_2_ENUM_LIST_00_) \
-	(ENUM, PRE, __VA_ARGS__))
-
-
 #define ORK_ENUM_SET_(ENUM, ...) const std::array<ENUM, ORK_NUM_ARG(__VA_ARGS__)>
 
 #define ORK_ENUM_DECL_(API, ENUM, ...)\
@@ -338,9 +315,15 @@ API(const ork::ORK_CAT(PRE, string)&) ORK_CAT(to_, PRE, string)(const ENUM val) 
 #endif
 
 
+// Data must be formatted as (ENUM, PRE)
+#define ORK_STR_2_ENUM_IF_(DATA, I, ARG) \
+if(str == ORK_CAT(ORK_ARG_1 DATA, ARG)) {\
+	return ORK_ARG_0 DATA::ARG;\
+}
+
 #define ORK_STR_2_ENUM_(API, ENUM, PRE, CONV, ...) ORK_EVAL(\
 API(ENUM) ORK_CAT(to_, ENUM)(const ork::ORK_CAT(PRE, string)& str) { \
-	ORK_STR_2_ENUM_LIST(ENUM, PRE, __VA_ARGS__) \
+	ORK_MAP(ORK_STR_2_ENUM_IF_, ORK_SPACE, (ENUM, PRE), __VA_ARGS__) \
 	ORK_THROW(ORK("Invalid ") << ORK_STR(ENUM) << ORK(": ") << CONV(str));\
 }\
 template<> API(ENUM) from_string<ENUM>(const ork::ORK_CAT(PRE, string)& str) {\
