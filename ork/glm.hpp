@@ -187,6 +187,10 @@ ORK_INLINE bool equal(const T&lhs, const T&rhs) {
 
 //And we have not bothered to add other overloads
 template<typename V, glm::precision P>
+ORK_INLINE bool equal(const glm::tvec2<V, P>&lhs, const glm::tvec2<V, P>&rhs) {
+    return detail::equal_vector<glm::tvec2<V, P>>(lhs, rhs);
+}
+template<typename V, glm::precision P>
 ORK_INLINE bool equal(const glm::tvec3<V, P>&lhs, const glm::tvec3<V, P>&rhs) {
 	return detail::equal_vector<glm::tvec3<V, P>>(lhs, rhs);
 }
