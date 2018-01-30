@@ -274,10 +274,13 @@ Begin enum section: defining enums with an iterable container and string convers
 
 #define ORK_ENUM_SET_(ENUM, ...) const std::array<ENUM, ORK_NUM_ARG(__VA_ARGS__)>
 
-#define ORK_ENUM_DECL_(API, ENUM, ...)\
+#define ORK_ENUM_DECL_(API, INLINE, ENUM, ...)\
 enum class ENUM {\
 	ORK_MAP(ORK_IDENTITY, ORK_COMMA, ORK_EMPTY, __VA_ARGS__)\
 };\
+INLINE int operator-(const ENUM lhs, const ENUM rhs){ \
+    return static_cast<int>(lhs) - static_cast<int>(rhs); \
+} \
 API(ORK_ENUM_SET_(ENUM, __VA_ARGS__)&) ORK_CAT(ENUM, _set)();\
 API(const ork::string&) to_string(const ENUM);\
 API(const ork::bstring&) to_bstring(const ENUM);\
@@ -285,11 +288,10 @@ API(const ork::wstring&) to_wstring(const ENUM);\
 API(ENUM) ORK_CAT(to_, ENUM)(const ork::bstring&);\
 API(ENUM) ORK_CAT(to_, ENUM)(const ork::wstring&);\
 template<> API(ENUM) from_string<ENUM>(const bstring&str); \
-template<> API(ENUM) from_string<ENUM>(const wstring&str);
+template<> API(ENUM) from_string<ENUM>(const wstring&str)
 
-
-#define ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_EXT, ENUM, __VA_ARGS__)
-#define ORK_ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_ORK_EXT, ENUM, __VA_ARGS__)
+#define ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_EXT, ORK_INLINE, ENUM, __VA_ARGS__)
+#define ORK_ORK_ENUM_DECL(ENUM, ...) ORK_ENUM_DECL_(ORK_ORK_EXT, ORK_ORK_INLINE, ENUM, __VA_ARGS__)
 
 
 // Data must be formatted (PRE, STR)
