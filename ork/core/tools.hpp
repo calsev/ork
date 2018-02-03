@@ -295,11 +295,11 @@ template<> API(ENUM) from_string<ENUM>(const wstring&str)
 
 
 // Data must be formatted (PRE, STR)
-#define ORK_MAKE_STRING_(DATA, I, ARG) ORK_EVAL(const ork::ORK_CAT(ORK_ARG_0 DATA, string) ORK_CAT(ORK_ARG_0 DATA, ARG){ORK_ARG_1 DATA(ORK_STR(ARG))};)
+#define ORK_MAKE_STRING_(DATA, I, ARG) ORK_EVAL(const ork::ORK_CAT(ORK_ARG_0 DATA, string) ORK_CAT(ORK_ARG_0 DATA, ARG){ORK_ARG_1 DATA(ORK_STR(ARG))})
 
 
 // Data must be formatted (ENUM, PRE)
-#define ORK_CASE_(DATA, I, ARG) case ORK_ARG_0 DATA::ARG: return ORK_CAT(ORK_ARG_1 DATA, ARG)
+#define ORK_CASE_(DATA, I, ARG) case ORK_ARG_0 DATA::ARG: return ORK_CAT(ORK_ARG_0 DATA, _ns)::ORK_CAT(ORK_ARG_1 DATA, ARG)
 
 #define ORK_ENUM_2_STR_(API, ENUM, PRE, ...) ORK_EVAL( \
 API(const ork::ORK_CAT(PRE, string)&) ORK_CAT(to_, PRE, string)(const ENUM val) {\
@@ -319,7 +319,7 @@ API(const ork::ORK_CAT(PRE, string)&) ORK_CAT(to_, PRE, string)(const ENUM val) 
 
 // Data must be formatted as (ENUM, PRE)
 #define ORK_STR_2_ENUM_IF_(DATA, I, ARG) \
-if(str == ORK_CAT(ORK_ARG_1 DATA, ARG)) {\
+if(str == ORK_CAT(ORK_ARG_0 DATA, _ns)::ORK_CAT(ORK_ARG_1 DATA, ARG)) {\
 	return ORK_ARG_0 DATA::ARG;\
 }
 
@@ -340,8 +340,10 @@ API(ORK_ENUM_SET_(ENUM, __VA_ARGS__)&) ORK_CAT(ENUM, _set)() {\
 	}};\
 	return val;\
 };\
+namespace ORK_CAT(ENUM, _ns) { \
 ORK_MAP(ORK_MAKE_STRING_, ORK_SEMI_COLON, (b, BORK), __VA_ARGS__); \
 ORK_MAP(ORK_MAKE_STRING_, ORK_SEMI_COLON, (w, WORK), __VA_ARGS__); \
+} \
 ORK_ENUM_2_STR_(API, ENUM, b, __VA_ARGS__) \
 ORK_ENUM_2_STR_(API, ENUM, w, __VA_ARGS__) \
 API(const ork::string&) to_string(const ENUM val) { \
