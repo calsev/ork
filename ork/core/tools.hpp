@@ -137,6 +137,10 @@ Copy and move semantics
 #    define LOOPJ(LIMIT) LOOP_(LIMIT, j)
 #    define LOOPK(LIMIT) LOOP_(LIMIT, k)
 #    define LOOPL(LIMIT) LOOP_(LIMIT, l)
+#    define LOOPX(LIMIT) LOOP_(LIMIT, x)
+#    define LOOPY(LIMIT) LOOP_(LIMIT, y)
+#    define LOOPZ(LIMIT) LOOP_(LIMIT, z)
+
 
 #    define LOOPR(LIMIT, INDEX) \
         for(size_t INDEX = LIMIT; INDEX-- != 0; /*Do Nothing*/)
@@ -144,6 +148,9 @@ Copy and move semantics
 #    define LOOPRJ(LIMIT) LOOPR(LIMIT, j)
 #    define LOOPRK(LIMIT) LOOPR(LIMIT, k)
 #    define LOOPRL(LIMIT) LOOPR(LIMIT, l)
+#    define LOOPRX(LIMIT) LOOPR(LIMIT, x)
+#    define LOOPRY(LIMIT) LOOPR(LIMIT, y)
+#    define LOOPRZ(LIMIT) LOOPR(LIMIT, z)
 
     /*Loops over vectors, the limit variable must be obviously constant for the compiler to vectorize anything.*/
 #    define LOOPV(SERIES, INDEX) \
@@ -153,6 +160,9 @@ Copy and move semantics
 #    define LOOPVJ(SERIES) LOOPV(SERIES, j)
 #    define LOOPVK(SERIES) LOOPV(SERIES, k)
 #    define LOOPVL(SERIES) LOOPV(SERIES, l)
+#    define LOOPVX(SERIES) LOOPV(SERIES, x)
+#    define LOOPVY(SERIES) LOOPV(SERIES, y)
+#    define LOOPVZ(SERIES) LOOPV(SERIES, z)
 
 
 /*
