@@ -3,9 +3,9 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-#include"ork/memory.hpp"
+#include "ork/memory.hpp"
 
-#include"glm/fwd.hpp"
+#include "glm/fwd.hpp"
 
 
 #if ORK_USE_JSON
@@ -19,7 +19,7 @@ class Value;
 namespace pugi {
 class xml_document;
 class xml_node;
-}
+} // namespace pugi
 #endif
 
 
@@ -39,31 +39,35 @@ namespace json {
 
 class ORK_ORK_API exportable {
 public:
-	virtual ~exportable() {}
+    virtual ~exportable() {}
+
 public:
-	virtual void export_json(Json::Value& v) const = 0;
+    virtual void export_json(Json::Value& v) const = 0;
 };
 
 
 class ORK_ORK_API serializable {
 public:
-	virtual ~serializable() {}
+    virtual ~serializable() {}
+
 public:
-	virtual void to_json(Json::Value& v) const = 0;
-	virtual void from_json(const Json::Value& v) = 0;
+    virtual void to_json(Json::Value& v) const = 0;
+    virtual void from_json(const Json::Value& v) = 0;
 };
 
 
-ORK_ORK_EXT(void) export_file(const string&path_to_file, const Json::Value&root);
-ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object);
-ORK_ORK_EXT(void) load_and_parse(bi_stream&fin, Json::Value&root);
-ORK_ORK_EXT(Json::Value) load_and_parse(bi_stream&fin);
+ORK_ORK_EXT(void)
+export_file(const string& path_to_file, const Json::Value& root);
+ORK_ORK_EXT(void)
+export_file(const string& path_to_file, const exportable& object);
+ORK_ORK_EXT(void) load_and_parse(bi_stream& fin, Json::Value& root);
+ORK_ORK_EXT(Json::Value) load_and_parse(bi_stream& fin);
 
 
-#endif//ORK_USE_JSON
+#endif // ORK_USE_JSON
 
 
-}//namespace json
+} // namespace json
 namespace xml {
 
 
@@ -72,30 +76,38 @@ namespace xml {
 
 class ORK_ORK_API exportable {
 public:
-	virtual ~exportable() {}
+    virtual ~exportable() {}
+
 public:
-	virtual void export_xml(pugi::xml_node &n) const = 0;
+    virtual void export_xml(pugi::xml_node& n) const = 0;
 };
 
 
 class ORK_ORK_API serializable {
 public:
-	virtual ~serializable() {}
+    virtual ~serializable() {}
+
 public:
-	virtual void to_xml(pugi::xml_node& v) const = 0;
-	virtual void from_xml(const pugi::xml_node& v) = 0;
+    virtual void to_xml(pugi::xml_node& v) const = 0;
+    virtual void from_xml(const pugi::xml_node& v) = 0;
 };
 
 
-ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object, const string&root_node_name);
-ORK_ORK_EXT(void) load_and_parse(i_stream&fin, pugi::xml_document&root);//Just create a file with error checking
-ORK_ORK_EXT(void) load_and_parse_permissive(const ork::file::path& path_to_file, const ork::bstring&root_tag, ork::xml::serializable& obj);
+ORK_ORK_EXT(void)
+export_file(const string& path_to_file, const exportable& object, const string& root_node_name);
+ORK_ORK_EXT(void)
+load_and_parse(i_stream& fin, pugi::xml_document& root); // Just create a file with error checking
+ORK_ORK_EXT(void)
+load_and_parse_permissive(
+    const ork::file::path& path_to_file,
+    const ork::bstring& root_tag,
+    ork::xml::serializable& obj);
 
 
-#endif//ORK_USE_PUGI
+#endif // ORK_USE_PUGI
 
 
-}//namespace xml
+} // namespace xml
 namespace yaml {
 
 
@@ -104,29 +116,33 @@ namespace yaml {
 
 class ORK_ORK_API exportable {
 public:
-	virtual ~exportable() {}
+    virtual ~exportable() {}
+
 public:
-	virtual void export_yaml(YAML::Node& n) const = 0;
+    virtual void export_yaml(YAML::Node& n) const = 0;
 };
 
 
 class ORK_ORK_API serializable {
 public:
-	virtual ~serializable() {}
+    virtual ~serializable() {}
+
 public:
-	virtual void to_yaml(YAML::Node& v) const = 0;
-	virtual void from_yaml(const YAML::Node& v) = 0;
+    virtual void to_yaml(YAML::Node& v) const = 0;
+    virtual void from_yaml(const YAML::Node& v) = 0;
 };
 
 
-ORK_ORK_EXT(void) export_file(const string&path_to_file, const YAML::Node&root);
-ORK_ORK_EXT(void) export_file(const string&path_to_file, const exportable&object);
-ORK_ORK_EXT(void) load_and_parse(bi_stream&fin, YAML::Node&root);
-ORK_ORK_EXT(YAML::Node) load_and_parse(bi_stream&fin);
+ORK_ORK_EXT(void)
+export_file(const string& path_to_file, const YAML::Node& root);
+ORK_ORK_EXT(void)
+export_file(const string& path_to_file, const exportable& object);
+ORK_ORK_EXT(void) load_and_parse(bi_stream& fin, YAML::Node& root);
+ORK_ORK_EXT(YAML::Node) load_and_parse(bi_stream& fin);
 
 
-#endif//ORK_USE_YAML
+#endif // ORK_USE_YAML
 
 
-}//namespace yaml
-}//namespace ork
+} // namespace yaml
+} // namespace ork
