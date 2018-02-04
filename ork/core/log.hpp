@@ -56,7 +56,7 @@ private:
 public:
 	ORK_ORK_API log_scope(std::unique_ptr<impl>&&);
 	ORK_ORK_API ~log_scope();
-	ORK_MOVE_ONLY(log_scope)
+    ORK_MOVE_ONLY(log_scope);
 public:
 	ORK_ORK_API log_scope& operator<< (const bool val);
 	ORK_ORK_API log_scope& operator<< (const short val);
@@ -97,7 +97,7 @@ private:
 public:
 	ORK_ORK_API explicit logger(const file::path&log_file);
 	ORK_ORK_API ~logger();
-	ORK_NON_COPYABLE(logger)
+    ORK_NON_COPYABLE(logger);
 public:
 	ORK_ORK_API const file::path&root_directory();
 	ORK_ORK_API log_scope get_log_scope(

@@ -102,7 +102,7 @@ public:
 	~log_stream() {
 		flush();
 	}
-	ORK_NON_COPYABLE(log_stream)
+    ORK_NON_COPYABLE(log_stream);
 public:
 	void log(const string&message) {
 		*_stream << message << ORK('\n');
@@ -122,7 +122,7 @@ private:
 public:
 	log_sink() {}
 	log_sink(const bool auto_flush) : _auto_flush{auto_flush} {}
-	ORK_NON_COPYABLE(log_sink)
+    ORK_NON_COPYABLE(log_sink);
 public:
 	void insert(const stream_ptr&ptr) {
 		_streams.push_back(ptr);
@@ -173,7 +173,7 @@ public:
 		const severity_level sv)
 		: _channel{lc}
 		, _severity{sv} {}
-	ORK_NON_COPYABLE(message_guard)
+    ORK_NON_COPYABLE(message_guard);
 public:
 	log_channel channel() const {
 		return _channel;
@@ -242,7 +242,7 @@ public:
 		_data_sink.insert(lout);
 		_data_sink.insert(fdata);
 	}
-	ORK_NON_COPYABLE(log_multiplexer)
+    ORK_NON_COPYABLE(log_multiplexer);
 public:
 	guard_ptr get_message_guard(
 		const log_channel lc,
@@ -310,7 +310,7 @@ public:
 		guard->log(stream);
 		multiplexer->on_scope_exit();
 	}
-	ORK_MOVE_ONLY(impl)
+    ORK_MOVE_ONLY(impl);
 };
 
 log_scope::log_scope(std::unique_ptr<impl>&&ptr) : _pimpl{ std::move(ptr) } {}

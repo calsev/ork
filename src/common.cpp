@@ -242,7 +242,7 @@ public:
 	typedef std::lock_guard<mutex_type>lock_type;
 public:
 	impl() {}
-	ORK_NON_COPYABLE(impl)
+    ORK_NON_COPYABLE(impl);
 public:
 	string_converter converter;
 	std::mutex mutex;

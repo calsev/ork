@@ -30,7 +30,7 @@ private:
 	std::mutex _mutex = { };
 public:
 	tagger_statics() {}
-	ORK_NON_COPYABLE(tagger_statics)
+    ORK_NON_COPYABLE(tagger_statics);
 public:
 	file::path debug_root() {
 		std::lock_guard<std::mutex> lock(_mutex);
@@ -63,7 +63,7 @@ public:
 		, number_folder(numbered_folders)
 		, tag(tag) 
 	{}
-	ORK_NON_COPYABLE(impl)
+    ORK_NON_COPYABLE(impl);
 };
 
 

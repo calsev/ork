@@ -259,7 +259,7 @@ private:
 	std::vector<segment>_segments;
 public:
 	ORK_INLINE chain() :_segments() {}
-	ORK_MOVEABLE(chain)
+    ORK_MOVEABLE(chain);
 public:
 	ORK_INLINE const std::vector<segment>&segments()const { return _segments; }
 	ORK_INLINE std::vector<segment>&segments(){ return _segments; }

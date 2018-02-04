@@ -21,7 +21,7 @@ public:
 	ORK_ORK_API explicit tagger(const string&tag);
 	ORK_ORK_API tagger(const string&tag, bool numbered_folders);
 	ORK_ORK_API ~tagger();
-	ORK_NON_COPYABLE(tagger)
+    ORK_NON_COPYABLE(tagger);
 public:
 	ORK_ORK_API static void set_debug_root(const string&directory);
 	ORK_ORK_API static void set_debug_root(const string&as_is_path, const string&to_be_path);
@@ -42,7 +42,7 @@ private:
 	std::unique_ptr<impl>_pimpl;
 public:
 	ORK_ORK_API setup_hierarchy(const string&setup_root, const string&as_is_path, const string&to_be_path);
-	ORK_MOVE_ONLY(setup_hierarchy)
+    ORK_MOVE_ONLY(setup_hierarchy);
 public:
 	ORK_ORK_API const string&get_path();
 	ORK_ORK_API file::path get_subdirectory();

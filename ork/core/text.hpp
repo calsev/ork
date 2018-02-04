@@ -182,7 +182,7 @@ private:
 public:
 	string_converter_type();
 	~string_converter_type();
-	ORK_MOVE_ONLY(string_converter_type)
+    ORK_MOVE_ONLY(string_converter_type);
 public:
 	ORK_ORK_API bstring wide2byte(const wchar_t s);
 	ORK_ORK_API bstring wide2byte(const wchar_t*s);
