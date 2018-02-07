@@ -23,27 +23,27 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #    endif
 
 #    ifndef ORK_AUTO_LINK_3P // Auto link third-party dependencies
-#        define ORK_AUTO_LINK_3P ORK_AUTO_LINK
+#        define ORK_AUTO_LINK_3P 1
 #    endif
 
 #    ifndef ORK_USE_BOOST // Optional dependency
-#        define ORK_USE_BOOST 1
+#        define ORK_USE_BOOST 0
 #    endif
 
 #    ifndef ORK_USE_GLM // Optional dependency
-#        define ORK_USE_GLM 1
+#        define ORK_USE_GLM 0
 #    endif
 
 #    ifndef ORK_USE_JSON // Optional dependency
-#        define ORK_USE_JSON 1
+#        define ORK_USE_JSON 0
 #    endif
 
 #    ifndef ORK_USE_PUGI // Optional dependency
-#        define ORK_USE_PUGI 1
+#        define ORK_USE_PUGI 0
 #    endif
 
 #    ifndef ORK_USE_YAML // Optional dependency
-#        define ORK_USE_YAML 1
+#        define ORK_USE_YAML 0
 #    endif
 
 #    ifndef ORK_USE_ACIS // Configures numerical stuff

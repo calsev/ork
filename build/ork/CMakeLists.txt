@@ -76,7 +76,7 @@ file(READ "${3P_ORK_SRC_DIR}/ork/config/config.hpp" ORK_CONFIG_H)
 if(NOT ORK_BUILD_SHARED)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_ORK_DLL) 1" "\\1 0"
+		"(ORK_ORK_DLL) 1" "\\1 0"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 	set(ORK_LINK_MODE "STATIC")
@@ -86,49 +86,49 @@ endif()
 if(NOT ORK_AUTO_LINK)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_AUTO_LINK) 1" "\\1 0"
+		"(ORK_AUTO_LINK) 1" "\\1 0"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
 if(NOT ORK_AUTO_LINK_3P)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_AUTO_LINK_3P) 1" "\\1 0"
+		"(ORK_AUTO_LINK_3P) 1" "\\1 0"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
-if(NOT ORK_USE_BOOST)
+if(ORK_USE_BOOST)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_USE_BOOST) 1" "\\1 0"
+		"(ORK_USE_BOOST) 0" "\\1 1"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
-if(NOT ORK_USE_GLM)
+if(ORK_USE_GLM)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_USE_GLM) 1" "\\1 0"
+		"(ORK_USE_GLM) 0" "\\1 1"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
-if(NOT ORK_USE_JSON)
+if(ORK_USE_JSON)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_USE_JSON) 1" "\\1 0"
+		"(ORK_USE_JSON) 0" "\\1 1"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
-if(NOT ORK_USE_PUGI)
+if(ORK_USE_PUGI)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_USE_PUGI) 1" "\\1 0"
+		"(ORK_USE_PUGI) 0" "\\1 1"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
-if(NOT ORK_USE_YAML)
+if(ORK_USE_YAML)
 	string(
 		REGEX REPLACE
-		"(#	define ORK_USE_YAML) 1" "\\1 0"
+		"(ORK_USE_YAML) 0" "\\1 1"
 		ORK_CONFIG_H "${ORK_CONFIG_H}"
 	)
 endif()
