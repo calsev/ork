@@ -518,8 +518,8 @@ macro(ork_post_project_config)
 	append_debug_flag("-D_DEBUG -DDEBUG")
 	append_release_flag("-D_NDEBUG -DNDEBUG")
 	replace_or_append_release_flag_compilers("/O([0-4]|x)" "-O[0-3]" "/Ox" "-O3")
-	replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "")
-	replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "")
+	replace_or_append_release_flag_compilers("/Z(7|i|l)" "IMPOSSIBLE" "/Zi" "-DUMMY")
+	replace_or_append_release_flag_compilers("/Ob[0-2]" "IMPOSSIBLE" "/Ob2" "-DUMMY")
 
 	#Fast behavior is bad for CAD kernels
 	detect_option_flag(ORK_FAST_FLOAT "Use fast floating point operations (Do not use in CAD applications)" OFF)
