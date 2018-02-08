@@ -5,6 +5,34 @@ endif()
 set(ORK_MACROS_INCLUDED 1)
 
 ####################
+#Basic compiler identification
+####################
+
+macro(get_compiler_name _var)
+	if(MSVC)
+		if(MSVC11)
+			set(${_var} "vc11")
+		elseif(MSVC12)
+			set(${_var} "vc12")
+		elseif(MSVC14)
+			set(${_var} "vc14")
+		elseif(MSVC15)
+			set(${_var} "vc15")
+		endif()
+	elseif(DEFINED CMAKE_COMPILER_IS_GNUCC)
+		set(${_var} "gcc")
+	elseif(DEFINED CMAKE_COMPILER_IS_GNUCXX)
+		set(${_var} "gxx")
+	elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+		set(${_var} "clang")
+	elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+		set(${_var} "icc")
+	else()
+		message(FATAL_ERROR "Compiler not recognized")
+	endif()
+endmacro()
+
+####################
 #Variable section
 ####################
 
@@ -251,30 +279,6 @@ endmacro()
 ####################
 #Compiler section
 ####################
-
-macro(get_compiler_name _var)
-	if(MSVC)
-		if(MSVC11)
-			set(${_var} "vc11")
-		elseif(MSVC12)
-			set(${_var} "vc12")
-		elseif(MSVC14)
-			set(${_var} "vc14")
-		elseif(MSVC15)
-			set(${_var} "vc15")
-		endif()
-	elseif(DEFINED CMAKE_COMPILER_IS_GNUCC)
-		set(${_var} "gcc")
-	elseif(DEFINED CMAKE_COMPILER_IS_GNUCXX)
-		set(${_var} "gxx")
-	elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-		set(${_var} "clang")
-	elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
-		set(${_var} "icc")
-	else()
-		message(FATAL_ERROR "Compiler not recognized")
-	endif()
-endmacro()
 
 macro(append_all_compiler_flag _flag)
 	if(NOT ${_flag} MATCHES "^(/|-)")
