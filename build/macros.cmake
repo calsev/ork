@@ -110,6 +110,9 @@ macro(ork_pre_project_config)
 	set_as_internal(ORK_CMAKE_RAN_INTERNAL ON)
 
 
+	enable_language(CXX)
+	enable_language(C)
+	enable_language(ASM_MASM)
 	#Must be set before PROJECT to hide
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
 	mark_as_internal(CMAKE_CONFIGURATION_TYPES)
@@ -486,7 +489,6 @@ macro(ork_post_project_config)
 	endif()
 
 	#explicit enable is required to avoid errors
-	enable_language(CXX)
 	mark_as_internal(CMAKE_CXX_FLAGS)
 	mark_as_internal(CMAKE_CXX_FLAGS_DEBUG)
 	mark_as_internal(CMAKE_CXX_FLAGS_MINSIZEREL)
@@ -495,7 +497,6 @@ macro(ork_post_project_config)
 
 	mark_as_internal(CMAKE_CXX_STANDARD_LIBRARIES)
 
-	enable_language(C)
 	mark_as_internal(CMAKE_C_FLAGS)
 	mark_as_internal(CMAKE_C_FLAGS_DEBUG)
 	mark_as_internal(CMAKE_C_FLAGS_MINSIZEREL)
@@ -503,8 +504,7 @@ macro(ork_post_project_config)
 	mark_as_internal(CMAKE_C_FLAGS_RELWITHDEBINFO)
 
 	mark_as_internal(CMAKE_C_STANDARD_LIBRARIES)
-	
-	enable_language(ASM_MASM)
+
 	mark_as_internal(CMAKE_ASM_MASM_COMPILER)
 	mark_empty_internal(CMAKE_ASM_MASM_FLAGS)
 	mark_empty_internal(CMAKE_ASM_MASM_FLAGS_DEBUG)
