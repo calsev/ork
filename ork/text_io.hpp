@@ -4,6 +4,8 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include "ork/memory.hpp"
+#include "ork/string_utils.hpp"
+#include "ork/type_traits.hpp"
 
 #include "glm/fwd.hpp"
 
@@ -99,9 +101,115 @@ ORK_ORK_EXT(void)
 load_and_parse(i_stream& fin, pugi::xml_document& root); // Just create a file with error checking
 ORK_ORK_EXT(void)
 load_and_parse_permissive(
-    const ork::file::path& path_to_file,
-    const ork::bstring& root_tag,
-    ork::xml::serializable& obj);
+    const file::path& path_to_file,
+    const bstring& root_tag,
+    xml::serializable& obj);
+
+
+/*
+These are permissive interfaces
+*/
+template<typename T>
+void value_to_attribute(pugi::xml_node& node, const bstring& tag, ORK_CPARAM_T value)
+{
+    try {
+        node.append_attribute(tag.c_str()).set_value(to_bstring(value).c_str());
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to set attribute ") << ORK_BYTE_2_STR(node.name())
+            << ORK(":") << ORK_BYTE_2_STR(tag) << ORK(", ") << e.what();
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error)
+            << ORK("Something happened setting attribute ")
+            << ORK_BYTE_2_STR(node.name()) << ORK(":") << ORK_BYTE_2_STR(tag);
+    }
+}
+template<typename T>
+void value_to_xml(pugi::xml_node& node, const bstring& tag, ORK_CPARAM_T value)
+{
+    try {
+        node.append_child(tag.c_str())
+            .append_child(pugi::node_pcdata)
+            .set_value(to_bstring(value).c_str());
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to set tag ") << ORK_BYTE_2_STR(tag) << ORK(": ")
+            << ORK_BYTE_2_STR(e.what());
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error)
+            << ORK("Something happened setting tag ") << ORK_BYTE_2_STR(tag);
+    }
+}
+template<typename T>
+void value_to_xml(pugi::xml_node& node, ORK_CPARAM_T value)
+{
+    try {
+        node.append_child(pugi::node_pcdata).set_value(to_bstring(value).c_str());
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to set tag ") << ORK_BYTE_2_STR(node.name())
+            << ORK(": ") << ORK_BYTE_2_STR(e.what());
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error) << ORK("Something happened setting tag ")
+                                       << ORK_BYTE_2_STR(node.name());
+    }
+}
+
+
+template<typename T>
+void value_from_attribute(const pugi::xml_node& node, const bstring& tag, ORK_REF_T value)
+{
+    try {
+        value = from_string<ORK_VAL_T>(node.attribute(tag.c_str()).value());
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to read parameter ") << ORK_BYTE_2_STR(tag)
+            << ORK(": ") << ORK_BYTE_2_STR(e.what());
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error)
+            << ORK("Something happened reading parameter ") << ORK_BYTE_2_STR(tag);
+    }
+}
+template<typename T>
+void value_from_xml(const pugi::xml_node& node, const bstring& tag, ORK_REF_T value)
+{
+    try {
+        value = from_string<ORK_VAL_T>(node.child_value(tag.c_str()));
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to read tag ") << ORK_BYTE_2_STR(tag) << ORK(": ")
+            << ORK_BYTE_2_STR(e.what());
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error)
+            << ORK("Something happened reading tag ") << ORK_BYTE_2_STR(tag);
+    }
+}
+template<typename T>
+void value_from_xml(const pugi::xml_node& node, ORK_REF_T value)
+{
+    try {
+        value = from_string<ORK_VAL_T>(node.child_value());
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to read tag ") << ORK_BYTE_2_STR(node.name())
+            << ORK(": ") << ORK_BYTE_2_STR(e.what());
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error) << ORK("Something happened reading tag ")
+                                       << ORK_BYTE_2_STR(node.name());
+    }
+}
 
 
 #endif // ORK_USE_PUGI
