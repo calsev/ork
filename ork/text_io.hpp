@@ -212,6 +212,33 @@ void value_from_xml(const pugi::xml_node& node, ORK_REF_T value)
 }
 
 
+// Overloads to eliminate dependency definitions
+#    define ORK_XML_SERIALIZE_DECL(TYPE) \
+        ORK_EXT(void) \
+        to_xml(pugi::xml_node& node, const ork::bstring& tag, ORK_CPARAM(TYPE) value); \
+        ORK_EXT(void) \
+        from_xml(const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value)
+
+ORK_XML_SERIALIZE_DECL(int);
+ORK_XML_SERIALIZE_DECL(unsigned);
+ORK_XML_SERIALIZE_DECL(size_t);
+ORK_XML_SERIALIZE_DECL(float);
+ORK_XML_SERIALIZE_DECL(double);
+ORK_XML_SERIALIZE_DECL(bstring);
+ORK_XML_SERIALIZE_DECL(wstring);
+
+#    define ORK_XML_SERIALIZE_DEF(TYPE) \
+        void to_xml(pugi::xml_node& node, const ork::bstring& tag, ORK_CPARAM(TYPE) value) \
+        { \
+            value_to_xml<TYPE>(node, tag, value); \
+        } \
+        void from_xml( \
+            const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value) \
+        { \
+            value_from_xml<TYPE>(node, tag, value); \
+        }
+
+
 #endif // ORK_USE_PUGI
 
 

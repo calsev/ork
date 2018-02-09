@@ -135,6 +135,18 @@ void load_and_parse_permissive(
 }
 
 
+/*
+These are permissive interfaces
+*/
+ORK_XML_SERIALIZE_DEF(int)
+ORK_XML_SERIALIZE_DEF(unsigned)
+ORK_XML_SERIALIZE_DEF(size_t)
+ORK_XML_SERIALIZE_DEF(float)
+ORK_XML_SERIALIZE_DEF(double)
+ORK_XML_SERIALIZE_DEF(ork::bstring)
+ORK_XML_SERIALIZE_DEF(ork::wstring)
+
+
 #endif // ORK_USE_PUGI
 
 
