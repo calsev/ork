@@ -4,6 +4,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include "ork/string_utils.hpp"
+#if ORK_USE_PUGI
+#    include "ork/text_io.hpp"
+#endif
 
 
 namespace ork {
@@ -11,6 +14,12 @@ namespace ork {
 
 #define ORK_ENUM_SET_(ENUM, ...) \
     const std::array<ENUM, ORK_NUM_ARG(__VA_ARGS__)>
+
+#if ORK_USE_PUGI
+#    define ORK_ENUM_TO_XML_(ENUM) ORK_XML_SERIALIZE_DECL(ENUM)
+#else
+#    define define ORK_ENUM_TO_XML_(ENUM)
+#endif
 
 #define ORK_ENUM_DECL_(API, INLINE, ENUM, ...) \
     enum class ENUM { \
@@ -31,7 +40,10 @@ namespace ork {
     from_string<ENUM>(const bstring& str); \
     template<> \
     API(ENUM) \
-    from_string<ENUM>(const wstring& str)
+    from_string<ENUM>(const wstring& str); \
+    namespace xml { \
+    ORK_ENUM_TO_XML_(ENUM); \
+    }
 
 #define ORK_ENUM_DECL(ENUM, ...) \
     ORK_ENUM_DECL_(ORK_EXT, ORK_INLINE, ENUM, __VA_ARGS__)
@@ -82,6 +94,13 @@ namespace ork {
     })
 
 
+#if ORK_USE_PUGI
+#    define ORK_ENUM_FROM_XML_(ENUM) ORK_XML_SERIALIZE_DEF(ENUM)
+#else
+#    define define ORK_ENUM_FROM_XML_(ENUM)
+#endif
+
+
 #define ORK_ENUM_DEF_(API, ENUM, ...) \
     API(ORK_ENUM_SET_(ENUM, __VA_ARGS__)&) ORK_CAT(ENUM, _set)() \
     { \
@@ -101,7 +120,10 @@ namespace ork {
         return ORK_CAT(to_, ORK_SAME_STR_)(val); \
     } \
     ORK_STR_2_ENUM_(API, ENUM, b, ORK_BYTE_2_STR, __VA_ARGS__) \
-    ORK_STR_2_ENUM_(API, ENUM, w, ORK_WIDE_2_STR, __VA_ARGS__)
+    ORK_STR_2_ENUM_(API, ENUM, w, ORK_WIDE_2_STR, __VA_ARGS__); \
+    namespace xml { \
+    ORK_ENUM_FROM_XML_(ENUM); \
+    }
 
 #define ORK_ENUM_DEF(ENUM, ...) ORK_ENUM_DEF_(ORK_EXT, ENUM, __VA_ARGS__)
 #define ORK_ORK_ENUM_DEF(ENUM, ...) \
