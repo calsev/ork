@@ -86,13 +86,13 @@ orientation string2orientation(const string& val)
 using iter_t = string::const_iterator;
 void skip_whitespace(iter_t& it, const iter_t& end)
 {
-    while(it != end && (*it == ' ' || *it == ' ')) { // Whitespace can be space or tab
+    while(it != end && (*it == ' ' || *it == '\t')) { // Whitespace can be space or tab
         ++it;
     }
 }
 iter_t consume_token(iter_t begin, const iter_t& end)
 {
-    while(begin != end && *begin != ' ' && *begin != ' ') { // Whitespace can be space or tab
+    while(begin != end && *begin != ' ' && *begin != '\t') { // Whitespace can be space or tab
         ++begin;
     }
     return begin;

@@ -210,8 +210,9 @@ rotated_view rotated(const view& v, const rotation_direction dir, const int rota
     // CC is increasing due to how we defined our members
     int index = dir == rotation_direction::counter_clockwise ? rotations : -rotations;
     // Now wrap around the ends
-    while(index < 0)
+    while(index < 0) {
         index += 4;
+    }
     index %= 4;
     rotated_view retval(dir, rotations);
     LOOPVI(v.dirs)
