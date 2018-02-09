@@ -16,7 +16,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
-    // Make the code execute as one statement; used because it could be more exotic(per-platform) in the future.
+// Make the code execute as one statement; used because it could be more exotic(per-platform) in the future.
 #    define ORK_STMT(CODE) \
         { \
             CODE \
@@ -32,10 +32,10 @@ namespace ork {
 #    endif
 
 
-    /*
-    Sometimes you gotta C
-    Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
-    */
+/*
+Sometimes you gotta C
+Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
+*/
 #    ifndef ORK_C_LINK
 #        ifdef __cplusplus
 #            define ORK_C_LINK extern "C"
@@ -126,12 +126,12 @@ Copy and move semantics
 #    endif
 
 
-    /***
-    Begin Looping section.
-    Macros to simplify basic loops.
-    This may seem like overkill,but the loop headers are easier to type,
-    less error prone,and consistently optimized.
-    ***/
+/***
+Begin Looping section.
+Macros to simplify basic loops.
+This may seem like overkill,but the loop headers are easier to type,
+less error prone,and consistently optimized.
+***/
 #    define LOOP_(LIMIT, INDEX) for(size_t INDEX = 0; INDEX != LIMIT; ++INDEX)
 #    define LOOPI(LIMIT) LOOP_(LIMIT, i)
 #    define LOOPJ(LIMIT) LOOP_(LIMIT, j)
@@ -152,7 +152,7 @@ Copy and move semantics
 #    define LOOPRY(LIMIT) LOOPR(LIMIT, y)
 #    define LOOPRZ(LIMIT) LOOPR(LIMIT, z)
 
-    /*Loops over vectors, the limit variable must be obviously constant for the compiler to vectorize anything.*/
+/*Loops over vectors, the limit variable must be obviously constant for the compiler to vectorize anything.*/
 #    define LOOPV(SERIES, INDEX) \
         for(size_t INDEX = 0, limit##INDEX = SERIES.size(); INDEX != limit##INDEX; \
             ++INDEX)
@@ -171,13 +171,13 @@ Basic macros section; the building blocks
 
 #    define ORK_EMPTY /*Empty*/
 
-    // Expand arguments, used mostly because of MSC
+// Expand arguments, used mostly because of MSC
 #    define ORK_EVAL(...) __VA_ARGS__
 
 #    define ORK_STR_(X) #    X
 #    define ORK_STR(X) ORK_STR_(X)
 
-    // These basic dumb macros are used to generate variadic macros
+// These basic dumb macros are used to generate variadic macros
 #    define ORK_CAT_00_()
 #    define ORK_CAT_01_(A1) A1
 #    define ORK_CAT_02_(A1, A2) A1##A2
@@ -205,41 +205,41 @@ Basic macros section; the building blocks
             ORK_CAT_01_, \
             ORK_CAT_00_)(__VA_ARGS__))
 
-    // This is a primitive IF macro, that supports only 0, 1
+// This is a primitive IF macro, that supports only 0, 1
 #    define ORK_IF_0_(T, ...) ORK_EVAL(__VA_ARGS__)
 #    define ORK_IF_1_(T, ...) T
 #    define ORK_IF_(C) ORK_CAT(ORK_IF_, C, _)
 
-    // If passed < 2 arguments, expands to 0, otherwise argument 2
+// If passed < 2 arguments, expands to 0, otherwise argument 2
 #    define ORK_CHECK_1_(...) ORK_EVAL(ORK_ARG_1(__VA_ARGS__, 0, 0))
 #    define ORK_APPEND_1_(...) ORK_EVAL(__VA_ARGS__, 1)
 
-    // If called, returns two arguments
+// If called, returns two arguments
 #    define ORK_IS_PAREN_() ORK_APPEND_1_(~)
-    // Parentheses after a macro name call that macro, otherwise the name is
-    // just another token: If X is parentheses, will generate two arguments: ~,
-    // 1 Else, will generate one argument: ORK_IS_PAREN_ X
+// Parentheses after a macro name call that macro, otherwise the name is
+// just another token: If X is parentheses, will generate two arguments: ~,
+// 1 Else, will generate one argument: ORK_IS_PAREN_ X
 #    define ORK_IS_PAREN(X) ORK_CHECK_1_(ORK_IS_PAREN_ X)
 
 #    define ORK_NOT_0_ ORK_APPEND_1_(~)
-    // Returns 1 for 0, 0 for everything else
+// Returns 1 for 0, 0 for everything else
 #    define ORK_NOT(X) ORK_CHECK_1_(ORK_CAT(ORK_NOT_, X, _))
 
-    // Transforms everything but 0 to 1
+// Transforms everything but 0 to 1
 #    define ORK_BOOL(X) ORK_NOT(ORK_NOT(X))
 
-    // If ... Else construct
+// If ... Else construct
 #    define ORK_IF(C) ORK_IF_(ORK_BOOL(C))
 #    define ORK_DISCARD(...)
-    // Conditional evaluation; trivial else clause
+// Conditional evaluation; trivial else clause
 #    define ORK_WHEN(C) ORK_IF(C)(ORK_EVAL, ORK_DISCARD)
 
 #    define ORK_EMPTY_()
 #    define ORK_DEFER_(X) X ORK_EMPTY_()
-    // Go two contexts deeper, to avoid macro expansion
+// Go two contexts deeper, to avoid macro expansion
 #    define ORK_CONTEXT_(...) __VA_ARGS__ ORK_DEFER_(ORK_EMPTY_)()
 
-    // Support max depth/length of 64
+// Support max depth/length of 64
 #    define ORK_FLAT_2_(...) \
         ORK_EVAL(ORK_EVAL(ORK_EVAL(ORK_EVAL(__VA_ARGS__)))) // 2^2
 #    define ORK_FLAT_1_(...) \
@@ -252,7 +252,7 @@ Basic macros section; the building blocks
 #    define ORK_UNPAREN(...) ORK_FLAT(ORK_CAT(ORK_SKIP_, ORK_PHX_ __VA_ARGS__))
 
 #    define ORK_MAP_3_() ORK_MAP_2_
-    // This macro intentionally does not evaluate to avoid direct recursion
+// This macro intentionally does not evaluate to avoid direct recursion
 #    define ORK_MAP_2_(CALL, STITCH, DATA, I, ARG, PEEK, ...) \
         ORK_IF(ORK_IS_PAREN(PEEK)) \
         (CALL(DATA, I, ARG), \
@@ -263,25 +263,25 @@ Basic macros section; the building blocks
              ORK_CONTEXT_(ORK_MAP_3_)()( \
                  CALL, STITCH, DATA, ORK_CAT(ORK_INC_, I), PEEK, __VA_ARGS__)))
 
-    // The end-of-list marker, '()',  will call a macro
-    // Empty at the end to maintain compliant call when macro called.
-    /*
-    MAP is the basis of most high-level variadic macros.
+// The end-of-list marker, '()',  will call a macro
+// Empty at the end to maintain compliant call when macro called.
+/*
+MAP is the basis of most high-level variadic macros.
 
-    DATA is passed to every call, and can be a tuple.  Example:
-    #define DATA (One, Two)
+DATA is passed to every call, and can be a tuple.  Example:
+#define DATA (One, Two)
 
-    I is the iteration number
+I is the iteration number
 
-    CALL is invoked as CALL(DATA, I, ARG). Example:
-    #define CALL(DATA, I, ARG) ORK_ARG_0 D--ARG--ORK_ARG_1 D
+CALL is invoked as CALL(DATA, I, ARG). Example:
+#define CALL(DATA, I, ARG) ORK_ARG_0 D--ARG--ORK_ARG_1 D
 
-    STITCH is invoked as STITCH(DATA, I, HEAD, TAIL) and is right
-    associative.  Example: #define STITCH(DATA, I, X, Y) (X *ORK_EVAL D, I* Y)
+STITCH is invoked as STITCH(DATA, I, HEAD, TAIL) and is right
+associative.  Example: #define STITCH(DATA, I, X, Y) (X *ORK_EVAL D, I* Y)
 
-    Completing the example:
-    ORK_MAP(CALL, STITCH, DATA, a, b, c) -> (One--a--Two *One, Two, 0* (One--b--Two *One, Two, 1* One--c--Two))
-    */
+Completing the example:
+ORK_MAP(CALL, STITCH, DATA, a, b, c) -> (One--a--Two *One, Two, 0* (One--b--Two *One, Two, 1* One--c--Two))
+*/
 #    define ORK_MAP(CALL, STITCH, DATA, ...) \
         ORK_FLAT(ORK_MAP_2_(CALL, STITCH, DATA, 0, __VA_ARGS__, (), 0))
 
@@ -295,121 +295,17 @@ Convenience definitions for variadic macros
         ORK_EVAL(ORK_NUM_ARG_(__VA_ARGS__, ORK_DESCENDING_N_))
 
 
-    // Common CALL paradigms
+// Common CALL paradigms
 #    define ORK_IDENTITY(DATA, I, ARG) ARG
 #    define ORK_PREFIX(DATA, I, ARG) DATA ARG
 #    define ORK_POSTFIX(DATA, I, ARG) ARG DATA
 
-    // Common STITCH paradigms
+// Common STITCH paradigms
 #    define ORK_COMMA(DATA, I, X, Y) X, Y
 #    define ORK_SEMI_COLON(DATA, I, X, Y) \
         X; \
         Y
 #    define ORK_SPACE(DATA, I, X, Y) X Y
-
-
-/*
-Begin enum section: defining enums with an iterable container and string conversions in two lines
-*/
-
-#    define ORK_ENUM_SET_(ENUM, ...) \
-        const std::array<ENUM, ORK_NUM_ARG(__VA_ARGS__)>
-
-#    define ORK_ENUM_DECL_(API, INLINE, ENUM, ...) \
-        enum class ENUM { \
-            ORK_MAP(ORK_IDENTITY, ORK_COMMA, ORK_EMPTY, __VA_ARGS__) \
-        }; \
-        INLINE int operator-(const ENUM lhs, const ENUM rhs) \
-        { \
-            return static_cast<int>(lhs) - static_cast<int>(rhs); \
-        } \
-        API(ORK_ENUM_SET_(ENUM, __VA_ARGS__)&) ORK_CAT(ENUM, _set)(); \
-        API(const ork::string&) to_string(const ENUM); \
-        API(const ork::bstring&) to_bstring(const ENUM); \
-        API(const ork::wstring&) to_wstring(const ENUM); \
-        API(ENUM) ORK_CAT(to_, ENUM)(const ork::bstring&); \
-        API(ENUM) ORK_CAT(to_, ENUM)(const ork::wstring&); \
-        template<> \
-        API(ENUM) \
-        from_string<ENUM>(const bstring& str); \
-        template<> \
-        API(ENUM) \
-        from_string<ENUM>(const wstring& str)
-
-#    define ORK_ENUM_DECL(ENUM, ...) \
-        ORK_ENUM_DECL_(ORK_EXT, ORK_INLINE, ENUM, __VA_ARGS__)
-#    define ORK_ORK_ENUM_DECL(ENUM, ...) \
-        ORK_ENUM_DECL_(ORK_ORK_EXT, ORK_ORK_INLINE, ENUM, __VA_ARGS__)
-
-
-    // Data must be formatted (PRE, STR)
-#    define ORK_MAKE_STRING_(DATA, I, ARG) \
-        ORK_EVAL(const ork::ORK_CAT(ORK_ARG_0 DATA, string) \
-                     ORK_CAT(ORK_ARG_0 DATA, ARG){ORK_ARG_1 DATA(ORK_STR(ARG))})
-
-
-    // Data must be formatted (ENUM, PRE)
-#    define ORK_CASE_(DATA, I, ARG) \
-        case ORK_ARG_0 DATA::ARG: \
-            return ORK_CAT(ORK_ARG_0 DATA, _ns)::ORK_CAT(ORK_ARG_1 DATA, ARG)
-
-#    define ORK_ENUM_2_STR_(API, ENUM, PRE, ...) \
-        ORK_EVAL(API(const ork::ORK_CAT(PRE, string)&) ORK_CAT( \
-            to_, PRE, string)(const ENUM val) { \
-            switch(val) { \
-                ORK_MAP(ORK_CASE_, ORK_SEMI_COLON, (ENUM, PRE), __VA_ARGS__); \
-            }; \
-            ORK_UNREACHABLE \
-        })
-
-
-#    if ORK_UNICODE
-#        define ORK_SAME_STR_ wstring
-#    else
-#        define ORK_SAME_STR_ bstring
-#    endif
-
-
-    // Data must be formatted as (ENUM, PRE)
-#    define ORK_STR_2_ENUM_IF_(DATA, I, ARG) \
-        if(str == ORK_CAT(ORK_ARG_0 DATA, _ns)::ORK_CAT(ORK_ARG_1 DATA, ARG)) { \
-            return ORK_ARG_0 DATA::ARG; \
-        }
-
-#    define ORK_STR_2_ENUM_(API, ENUM, PRE, CONV, ...) \
-        ORK_EVAL(API(ENUM) ORK_CAT(to_, ENUM)(const ork::ORK_CAT(PRE, string) & str) { \
-            ORK_MAP(ORK_STR_2_ENUM_IF_, ORK_SPACE, (ENUM, PRE), __VA_ARGS__) \
-            ORK_THROW(ORK("Invalid ") << ORK_STR(ENUM) << ORK(": ") << CONV(str)); \
-        } template<> API(ENUM) \
-                 from_string<ENUM>(const ork::ORK_CAT(PRE, string) & str) { \
-                     return ORK_CAT(to_, ENUM)(str); \
-                 })
-
-
-#    define ORK_ENUM_DEF_(API, ENUM, ...) \
-        API(ORK_ENUM_SET_(ENUM, __VA_ARGS__)&) ORK_CAT(ENUM, _set)() \
-        { \
-            static ORK_ENUM_SET_(ENUM, __VA_ARGS__) \
-                val = {{ORK_MAP(ORK_PREFIX, ORK_COMMA, ENUM::, __VA_ARGS__)}}; \
-            return val; \
-        }; \
-        namespace ORK_CAT(ENUM, _ns) \
-        { \
-            ORK_MAP(ORK_MAKE_STRING_, ORK_SEMI_COLON, (b, BORK), __VA_ARGS__); \
-            ORK_MAP(ORK_MAKE_STRING_, ORK_SEMI_COLON, (w, WORK), __VA_ARGS__); \
-        } \
-        ORK_ENUM_2_STR_(API, ENUM, b, __VA_ARGS__) \
-        ORK_ENUM_2_STR_(API, ENUM, w, __VA_ARGS__) \
-        API(const ork::string&) to_string(const ENUM val) \
-        { \
-            return ORK_CAT(to_, ORK_SAME_STR_)(val); \
-        } \
-        ORK_STR_2_ENUM_(API, ENUM, b, ORK_BYTE_2_STR, __VA_ARGS__) \
-        ORK_STR_2_ENUM_(API, ENUM, w, ORK_WIDE_2_STR, __VA_ARGS__)
-
-#    define ORK_ENUM_DEF(ENUM, ...) ORK_ENUM_DEF_(ORK_EXT, ENUM, __VA_ARGS__)
-#    define ORK_ORK_ENUM_DEF(ENUM, ...) \
-        ORK_ENUM_DEF_(ORK_ORK_EXT, ENUM, __VA_ARGS__)
 
 
 } // namespace ork
