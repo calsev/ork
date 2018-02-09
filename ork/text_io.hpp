@@ -4,32 +4,11 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include "ork/memory.hpp"
+#include "ork/private/text_includes.hpp"
 #include "ork/string_utils.hpp"
 #include "ork/type_traits.hpp"
 
 #include "glm/fwd.hpp"
-
-
-#if ORK_USE_JSON
-namespace Json {
-class Value;
-}
-#endif
-
-
-#if ORK_USE_PUGI
-namespace pugi {
-class xml_document;
-class xml_node;
-} // namespace pugi
-#endif
-
-
-#if ORK_USE_YAML
-namespace YAML {
-class Node;
-}
-#endif
 
 
 namespace ork {
@@ -213,29 +192,34 @@ void value_from_xml(const pugi::xml_node& node, ORK_REF_T value)
 
 
 // Overloads to eliminate dependency definitions
-#    define ORK_XML_SERIALIZE_DECL(TYPE) \
-        ORK_EXT(void) \
+#    define ORK_XML_SERIALIZE_DECL_(API, TYPE) \
+        API(void) \
         to_xml(pugi::xml_node& node, const ork::bstring& tag, ORK_CPARAM(TYPE) value); \
-        ORK_EXT(void) \
+        API(void) \
         from_xml(const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value)
 
-ORK_XML_SERIALIZE_DECL(int);
-ORK_XML_SERIALIZE_DECL(unsigned);
-ORK_XML_SERIALIZE_DECL(size_t);
-ORK_XML_SERIALIZE_DECL(float);
-ORK_XML_SERIALIZE_DECL(double);
-ORK_XML_SERIALIZE_DECL(bstring);
-ORK_XML_SERIALIZE_DECL(wstring);
+
+#    define ORK_XML_SERIALIZE_DECL(TYPE) ORK_XML_SERIALIZE_DECL_(ORK_EXT, TYPE)
+#    define ORK_ORK_XML_SERIALIZE_DECL(TYPE) \
+        ORK_XML_SERIALIZE_DECL_(ORK_ORK_EXT, TYPE)
+
+ORK_ORK_XML_SERIALIZE_DECL(int);
+ORK_ORK_XML_SERIALIZE_DECL(unsigned);
+ORK_ORK_XML_SERIALIZE_DECL(size_t);
+ORK_ORK_XML_SERIALIZE_DECL(float);
+ORK_ORK_XML_SERIALIZE_DECL(double);
+ORK_ORK_XML_SERIALIZE_DECL(bstring);
+ORK_ORK_XML_SERIALIZE_DECL(wstring);
 
 #    define ORK_XML_SERIALIZE_DEF(TYPE) \
         void to_xml(pugi::xml_node& node, const ork::bstring& tag, ORK_CPARAM(TYPE) value) \
         { \
-            value_to_xml<TYPE>(node, tag, value); \
+            ork::xml::value_to_xml<TYPE>(node, tag, value); \
         } \
         void from_xml( \
             const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value) \
         { \
-            value_from_xml<TYPE>(node, tag, value); \
+            ork::xml::value_from_xml<TYPE>(node, tag, value); \
         }
 
 
