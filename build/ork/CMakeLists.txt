@@ -156,6 +156,7 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/command_line.hpp"
 	"${3P_ORK_SRC_DIR}/ork/database.hpp"
 	"${3P_ORK_SRC_DIR}/ork/distribution.hpp"
+	"${3P_ORK_SRC_DIR}/ork/enum.hpp"
 	"${3P_ORK_SRC_DIR}/ork/file_utils.hpp"
 	"${3P_ORK_SRC_DIR}/ork/filter.hpp"
 	"${3P_ORK_SRC_DIR}/ork/geometry.hpp"
@@ -169,6 +170,7 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/tagger.hpp"
 	"${3P_ORK_SRC_DIR}/ork/text_io.hpp"
 	"${3P_ORK_SRC_DIR}/ork/text_serializable.hpp"
+	"${3P_ORK_SRC_DIR}/ork/type_traits.hpp"
 )
 set(ORK_PRIVATE_HDRS
 	"${3P_ORK_SRC_DIR}/ork/private/text_includes.hpp"
