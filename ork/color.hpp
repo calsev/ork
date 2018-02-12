@@ -22,7 +22,7 @@ enum class color_space {
     hsl
 };
 
-typedef glm::vec4 color4; // we co-opt for hsv also
+using color4 = glm::vec4; // we co-opt for hsv also
 
 // Convenience definitions
 ORK_ORK_EXT(const color4&) red(const color_space);

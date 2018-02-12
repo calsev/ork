@@ -40,7 +40,7 @@ public:
 };
 
 ORK_ORK_EXT(random&) g_random(); // Static because construction is expensive
-#endif
+#endif // ORK_USE_BOOST
 
 
 template<typename T>
