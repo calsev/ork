@@ -44,7 +44,7 @@ From file_utils.hpp
 */
 template<class functor, class iter_t, class sort>
 struct directory_executer;
-template<class functor, class search_type = flat_search, class sort_type = unsorted>
+template<class functor, class search_type, class sort_type>
 struct iterate_directory;
 template<class T>
 struct directory_range;
@@ -123,5 +123,17 @@ struct document;
 
 } // namespace html
 
+
+/*
+From memory.hpp
+*/
+template<typename T>
+struct default_deleter;
+template<typename T>
+struct singleton_deleter;
+template<class T, class D>
+class value_ptr;
+template<typename T, typename D>
+class shared_ptr;
 
 } // namespace ork
