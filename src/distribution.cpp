@@ -39,7 +39,8 @@ public:
         : _gen{}
         , _mutex{}
     {}
-    ORK_NON_COPYABLE(impl)
+    ORK_NON_COPYABLE(impl);
+
 public:
     double uniform_prob()
     {
