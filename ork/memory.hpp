@@ -3,7 +3,7 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-#include "ork/ork.hpp"
+#include "ork/type_traits.hpp"
 
 
 namespace ork {
@@ -33,13 +33,13 @@ No relational operators are offered, because these are a source of more bugs tha
 
 template<typename T>
 struct default_deleter {
-    void operator()(const T* t)
+    ORK_INLINE void operator()(const T* t)
     {
         delete t;
     }
-    T operator()(const T& t)
+    ORK_INLINE T operator()(const T& t)
     {
-        return T(t);
+        return t;
     }
 };
 
@@ -58,169 +58,172 @@ struct singleton_deleter {
 };
 
 
+#define ORK_PTR_TYPES(PTR) \
+    /* Allow cv, but not ref*/ \
+    using element_type = typename std::remove_reference<T>::type; \
+    using pointer = typename std::add_pointer<element_type>::type; \
+    /* Must be a base value type*/ \
+    using copier_type = typename ORK_VAL(D); \
+    using deleter_type = copier_type; \
+    /* For access*/ \
+    template<typename T2, typename D2> \
+    friend class PTR;
+
+
+#define ORK_MOVE_PTR(PTR) \
+    ORK_INLINE PTR(PTR&& ptr) ORK_NO_EXCEPT : _ptr(std::move(ptr._ptr)) {} \
+    template<typename T2, typename D2> \
+    ORK_INLINE PTR(PTR<T2, D2>&& ptr) ORK_NO_EXCEPT : _ptr(std::move(ptr._ptr)) \
+    {} \
+    /*Allow conversion from unique_ptr*/ \
+    template<typename T2, typename D2> \
+    ORK_INLINE PTR(std::unique_ptr<T2, D2>&& ptr) ORK_NO_EXCEPT \
+        : _ptr(std::move(ptr)) \
+    {} \
+\
+    ORK_INLINE PTR& operator=(PTR&& ptr) ORK_NO_EXCEPT \
+    { \
+        _ptr = std::move(ptr._ptr); \
+        return *this; \
+    } \
+    template<typename T2, typename D2> \
+    ORK_INLINE PTR& operator=(PTR<T2, D2>&& ptr) ORK_NO_EXCEPT \
+    { \
+        _ptr = std::move(ptr._ptr); \
+        return *this; \
+    } \
+    /* Allow conversion from unique_ptr*/ \
+    template<typename T2, typename D2> \
+    ORK_INLINE PTR& operator=(std::unique_ptr<T2, D2>&& ptr) ORK_NO_EXCEPT \
+    { \
+        _ptr = std::move(ptr); \
+        return *this; \
+    }
+
+
+#define ORK_GET_PTR(PTR) \
+    ORK_INLINE element_type& operator*() const ORK_NO_EXCEPT \
+    { \
+        return _ptr.operator*(); \
+    } \
+    ORK_INLINE pointer operator->() const ORK_NO_EXCEPT \
+    { \
+        return _ptr.operator->(); \
+    } \
+    ORK_INLINE pointer get() const ORK_NO_EXCEPT \
+    { \
+        return _ptr.get(); \
+    } \
+    ORK_INLINE explicit operator bool() const ORK_NO_EXCEPT \
+    { \
+        return _ptr.operator bool(); \
+    } \
+    template<typename T2, typename D2> \
+    ORK_INLINE void swap(PTR<T2, D2>& ptr) ORK_NO_EXCEPT \
+    { \
+        _ptr.swap(ptr._ptr); \
+    }
+
+
 template<class T, class D>
 class value_ptr {
 public:
-    using element_type = T;
-    using pointer = T*; // This is a little simplistic
-    using copier_type = D;
-    using deleter_type = D;
+    ORK_PTR_TYPES(value_ptr)
 
 private:
-    std::unique_ptr<T, D> _ptr;
+    std::unique_ptr<element_type, deleter_type> _ptr;
 
 public:
-    constexpr value_ptr() noexcept
-        : _ptr()
+    ORK_CONSTEXPR ORK_INLINE value_ptr() ORK_NO_EXCEPT : _ptr() {}
+    ORK_CONSTEXPR ORK_INLINE explicit value_ptr(nullptr_t) ORK_NO_EXCEPT : _ptr(nullptr)
     {}
-    constexpr value_ptr(nullptr_t) noexcept
-        : _ptr(nullptr)
-    {}
-    explicit value_ptr(pointer p) noexcept
-        : _ptr(p)
-    {}
-    value_ptr(pointer p, typename std::conditional<std::is_reference<D>::value, D, const D&> del) noexcept
+    ORK_INLINE explicit value_ptr(pointer p) ORK_NO_EXCEPT : _ptr(p) {}
+    ORK_INLINE value_ptr(pointer p, const deleter_type& del) ORK_NO_EXCEPT
         : _ptr(p, del)
     {}
-    value_ptr(pointer p, typename std::remove_reference<D>::type&& del) noexcept
+    ORK_INLINE value_ptr(pointer p, deleter_type&& del) ORK_NO_EXCEPT
         : _ptr(p, std::move(del))
     {}
 
-    value_ptr(value_ptr&& x) noexcept
-        : _ptr(std::move(x._ptr))
-    {}
-    template<class D2>
-    value_ptr(value_ptr<T, D2>&& x) noexcept
-        : _ptr(std::move(x._ptr))
-    {}
-
-    // Allow conversion from unique_ptr
-    value_ptr(std::unique_ptr<T, D>&& x) noexcept
-        : _ptr(std::move(x))
-    {}
-    template<class D2>
-    value_ptr(std::unique_ptr<T, D2>&& x) noexcept
-        : _ptr(std::move(x))
-    {}
+    ORK_MOVE_PTR(value_ptr)
 
     // The big payoff
-    value_ptr(const value_ptr& x)
+    ORK_INLINE value_ptr(const value_ptr& x)
         : _ptr(x.get_deleter()(*x._ptr))
     {}
     template<class D2>
-    value_ptr(const value_ptr<T, D2>& x)
+    ORK_INLINE value_ptr(const value_ptr<element_type, D2>& x)
         : _ptr(x.get_deleter()(*x._ptr))
     {}
 
     // The big payoff + conversion
-    value_ptr(const std::unique_ptr<T, D>& x)
+    ORK_INLINE value_ptr(const std::unique_ptr<element_type, D>& x)
         : _ptr(x.get_deleter()(*x._ptr))
     {}
     template<class D2>
-    value_ptr(const std::unique_ptr<T, D2>& x)
+    ORK_INLINE value_ptr(const std::unique_ptr<element_type, D2>& x)
         : _ptr(x.get_deleter()(*x._ptr))
     {}
 
     // Destructor is implicitly defined
 public:
-    value_ptr& operator=(nullptr_t) noexcept
+    ORK_INLINE value_ptr& operator=(nullptr_t) ORK_NO_EXCEPT
     {
         _ptr = nullptr;
         return *this;
     }
 
-    value_ptr& operator=(value_ptr&& x) noexcept
-    {
-        _ptr = std::move(x._ptr);
-        return *this;
-    }
-    template<class D2>
-    value_ptr& operator=(value_ptr<T, D2>&& x) noexcept
-    {
-        _ptr = std::move(x._ptr);
-        return *this;
-    }
-
-    // Allow conversion from unique_ptr
-    value_ptr& operator=(std::unique_ptr<T, D>&& x) noexcept
-    {
-        _ptr = std::move(x);
-        return *this;
-    }
-    template<class D2>
-    value_ptr& operator=(std::unique_ptr<T, D2>&& x) noexcept
-    {
-        _ptr = std::move(x);
-        return *this;
-    }
-
     // The big payoff
-    value_ptr& operator=(const value_ptr& x)
+    ORK_INLINE value_ptr& operator=(const value_ptr& x)
     {
         _ptr = x.get_deleter()(*x);
         return *this;
     }
     template<class D2>
-    value_ptr& operator=(const value_ptr<T, D2>& x)
+    ORK_INLINE value_ptr& operator=(const value_ptr<element_type, D2>& x)
     {
         _ptr = x.get_deleter()(*x);
         return *this;
     }
 
     // The big payoff + conversion
-    value_ptr& operator=(const std::unique_ptr<T, D>& x)
+    ORK_INLINE value_ptr& operator=(const std::unique_ptr<element_type, D>& x)
     {
         _ptr = x.get_deleter()(*x);
         return *this;
     }
     template<class D2>
-    value_ptr& operator=(const std::unique_ptr<T, D2>& x)
+    ORK_INLINE value_ptr& operator=(const std::unique_ptr<element_type, D2>& x)
     {
         _ptr = x.get_deleter()(*x);
         return *this;
     }
 
 public:
-    typename std::add_lvalue_reference<element_type>::type operator*() const
-    {
-        return _ptr.operator*();
-    }
-    pointer operator->() const noexcept
-    {
-        return _ptr.operator->();
-    }
-    pointer get() const noexcept
-    {
-        return _ptr.get();
-    }
-    deleter_type& get_deleter() noexcept
+    ORK_GET_PTR(value_ptr)
+
+    ORK_INLINE deleter_type& get_deleter() ORK_NO_EXCEPT
     {
         return _ptr.get_deleter();
     }
-    const deleter_type& get_deleter() const noexcept
+    ORK_INLINE const deleter_type& get_deleter() const ORK_NO_EXCEPT
     {
         return _ptr.get_deleter();
     }
-    explicit operator bool() const noexcept
-    {
-        return _ptr.operator bool();
-    }
-    pointer release() noexcept
+
+    ORK_INLINE pointer release() ORK_NO_EXCEPT
     {
         return _ptr.release();
     }
     // The reset interface is different than std, but I prefer overloads to default params
-    void reset() noexcept
+    ORK_INLINE void reset() ORK_NO_EXCEPT
     {
         _ptr.reset();
     }
-    void reset(pointer p) noexcept
+    template<typename T2>
+    ORK_INLINE void reset(T2* p) ORK_NO_EXCEPT
     {
         _ptr.reset(p);
-    }
-    void swap(value_ptr& x) noexcept
-    {
-        _ptr.swap(x._ptr);
     }
 };
 
@@ -235,40 +238,33 @@ Neither an array specialization nor a weak_ptr interface is provided.
 template<typename T, typename D = std::default_delete<T>>
 class shared_ptr {
 public:
-    using element_type = T;
-    using deleter_type = D;
-    using pointer = typename std::remove_reference<D>::type::pointer;
-    template<typename TT, typename DD>
-    friend class shared_ptr;
+    ORK_PTR_TYPES(shared_ptr)
 
 private:
     std::shared_ptr<element_type> _ptr;
 
 public:
-    ORK_CONSTEXPR shared_ptr() ORK_NO_EXCEPT : _ptr(nullptr, deleter_type()) {}
-    ORK_CONSTEXPR shared_ptr(std::nullptr_t) ORK_NO_EXCEPT : shared_ptr() {}
-    explicit shared_ptr(pointer ptr) ORK_NO_EXCEPT : _ptr(ptr, deleter_type())
+    ORK_CONSTEXPR ORK_INLINE shared_ptr() ORK_NO_EXCEPT
+        : _ptr(nullptr, deleter_type())
+    {}
+    ORK_CONSTEXPR ORK_INLINE explicit shared_ptr(std::nullptr_t) ORK_NO_EXCEPT
+        : shared_ptr()
+    {}
+    ORK_INLINE explicit shared_ptr(pointer ptr) ORK_NO_EXCEPT
+        : _ptr(ptr, deleter_type())
     {}
     template<typename Y>
-    explicit shared_ptr(Y* ptr)
+    ORK_INLINE explicit shared_ptr(Y* ptr)
         : _ptr(ptr, deleter_type())
     {}
 
-    shared_ptr(const shared_ptr& ptr) ORK_NO_EXCEPT : _ptr(ptr._ptr) {}
+    ORK_INLINE shared_ptr(const shared_ptr& ptr) ORK_NO_EXCEPT : _ptr(ptr._ptr)
+    {}
     template<typename Y>
-    shared_ptr(const shared_ptr<Y>& ptr) ORK_NO_EXCEPT : _ptr(ptr._ptr)
+    ORK_INLINE shared_ptr(const shared_ptr<Y>& ptr) ORK_NO_EXCEPT : _ptr(ptr._ptr)
     {}
 
-    shared_ptr(const shared_ptr&& ptr) ORK_NO_EXCEPT : _ptr(std::move(ptr._ptr))
-    {}
-    template<typename Y>
-    shared_ptr(shared_ptr<Y>&& ptr) ORK_NO_EXCEPT : _ptr(std::move(ptr._ptr))
-    {}
-    template<typename Y>
-    shared_ptr(std::unique_ptr<Y>&& ptr)
-        : _ptr(std::move(ptr))
-    {}
-
+    ORK_MOVE_PTR(shared_ptr)
 public:
     ORK_INLINE shared_ptr& operator=(const shared_ptr& ptr) ORK_NO_EXCEPT
     {
@@ -281,53 +277,19 @@ public:
         _ptr = ptr._ptr;
         return *this;
     }
-    ORK_INLINE shared_ptr& operator=(shared_ptr&& ptr) ORK_NO_EXCEPT
-    {
-        _ptr = std::move(ptr._ptr);
-        return *this;
-    }
-    template<typename Y>
-    ORK_INLINE shared_ptr& operator=(shared_ptr<Y>&& ptr)
-    {
-        _ptr = std::move(ptr._ptr);
-        return *this;
-    }
-    template<typename Y>
-    ORK_INLINE shared_ptr& operator=(std::unique_ptr<Y>&& ptr)
-    {
-        _ptr = std::move(ptr);
-        return *this;
-    }
 
-
+    // The reset interface is different than std, but I prefer overloads to default params
     ORK_INLINE void reset() ORK_NO_EXCEPT
     {
         _ptr.reset(deleter_type());
     }
-    template<typename Y>
-    ORK_INLINE void reset(Y* ptr)
+    template<typename T2>
+    ORK_INLINE void reset(T2* ptr)
     {
         _ptr.reset(ptr, deleter_type());
     }
-    ORK_INLINE void swap(shared_ptr& ptr) ORK_NO_EXCEPT
-    {
-        _ptr.swap(ptr);
-    }
 
-
-    ORK_INLINE element_type* get() const ORK_NO_EXCEPT
-    {
-        return _ptr.get();
-    }
-    ORK_INLINE T& operator*() const ORK_NO_EXCEPT
-    {
-        return *_ptr;
-    }
-    ORK_INLINE T* operator->() const ORK_NO_EXCEPT
-    {
-        return _ptr.get();
-    }
-
+    ORK_GET_PTR(shared_ptr)
 
     ORK_INLINE long use_count() const ORK_NO_EXCEPT
     {
@@ -337,92 +299,39 @@ public:
     {
         return _ptr.unique();
     }
-    ORK_INLINE explicit operator bool() const ORK_NO_EXCEPT
-    {
-        return static_cast<bool>(_ptr);
-    }
 };
 
 
-template<typename T, typename U>
-ORK_INLINE bool operator==(const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) ORK_NO_EXCEPT
-{
-    return lhs.get() == rhs.get();
-}
-template<typename T>
-ORK_INLINE bool operator==(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT
-{
-    return lhs.get() == nullptr;
-}
-template<typename T>
-bool operator==(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT
-{
-    return nullptr == rhs.get();
-}
+#define ORK_PTR_OP(PTR, OP) \
+    template<typename T, typename D, typename T2, typename D2> \
+    ORK_INLINE bool operator OP(const PTR<T, D>& lhs, const PTR<T2, D2>& rhs) \
+        ORK_NO_EXCEPT \
+    { \
+        return lhs.get() OP rhs.get(); \
+    } \
+    template<typename T, typename D> \
+    ORK_INLINE bool operator OP(const PTR<T, D>& lhs, nullptr_t) ORK_NO_EXCEPT \
+    { \
+        return lhs.get() OP nullptr; \
+    } \
+    template<typename T, typename D> \
+    ORK_INLINE bool operator OP(nullptr_t, const PTR<T, D>& rhs) ORK_NO_EXCEPT \
+    { \
+        return nullptr OP rhs.get(); \
+    }
+
+#define ORK_PTR_OPS(PTR) \
+    ORK_PTR_OP(PTR, ==) \
+    ORK_PTR_OP(PTR, !=) \
+    ORK_PTR_OP(PTR, <) \
+    ORK_PTR_OP(PTR, <=) \
+    ORK_PTR_OP(PTR, >) \
+    ORK_PTR_OP(PTR, >=)
+
+ORK_PTR_OPS(value_ptr)
+ORK_PTR_OPS(shared_ptr)
 
 
-template<typename T>
-ORK_INLINE bool operator!=(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT
-{
-    return lhs.get() != nullptr;
-}
-template<typename T>
-ORK_INLINE bool operator!=(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT
-{
-    return nullptr != rhs.get();
-}
-
-
-template<typename T, typename U>
-ORK_INLINE bool operator<(const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) ORK_NO_EXCEPT
-{
-    return lhs.get() < rhs.get();
-}
-template<typename T>
-ORK_INLINE bool operator<(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT
-{
-    return lhs.get() < nullptr;
-}
-template<typename T>
-ORK_INLINE bool operator<(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT
-{
-    return nullptr < rhs.get();
-}
-
-template<typename T>
-ORK_INLINE bool operator<=(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT
-{
-    return lhs.get() <= nullptr;
-}
-template<typename T>
-ORK_INLINE bool operator<=(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT
-{
-    return nullptr <= rhs.get();
-}
-
-
-template<typename T>
-ORK_INLINE bool operator>(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT
-{
-    return lhs.get() > nullptr;
-}
-template<typename T>
-ORK_INLINE bool operator>(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT
-{
-    return nullptr > rhs.get();
-}
-
-
-template<typename T>
-ORK_INLINE bool operator>=(const shared_ptr<T>& lhs, nullptr_t) ORK_NO_EXCEPT
-{
-    return lhs.get() >= nullptr;
-}
-template<typename T>
-ORK_INLINE bool operator>=(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT
-{
-    return nullptr >= rhs.get();
-}
 // TODO: Atomic stuff
 
 
@@ -431,10 +340,14 @@ ORK_INLINE bool operator>=(nullptr_t, const shared_ptr<T>& rhs) ORK_NO_EXCEPT
 
 namespace std {
 
-template<class T, class D>
-void swap(ork::value_ptr<T, D>& x, ork::value_ptr<T, D>& y) noexcept
-{
-    x.swap(y);
-}
+#define ORK_PTR_SWAP(PTR) \
+    template<class T, class D, class T2, class D2> \
+    ORK_INLINE void swap(ork::PTR<T, D>& x, ork::PTR<T2, D2>& y) ORK_NO_EXCEPT \
+    { \
+        x.swap(y); \
+    }
+
+ORK_PTR_SWAP(value_ptr)
+ORK_PTR_SWAP(shared_ptr)
 
 } // namespace std
