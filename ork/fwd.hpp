@@ -68,7 +68,6 @@ struct circle;
 
 namespace GLM {
 
-struct dunit3;
 class bounding_box;
 class interval;
 struct segment;
@@ -76,10 +75,20 @@ class chain;
 
 namespace MC {
 struct view;
-struct rotated_view;
+struct ORK_ORK_API rotated_view;
 } // namespace MC
 
 } // namespace GLM
 
+/*
+From glm.hpp
+*/
+namespace GLM {
+
+struct dunit3;
+template<typename T>
+struct default_epsilon_factor;
+
+} // namespace GLM
 
 } // namespace ork

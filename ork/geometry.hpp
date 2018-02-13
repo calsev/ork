@@ -100,7 +100,7 @@ ORK_ORK_EXT(glm::dvec3) to_wcs(const double val, const orientation axis);
 
 
 // Given an MC standard view, return the directions in the plane.
-struct ORK_ORK_API view {
+struct view {
 #if ORK_MSC && ORK_MSC < 1920
 #    pragma warning(push)
 #    pragma warning(disable : 4201) // Anonymous struct/union non-standard until C11
@@ -117,12 +117,13 @@ struct ORK_ORK_API view {
 #if ORK_MSC
 #    pragma warning(pop)
 #endif
-    view()
+    ORK_INLINE view()
         : right(orientation::pos_x)
         , up(orientation::pos_y)
         , left(orientation::neg_x)
         , down(orientation::neg_y)
     {}
+    ORK_INLINE
     view(const orientation r, const orientation u, const orientation l, const orientation d)
         : right(r)
         , up(u)
@@ -133,10 +134,10 @@ struct ORK_ORK_API view {
 
 ORK_ORK_EXT(const view&) get_view(const orientation axis);
 
-struct ORK_ORK_API rotated_view : public view {
+struct rotated_view : public view {
     rotation_direction direction;
     int rotations;
-    rotated_view(const rotation_direction dir, const int num)
+    ORK_INLINE rotated_view(const rotation_direction dir, const int num)
         : direction(dir)
         , rotations(num)
     {}
@@ -278,7 +279,7 @@ project_box_on_axis(const glm::dvec3& p1, const glm::dvec3& p2, const GLM::dunit
 
 
 // Either unions or a virtual base, we go low-level here
-struct ORK_API segment {
+struct segment {
 public:
     enum type { line, arc };
 
@@ -294,7 +295,7 @@ public:
     double sweep_rad;
 
 public:
-    explicit segment(const type geo)
+    ORK_INLINE explicit segment(const type geo)
         : geometry(geo)
         , begin_center(0.)
         , end(0.)
@@ -303,7 +304,7 @@ public:
         , begin_rad(0.)
         , sweep_rad(0.)
     {}
-    segment(const glm::dvec3& begin, const glm::dvec3& end)
+    ORK_INLINE segment(const glm::dvec3& begin, const glm::dvec3& end)
         : geometry(type::line)
         , begin_center(begin)
         , end(end)
@@ -312,7 +313,7 @@ public:
         , begin_rad(0.)
         , sweep_rad(0.)
     {}
-    segment(
+    ORK_INLINE segment(
         const glm::dvec3& center,
         const orientation normal,
         const double rad,
