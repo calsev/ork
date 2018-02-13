@@ -56,6 +56,7 @@ set(ORK_TEST_HDRS
 )
 set(ORK_TEST_SRCS
 	"${ORK_3P_SOURCE_DIR}/ork/src/test/color.cpp"
+	"${ORK_3P_SOURCE_DIR}/ork/src/test/geometry.cpp"
 	"${ORK_3P_SOURCE_DIR}/ork/src/test/test_main.cpp"
 )
 source_group("inc" FILES ${ORK_TEST_HDRS})
