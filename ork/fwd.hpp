@@ -75,7 +75,7 @@ class chain;
 
 namespace MC {
 struct view;
-struct ORK_ORK_API rotated_view;
+struct rotated_view;
 } // namespace MC
 
 } // namespace GLM
@@ -90,5 +90,38 @@ template<typename T>
 struct default_epsilon_factor;
 
 } // namespace GLM
+
+/*
+From html.hpp
+*/
+enum class align;
+enum class border;
+
+namespace html {
+
+struct exportable;
+struct pair;
+struct string;
+struct heading;
+struct page_break;
+struct padding;
+struct image;
+struct style;
+struct image_style;
+struct div_style;
+struct table_style;
+struct line_style;
+struct style_set;
+struct header;
+struct line;
+struct label;
+struct table_element;
+struct table;
+struct div;
+struct body;
+struct document;
+
+} // namespace html
+
 
 } // namespace ork
