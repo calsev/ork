@@ -94,6 +94,9 @@ rotation_direction operator-(const rotation_direction dir)
 }
 
 
+ORK_ENUM_DEF(angle, radian, degree)
+
+
 const double circle<angle::radian>::full = 2. * M_PI;
 const double circle<angle::degree>::full = 360.;
 

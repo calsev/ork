@@ -39,7 +39,7 @@ ORK_ENUM_DECL(rotation_direction, clockwise, counter_clockwise);
 
 ORK_ORK_EXT(rotation_direction) operator-(const rotation_direction dir);
 
-enum class angle { radian, degree };
+ORK_ENUM_DECL(angle, radian, degree);
 
 template<angle>
 struct circle;
