@@ -181,5 +181,15 @@ class ORK_ORK_API serializable;
 
 } // namespace yaml
 
+/*
+From text_serializable.hpp
+*/
+class vector;
+
+/*
+From type_traits.hpp
+*/
+template<typename T>
+struct signature_traits;
 
 } // namespace ork
