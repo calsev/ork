@@ -59,5 +59,27 @@ template<unsigned order, unsigned inverse_alpha>
 struct butterworth;
 #endif // ORK_USE_BOOST
 
+/*
+From geometry.hpp
+*/
+enum class angle;
+template<angle>
+struct circle;
+
+namespace GLM {
+
+struct dunit3;
+class bounding_box;
+class interval;
+struct segment;
+class chain;
+
+namespace MC {
+struct view;
+struct rotated_view;
+} // namespace MC
+
+} // namespace GLM
+
 
 } // namespace ork
