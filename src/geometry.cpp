@@ -79,6 +79,9 @@ string to_dimension(const double coord)
 #endif
 
 
+ORK_ENUM_DEF(rotation_direction, clockwise, counter_clockwise);
+
+
 rotation_direction operator-(const rotation_direction dir)
 {
     switch(dir) {

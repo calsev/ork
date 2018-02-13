@@ -3,7 +3,7 @@ This file is part of the ORK library.
 Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
-#include "ork/ork.hpp"
+#include "ork/enum.hpp"
 #define ORK_STL_INC_FILE <array>
 #include "ork/core/stl_include.inl"
 #define ORK_STL_INC_FILE <vector>
@@ -35,7 +35,7 @@ ORK_ORK_EXT(double) simple_angle(double angle);
 ORK_ORK_EXT(string) to_dimension(const double coord); // Fixed point for export
 
 
-enum class rotation_direction { clockwise, counter_clockwise };
+ORK_ENUM_DECL(rotation_direction, clockwise, counter_clockwise);
 
 ORK_ORK_EXT(rotation_direction) operator-(const rotation_direction dir);
 
