@@ -19,8 +19,14 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 namespace ork {
 
-ORK_ORK_EXT(double) mm2inch(double mm);
-ORK_ORK_EXT(double) inch2mm(double inch);
+ORK_INLINE double mm2inch(double mm)
+{
+    return mm / 25.4;
+}
+ORK_INLINE double inch2mm(double inch)
+{
+    return inch * 25.4;
+}
 
 // Given an angle in radians, return that angle in degrees
 ORK_ORK_EXT(double) rad2deg(double rad);
