@@ -136,4 +136,15 @@ class value_ptr;
 template<typename T, typename D>
 class shared_ptr;
 
+/*
+From orientation.hpp
+*/
+enum class orientation;
+
+/*
+From tagger.hpp
+*/
+class tagger;
+class setup_hierarchy;
+
 } // namespace ork
