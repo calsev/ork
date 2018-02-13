@@ -123,7 +123,6 @@ struct document;
 
 } // namespace html
 
-
 /*
 From memory.hpp
 */
@@ -146,5 +145,41 @@ From tagger.hpp
 */
 class tagger;
 class setup_hierarchy;
+
+/*
+From text_io.hpp
+*/
+
+namespace json {
+
+#if ORK_USE_JSON
+
+class ORK_ORK_API exportable;
+class ORK_ORK_API serializable;
+
+#endif // ORK_USE_JSON
+
+} // namespace json
+namespace xml {
+
+#if ORK_USE_PUGI
+
+class ORK_ORK_API exportable;
+class ORK_ORK_API serializable;
+
+#endif // ORK_USE_PUGI
+
+} // namespace xml
+namespace yaml {
+
+#if ORK_USE_YAML
+
+class ORK_ORK_API exportable;
+class ORK_ORK_API serializable;
+
+#endif // ORK_USE_YAML
+
+} // namespace yaml
+
 
 } // namespace ork
