@@ -83,7 +83,7 @@ Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
 #    endif
 
 
-#    define ORK_UNREACHABLE ORK_THROW(ORK("Unreachable"));
+#    define ORK_UNREACHABLE ORK_THROW(ORK("Unreachable"))
 
 
 /*

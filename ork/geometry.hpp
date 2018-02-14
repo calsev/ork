@@ -34,10 +34,6 @@ ORK_ORK_EXT(double) rad2deg(double rad);
 // Given an angle in degrees, return that angle in radians
 ORK_ORK_EXT(double) deg2rad(double deg);
 
-// Given an angle in Radians, return the equivalent angle on [0, 2*pi]
-ORK_ORK_EXT(double) simple_angle(double angle);
-
-
 ORK_ORK_EXT(string) to_dimension(const double coord); // Fixed point for export
 
 
@@ -50,13 +46,27 @@ ORK_ENUM_DECL(angle, radian, degree);
 template<angle>
 struct circle;
 template<>
-struct circle<angle::radian> {
+struct ORK_ORK_API circle<angle::radian> {
     static const double full;
 };
 template<>
-struct circle<angle::degree> {
+struct ORK_ORK_API circle<angle::degree> {
     static const double full;
 };
+
+
+// Given an angle in Radians, return the equivalent angle on [0, 2*pi]
+template<angle>
+ORK_ORK_EXT(double)
+simple_angle(double angle);
+template<>
+ORK_ORK_EXT(double)
+simple_angle<angle::radian>(double angle);
+template<>
+ORK_ORK_EXT(double)
+simple_angle<angle::degree>(double angle);
+ORK_ORK_EXT(double)
+simple_angle(double val, const angle);
 
 
 // Returns true if start->mid->end is in the clockwise direction
