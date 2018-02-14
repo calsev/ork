@@ -83,23 +83,6 @@ const double circle<angle::radian>::full = 2. * M_PI;
 const double circle<angle::degree>::full = 360.;
 
 
-// Given an angle in Radians, return the equivalent angle on [0, 2*pi]
-template<>
-double simple_angle<angle::radian>(double angle)
-{
-    while(angle < 0.) {
-        angle += 2. * M_PI;
-    }
-    return std::fmod(angle, 2.0 * M_PI);
-}
-template<>
-double simple_angle<angle::degree>(double angle)
-{
-    while(angle < 0.) {
-        angle += 360.0;
-    }
-    return std::fmod(angle, 360.0);
-}
 double simple_angle(double val, const angle a)
 {
     switch(a) {

@@ -56,15 +56,14 @@ struct ORK_ORK_API circle<angle::degree> {
 
 
 // Given an angle in Radians, return the equivalent angle on [0, 2*pi]
-template<angle>
-ORK_ORK_EXT(double)
-simple_angle(double angle);
-template<>
-ORK_ORK_EXT(double)
-simple_angle<angle::radian>(double angle);
-template<>
-ORK_ORK_EXT(double)
-simple_angle<angle::degree>(double angle);
+template<angle A>
+double simple_angle(double angle)
+{
+    while(angle < 0.) {
+        angle += circle<A>::full;
+    }
+    return std::fmod(angle, circle<A>::full);
+}
 ORK_ORK_EXT(double)
 simple_angle(double val, const angle);
 
