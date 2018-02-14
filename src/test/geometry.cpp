@@ -41,4 +41,16 @@ TEST_CASE("Simple angles", "[geometry]")
     REQUIRE(ork::GLM::equal(simple_angle(angle3, angle::degree), sangle3));
     REQUIRE(ork::GLM::equal(simple_angle(angle4, angle::radian), sangle4));
 }
+
+TEST_CASE("Angle advancement", "[geometry]")
+{
+    const double angle1 = 136.0;
+    const double angle2 = 395.0; // 35
+    const double angle3 = -172.0; // 188
+    const double angle4 = -243.0; // 117
+
+    REQUIRE(!angles_advance_clockwise<angle::degree>(angle1, angle2, angle3));
+    REQUIRE(!angles_advance_clockwise<angle::degree>(angle2, angle3, angle4));
+    REQUIRE(!angles_advance_clockwise<angle::degree>(angle1, angle2, angle4));
+    REQUIRE(angles_advance_clockwise<angle::degree>(angle2, angle1, angle3));
 }
