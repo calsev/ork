@@ -71,8 +71,12 @@ simple_angle(double val, const angle);
 // Returns true if start->mid->end is in the clockwise direction
 // Catches errors related to periodic angles and wrapping at 0
 template<angle A>
-bool angles_advance_clockwise(const double start_angle, double mid_angle, double end_angle)
+bool angles_advance_clockwise(double start_angle, double mid_angle, double end_angle)
 {
+    start_angle = simple_angle<A>(start_angle);
+    mid_angle = simple_angle<A>(mid_angle);
+    end_angle = simple_angle<A>(end_angle);
+
     // Put mid_angle/end_angle in the range [start_angle, start_angle + 2*PI)
     while(mid_angle < start_angle)
         mid_angle += circle<A>::full;

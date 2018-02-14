@@ -49,8 +49,8 @@ TEST_CASE("Angle advancement", "[geometry]")
     const double angle3 = -172.0; // 188
     const double angle4 = -243.0; // 117
 
-    REQUIRE(!angles_advance_clockwise<angle::degree>(angle1, angle2, angle3));
-    REQUIRE(!angles_advance_clockwise<angle::degree>(angle2, angle3, angle4));
+    REQUIRE(angles_advance_clockwise<angle::degree>(angle1, angle2, angle3));
+    REQUIRE(angles_advance_clockwise<angle::degree>(angle2, angle3, angle4));
     REQUIRE(!angles_advance_clockwise<angle::degree>(angle1, angle2, angle4));
-    REQUIRE(angles_advance_clockwise<angle::degree>(angle2, angle1, angle3));
+    REQUIRE(!angles_advance_clockwise<angle::degree>(angle2, angle1, angle3));
 }
