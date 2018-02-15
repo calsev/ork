@@ -196,7 +196,13 @@ void value_from_xml(const pugi::xml_node& node, ORK_REF_T value)
         API(void) \
         to_xml(pugi::xml_node& node, const ork::bstring& tag, ORK_CPARAM(TYPE) value); \
         API(void) \
-        from_xml(const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value)
+        to_attribute( \
+            pugi::xml_node& node, const ork::bstring& tag, ORK_CPARAM(TYPE) value); \
+        API(void) \
+        from_xml(const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value); \
+        API(void) \
+        from_attribute( \
+            const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value)
 
 
 #    define ORK_XML_SERIALIZE_DECL(TYPE) ORK_XML_SERIALIZE_DECL_(ORK_EXT, TYPE)
@@ -216,7 +222,17 @@ ORK_ORK_XML_SERIALIZE_DECL(wstring);
         { \
             ork::xml::value_to_xml<TYPE>(node, tag, value); \
         } \
+        void to_attribute( \
+            pugi::xml_node& node, const ork::bstring& tag, ORK_CPARAM(TYPE) value) \
+        { \
+            ork::xml::value_to_attribute<TYPE>(node, tag, value); \
+        } \
         void from_xml( \
+            const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value) \
+        { \
+            ork::xml::value_from_xml<TYPE>(node, tag, value); \
+        } \
+        void from_attribute( \
             const pugi::xml_node& node, const ork::bstring& tag, ORK_REF(TYPE) value) \
         { \
             ork::xml::value_from_xml<TYPE>(node, tag, value); \
