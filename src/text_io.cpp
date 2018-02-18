@@ -68,8 +68,8 @@ void export_file(const string& path_to_file, const exportable& object, const bst
     node root_node = doc.append_child(root_node_name.c_str());
     object.to_xml(root_node);
     file::ensure_directory(path_to_file);
-    ORK_FILE_WRITE(path_to_file);
-    doc.save(fout);
+    ORK_FILE_WRITE_B(path_to_file);
+    doc.save(fout, BORK("\t"), pugi::format_default, pugi::encoding_utf8);
 }
 void export_file_permissive(const string& path_to_file, const bstring& root_tag, const exportable& object)
 {
@@ -90,7 +90,7 @@ void export_file_permissive(const string& path_to_file, const bstring& root_tag,
                 << ORK("Creating XML file: ") << path_to_file;
             try {
                 ORK_FILE_WRITE_B(path_to_file);
-                doc.save(fout);
+                doc.save(fout, BORK("\t"), pugi::format_default, pugi::encoding_utf8);
             }
             catch(ork::exception& e) {
                 ORK_LOG(ork::severity_level::error)
