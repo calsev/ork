@@ -14,6 +14,25 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 namespace ork {
 
 
+// Serialization tag: basis for a child node
+struct tagged {
+private:
+    ork::bstring _tag;
+
+public:
+    ORK_INLINE tagged(const ork::bstring& tag)
+        : _tag{tag}
+    {}
+    ORK_MOVEABLE(tagged);
+
+public:
+    ORK_INLINE const ork::bstring& tag() const
+    {
+        return _tag;
+    }
+};
+
+
 #define ORK_OI_DECL_(SUFFIX) \
     class ORK_ORK_API exportable { \
     public: \
