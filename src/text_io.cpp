@@ -24,7 +24,7 @@ namespace json {
 #if ORK_USE_JSON
 
 
-void export_file(const string& path_to_file, const Json::Value& root)
+void export_file(const string& path_to_file, const node& root)
 {
     file::ensure_directory(path_to_file);
     ORK_FILE_WRITE_B(path_to_file);
@@ -36,17 +36,17 @@ void export_file(const string& path_to_file, const Json::Value& root)
 }
 void export_file(const string& path_to_file, const exportable& object)
 {
-    Json::Value root;
-    object.export_json(root);
+    node root;
+    object.to_json(root);
     export_file(path_to_file, root);
 }
-void load_and_parse(bi_stream& fin, Json::Value& root)
+void load_and_parse(bi_stream& fin, node& root)
 {
     fin >> root;
 }
-Json::Value load_and_parse(bi_stream& fin)
+node load_and_parse(bi_stream& fin)
 {
-    Json::Value root;
+    node root;
     fin >> root;
     return std::move(root);
 }
@@ -157,7 +157,7 @@ namespace yaml {
 #if ORK_USE_YAML
 
 
-void export_file(const string& path_to_file, const YAML::Node& root)
+void export_file(const string& path_to_file, const node& root)
 {
     file::ensure_directory(path_to_file);
     ORK_FILE_WRITE(path_to_file);
@@ -165,17 +165,17 @@ void export_file(const string& path_to_file, const YAML::Node& root)
 }
 void export_file(const string& path_to_file, const exportable& object)
 {
-    YAML::Node root;
+    node root;
     object.export_yaml(root);
     export_file(path_to_file, root);
 }
-void load_and_parse(bi_stream& fin, YAML::Node& root)
+void load_and_parse(bi_stream& fin, node& root)
 {
     root = YAML::Load(fin);
 }
-YAML::Node load_and_parse(bi_stream& fin)
+node load_and_parse(bi_stream& fin)
 {
-    YAML::Node root = YAML::Load(fin);
+    node root = YAML::Load(fin);
     return std::move(root);
 }
 

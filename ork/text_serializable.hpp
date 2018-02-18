@@ -55,7 +55,7 @@ public:
     ORK_ORK_API explicit vector(xml::node& node);
 #    endif
 #    if ORK_USE_YAML
-    ORK_ORK_API explicit vector(YAML::Node& node);
+    ORK_ORK_API explicit vector(yaml::node& node);
 #    endif
 public:
     ORK_ORK_API vector& operator=(const glm::dvec3&);
@@ -85,7 +85,7 @@ public:
     ORK_ORK_API virtual void export_xml(xml::node& n) const;
 #    endif
 #    if ORK_USE_YAML
-    ORK_ORK_API virtual void export_yaml(YAML::Node& n) const;
+    ORK_ORK_API virtual void export_yaml(yaml::node& n) const;
 #    endif
 };
 

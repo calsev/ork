@@ -160,14 +160,14 @@ void vector::export_xml(xml::node& node) const
 }
 #    endif
 #    if ORK_USE_YAML
-vector::vector(YAML::Node& node)
+vector::vector(yaml::node& node)
     : vector{}
 {
     _pimpl->data.x = node["x"].as<double>();
     _pimpl->data.y = node["y"].as<double>();
     _pimpl->data.z = node["z"].as<double>();
 }
-void vector::export_yaml(YAML::Node& n) const
+void vector::export_yaml(yaml::node& n) const
 {
     n["x"] = _pimpl->data.x;
     n["y"] = _pimpl->data.y;

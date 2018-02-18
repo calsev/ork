@@ -74,10 +74,7 @@ export_file(const string& path_to_file, const exportable& object, const bstring&
 ORK_ORK_EXT(void)
 load_and_parse(bi_stream& fin, pugi::xml_document& root); // Just create a file with error checking
 ORK_ORK_EXT(void)
-load_and_parse_permissive(
-    const file::path& path_to_file,
-    const bstring& root_tag,
-    xml::serializable& obj);
+load_and_parse_permissive(const file::path& path_to_file, const bstring& root_tag, serializable& obj);
 
 
 /*
@@ -247,11 +244,11 @@ ORK_OI_DECL_(yaml)
 
 
 ORK_ORK_EXT(void)
-export_file(const string& path_to_file, const YAML::Node& root);
+export_file(const string& path_to_file, const node& root);
 ORK_ORK_EXT(void)
 export_file(const string& path_to_file, const exportable& object);
-ORK_ORK_EXT(void) load_and_parse(bi_stream& fin, YAML::Node& root);
-ORK_ORK_EXT(YAML::Node) load_and_parse(bi_stream& fin);
+ORK_ORK_EXT(void) load_and_parse(bi_stream& fin, node& root);
+ORK_ORK_EXT(node) load_and_parse(bi_stream& fin);
 
 
 #endif // ORK_USE_YAML
