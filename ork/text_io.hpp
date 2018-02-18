@@ -75,9 +75,9 @@ public:
 
 
 ORK_ORK_EXT(void)
-export_file(const string& path_to_file, const exportable& object, const string& root_node_name);
+export_file(const string& path_to_file, const exportable& object, const bstring& root_node_name);
 ORK_ORK_EXT(void)
-load_and_parse(i_stream& fin, pugi::xml_document& root); // Just create a file with error checking
+load_and_parse(bi_stream& fin, pugi::xml_document& root); // Just create a file with error checking
 ORK_ORK_EXT(void)
 load_and_parse_permissive(
     const file::path& path_to_file,
