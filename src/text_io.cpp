@@ -81,7 +81,7 @@ void export_file(const string& path_to_file, const exportable& object, const bst
     auto decl_node = doc.append_child(pugi::node_declaration);
     decl_node.append_attribute("version") = BORK("1.0");
     decl_node.append_attribute("encoding") = BORK("utf-8");
-    decl_node.append_attribute("standalone") = BORK("yes");
+    // decl_node.append_attribute("standalone") = BORK("yes");
     export_object(doc, root_tag, object);
     file::ensure_directory(path_to_file);
     ORK_FILE_WRITE_B(path_to_file);
