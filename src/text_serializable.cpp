@@ -127,14 +127,14 @@ string vector::as_string() const
 
 
 #    if ORK_USE_JSON
-vector::vector(Json::Value& node)
+vector::vector(json::node& node)
     : vector{}
 {
     _pimpl->data.x = node["x"].asDouble();
     _pimpl->data.y = node["y"].asDouble();
     _pimpl->data.z = node["z"].asDouble();
 }
-void vector::export_json(Json::Value& n) const
+void vector::export_json(json::node& n) const
 {
     n["x"] = _pimpl->data.x;
     n["y"] = _pimpl->data.y;
@@ -142,14 +142,14 @@ void vector::export_json(Json::Value& n) const
 }
 #    endif
 #    if ORK_USE_PUGI
-vector::vector(pugi::xml_node& node)
+vector::vector(xml::node& node)
     : vector{}
 {
     _pimpl->data.x = node.attribute(BORK("x")).as_double();
     _pimpl->data.y = node.attribute(BORK("y")).as_double();
     _pimpl->data.z = node.attribute(BORK("z")).as_double();
 }
-void vector::export_xml(pugi::xml_node& node) const
+void vector::export_xml(xml::node& node) const
 {
     node.append_attribute(BORK("x")).set_value(
         ORK_STR_2_BYTE(to_dimension(_pimpl->data.x)).c_str());

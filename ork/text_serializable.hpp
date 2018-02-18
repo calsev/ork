@@ -49,10 +49,10 @@ public:
     ORK_ORK_API explicit vector(const GLM::dunit3& vec);
     ORK_ORK_API vector(const double x, const double y, const double z);
 #    if ORK_USE_JSON
-    ORK_ORK_API explicit vector(Json::Value& node);
+    ORK_ORK_API explicit vector(json::node& node);
 #    endif
 #    if ORK_USE_PUGI
-    ORK_ORK_API explicit vector(pugi::xml_node& node);
+    ORK_ORK_API explicit vector(xml::node& node);
 #    endif
 #    if ORK_USE_YAML
     ORK_ORK_API explicit vector(YAML::Node& node);
@@ -79,10 +79,10 @@ public:
 
     ORK_ORK_API string as_string() const;
 #    if ORK_USE_JSON
-    ORK_ORK_API virtual void export_json(Json::Value& n) const;
+    ORK_ORK_API virtual void export_json(json::node& n) const;
 #    endif
 #    if ORK_USE_PUGI
-    ORK_ORK_API virtual void export_xml(pugi::xml_node& n) const;
+    ORK_ORK_API virtual void export_xml(xml::node& n) const;
 #    endif
 #    if ORK_USE_YAML
     ORK_ORK_API virtual void export_yaml(YAML::Node& n) const;

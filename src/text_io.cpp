@@ -65,8 +65,8 @@ namespace xml {
 void export_file(const string& path_to_file, const exportable& object, const bstring& root_node_name)
 {
     pugi::xml_document doc;
-    pugi::xml_node root_node = doc.append_child(root_node_name.c_str());
-    object.export_xml(root_node);
+    node root_node = doc.append_child(root_node_name.c_str());
+    object.to_xml(root_node);
     file::ensure_directory(path_to_file);
     ORK_FILE_WRITE(path_to_file);
     doc.save(fout);
@@ -87,7 +87,7 @@ void load_and_parse(bi_stream& fin, pugi::xml_document& xml)
 void load_and_parse_permissive(
     const ork::file::path& path_to_file,
     const ork::bstring& root_tag,
-    ork::xml::serializable& obj)
+    serializable& obj)
 {
     if(!ork::ext_file::is_regular_file(path_to_file)) {
         ORK_LOG(ork::severity_level::error)
@@ -100,7 +100,7 @@ void load_and_parse_permissive(
         pugi::xml_document doc{};
         try {
             ORK_FILE_READ_B(path_to_file);
-            ork::xml::load_and_parse(fin, doc);
+            load_and_parse(fin, doc);
         }
         catch(ork::exception& e) {
             ORK_LOG(ork::severity_level::error)
