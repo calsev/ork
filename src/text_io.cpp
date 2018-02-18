@@ -71,6 +71,38 @@ void export_file(const string& path_to_file, const exportable& object, const bst
     ORK_FILE_WRITE(path_to_file);
     doc.save(fout);
 }
+void export_file_permissive(const string& path_to_file, const bstring& root_tag, const exportable& object)
+{
+    pugi::xml_document doc;
+    node root_node = doc.append_child(root_tag.c_str());
+    if(!root_node) {
+        ORK_LOG(ork::severity_level::error)
+            << ORK("Could not create root node: ") << root_tag;
+    }
+    else {
+        object.to_xml(root_node);
+        if(!file::ensure_directory(path_to_file)) {
+            ORK_LOG(ork::severity_level::error)
+                << ORK("Could not create XML directory: ") << path_to_file;
+        }
+        else {
+            ORK_LOG(ork::severity_level::trace)
+                << ORK("Creating XML file: ") << path_to_file;
+            try {
+                ORK_FILE_WRITE_B(path_to_file);
+                doc.save(fout);
+            }
+            catch(ork::exception& e) {
+                ORK_LOG(ork::severity_level::error)
+                    << ORK("Exception writing XML file: ") << e.what();
+            }
+            catch(...) {
+                ORK_LOG(ork::severity_level::error)
+                    << ORK("Something happened while writing XML file");
+            }
+        }
+    }
+}
 void load_and_parse(bi_stream& fin, pugi::xml_document& xml)
 {
     pugi::xml_parse_result result = xml.load(fin);
