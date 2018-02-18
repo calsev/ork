@@ -62,44 +62,49 @@ namespace xml {
 #if ORK_USE_PUGI
 
 
-void export_file(const string& path_to_file, const exportable& object, const bstring& root_node_name)
+void export_object(pugi::xml_document& doc, const bstring& root_tag, const exportable& object)
+{
+    const tagged* const tag_ptr = dynamic_cast<const tagged*>(&object);
+    if(tag_ptr == nullptr) {
+        node root_node = doc.append_child(root_tag.c_str());
+        object.to_xml(root_node);
+    }
+    else {
+        object.to_xml(doc);
+    }
+}
+
+
+void export_file(const string& path_to_file, const exportable& object, const bstring& root_tag)
 {
     pugi::xml_document doc;
-    node root_node = doc.append_child(root_node_name.c_str());
-    object.to_xml(root_node);
+    export_object(doc, root_tag, object);
     file::ensure_directory(path_to_file);
     ORK_FILE_WRITE_B(path_to_file);
     doc.save(fout, BORK("\t"), pugi::format_default, pugi::encoding_utf8);
 }
 void export_file_permissive(const string& path_to_file, const bstring& root_tag, const exportable& object)
 {
-    pugi::xml_document doc;
-    node root_node = doc.append_child(root_tag.c_str());
-    if(!root_node) {
+    if(!file::ensure_directory(path_to_file)) {
         ORK_LOG(ork::severity_level::error)
-            << ORK("Could not create root node: ") << root_tag;
+            << ORK("Could not create XML directory: ") << path_to_file;
     }
     else {
-        object.to_xml(root_node);
-        if(!file::ensure_directory(path_to_file)) {
-            ORK_LOG(ork::severity_level::error)
-                << ORK("Could not create XML directory: ") << path_to_file;
+        ORK_LOG(ork::severity_level::trace)
+            << ORK("Creating XML file: ") << path_to_file;
+        try {
+            ORK_FILE_WRITE_B(path_to_file);
+            pugi::xml_document doc;
+            export_object(doc, root_tag, object);
+            doc.save(fout, BORK("\t"), pugi::format_default, pugi::encoding_utf8);
         }
-        else {
-            ORK_LOG(ork::severity_level::trace)
-                << ORK("Creating XML file: ") << path_to_file;
-            try {
-                ORK_FILE_WRITE_B(path_to_file);
-                doc.save(fout, BORK("\t"), pugi::format_default, pugi::encoding_utf8);
-            }
-            catch(ork::exception& e) {
-                ORK_LOG(ork::severity_level::error)
-                    << ORK("Exception writing XML file: ") << e.what();
-            }
-            catch(...) {
-                ORK_LOG(ork::severity_level::error)
-                    << ORK("Something happened while writing XML file");
-            }
+        catch(ork::exception& e) {
+            ORK_LOG(ork::severity_level::error)
+                << ORK("Exception writing XML file: ") << e.what();
+        }
+        catch(...) {
+            ORK_LOG(ork::severity_level::error)
+                << ORK("Something happened while writing XML file");
         }
     }
 }
@@ -116,10 +121,37 @@ void load_and_parse(bi_stream& fin, pugi::xml_document& xml)
         ORK_LOG(ork::severity_level::trace) << ORK("XML parse success");
     }
 }
+
+
+#    define ORK_XML_IMPORT(NODE) \
+        try { \
+            object.from_xml(NODE); \
+        } \
+        catch(ork::exception & e) { \
+            ORK_LOG(ork::severity_level::error) \
+                << ORK("Exception parsing XML file: ") << e.what(); \
+        } \
+        catch(...) { \
+            ORK_LOG(ork::severity_level::error) \
+                << ORK("Something happened while parsing XML file"); \
+        }
+
+
+void import_object(const pugi::xml_document& doc, const ork::bstring& root_tag, importable& object)
+{
+    const tagged* const tag_ptr = dynamic_cast<const tagged*>(&object);
+    if(tag_ptr == nullptr) {
+        const node root_node{doc.child(root_tag.c_str())};
+        ORK_XML_IMPORT(root_node)
+    }
+    else {
+        ORK_XML_IMPORT(doc)
+    }
+}
 void load_and_parse_permissive(
     const ork::file::path& path_to_file,
     const ork::bstring& root_tag,
-    serializable& obj)
+    importable& object)
 {
     if(!ork::ext_file::is_regular_file(path_to_file)) {
         ORK_LOG(ork::severity_level::error)
@@ -142,27 +174,8 @@ void load_and_parse_permissive(
             ORK_LOG(ork::severity_level::error)
                 << ORK("Something happened while loading XML file");
         }
-
+        import_object(doc, root_tag, object);
         ORK_LOG(ork::severity_level::trace) << ORK("Parsing XML");
-        auto root_node{doc.child(root_tag.c_str())};
-        if(!root_node) {
-            ORK_LOG(ork::severity_level::error)
-                << ORK("Root node not found: ") << ORK_BYTE_2_STR(root_tag);
-        }
-        else {
-            ORK_LOG(ork::severity_level::trace) << ORK("Parsing XML object");
-            try {
-                obj.from_xml(root_node);
-            }
-            catch(ork::exception& e) {
-                ORK_LOG(ork::severity_level::error)
-                    << ORK("Exception parsing XML file: ") << e.what();
-            }
-            catch(...) {
-                ORK_LOG(ork::severity_level::error)
-                    << ORK("Something happened while parsing XML file");
-            }
-        }
     }
 }
 
