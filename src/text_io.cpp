@@ -78,6 +78,10 @@ void export_object(pugi::xml_document& doc, const bstring& root_tag, const expor
 void export_file(const string& path_to_file, const exportable& object, const bstring& root_tag)
 {
     pugi::xml_document doc;
+    auto decl_node = doc.append_child(pugi::node_declaration);
+    decl_node.append_attribute("version") = BORK("1.0");
+    decl_node.append_attribute("encoding") = BORK("utf-8");
+    decl_node.append_attribute("standalone") = BORK("yes");
     export_object(doc, root_tag, object);
     file::ensure_directory(path_to_file);
     ORK_FILE_WRITE_B(path_to_file);
