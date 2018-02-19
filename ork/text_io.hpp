@@ -149,7 +149,7 @@ template<typename T>
 void value_from_attribute(const node& node, const bstring& tag, ORK_REF_T value)
 {
     try {
-        const auto text = node.attribute(tag.c_str()).value();
+        const auto text{node.attribute(tag.c_str()).value()};
         value = from_string<ORK_VAL_T>(text);
     }
     catch(std::exception& e) {
@@ -166,7 +166,7 @@ template<typename T>
 void value_from_xml(const node& node, ORK_REF_T value)
 {
     try {
-        const auto text = node.child_value();
+        const auto text{node.child_value()};
         value = from_string<ORK_VAL_T>(text);
     }
     catch(std::exception& e) {
@@ -232,7 +232,7 @@ ORK_ORK_XML_SERIALIZE_DECL(wstring);
         void from_attribute( \
             const node& node, const ork::bstring& tag, ORK_REF(TYPE) value) \
         { \
-            ork::xml::value_from_xml<TYPE>(node, tag, value); \
+            ork::xml::value_from_attribute<TYPE>(node, tag, value); \
         }
 
 
