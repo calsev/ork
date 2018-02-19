@@ -137,7 +137,7 @@ void value_to_xml(node& node, ORK_CPARAM_T value)
 template<typename T>
 void value_to_xml(node& node, const bstring& tag, ORK_CPARAM_T value)
 {
-    auto n = node.child(tag.c_str());
+    auto n = node.append_child(tag.c_str());
     value_to_xml<T>(n, value);
 }
 ORK_ORK_EXT(void) exportable_to_xml(node& node, const exportable& value);
