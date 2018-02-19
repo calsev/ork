@@ -140,6 +140,8 @@ void value_to_xml(node& node, const bstring& tag, ORK_CPARAM_T value)
     auto n = node.child(tag.c_str());
     value_to_xml<T>(n, value);
 }
+void exportable_to_xml(node& node, exportable& value);
+void exportable_to_xml(node& node, const bstring& tag, exportable& value);
 
 
 template<typename T>
@@ -180,6 +182,8 @@ void value_from_xml(const node& node, const bstring& tag, ORK_REF_T value)
     auto n = node.child(tag.c_str());
     value_from_xml<T>(n, value);
 }
+void importable_from_xml(const node& node, importable& value);
+void importable_from_xml(const node& node, const bstring& tag, importable& value);
 
 
 // Overloads to eliminate dependency definitions

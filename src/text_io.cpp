@@ -184,6 +184,50 @@ void load_and_parse_permissive(
 }
 
 
+void exportable_to_xml(node& node, exportable& value)
+{
+    try {
+        value.to_xml(node);
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to set tag ") << ORK_BYTE_2_STR(node.name())
+            << ORK(": ") << ORK_BYTE_2_STR(e.what());
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error) << ORK("Something happened setting tag ")
+                                       << ORK_BYTE_2_STR(node.name());
+    }
+}
+void exportable_to_xml(node& node, const bstring& tag, exportable& value)
+{
+    auto n = node.append_child(tag.c_str());
+    exportable_to_xml(n, value);
+}
+
+
+void importable_from_xml(const node& node, importable& value)
+{
+    try {
+        value.from_xml(node);
+    }
+    catch(std::exception& e) {
+        ORK_LOG(severity_level::error)
+            << ORK("Failed to read tag ") << ORK_BYTE_2_STR(node.name())
+            << ORK(": ") << ORK_BYTE_2_STR(e.what());
+    }
+    catch(...) {
+        ORK_LOG(severity_level::error) << ORK("Something happened reading tag ")
+                                       << ORK_BYTE_2_STR(node.name());
+    }
+}
+void importable_from_xml(const node& node, const bstring& tag, importable& value)
+{
+    auto n = node.child(tag.c_str());
+    importable_from_xml(n, value);
+}
+
+
 /*
 These are permissive interfaces
 */
