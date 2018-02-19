@@ -184,7 +184,7 @@ void load_and_parse_permissive(
 }
 
 
-void exportable_to_xml(node& node, exportable& value)
+void exportable_to_xml(node& node, const exportable& value)
 {
     try {
         value.to_xml(node);
@@ -199,7 +199,7 @@ void exportable_to_xml(node& node, exportable& value)
                                        << ORK_BYTE_2_STR(node.name());
     }
 }
-void exportable_to_xml(node& node, const bstring& tag, exportable& value)
+void exportable_to_xml(node& node, const bstring& tag, const exportable& value)
 {
     auto n = node.append_child(tag.c_str());
     exportable_to_xml(n, value);
