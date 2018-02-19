@@ -119,24 +119,6 @@ void value_to_attribute(node& node, const bstring& tag, ORK_CPARAM_T value)
     }
 }
 template<typename T>
-void value_to_xml(node& node, const bstring& tag, ORK_CPARAM_T value)
-{
-    try {
-        node.append_child(tag.c_str())
-            .append_child(pugi::node_pcdata)
-            .set_value(to_bstring(value).c_str());
-    }
-    catch(std::exception& e) {
-        ORK_LOG(severity_level::error)
-            << ORK("Failed to set tag ") << ORK_BYTE_2_STR(tag) << ORK(": ")
-            << ORK_BYTE_2_STR(e.what());
-    }
-    catch(...) {
-        ORK_LOG(severity_level::error)
-            << ORK("Something happened setting tag ") << ORK_BYTE_2_STR(tag);
-    }
-}
-template<typename T>
 void value_to_xml(node& node, ORK_CPARAM_T value)
 {
     try {
@@ -151,6 +133,12 @@ void value_to_xml(node& node, ORK_CPARAM_T value)
         ORK_LOG(severity_level::error) << ORK("Something happened setting tag ")
                                        << ORK_BYTE_2_STR(node.name());
     }
+}
+template<typename T>
+void value_to_xml(node& node, const bstring& tag, ORK_CPARAM_T value)
+{
+    auto n = node.child(tag.c_str());
+    value_to_xml<T>(n, value);
 }
 
 
@@ -171,22 +159,6 @@ void value_from_attribute(const node& node, const bstring& tag, ORK_REF_T value)
     }
 }
 template<typename T>
-void value_from_xml(const node& node, const bstring& tag, ORK_REF_T value)
-{
-    try {
-        value = from_string<ORK_VAL_T>(node.child_value(tag.c_str()));
-    }
-    catch(std::exception& e) {
-        ORK_LOG(severity_level::error)
-            << ORK("Failed to read tag ") << ORK_BYTE_2_STR(tag) << ORK(": ")
-            << ORK_BYTE_2_STR(e.what());
-    }
-    catch(...) {
-        ORK_LOG(severity_level::error)
-            << ORK("Something happened reading tag ") << ORK_BYTE_2_STR(tag);
-    }
-}
-template<typename T>
 void value_from_xml(const node& node, ORK_REF_T value)
 {
     try {
@@ -201,6 +173,12 @@ void value_from_xml(const node& node, ORK_REF_T value)
         ORK_LOG(severity_level::error) << ORK("Something happened reading tag ")
                                        << ORK_BYTE_2_STR(node.name());
     }
+}
+template<typename T>
+void value_from_xml(const node& node, const bstring& tag, ORK_REF_T value)
+{
+    auto n = node.child(tag.c_str());
+    value_from_xml<T>(n, value);
 }
 
 
