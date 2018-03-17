@@ -8,7 +8,9 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #include "ork/string_utils.hpp"
 #include "ork/type_traits.hpp"
 
-#include "glm/fwd.hpp"
+#if ORK_USE_GLM
+#    include "glm/fwd.hpp"
+#endif
 
 
 namespace ork {

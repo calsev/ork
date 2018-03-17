@@ -4,12 +4,12 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 */
 #pragma once
 #include "ork/enum.hpp"
+#include "ork/orientation.hpp"
+
 #define ORK_STL_INC_FILE <array>
 #include "ork/core/stl_include.inl"
 #define ORK_STL_INC_FILE <vector>
 #include "ork/core/stl_include.inl"
-
-#include "ork/orientation.hpp"
 
 #if ORK_USE_GLM
 #    include "glm/fwd.hpp"
