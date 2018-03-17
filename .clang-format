@@ -30,19 +30,23 @@ BreakConstructorInitializers: BeforeComma
 ColumnLimit: 80
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
+ForEachMacros: ['LOOPI', 'LOOPJ', 'LOOPK', 'LOOPX', 'LOOPY', 'LOOPZ', 'LOOPVI', 'LOOPVJ', 'LOOPVK', 'LOOPVX', 'LOOPVY', 'LOOPVZ']
 IndentCaseLabels: true
 IndentPPDirectives: AfterHash
 IndentWidth: 4
+MacroBlockBegin: "ORK_STMT"
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: None
 PenaltyBreakAssignment: 30
 PenaltyBreakBeforeFirstCallParameter: 0
 PenaltyBreakFirstLessLess: 0
+PenaltyBreakString: 120
 PenaltyExcessCharacter: 2
-PenaltyReturnTypeOnItsOwnLine: 50
+PenaltyReturnTypeOnItsOwnLine: 120
 PointerAlignment: Left
 SortIncludes: false
 SpaceAfterTemplateKeyword: false
