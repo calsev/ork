@@ -97,7 +97,7 @@ namespace ork {
 #if ORK_USE_PUGI
 #    define ORK_ENUM_FROM_XML_(ENUM) ORK_XML_SERIALIZE_DEF(ENUM)
 #else
-#    define define ORK_ENUM_FROM_XML_(ENUM)
+#    define ORK_ENUM_FROM_XML_(ENUM)
 #endif
 
 
