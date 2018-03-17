@@ -18,7 +18,7 @@ namespace ork {
 #if ORK_USE_PUGI
 #    define ORK_ENUM_TO_XML_(ENUM) ORK_XML_SERIALIZE_DECL(ENUM)
 #else
-#    define define ORK_ENUM_TO_XML_(ENUM)
+#    define ORK_ENUM_TO_XML_(ENUM)
 #endif
 
 #define ORK_ENUM_DECL_(API, INLINE, ENUM, ...) \
