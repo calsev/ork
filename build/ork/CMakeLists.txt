@@ -157,7 +157,7 @@ set(ORK_PUBLIC_HDRS
 	"${3P_ORK_SRC_DIR}/ork/database.hpp"
 	"${3P_ORK_SRC_DIR}/ork/distribution.hpp"
 	"${3P_ORK_SRC_DIR}/ork/enum.hpp"
-  "${3P_ORK_SRC_DIR}/ork/fwd.hpp"
+	"${3P_ORK_SRC_DIR}/ork/fwd.hpp"
 	"${3P_ORK_SRC_DIR}/ork/file_utils.hpp"
 	"${3P_ORK_SRC_DIR}/ork/filter.hpp"
 	"${3P_ORK_SRC_DIR}/ork/geometry.hpp"

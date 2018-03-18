@@ -43,7 +43,7 @@ bool exists(const path&);
 } // namespace boost
 
 namespace ork {
-namespace ext_file = boost : filesystem;
+namespace ext_file = boost::filesystem;
 } // namespace ork
 
 #    endif
