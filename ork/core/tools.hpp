@@ -74,12 +74,9 @@ Usage: ORK_C_LINK ORK_API int ORK_CALL my_func(int arg);
 #    endif
 
 
+// We only compile C++, so this one is easy
 #    ifndef ORK_UNUSED
-#        if ORK_GCC
-#            define ORK_UNUSED __attribute__((unused))
-#        else
-#            define ORK_UNUSED
-#        endif
+#        define ORK_UNUSED(x) ORK_EMPTY
 #    endif
 
 
