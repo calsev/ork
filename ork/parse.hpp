@@ -81,8 +81,7 @@ namespace detail {
 
 
 template<typename char_t, typename iter>
-ORK_INLINE bool
-consume_lit(char_t const* str, iter& it, const iter& first, iter const& last)
+ORK_INLINE bool consume_lit(char_t const* str, iter& it, const iter& first, iter const& last)
 {
     for(char_t ch = *str; ch != 0; ch = *++str, ++it) {
         if(it == last || (ch != *it)) {
@@ -93,8 +92,7 @@ consume_lit(char_t const* str, iter& it, const iter& first, iter const& last)
 }
 
 template<typename string_t, typename iter>
-ORK_INLINE bool
-consume_lit(string_t const& str, iter& it, const iter& first, iter const& last)
+ORK_INLINE bool consume_lit(string_t const& str, iter& it, const iter& first, iter const& last)
 {
     typename string_t::const_iterator str_it = str.begin();
     const typename string_t::const_iterator str_end = str.end();
@@ -112,8 +110,7 @@ consume_lit(string_t const& str, iter& it, const iter& first, iter const& last)
 Bool, no 1/0 allowed
 */
 template<typename iter>
-ORK_INLINE bool
-consume_alpha_bool(iter& it, const iter& first, const iter& last, bool& val)
+ORK_INLINE bool consume_alpha_bool(iter& it, const iter& first, const iter& last, bool& val)
 {
     if(it == last) {
         return false;
@@ -335,7 +332,7 @@ ORK_INLINE bool consume_space(iter& it, const iter& first, const iter& last)
 
 
 template<typename iter>
-ORK_INLINE bool consume_lb_com(iter& it, const iter& first, const iter& last)
+ORK_INLINE bool consume_lb_com(iter& it, const iter& ORK_UNUSED(first), const iter& last)
 {
     if(it == last) {
         return false;
@@ -560,7 +557,12 @@ public: // Parser component stuff
 
     // This function is called during the actual parsing process
     template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(iter& first, const iter& last, context& ctxt, const skipper& skip, attribute& attr) const
+    bool parse(
+        iter& first,
+        const iter& last,
+        context& ORK_UNUSED(ctxt),
+        const skipper& ORK_UNUSED(skip),
+        attribute& ORK_UNUSED(attr)) const
     {
         const iter first_copy(first);
         do {
@@ -601,7 +603,7 @@ namespace boost {
 namespace spirit {
 namespace qi {
 
-    // This is the factory function object that is invoked to create an instance of our parser.
+// This is the factory function object that is invoked to create an instance of our parser.
 #    define ORK_ORQ_FACTORY(TAG) \
         template<typename modifiers> \
         struct make_primitive<ork::orq::tag::TAG, modifiers> { \
