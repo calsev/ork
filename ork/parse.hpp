@@ -81,7 +81,8 @@ namespace detail {
 
 
 template<typename char_t, typename iter>
-ORK_INLINE bool consume_lit(char_t const* str, iter& it, const iter& first, iter const& last)
+ORK_INLINE bool
+consume_lit(char_t const* str, iter& it, const iter& ORK_UNUSED(first), iter const& last)
 {
     for(char_t ch = *str; ch != 0; ch = *++str, ++it) {
         if(it == last || (ch != *it)) {
@@ -92,7 +93,8 @@ ORK_INLINE bool consume_lit(char_t const* str, iter& it, const iter& first, iter
 }
 
 template<typename string_t, typename iter>
-ORK_INLINE bool consume_lit(string_t const& str, iter& it, const iter& first, iter const& last)
+ORK_INLINE bool
+consume_lit(string_t const& str, iter& it, const iter& ORK_UNUSED(first), iter const& last)
 {
     typename string_t::const_iterator str_it = str.begin();
     const typename string_t::const_iterator str_end = str.end();
@@ -211,7 +213,7 @@ ORK_INLINE bool consume_real(iter& it, const iter& first, const iter& last)
 An identifier is a typical C/C++/Java/C# name: start with underscore/letter, continue with underscore/letter/digit
 */
 template<typename iter>
-ORK_INLINE bool consume_identifier(iter& it, const iter& first, const iter& last)
+ORK_INLINE bool consume_identifier(iter& it, const iter& ORK_UNUSED(first), const iter& last)
 {
     if(it == last) {
         return false;
@@ -276,7 +278,7 @@ A 'name' is a bit of a muddy combination of proper name (e.g. Harold, Hawai'i, D
 We require: start with letter/underscore, continue with letter/digit/underscore/dash/apostrophe
 */
 template<typename iter>
-ORK_INLINE bool consume_name(iter& it, const iter& first, const iter& last)
+ORK_INLINE bool consume_name(iter& it, const iter& ORK_UNUSED(first), const iter& last)
 {
     if(it == last) {
         return false;
@@ -297,7 +299,7 @@ ORK_INLINE bool consume_name(iter& it, const iter& first, const iter& last)
 
 
 template<typename iter>
-ORK_INLINE bool consume_quote(iter& it, const iter& first, const iter& last)
+ORK_INLINE bool consume_quote(iter& it, const iter& ORK_UNUSED(first), const iter& last)
 {
     if(it == last) {
         return false;
@@ -361,7 +363,12 @@ public: // Parser component stuff
 
     // This function is called during the actual parsing process
     template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(iter& first, const iter& last, context& ctxt, const skipper& skip, attribute& attr) const
+    bool parse(
+        iter& first,
+        const iter& last,
+        context& ORK_UNUSED(ctxt),
+        const skipper& skip,
+        attribute& attr) const
     {
         boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
 
@@ -394,7 +401,12 @@ public: // Parser component stuff
 
     // This function is called during the actual parsing process
     template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(iter& first, const iter& last, context& ctxt, const skipper& skip, attribute& attr) const
+    bool parse(
+        iter& first,
+        const iter& last,
+        context& ORK_UNUSED(ctxt),
+        const skipper& skip,
+        attribute& attr) const
     {
         boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
 
@@ -427,7 +439,12 @@ public: // Parser component stuff
 
     // This function is called during the actual parsing process
     template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(iter& first, const iter& last, context& ctxt, const skipper& skip, attribute& attr) const
+    bool parse(
+        iter& first,
+        const iter& last,
+        context& ORK_UNUSED(ctxt),
+        const skipper& skip,
+        attribute& attr) const
     {
         boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
 
@@ -460,7 +477,12 @@ public: // Parser component stuff
 
     // This function is called during the actual parsing process
     template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(iter& first, const iter& last, context& ctxt, const skipper& skip, attribute& attr) const
+    bool parse(
+        iter& first,
+        const iter& last,
+        context& ORK_UNUSED(ctxt),
+        const skipper& skip,
+        attribute& attr) const
     {
         boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
 
@@ -493,7 +515,12 @@ public: // Parser component stuff
 
     // This function is called during the actual parsing process
     template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(iter& first, const iter& last, context& ctxt, const skipper& skip, attribute& attr) const
+    bool parse(
+        iter& first,
+        const iter& last,
+        context& ORK_UNUSED(ctxt),
+        const skipper& skip,
+        attribute& attr) const
     {
         boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
 
@@ -526,7 +553,12 @@ public: // Parser component stuff
 
     // This function is called during the actual parsing process
     template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(iter& first, const iter& last, context& ctxt, const skipper& skip, attribute& attr) const
+    bool parse(
+        iter& first,
+        const iter& last,
+        context& ORK_UNUSED(ctxt),
+        const skipper& skip,
+        attribute& ORK_UNUSED(attr)) const
     {
         boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
 

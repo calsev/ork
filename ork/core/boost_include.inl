@@ -4,6 +4,7 @@
 #    pragma warning(push)
 #    pragma warning(disable : 4365) // return' signed/unsigned mismatch
 #    pragma warning(disable : 4371) // layout changed
+#    pragma warning(disable : 4459) // declaration hides global declaration
 #    pragma warning(disable : 4571) // catch(...) semantics changed for structured exceptions
 #    pragma warning(disable : 4619) // disable non-existant warning
 #    pragma warning(disable : 4623) // default constructor was implicitly defined as deleted
