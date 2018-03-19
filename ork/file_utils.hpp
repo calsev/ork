@@ -10,7 +10,7 @@ namespace ork {
 
 
 // Discard UTF-8 BOM, return true if found
-bool discard_bom(bi_stream& fin);
+ORK_ORK_EXT(bool) discard_bom(bi_stream& fin);
 
 
 /*
@@ -61,7 +61,7 @@ struct directory_executer {};
 // Partial specialization for sorted visitation
 template<class functor, class iter_t>
 struct directory_executer<functor, iter_t, sorted> {
-    static void run(const file::path& dir, functor& f)
+    ORK_INLINE static void run(const file::path& dir, functor& f)
     {
         // Create a list of the paths in the directory, and then sort it
         std::vector<file::path> paths;
@@ -69,14 +69,16 @@ struct directory_executer<functor, iter_t, sorted> {
         std::sort(paths.begin(), paths.end());
 
         // Now execute the functor on each
-        LOOPVI(paths) f(paths[i]);
+        LOOPVI(paths) {
+            f(paths[i]);
+        }
     }
 };
 
 // Partial specialization for unsorted visitation
 template<class functor, class iter_t>
 struct directory_executer<functor, iter_t, unsorted> {
-    static void run(const file::path& dir, functor& f)
+    ORK_INLINE static void run(const file::path& dir, functor& f)
     {
         const iter_t end;
         for(iter_t it(dir); it != end; ++it)
@@ -90,11 +92,11 @@ struct directory_executer<functor, iter_t, unsorted> {
 // The static version
 template<class functor, class search_type = flat_search, class sort_type = unsorted>
 struct iterate_directory {
-    void operator()(const file::path& dir, functor& f)
+    ORK_INLINE void operator()(const file::path& dir, functor& f)
     {
         run(dir, f);
     }
-    static void run(const file::path& dir, functor& f)
+    ORK_INLINE static void run(const file::path& dir, functor& f)
     {
         typedef typename detail::search_typer<search_type>::type iter_t;
         if(!file::test_directory(dir))
@@ -140,7 +142,7 @@ protected:
     file::path _p;
 
 public:
-    directory_range(const file::path& p)
+    ORK_INLINE directory_range(const file::path& p)
         : _p(p)
     {
         if(!ext_file::is_directory(p))
