@@ -118,7 +118,8 @@ ORK_ORK_EXT(logger&) get_global_log();
         UID
 #    define ORK_LOG(SV) \
         _ORK_LOG(ork::log_channel::debug_trace, SV, ORK_UID(_ork_log_log_))
-#    define ORK_LOUT _ORK_LOG(ork::log_channel::output_data, ork::severity_level::info, ORK_UID(_ork_log_out_)
+#    define ORK_LOUT \
+        _ORK_LOG(ork::log_channel::output_data, ork::severity_level::info, ORK_UID(_ork_log_out_))
 
 #    define ORK_LOC_BLOCK \
         ORK("\n -- ") << ORK_FLOC_STREAM << ORK(":\n -- ") << ORK_FUNC << ORK("\n")
