@@ -83,6 +83,8 @@ if(ORK_BUILD_BOOST)
 	# If CMake supported target_link_directories then interface libraries would be a snap
 	# As is stands, every target that uses boost must use link_directories to add this path
 	detect_path(3P_BOOST_LIB_DIR "${3P_BOOST_SRC_DIR}/lib" "${3P_BOOST_SRC_DIR}/lib/x64")
+	# Cache this because clients need it
+	set_as_internal(3P_BOOST_LIB_DIR ${3P_BOOST_LIB_DIR})
 	
 	# We go ahead and add these so we get some efficiency of scale for boost dependents
 	append_all_compiler_flag("-DBOOST_ALL_DYN_LINK") #Link boost shared libs
