@@ -37,9 +37,9 @@ struct default_deleter {
     {
         delete t;
     }
-    ORK_INLINE T operator()(const T& t)
+    ORK_INLINE T* operator()(const T& t)
     {
-        return t;
+        return new T(t);
     }
 };
 
@@ -51,9 +51,9 @@ struct singleton_deleter {
     {
         // Do Nothing
     }
-    T operator()(const T& t)
+    T* operator()(const T& t)
     {
-        return t;
+        return new T(t);
     }
 };
 
