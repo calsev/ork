@@ -78,7 +78,7 @@ struct singleton_deleter {
     /*Allow conversion from unique_ptr*/ \
     template<typename T2, typename D2> \
     ORK_INLINE PTR(std::unique_ptr<T2, D2>&& ptr) ORK_NO_EXCEPT \
-        : _ptr(std::move(ptr)) \
+        : _ptr(ptr.release()) \
     {} \
 \
     ORK_INLINE PTR& operator=(PTR&& ptr) ORK_NO_EXCEPT \
