@@ -176,26 +176,26 @@ public:
     // The big payoff
     ORK_INLINE value_ptr& operator=(const value_ptr& x)
     {
-        _ptr = x.get_deleter()(*x);
+        _ptr.reset(x.get_deleter()(*x));
         return *this;
     }
     template<class D2>
     ORK_INLINE value_ptr& operator=(const value_ptr<element_type, D2>& x)
     {
-        _ptr = x.get_deleter()(*x);
+        _ptr.reset(x.get_deleter()(*x));
         return *this;
     }
 
-    // The big payoff + conversion
+    // The big payoff + conversion; this will throw if null, unless the type is contsructible from nullptr
     ORK_INLINE value_ptr& operator=(const std::unique_ptr<element_type, D>& x)
     {
-        _ptr = x.get_deleter()(*x);
+        _ptr.reset(x.get_deleter()(*x));
         return *this;
     }
     template<class D2>
     ORK_INLINE value_ptr& operator=(const std::unique_ptr<element_type, D2>& x)
     {
-        _ptr = x.get_deleter()(*x);
+        _ptr.reset(x.get_deleter()(*x));
         return *this;
     }
 
