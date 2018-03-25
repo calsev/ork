@@ -412,7 +412,7 @@ std::ostream& line::export_html(std::ostream& out) const
 std::ostream& label::export_html(std::ostream& out) const
 {
 #if 0
-	out << BORK("<pre>") << text << BORK("</pre>");
+    out << BORK("<pre>") << text << BORK("</pre>");
 #else
     out << text;
 #endif
