@@ -49,7 +49,12 @@ ORK_PARSER_DECL(id, string);
 // We require : start with letter / underscore, continue with letter / digit / underscore / dash / apostrophe
 ORK_PARSER_DECL(name, string);
 
+// A quoted string - does not support escaped quotes
 ORK_PARSER_DECL(quote, string);
+
+// An @variable is more typical of single-pass interpreters that require a variable tag (e.g. $, @) but may allow looser rules for the name
+// We require: start with letter / digit / underscore, continue with the same
+ORK_PARSER_DECL(at_var, string);
 
 } // namespace x3
 } // namespace ork
@@ -61,7 +66,6 @@ Placeholders for parser components
 namespace ork {
 namespace orq { // ork-qi :)
 
-BOOST_SPIRIT_TERMINAL(at_var); //@var
 BOOST_SPIRIT_TERMINAL(lb_com); //'pound comment'
 BOOST_SPIRIT_TERMINAL(lb_com_skip); //'comment skipper'
 
@@ -76,8 +80,6 @@ namespace boost {
 namespace spirit {
 
 // Make custom parser usable as a terminal only, and only for parser expressions (qi::domain).
-template<>
-struct use_terminal<qi::domain, ork::orq::tag::at_var> : mpl::true_ {};
 template<>
 struct use_terminal<qi::domain, ork::orq::tag::lb_com> : mpl::true_ {};
 template<>
@@ -193,46 +195,6 @@ ORK_INLINE bool consume_real(iter& it, const iter& first, const iter& last)
 }
 
 
-/*
-A script variable is more typical of single-pass interpreters that require a variable tag (e.g. $, @) but may allow looser rules for the name
-We require: start with letter/digit/underscore, continue same
-*/
-template<typename iter>
-ORK_INLINE bool consume_script_variable(iter& it, const iter& first, const iter& last)
-{
-    if(it == last) {
-        return false;
-    }
-
-    auto ch = *it;
-    while((std::isalnum(ch) || ch == ORK('_')) &&
-          ++it != last) { // NOT charset: this is programming language (ascii) identifier
-        ch = *it; // Subsequent characters can be digits also
-    }
-
-    return it != first;
-}
-
-
-/*
-@variable simply consumes the tag and the name
-*/
-template<typename iter>
-ORK_INLINE bool consume_at_variable(iter& it, const iter& first, const iter& last)
-{
-    if(it == last) {
-        return false;
-    }
-
-
-    if(*it++ != ORK('@')) { // The first char must be @
-        return false;
-    }
-    return consume_script_variable(
-        it, first, last); // We consumed at least the first character, but the var name must be non-empty
-}
-
-
 template<typename iter>
 ORK_INLINE bool consume_space(iter& it, const iter& first, const iter& last)
 {
@@ -266,44 +228,6 @@ ORK_INLINE bool consume_lb_com(iter& it, const iter& ORK_UNUSED(first), const it
 
 
 } // namespace detail
-
-
-struct ORK_ORK_API at_var_parser : qi::primitive_parser<at_var_parser> {
-public: // Parser component stuff
-    template<typename context, typename iter>
-    struct attribute { // Define the attribute type exposed by this parser component
-        typedef ork::string type;
-    };
-
-    // This function is called during the actual parsing process
-    template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(
-        iter& first,
-        const iter& last,
-        context& ORK_UNUSED(ctxt),
-        const skipper& skip,
-        attribute& attr) const
-    {
-        boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
-
-        iter it(first);
-        if(!detail::consume_at_variable(it, first, last)) {
-            return false;
-        }
-
-        attribute result(first, it);
-        first = it;
-        spirit::traits::assign_to(result, attr);
-        return true;
-    }
-
-    // This function is called during error handling to create a human readable string for the error context.
-    template<typename context>
-    boost::spirit::info what(context&) const
-    {
-        return boost::spirit::info(BORK("at_var"));
-    }
-};
 
 
 struct ORK_ORK_API lb_com_parser : qi::primitive_parser<lb_com_parser> {
@@ -408,7 +332,6 @@ namespace qi {
             } \
         };
 
-ORK_ORQ_FACTORY(at_var);
 ORK_ORQ_FACTORY(lb_com);
 ORK_ORQ_FACTORY(lb_com_skip);
 

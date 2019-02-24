@@ -30,6 +30,9 @@ ORK_PARSER_DEF(name)
 auto const quote_def = s3::lit('"') >> *(!s3::lit('"') >> s3::char_) >> s3::lit('"');
 ORK_PARSER_DEF(quote)
 
+auto const at_var_def = s3::lit('@') >> +last_char_p;
+ORK_PARSER_DEF(at_var)
+
 } // namespace x3
 } // namespace ork
 
