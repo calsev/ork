@@ -82,68 +82,6 @@ using space_type = spirit::standard::space_type;
 using spirit::standard::space;
 #    endif
 
-
-namespace detail {
-
-
-/*
-A decimal integer is one or more digits
-*/
-template<typename iter>
-ORK_INLINE bool consume_dec_int(iter& it, const iter& first, const iter& last)
-{
-    if(it == last) {
-        return false;
-    }
-
-    if(*it == ORK('-') && ++it != last) {
-        /*Do Nothing*/
-    }
-    while(std::isdigit(*it) &&
-          ++it != last) { // NOT charset: this is programming language (ascii) identifier
-        /*Do Nothing*/
-    }
-
-    return it != first;
-}
-
-
-/*
-An real is one or more digits, maybe a point, maybe more digits
-We therefore allow C-style terminal decimal point
-*/
-template<typename iter>
-ORK_INLINE bool consume_real(iter& it, const iter& first, const iter& last)
-{
-    if(it == last) {
-        return false;
-    }
-
-    if(*it == ORK('-') && ++it != last) {
-        /*Do Nothing*/
-    }
-    while((std::isdigit(*it)) &&
-          ++it != last) { // NOT charset: this is programming language (ascii) identifier
-        /*Do Nothing*/
-    }
-    if(it == first) {
-        return false; // We must consume at least one digit
-    }
-    if(*it == ORK('.') && ++it != last) {
-        /*Do Nothing*/
-    }
-    while((std::isdigit(*it)) &&
-          ++it != last) { // NOT charset: this is programming language (ascii) identifier
-        /*Do Nothing*/
-    }
-
-    return true; // We consumed at least one digit
-}
-
-
-} // namespace detail
-
-
 } // namespace orq
 } // namespace ork
 
