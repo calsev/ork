@@ -7,10 +7,34 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #if ORK_USE_BOOST
 
+#    define ORK_BOOST_INC_FILE "boost/spirit/home/x3.hpp"
+#    include "ork/core/boost_include.inl"
 #    define ORK_BOOST_INC_FILE "boost/spirit/home/support/common_terminals.hpp"
 #    include "ork/core/boost_include.inl"
 #    define ORK_BOOST_INC_FILE "boost/spirit/home/qi.hpp"
 #    include "ork/core/boost_include.inl"
+
+namespace ork {
+namespace x3 {
+
+namespace s3 = boost::spirit::x3;
+
+namespace detail {
+auto set_true = [&](auto& ctx) { _val(ctx) = true; };
+auto set_false = [&](auto& ctx) { _val(ctx) = false; };
+} // namespace detail
+
+// Bool, no 1/0 allowed
+s3::rule<class alpha_bool, bool> const alpha_bool = "alpha_bool";
+
+const auto true_p = s3::lit("true") | s3::lit("yes") | s3::lit("on");
+const auto false_p = s3::lit("false") | s3::lit("no") | s3::lit("off");
+
+auto const alpha_bool_def = true_p[detail::set_true] | false_p[detail::set_false];
+BOOST_SPIRIT_DEFINE(alpha_bool);
+
+} // namespace x3
+} // namespace ork
 
 
 /*
@@ -19,7 +43,6 @@ Placeholders for parser components
 namespace ork {
 namespace orq { // ork-qi :)
 
-BOOST_SPIRIT_TERMINAL(alpha_bool);
 BOOST_SPIRIT_TERMINAL(id); // Identifier as typically defined in programming languages
 BOOST_SPIRIT_TERMINAL(name); // Human-like name (can include hyphen)
 BOOST_SPIRIT_TERMINAL(quote);
@@ -38,8 +61,6 @@ namespace boost {
 namespace spirit {
 
 // Make custom parser usable as a terminal only, and only for parser expressions (qi::domain).
-template<>
-struct use_terminal<qi::domain, ork::orq::tag::alpha_bool> : mpl::true_ {};
 template<>
 struct use_terminal<qi::domain, ork::orq::tag::id> : mpl::true_ {};
 template<>
@@ -105,52 +126,6 @@ consume_lit(string_t const& str, iter& it, const iter& ORK_UNUSED(first), iter c
         }
     }
     return true;
-}
-
-
-/*
-Bool, no 1/0 allowed
-*/
-template<typename iter>
-ORK_INLINE bool consume_alpha_bool(iter& it, const iter& first, const iter& last, bool& val)
-{
-    if(it == last) {
-        return false;
-    }
-
-    if(consume_lit(ORK("true"), it, first, last)) {
-        val = true;
-        return true;
-    }
-    it = first;
-    if(consume_lit(ORK("false"), it, first, last)) {
-        val = false;
-        return true;
-    }
-
-    it = first;
-    if(consume_lit(ORK("yes"), it, first, last)) {
-        val = true;
-        return true;
-    }
-    it = first;
-    if(consume_lit(ORK("no"), it, first, last)) {
-        val = false;
-        return true;
-    }
-
-    it = first;
-    if(consume_lit(ORK("on"), it, first, last)) {
-        val = true;
-        return true;
-    }
-    it = first;
-    if(consume_lit(ORK("off"), it, first, last)) {
-        val = false;
-        return true;
-    }
-
-    return false;
 }
 
 
@@ -352,44 +327,6 @@ ORK_INLINE bool consume_lb_com(iter& it, const iter& ORK_UNUSED(first), const it
 
 
 } // namespace detail
-
-
-struct ORK_ORK_API alpha_bool_parser : qi::primitive_parser<alpha_bool_parser> {
-public: // Parser component stuff
-    template<typename context, typename iter>
-    struct attribute { // Define the attribute type exposed by this parser component
-        typedef bool type;
-    };
-
-    // This function is called during the actual parsing process
-    template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(
-        iter& first,
-        const iter& last,
-        context& ORK_UNUSED(ctxt),
-        const skipper& skip,
-        attribute& attr) const
-    {
-        boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
-
-        iter it(first);
-        bool val = false;
-        if(!detail::consume_alpha_bool(it, first, last, val)) {
-            return false;
-        }
-
-        first = it;
-        spirit::traits::assign_to(val, attr);
-        return true;
-    }
-
-    // This function is called during error handling to create a human readable string for the error context.
-    template<typename context>
-    boost::spirit::info what(context&) const
-    {
-        return boost::spirit::info(BORK("alpha_bool"));
-    }
-};
 
 
 struct ORK_ORK_API id_parser : qi::primitive_parser<id_parser> {
@@ -646,7 +583,6 @@ namespace qi {
             } \
         };
 
-ORK_ORQ_FACTORY(alpha_bool);
 ORK_ORQ_FACTORY(id);
 ORK_ORQ_FACTORY(name);
 ORK_ORQ_FACTORY(quote);
