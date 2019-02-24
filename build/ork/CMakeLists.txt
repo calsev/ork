@@ -186,6 +186,7 @@ set(ORK_SRCS
 	"${3P_ORK_SRC_DIR}/src/html.cpp"
 	"${3P_ORK_SRC_DIR}/src/log.cpp"
 	"${3P_ORK_SRC_DIR}/src/orientation.cpp"
+	"${3P_ORK_SRC_DIR}/src/parse.cpp"
 	"${3P_ORK_SRC_DIR}/src/string_utils.cpp"
 	"${3P_ORK_SRC_DIR}/src/tagger.cpp"
 	"${3P_ORK_SRC_DIR}/src/text_io.cpp"
