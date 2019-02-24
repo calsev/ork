@@ -19,17 +19,24 @@ namespace x3 {
 
 namespace s3 = boost::spirit::x3;
 
+// We give up reusability to reduce compile times
+using iterator_type = string::const_iterator;
+using context_type = s3::phrase_parse_context<s3::ascii::space_type>::type;
+
 #    define ORK_PARSER_DECL(ID, ATTR_TYPE) \
         using ORK_CAT(ID, _type) = s3::rule<class ID, ATTR_TYPE>; \
         BOOST_SPIRIT_DECLARE(ORK_CAT(ID, _type)) \
         ORK_CAT(ID, _type) ID()
 
 #    define ORK_PARSER_DEF(ID) \
-        ORK_CAT(ID, _type) const ORK_CAT(ID, _instance) = ORK_STR(ID); \
-        BOOST_SPIRIT_DEFINE(ORK_CAT(ID, _instance)); \
+        namespace impl { \
+        ORK_CAT(ID, _type) const ID = ORK_STR(ID); \
+        BOOST_SPIRIT_DEFINE(ID); \
+        BOOST_SPIRIT_INSTANTIATE(ORK_CAT(ID, _type), iterator_type, context_type) \
+        } /*namespace impl*/ \
         ORK_CAT(ID, _type) ID() \
         { \
-            return ORK_CAT(ID, _instance); \
+            return impl::ID; \
         }
 
 // Bool, no 1/0 allowed
