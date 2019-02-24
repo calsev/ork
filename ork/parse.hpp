@@ -9,10 +9,6 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 
 #    define ORK_BOOST_INC_FILE "boost/spirit/home/x3.hpp"
 #    include "ork/core/boost_include.inl"
-#    define ORK_BOOST_INC_FILE "boost/spirit/home/support/common_terminals.hpp"
-#    include "ork/core/boost_include.inl"
-#    define ORK_BOOST_INC_FILE "boost/spirit/home/qi.hpp"
-#    include "ork/core/boost_include.inl"
 
 namespace ork {
 namespace x3 {
