@@ -45,6 +45,10 @@ ORK_PARSER_DECL(alpha_bool, bool);
 // An identifier is a typical C/C++/Java/C# name: start with underscore/letter, continue with underscore/letter/digit
 ORK_PARSER_DECL(id, string);
 
+// A 'name' is a bit of a muddy combination of proper name(e.g.Harold, Hawai'i, Dan-Man) and a user name (e.g. cool_guy_32, _hack0r_0110)
+// We require : start with letter / underscore, continue with letter / digit / underscore / dash / apostrophe
+ORK_PARSER_DECL(name, string);
+
 } // namespace x3
 } // namespace ork
 
@@ -55,7 +59,6 @@ Placeholders for parser components
 namespace ork {
 namespace orq { // ork-qi :)
 
-BOOST_SPIRIT_TERMINAL(name); // Human-like name (can include hyphen)
 BOOST_SPIRIT_TERMINAL(quote);
 BOOST_SPIRIT_TERMINAL(at_var); //@var
 BOOST_SPIRIT_TERMINAL(lb_com); //'pound comment'
@@ -72,8 +75,6 @@ namespace boost {
 namespace spirit {
 
 // Make custom parser usable as a terminal only, and only for parser expressions (qi::domain).
-template<>
-struct use_terminal<qi::domain, ork::orq::tag::name> : mpl::true_ {};
 template<>
 struct use_terminal<qi::domain, ork::orq::tag::quote> : mpl::true_ {};
 template<>
@@ -233,31 +234,6 @@ ORK_INLINE bool consume_at_variable(iter& it, const iter& first, const iter& las
 }
 
 
-/*
-A 'name' is a bit of a muddy combination of proper name (e.g. Harold, Hawai'i, Dan-Man) and a user name (e.g. cool_guy_32, _hack0r_0110)
-We require: start with letter/underscore, continue with letter/digit/underscore/dash/apostrophe
-*/
-template<typename iter>
-ORK_INLINE bool consume_name(iter& it, const iter& ORK_UNUSED(first), const iter& last)
-{
-    if(it == last) {
-        return false;
-    }
-
-    auto ch = *it;
-    if(!charset::isalpha(ch) &&
-       ch != ORK('_')) { // Using charset: this is human (unicode) identifier
-        return false; // First character must be letter
-    }
-    while((charset::isalnum(ch) || ch == ORK('_') || ch == ORK('-') || ch == ORK('\'')) &&
-          ++it != last) { // Using charset: this is human (unicode) identifier
-        ch = *it; // Subsequent characters can be hyphens also, underscore/number allowed due to common usage in databases/files
-    }
-
-    return true; // We consumed at least the first character
-}
-
-
 template<typename iter>
 ORK_INLINE bool consume_quote(iter& it, const iter& ORK_UNUSED(first), const iter& last)
 {
@@ -348,44 +324,6 @@ public: // Parser component stuff
     boost::spirit::info what(context&) const
     {
         return boost::spirit::info(BORK("at_var"));
-    }
-};
-
-
-struct ORK_ORK_API name_parser : qi::primitive_parser<name_parser> {
-public: // Parser component stuff
-    template<typename context, typename iter>
-    struct attribute { // Define the attribute type exposed by this parser component
-        typedef ork::string type;
-    };
-
-    // This function is called during the actual parsing process
-    template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(
-        iter& first,
-        const iter& last,
-        context& ORK_UNUSED(ctxt),
-        const skipper& skip,
-        attribute& attr) const
-    {
-        boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
-
-        iter it(first);
-        if(!detail::consume_name(it, first, last)) {
-            return false;
-        }
-
-        attribute result(first, it);
-        first = it;
-        spirit::traits::assign_to(result, attr);
-        return true;
-    }
-
-    // This function is called during error handling to create a human readable string for the error context.
-    template<typename context>
-    boost::spirit::info what(context&) const
-    {
-        return boost::spirit::info(BORK("name"));
     }
 };
 
@@ -530,7 +468,6 @@ namespace qi {
             } \
         };
 
-ORK_ORQ_FACTORY(name);
 ORK_ORQ_FACTORY(quote);
 ORK_ORQ_FACTORY(at_var);
 ORK_ORQ_FACTORY(lb_com);
