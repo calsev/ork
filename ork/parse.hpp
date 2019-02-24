@@ -19,19 +19,21 @@ namespace x3 {
 
 namespace s3 = boost::spirit::x3;
 
-namespace detail {
-auto set_true = [&](auto& ctx) { _val(ctx) = true; };
-auto set_false = [&](auto& ctx) { _val(ctx) = false; };
-} // namespace detail
+#    define ORK_PARSER_DECL(ID, ATTR_TYPE) \
+        using ORK_CAT(ID, _type) = s3::rule<class ID, ATTR_TYPE>; \
+        BOOST_SPIRIT_DECLARE(ORK_CAT(ID, _type)) \
+        ORK_CAT(ID, _type) ID()
+
+#    define ORK_PARSER_DEF(ID) \
+        ORK_CAT(ID, _type) const ORK_CAT(ID, _instance) = ORK_STR(ID); \
+        BOOST_SPIRIT_DEFINE(ORK_CAT(ID, _instance)); \
+        ORK_CAT(ID, _type) ID() \
+        { \
+            return ORK_CAT(ID, _instance); \
+        }
 
 // Bool, no 1/0 allowed
-s3::rule<class alpha_bool, bool> const alpha_bool = "alpha_bool";
-
-const auto true_p = s3::lit("true") | s3::lit("yes") | s3::lit("on");
-const auto false_p = s3::lit("false") | s3::lit("no") | s3::lit("off");
-
-auto const alpha_bool_def = true_p[detail::set_true] | false_p[detail::set_false];
-BOOST_SPIRIT_DEFINE(alpha_bool);
+ORK_PARSER_DECL(alpha_bool, bool);
 
 } // namespace x3
 } // namespace ork
