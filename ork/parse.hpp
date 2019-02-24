@@ -86,34 +86,6 @@ using spirit::standard::space;
 namespace detail {
 
 
-template<typename char_t, typename iter>
-ORK_INLINE bool
-consume_lit(char_t const* str, iter& it, const iter& ORK_UNUSED(first), iter const& last)
-{
-    for(char_t ch = *str; ch != 0; ch = *++str, ++it) {
-        if(it == last || (ch != *it)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-template<typename string_t, typename iter>
-ORK_INLINE bool
-consume_lit(string_t const& str, iter& it, const iter& ORK_UNUSED(first), iter const& last)
-{
-    typename string_t::const_iterator str_it = str.begin();
-    const typename string_t::const_iterator str_end = str.end();
-
-    for(/**/; str_it != str_end; ++str_it, ++it) {
-        if(it == last || (*str_it != *it)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-
 /*
 A decimal integer is one or more digits
 */
