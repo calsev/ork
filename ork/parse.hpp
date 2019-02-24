@@ -91,27 +91,4 @@ ORK_X3_NUMERIC(double, s3::double_);
 } // namespace x3
 } // namespace ork
 
-
-namespace ork {
-namespace orq { // ork-qi :)
-
-
-namespace spirit = boost::spirit;
-namespace qi = spirit::qi;
-namespace proto = boost::proto;
-
-
-#    if ORK_UNICODE
-using charset = spirit::char_encoding::standard_wide;
-using space_type = spirit::standard_wide::space_type;
-using spirit::standard_wide::space;
-#    else
-using charset = spirit::char_encoding::standard;
-using space_type = spirit::standard::space_type;
-using spirit::standard::space;
-#    endif
-
-} // namespace orq
-} // namespace ork
-
 #endif // ORK_USE_BOOST
