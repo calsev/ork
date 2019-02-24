@@ -59,6 +59,35 @@ ORK_PARSER_DECL(com_skip, s3::unused_type);
 using iterator_type = string::const_iterator;
 using context_type = s3::phrase_parse_context<com_skip_type>::type;
 
+
+template<typename T>
+struct numeric;
+#    define ORK_X3_NUMERIC(TYPE, PARSER) \
+        template<> \
+        struct numeric<TYPE> { \
+            static ORK_CONSTEXPR auto tag() -> decltype(PARSER)& \
+            { \
+                return PARSER; \
+            } \
+        };
+
+// So we can use key-value template, etc.
+ORK_X3_NUMERIC(bool, alpha_bool);
+
+ORK_X3_NUMERIC(unsigned short, s3::ushort_);
+ORK_X3_NUMERIC(unsigned, s3::uint_);
+ORK_X3_NUMERIC(unsigned long, s3::ulong_);
+ORK_X3_NUMERIC(unsigned long long, s3::ulong_long);
+
+ORK_X3_NUMERIC(short, s3::short_);
+ORK_X3_NUMERIC(int, s3::int_);
+ORK_X3_NUMERIC(long, s3::long_);
+ORK_X3_NUMERIC(long long, s3::long_long);
+
+ORK_X3_NUMERIC(float, s3::float_);
+ORK_X3_NUMERIC(double, s3::double_);
+// ORK_X3_NUMERIC(long double, s3::long_double);
+
 } // namespace x3
 } // namespace ork
 
@@ -81,42 +110,6 @@ using charset = spirit::char_encoding::standard;
 using space_type = spirit::standard::space_type;
 using spirit::standard::space;
 #    endif
-
-} // namespace orq
-} // namespace ork
-
-
-namespace ork {
-namespace orq {
-
-
-template<typename T>
-struct numeric;
-#    define ORK_ORQ_NUMERIC(TYPE, TAG) \
-        template<> \
-        struct numeric<TYPE> { \
-            static ORK_CONSTEXPR auto tag() -> decltype(TAG)& \
-            { \
-                return TAG; \
-            } \
-        };
-
-ORK_ORQ_NUMERIC(bool, alpha_bool); // So we can use key-value template,etc.
-
-ORK_ORQ_NUMERIC(unsigned short, qi::ushort_);
-ORK_ORQ_NUMERIC(unsigned, qi::uint_);
-ORK_ORQ_NUMERIC(unsigned long, qi::ulong_);
-ORK_ORQ_NUMERIC(unsigned long long, qi::ulong_long);
-
-ORK_ORQ_NUMERIC(short, qi::short_);
-ORK_ORQ_NUMERIC(int, qi::int_);
-ORK_ORQ_NUMERIC(long, qi::long_);
-ORK_ORQ_NUMERIC(long long, qi::long_long);
-
-ORK_ORQ_NUMERIC(float, qi::float_);
-ORK_ORQ_NUMERIC(double, qi::double_);
-ORK_ORQ_NUMERIC(long double, qi::long_double);
-
 
 } // namespace orq
 } // namespace ork
