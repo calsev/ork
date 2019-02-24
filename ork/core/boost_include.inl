@@ -4,6 +4,7 @@
 #    pragma warning(push)
 #    pragma warning(disable : 4061) // enum val not explicitly handled by a case label
 #    pragma warning(disable : 4100) // unreferenced formal parameter
+#    pragma warning(disable : 4127) // conditional expression is constant
 #    pragma warning(disable : 4365) // return' signed/unsigned mismatch
 #    pragma warning(disable : 4371) // layout changed
 #    pragma warning(disable : 4555) // expression has no effect
