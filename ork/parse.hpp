@@ -19,10 +19,6 @@ namespace x3 {
 
 namespace s3 = boost::spirit::x3;
 
-// We give up reusability to reduce compile times
-using iterator_type = string::const_iterator;
-using context_type = s3::phrase_parse_context<s3::ascii::space_type>::type;
-
 #    define ORK_PARSER_DECL(ID, ATTR_TYPE) \
         using ORK_CAT(ID, _type) = s3::rule<class ID, ATTR_TYPE>; \
         BOOST_SPIRIT_DECLARE(ORK_CAT(ID, _type)) \
@@ -56,37 +52,15 @@ ORK_PARSER_DECL(quote, string);
 // We require: start with letter / digit / underscore, continue with the same
 ORK_PARSER_DECL(at_var, string);
 
+// comment skipper: skips whitespace, #-comments and //-comments
+ORK_PARSER_DECL(com_skip, s3::unused_type);
+
+// We give up reusability to reduce compile times
+using iterator_type = string::const_iterator;
+using context_type = s3::phrase_parse_context<com_skip_type>::type;
+
 } // namespace x3
 } // namespace ork
-
-
-/*
-Placeholders for parser components
-*/
-namespace ork {
-namespace orq { // ork-qi :)
-
-BOOST_SPIRIT_TERMINAL(lb_com); //'pound comment'
-BOOST_SPIRIT_TERMINAL(lb_com_skip); //'comment skipper'
-
-} // namespace orq
-} // namespace ork
-
-
-/*
-Enablers for parser components
-*/
-namespace boost {
-namespace spirit {
-
-// Make custom parser usable as a terminal only, and only for parser expressions (qi::domain).
-template<>
-struct use_terminal<qi::domain, ork::orq::tag::lb_com> : mpl::true_ {};
-template<>
-struct use_terminal<qi::domain, ork::orq::tag::lb_com_skip> : mpl::true_ {};
-
-} // namespace spirit
-} // namespace boost
 
 
 namespace ork {
@@ -195,149 +169,11 @@ ORK_INLINE bool consume_real(iter& it, const iter& first, const iter& last)
 }
 
 
-template<typename iter>
-ORK_INLINE bool consume_space(iter& it, const iter& first, const iter& last)
-{
-    if(it == last) {
-        return false;
-    }
-
-    while(charset::isspace(*it) && ++it != last) {
-    }
-
-    return it != first;
-}
-
-
-template<typename iter>
-ORK_INLINE bool consume_lb_com(iter& it, const iter& ORK_UNUSED(first), const iter& last)
-{
-    if(it == last) {
-        return false;
-    }
-
-    if(*it++ != ORK('#')) { // Consume the marker
-        return false;
-    }
-    while(it != last && *it != ORK('\n')) { // Up to but do not consume the eol
-        ++it;
-    }
-
-    return true; // We consumed at least the first character
-}
-
-
 } // namespace detail
-
-
-struct ORK_ORK_API lb_com_parser : qi::primitive_parser<lb_com_parser> {
-public: // Parser component stuff
-    template<typename context, typename iter>
-    struct attribute { // Define the attribute type exposed by this parser component
-        typedef qi::unused_type type;
-    };
-
-    // This function is called during the actual parsing process
-    template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(
-        iter& first,
-        const iter& last,
-        context& ORK_UNUSED(ctxt),
-        const skipper& skip,
-        attribute& ORK_UNUSED(attr)) const
-    {
-        boost::spirit::qi::skip_over(first, last, skip); // All primitive parsers pre-skip
-
-        iter it(first);
-        if(!detail::consume_lb_com(it, first, last)) {
-            return false;
-        }
-
-        first = it;
-        return true;
-    }
-
-    // This function is called during error handling to create a human readable string for the error context.
-    template<typename context>
-    boost::spirit::info what(context&) const
-    {
-        return boost::spirit::info(BORK("lb_com"));
-    }
-};
-
-
-struct ORK_ORK_API lb_com_skip_parser : qi::primitive_parser<lb_com_skip_parser> {
-public: // Parser component stuff
-    template<typename context, typename iter>
-    struct attribute { // Define the attribute type exposed by this parser component
-        typedef qi::unused_type type;
-    };
-
-    // This function is called during the actual parsing process
-    template<typename iter, typename context, typename skipper, typename attribute>
-    bool parse(
-        iter& first,
-        const iter& last,
-        context& ORK_UNUSED(ctxt),
-        const skipper& ORK_UNUSED(skip),
-        attribute& ORK_UNUSED(attr)) const
-    {
-        const iter first_copy(first);
-        do {
-            iter it(first);
-            if(detail::consume_space(it, first, last)) {
-                first = it;
-                continue;
-            }
-
-            it = first;
-            if(detail::consume_lb_com(it, first, last)) {
-                first = it;
-                continue;
-            }
-
-            break;
-        } while(true);
-        return first != first_copy;
-    }
-
-    // This function is called during error handling to create a human readable string for the error context.
-    template<typename context>
-    boost::spirit::info what(context&) const
-    {
-        return boost::spirit::info(BORK("lb_com_skip"));
-    }
-};
 
 
 } // namespace orq
 } // namespace ork
-
-
-/*
-Instantiators for parser components
-*/
-namespace boost {
-namespace spirit {
-namespace qi {
-
-// This is the factory function object that is invoked to create an instance of our parser.
-#    define ORK_ORQ_FACTORY(TAG) \
-        template<typename modifiers> \
-        struct make_primitive<ork::orq::tag::TAG, modifiers> { \
-            typedef typename ork::orq::ORK_CAT(TAG, _parser) result_type; \
-            result_type operator()(unused_type, unused_type) const \
-            { \
-                return result_type(); \
-            } \
-        };
-
-ORK_ORQ_FACTORY(lb_com);
-ORK_ORQ_FACTORY(lb_com_skip);
-
-} // namespace qi
-} // namespace spirit
-} // namespace boost
 
 
 namespace ork {
