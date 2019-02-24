@@ -16,6 +16,7 @@ Full copyright and license terms can be found in the LICENSE.txt file.
 #if ORK_MSC
 #    pragma warning(push)
 #    pragma warning(disable : 4668) // Windows undefined macro
+#    pragma warning(disable : 4091) // typedef ignored on left
 #    if ORK_MSC > 1900
 #        pragma warning(disable : 5039) // pointer or reference to throwing function passed to extern C function
 #    endif
