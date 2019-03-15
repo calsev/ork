@@ -21,14 +21,12 @@ namespace s3 = boost::spirit::x3;
         ORK_CAT(ID, _type) ID()
 
 #    define ORK_PARSER_DEF(ID) \
-        namespace impl { \
-        ORK_CAT(ID, _type) const ID = ORK_STR(ID); \
+        ORK_CAT(ID, _type) const ORK_CAT(ID, _instance) = ORK_STR(ID); \
         BOOST_SPIRIT_DEFINE(ID); \
         BOOST_SPIRIT_INSTANTIATE(ORK_CAT(ID, _type), iterator_type, context_type) \
-        } /*namespace impl*/ \
         ORK_CAT(ID, _type) ID() \
         { \
-            return impl::ID; \
+            return ORK_CAT(ID, _instance); \
         }
 
 // Bool, no 1/0 allowed
