@@ -16,7 +16,7 @@ namespace x3 {
 namespace s3 = boost::spirit::x3;
 
 #    define ORK_PARSER_DECL(ID, ATTR_TYPE) \
-        using ORK_CAT(ID, _type) = s3::rule<class ID, ATTR_TYPE>; \
+        using ORK_CAT(ID, _type) = ork::x3::s3::rule<class ID, ATTR_TYPE>; \
         BOOST_SPIRIT_DECLARE(ORK_CAT(ID, _type)) \
         ORK_CAT(ID, _type) ID()
 
