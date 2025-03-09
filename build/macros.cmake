@@ -18,6 +18,8 @@ macro(get_compiler_name _var)
 			set(${_var} "vc14")
 		elseif(MSVC15)
 			set(${_var} "vc15")
+		else()
+			message(FATAL_ERROR "TODO: Need to update versioning for MSVC")
 		endif()
 	elseif(DEFINED CMAKE_COMPILER_IS_GNUCC)
 		set(${_var} "gcc")
@@ -44,7 +46,7 @@ endmacro()
 
 macro(mark_as_internal _var)
 	get_compiler_name(COMPILER)
-	if(NOT ${COMPILER} MATCHES "gcc|gxx")
+	if(NOT ${COMPILER} MATCHES "gcc|gxx") # TODO
 		ensure_non_empty(${_var})
 	endif()
 	mark_as_advanced(${_var})
@@ -93,16 +95,13 @@ macro(ork_pre_project_config)
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 	set(ORK_USE_SOLUTION_FOLDERS ON)
 
-
 	if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 	  message(FATAL_ERROR "Prevented in-tree built. Call cmake from outside source tree.")
 	endif()
 
-
 	if(NOT ${CMAKE_SIZEOF_VOID_P} EQUAL 8)
 		message(FATAL_ERROR "Error: Only x64 targets are supported")
 	endif()
-
 
 	#Used for concatenating to avoid repeats
 	if(NOT ORK_CMAKE_RAN_INTERNAL)
@@ -111,7 +110,6 @@ macro(ork_pre_project_config)
 		set(ORK_CMAKE_RUN_ONCE OFF)
 	endif()
 	set_as_internal(ORK_CMAKE_RAN_INTERNAL ON)
-
 
 	enable_language(CXX)
 	enable_language(C)
@@ -271,7 +269,6 @@ macro(ork_install_config)
 	set(ORK_INSTALL_INC_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_INC_SUFFIX}")
 	set(ORK_INSTALL_LIB_DIR "${ORK_INSTALL_PREFIX}/${ORK_INSTALL_LIB_SUFFIX}")
 
-
 	#Build output, not that it is usually used without installing
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_LIB_SUFFIX}")
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${ORK_INSTALL_BIN_SUFFIX}")
@@ -318,7 +315,7 @@ macro(replace_or_append_compiler_flag _flags_var _regex_str _flag_str)
 	if(NOT ${_flag_str} MATCHES "^(/|-)")
 		message(FATAL_ERROR "All MSVC and GCC flag start with a slash or dash: ${_flag_str}")
 	endif()
-	if(_regex_str MATCHES "IMPOSIBLE")
+	if(_regex_str MATCHES "IMPOSSIBLE")
 		#Useful for one-line compiler-specific options
 	elseif(${_flags_var} MATCHES ${_regex_str})
 		string(REGEX REPLACE ${_regex_str} ${_flag_str} ${_flags_var} "${${_flags_var}}")
@@ -380,7 +377,7 @@ macro(replace_or_append_debug_flag_compilers _vc_regex_str _gcc_regex_str _vc_fl
 endmacro()
 
 macro(set_latest_language_versions)
-	set(CMAKE_CXX_STANDARD 17)
+	set(CMAKE_CXX_STANDARD 23)
 	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endmacro()
 
@@ -402,7 +399,8 @@ macro(disable_language_extensions _disable)
 			#/Ze is deprecated
 		endif()
 	elseif(COMPILER MATCHES "gcc")
-		message(FATAL_ERROR "TODO: Need to implement extensions for GCC")
+		append_all_compiler_flag("-fvisibility=hidden")
+		# Rest handled by dialect and advanced warnings
 	else()
 		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
 	endif()
@@ -427,7 +425,7 @@ macro(set_advanced_warnings)
 		
 		append_release_flag("/wd4711") #Function selected for automatic inline expansion
 	elseif(COMPILER MATCHES "gcc")
-		append_all_compiler_flag("-Wall -Wextra -Werror -Wshadow -Wconversion -Wsign-conversion -pedantic")
+		append_all_compiler_flag("-Wall -Wextra -Werror -Wshadow -Wconversion -Warith-conversion -Wdouble-promotion -Wunsafe-loop-optimizations -pedantic -pedantic-errors")
 	else()
 		message(FATAL_ERROR "Compiler not recognized: ${COMPILER}")
 	endif()

@@ -22,4 +22,3 @@ cd "$REPO_ROOT/ork_test/build"
 cmake -G 'CodeLite - Ninja' "$REPO_ROOT/ork/test"
 
 cd "$( dirname "${BASH_SOURCE[0]}" )"
-
